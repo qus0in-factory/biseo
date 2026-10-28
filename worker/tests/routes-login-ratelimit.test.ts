@@ -2,31 +2,26 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import app from '../index.js'
 import { createTestFixture } from './helpers.js'
+import { createMockKv } from './kv-helpers.js'
+import { hashIp } from '../infra/ip-hash.js'
 
-test('POST /api/login returns 429 when rate limit is exceeded', async () => {
+test('blocks at threshold (KV eventual consistency allows minor overage)', async () => {
   const { password, stored, secretKeyStr } = await createTestFixture()
-  let checkedKey = ''
-  const mockLimiter = {
-    limit: async ({ key }: { key: string }) => {
-      checkedKey = key
-      return { success: false }
-    },
-  }
+  const mockKv = createMockKv()
+  const ip = '10.0.0.1'
+  const key = await hashIp(ip)
+  mockKv.map.set(key, '5')
   const env = {
     AUTH_PASSWORD_VERIFIER: stored,
     USER_SESSION_PASETO_SECRET: secretKeyStr,
-    LOGIN_RATE_LIMITER: mockLimiter,
+    LOGIN_ATTEMPTS: mockKv,
   }
   const req = new Request('http://localhost/api/login', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'CF-Connecting-IP': '203.0.113.195',
-    },
+    headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': ip },
     body: JSON.stringify({ password }),
   })
   const res = await app.fetch(req, env)
   assert.equal(res.status, 429)
   assert.deepEqual(await res.json(), { error: 'rate_limit_exceeded' })
-  assert.equal(checkedKey, '203.0.113.195')
 })

@@ -1,14 +1,16 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import app from '../index.js'
-import { createTestFixture, mockPassRateLimiter } from './helpers.js'
+import { createTestFixture } from './helpers.js'
+import { createMockKv } from './kv-helpers.js'
 
 test('POST /api/login fails on wrong password', async () => {
   const { stored, secretKeyStr } = await createTestFixture()
+  const mockKv = createMockKv()
   const env = {
     AUTH_PASSWORD_VERIFIER: stored,
     USER_SESSION_PASETO_SECRET: secretKeyStr,
-    LOGIN_RATE_LIMITER: mockPassRateLimiter,
+    LOGIN_ATTEMPTS: mockKv,
   }
   const req = new Request('http://localhost/api/login', {
     method: 'POST',
