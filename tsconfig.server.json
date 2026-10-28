@@ -6,8 +6,9 @@
     "strict": true,
     "skipLibCheck": true,
     "types": ["node"],
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "dist/server"
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "shared/domain/ports.ts", "shared/domain/claims.ts"],
+  "exclude": ["**/*.test.ts"]
 }

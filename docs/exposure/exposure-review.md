@@ -1,9 +1,9 @@
-> 이 문서는 이전 상세 설계·검토 기록이다. 최신 0.1.0은 Hono + pnpm + PM2, 로컬 6543 → Funnel 443의 무인증 /health HTTP 200만 목표로 한다. 인증과 상세 운영 조건은 다음 단계로 보류하며 현재 출시에 적용하지 않는다. 최신 범위는 funnel-issue-plan.md와 backlog.md를 따른다.
+> 이 문서는 이전 상세 설계·검토 기록이다. 최신 0.1.0은 Hono + pnpm + PM2, 로컬 6543 → Funnel 443의 무인증 /health HTTP 200만 목표로 한다. 인증과 상세 운영 조건은 다음 단계로 보류하며 현재 출시에 적용하지 않는다. 최신 범위는 exposure/funnel-issue-plan.md와 backlog.md를 따른다.
 
 # Funnel 노출 운영 독립 검토 (glm-z)
 
 > 작성: glm-z · 2026-10-28 · 범위: 기존 3개 문서의 운영 관점 독립 검토. 구현·실행·설정 변경·커밋·게시 없음.
-> 대상: funnel-auth-plan.md(Opus), healthcheck-acceptance.md(ds-o), planning-coordination.md(sol)
+> 대상: auth/funnel-auth-plan.md(Opus), exposure/healthcheck-acceptance.md(ds-o), release/planning-coordination.md(sol)
 > 근거: [TS-CLI] funnel CLI(Last validated 2026-01-26), [TS-FEAT] Tailscale Funnel(2026-01-20) — 둘 다 2026-10-28 재확인. URL은 각 문서 상단 인용과 동일.
 > 표기: **[사실]**=공식 문서·작업 공간 관찰로 확인, **[제안]**=이 검토의 권고, **[미확정]**=확인 전까지 보류, **[차단]**=지침상 수행 불가.
 

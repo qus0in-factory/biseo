@@ -12,11 +12,11 @@
 
 | 현재 별칭 | 역할 | 담당 산출물 |
 | --- | --- | --- |
-| `sol` | 공식 문서 확인, 통합 검토, 운영 기록·스킬화, 이슈 게시 | 이 문서, repository-history.md, 워크스페이스 docs·공통 스킬, GitHub 이슈 |
-| `opus` | Funnel 경계와 인증 방식·시크릿 수명주기 설계 | [funnel-auth-plan.md](funnel-auth-plan.md) |
-| `ds-o` | Given/When/Then 수용 조건과 검증 계획 | [healthcheck-acceptance.md](healthcheck-acceptance.md) |
-| `glm-z` | 독립 노출·운영·설정 충돌·원복 검토 | [exposure-review.md](exposure-review.md) |
-| `gf` | 공통·프로젝트 문서의 누락·중복 검토 | 워크스페이스 `docs/documentation-review.md` |
+| `sol` | 공식 문서 확인, 통합 검토, 운영 기록·스킬화, 이슈 게시 | 이 문서, release/repository-history.md, 워크스페이스 docs·공통 스킬, GitHub 이슈 |
+| `opus` | Funnel 경계와 인증 방식·시크릿 수명주기 설계 | [auth/funnel-auth-plan.md](../auth/funnel-auth-plan.md) |
+| `ds-o` | Given/When/Then 수용 조건과 검증 계획 | [exposure/healthcheck-acceptance.md](../exposure/healthcheck-acceptance.md) |
+| `glm-z` | 독립 노출·운영·설정 충돌·원복 검토 | [exposure/exposure-review.md](../exposure/exposure-review.md) |
+| `gf` | 공통·프로젝트 문서의 누락·중복 검토 | 워크스페이스 `docs/harness/documentation-review.md` |
 
 GF 탭과 연결된 단일 패널의 존재를 확인하고 세 라벨을 `gf`로 동기화한 뒤 문서 완결성 검토를 배정했다.
 

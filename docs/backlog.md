@@ -1,3 +1,6 @@
+---
+audience: user
+---
 # 0.1.0 백로그
 
 ## Why

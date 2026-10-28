@@ -1,4 +1,4 @@
-> 이 문서는 이전 상세 설계·검토 기록이다. 최신 0.1.0은 Hono + pnpm + PM2, 로컬 6543 → Funnel 443의 무인증 /health HTTP 200만 목표로 한다. 인증과 상세 운영 조건은 다음 단계로 보류하며 현재 출시에 적용하지 않는다. 최신 범위는 funnel-issue-plan.md와 backlog.md를 따른다.
+> 이 문서는 이전 상세 설계·검토 기록이다. 최신 0.1.0은 Hono + pnpm + PM2, 로컬 6543 → Funnel 443의 무인증 /health HTTP 200만 목표로 한다. 인증과 상세 운영 조건은 다음 단계로 보류하며 현재 출시에 적용하지 않는다. 최신 범위는 exposure/funnel-issue-plan.md와 backlog.md를 따른다.
 
 # Funnel 공개 및 API 인증 계획
 

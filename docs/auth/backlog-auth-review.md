@@ -1,8 +1,8 @@
-> 이 문서는 이전 상세 설계·검토 기록이다. 최신 0.1.0은 Hono + pnpm + PM2, 로컬 6543 → Funnel 443의 무인증 /health HTTP 200만 목표로 한다. 인증과 상세 운영 조건은 다음 단계로 보류하며 현재 출시에 적용하지 않는다. 최신 범위는 funnel-issue-plan.md와 backlog.md를 따른다.
+> 이 문서는 이전 상세 설계·검토 기록이다. 최신 0.1.0은 Hono + pnpm + PM2, 로컬 6543 → Funnel 443의 무인증 /health HTTP 200만 목표로 한다. 인증과 상세 운영 조건은 다음 단계로 보류하며 현재 출시에 적용하지 않는다. 최신 범위는 exposure/funnel-issue-plan.md와 backlog.md를 따른다.
 
 # 인증·키 수명주기 백로그 검토 (opus)
 
-> 근거: `funnel-auth-plan.md`, `funnel-issue-plan.md`. 이 문서는 **이슈 초안 제안**이며 GitHub에는 반영하지 않았다.
+> 근거: `auth/funnel-auth-plan.md`, `exposure/funnel-issue-plan.md`. 이 문서는 **이슈 초안 제안**이며 GitHub에는 반영하지 않았다.
 > 우선도 P0~P2(P0=공개 차단), 영향도 H/M/L. 모든 값(포트·기간·임계값)은 설정·결정 항목으로 남긴다.
 
 ## Why

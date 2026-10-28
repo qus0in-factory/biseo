@@ -6,3 +6,4 @@ logs/
 dist/
 .wrangler/
 .dev.vars*
+config/*.key

@@ -1,0 +1,11 @@
+export type ServiceTokenEnv = {
+  SERVICE_PASETO_SECRET?: string
+  USER_SESSION_PASETO_SECRET?: string
+  SERVICE_TOKEN_ISSUER?: string
+  SERVICE_TOKEN_AUDIENCE?: string
+  SERVICE_TOKEN_TTL_SECONDS?: string
+  SERVICE_TOKEN_SUBJECT?: string
+  TOKEN_AUDIENCE?: string
+  TOKEN_TTL_SECONDS?: string
+  CLOCK_TOLERANCE_SECONDS?: string
+}

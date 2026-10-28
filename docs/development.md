@@ -1,3 +1,6 @@
+---
+audience: user
+---
 # 개발·승격 흐름
 
 ## Why

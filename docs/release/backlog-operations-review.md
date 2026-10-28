@@ -1,16 +1,16 @@
-> 이 문서는 이전 상세 설계·검토 기록이다. 최신 0.1.0은 Hono + pnpm + PM2, 로컬 6543 → Funnel 443의 무인증 /health HTTP 200만 목표로 한다. 인증과 상세 운영 조건은 다음 단계로 보류하며 현재 출시에 적용하지 않는다. 최신 범위는 funnel-issue-plan.md와 backlog.md를 따른다.
+> 이 문서는 이전 상세 설계·검토 기록이다. 최신 0.1.0은 Hono + pnpm + PM2, 로컬 6543 → Funnel 443의 무인증 /health HTTP 200만 목표로 한다. 인증과 상세 운영 조건은 다음 단계로 보류하며 현재 출시에 적용하지 않는다. 최신 범위는 exposure/funnel-issue-plan.md와 backlog.md를 따른다.
 
 # biseo Funnel 백로그 이슈·라벨·마일스톤 제안 (glm-z)
 
 > 작성: glm-z · 2026-10-28 · 범위: 이슈·평면 라벨·마일스톤 계획 작성만. 환경 확인·설정 변경·Funnel 공개·키 생성·커밋·푸시·GitHub 쓰기 없음.
-> 기반: exposure-review.md(glm-z), funnel-auth-plan.md(Opus), healthcheck-acceptance.md(ds-o), planning-coordination.md(sol)
+> 기반: exposure/exposure-review.md(glm-z), auth/funnel-auth-plan.md(Opus), exposure/healthcheck-acceptance.md(ds-o), release/planning-coordination.md(sol)
 > 근거: [TS-CLI] funnel CLI(Last validated 2026-01-26), [TS-FEAT] Tailscale Funnel(2026-01-20) — 2026-10-28 재확인.
 > 라벨: 평면 주책임 라벨 3종 `precheck`(환경·권한 확인) / `runbook`(노출·중지·원복 절차) / `evidence`(증적·기록)로 제안 이슈 3개를 겹침 없이 표기하고, 이슈당 1개만 붙인다. 우선도·영향도는 라벨로 쓰지 않고 본문에만 적는다. 이후 이슈가 늘어도 평면·단일 원칙을 유지한다.
 > 버전: 마일스톤은 초기 0.y.z로 진행한다. 임의 deadline을 두지 않는다. 패치(0.y.1…)는 그 0.y.0에 결함이 실제로 나온 뒤에만, 1.0.0은 근거가 생길 때까지 만들지 않는다.
 
 ## Why
 
-- 설계 문서를 실행 백로그로 옮기려면 노출 전 확인, 안전한 노출·원복, 증적 책임이 서로 겹치지 않는 독립 단위여야 한다. exposure-review.md의 발견 중 설치본 확인(macOS 문서 충돌 해소), 기존 443/Serve 구성 덮어쓰기 금지, off 원문 재현, Funnel 호스트 마킹을 각 이슈의 수용 조건에 녹인다.
+- 설계 문서를 실행 백로그로 옮기려면 노출 전 확인, 안전한 노출·원복, 증적 책임이 서로 겹치지 않는 독립 단위여야 한다. exposure/exposure-review.md의 발견 중 설치본 확인(macOS 문서 충돌 해소), 기존 443/Serve 구성 덮어쓰기 금지, off 원문 재현, Funnel 호스트 마킹을 각 이슈의 수용 조건에 녹인다.
 - 최초 공개 전 **안전게이트**를 노출 이슈의 선행 의존으로 고정한다. 게이트 = 이슈 1 완료 + health/API key 미들웨어 구현(무인증 401·`health:read` 부족 403)이 plan 3.3 3단계 로컬 검증 통과 + ds-o P1 Must AC 중 최초 공개 전 검증 가능한 항목(로컬 bind·401/403·masking 등)의 증적 확보 + fail-closed 기동 조건(exposure-review.md 3항) 확정 + 이슈 3 기록 양식 준비. 외부 노출 자체를 전제하는 AC-01/02 등은 노출 검증 단계에서 평가한다. 게이트 미통과는 노출 금지다.
 
 ## What
@@ -18,7 +18,7 @@
 ### 이슈 1: 설치 변형·Funnel 권한·기존 443 사전 확인
 
 - 라벨 `precheck` · 추천릴리스 **0.1.0** · 우선도 최상 · 영향도 높음 — macOS 가용성과 443 점유를 결정해 이후 전부의 전제다.
-- 수용 조건: `tailscale version`과 설치 변형 판별을 명령·결과 원문으로 기록하고, 그 결과로 funnel-auth-plan.md 3.1의 macOS [미확정]을 해소한다(현 설치본에서 P1 포트 공유 가능 여부 확정). 이 문서는 계획만 있으며 실제 확인은 별도 회차에서 읽기 전용으로 수행한다.
+- 수용 조건: `tailscale version`과 설치 변형 판별을 명령·결과 원문으로 기록하고, 그 결과로 auth/funnel-auth-plan.md 3.1의 macOS [미확정]을 해소한다(현 설치본에서 P1 포트 공유 가능 여부 확정). 이 문서는 계획만 있으며 실제 확인은 별도 회차에서 읽기 전용으로 수행한다.
 - 수용 조건(속행): `tailscale serve status`와 `funnel status --json` 스냅샷으로 443 점유(Serve 마운트·기존 Funnel)를 판정·기록하고, nodeAttrs `funnel` 대상 범위는 확인 가능한 한 기록한다(콘솔 읽기 승인이 필요하면 미확정으로 남긴다). 점유 중이어도 이 단계에서는 어떤 구성도 바꾸지 않는다.
 - 범위 제외: 설정·정책 변경, 인증서 요청, Funnel 공개, 키 생성, GitHub 게시(게시는 sol이 별도 절차로 수행).
 - 선행 의존: 없음(제안 3개 이슈 중 시작점).
@@ -36,8 +36,8 @@
 
 - 라벨 `evidence` · 추천릴리스 **0.1.0** · 우선도 중 · 영향도 중 — 게이트의 구성 요소이며 노출의 사후 추적 가능성을 좌우한다.
 - 수용 조건: 기록 양식(시각, 전·후 status 스냅샷, 명령 원문, 판정)·저장 위치·책임(운영 기록 담당, 현재 sol)을 문서로 확정한다.
-- 수용 조건(마스킹): 자격증명·쿠키·내부 주소 기록 금지에 더해, exposure-review.md 제안대로 인증 강화 완료 전 공개 경로에는 Funnel 호스트를 마킹한다.
-- 범위 제외: 아직 실행하지 않은 작업의 증적 사전 작성, 자동 접근 로그 설계(키 원문 미기록 원칙은 funnel-auth-plan.md 2.4 소속).
+- 수용 조건(마스킹): 자격증명·쿠키·내부 주소 기록 금지에 더해, exposure/exposure-review.md 제안대로 인증 강화 완료 전 공개 경로에는 Funnel 호스트를 마킹한다.
+- 범위 제외: 아직 실행하지 않은 작업의 증적 사전 작성, 자동 접근 로그 설계(키 원문 미기록 원칙은 auth/funnel-auth-plan.md 2.4 소속).
 - 선행 의존: 없음(이슈 1과 병렬 가능). 단, 확정된 양식은 안전게이트의 구성 요소인 동시에 이슈 2 실행의 전제다.
 
 ### 마일스톤 배열 (0.y.z)

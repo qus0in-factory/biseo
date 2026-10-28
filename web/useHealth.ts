@@ -1,28 +1,31 @@
 import { useState, useEffect, useCallback } from 'react'
-import ky from 'ky'
+import { ApiError, type Health, type HealthPort } from './domain/auth'
 import r from './resources.json'
-
-export type Health = { status?: string; error?: string }
-
-export function useHealth() {
+export type { Health }
+export function useHealth(
+  port: HealthPort,
+  enabled: boolean,
+  onUnauthed: () => void,
+) {
   const [data, setData] = useState<Health | null>(null)
   const [loading, setLoading] = useState(false)
-
   const check = useCallback(async () => {
+    if (!enabled) return
     setLoading(true)
     try {
-      const res = await ky.get('/api/health', { retry: 0 }).json<Health>()
-      setData(res)
-    } catch {
+      setData(await port.getHealth())
+    } catch (e) {
+      if (e instanceof ApiError && e.code === 'authFailed') {
+        onUnauthed()
+        return
+      }
       setData({ error: r.unknown })
     } finally {
       setLoading(false)
     }
-  }, [])
-
+  }, [port, enabled, onUnauthed])
   useEffect(() => {
     check()
   }, [check])
-
   return { data, loading, check }
 }
