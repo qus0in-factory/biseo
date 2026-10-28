@@ -23,4 +23,8 @@ export const authApi: AuthPort = {
     wrap(async () => {
       await ky.post('/api/logout', { retry: 0, credentials: 'same-origin' })
     }),
+  session: () =>
+    wrap(async () => {
+      await ky.get('/api/session', { retry: 0, credentials: 'same-origin' })
+    }),
 }

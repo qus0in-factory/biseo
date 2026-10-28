@@ -1,0 +1,5 @@
+# wrangler dev용 로컬 값. 이 파일을 .dev.vars로 복사해 채운다. 운영은 wrangler secret put으로 등록한다.
+FUNNEL_HEALTH_URL=https://<device>.<tailnet>.ts.net/health
+AUTH_PASSWORD_VERIFIER=
+USER_SESSION_PASETO_SECRET=
+SERVICE_PASETO_SECRET=

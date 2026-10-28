@@ -10,7 +10,7 @@
 | # | URL | HTTP | 핵심 응답 |
 |---|---|---|---|
 | 1 | `http://127.0.0.1:6543/health` | `200` | `application/json`, 15 bytes, `{"status":"ok"}` |
-| 2 | `https://youngins-mac-mini.taild60edd.ts.net/health` | `200` (HTTP/2) | `application/json`, 15 bytes, `{"status":"ok"}` |
+| 2 | `https://<device>.<tailnet>.ts.net/health` | `200` (HTTP/2) | `application/json`, 15 bytes, `{"status":"ok"}` |
 | 3 | `http://127.0.0.1:8787/api/health` | `200` | `application/json`, 15 bytes, `{"status":"ok"}` |
 | 4 | `http://127.0.0.1:8787/` | `200` | `text/html; charset=utf-8`, `Biseo Health` HTML |
 | 5 | `http://127.0.0.1:8787/assets/index-Ccj3eIsL.js` | `200` | `text/javascript`, 250,897 bytes |

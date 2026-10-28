@@ -20,7 +20,7 @@ audience: user
 5. **재시작·검증** (비밀 미노출, 상태코드만)
    - `pnpm pm2:restart` 후 `pm2 status`에서 `biseo` online 확인.
    - `curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:6543/health`
-   - `curl -s -o /dev/null -w '%{http_code}\n' https://youngins-mac-mini.taild60edd.ts.net/health`
+   - `curl -s -o /dev/null -w '%{http_code}\n' https://<device>.<tailnet>.ts.net/health`
    - Worker: `curl -s -o /dev/null -w '%{http_code}\n' <Worker URL>/api/health` (기대: 200, 토큰·쿠키 출력 금지).
 6. **롤백** [승인 필요]
    - Worker를 직전 버전으로 되돌린 뒤 backend를 이전 커밋으로 `pnpm pm2:restart`.

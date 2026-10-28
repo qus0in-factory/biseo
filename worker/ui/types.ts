@@ -1,3 +1,5 @@
+import type { RateLimit } from '@cloudflare/workers-types'
+
 export type SessionBindings = {
   AUTH_PASSWORD_VERIFIER?: string
   USER_SESSION_PASETO_SECRET?: string
@@ -17,4 +19,5 @@ export type SessionBindings = {
   SESSION_SUBJECT?: string
   FUNNEL_HEALTH_URL?: string
   HEALTH_TIMEOUT_MS?: string
+  LOGIN_RATE_LIMITER?: RateLimit
 }

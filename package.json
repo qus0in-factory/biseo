@@ -1,6 +1,6 @@
 {
   "name": "biseo",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.24.0",
@@ -15,6 +15,7 @@
     "build:server": "tsc -p tsconfig.server.json",
     "build:client": "vite build",
     "build": "pnpm build:server && pnpm build:client",
+    "secret:verifier": "bash scripts/make-verifier.sh",
     "typecheck": "tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.worker.json && tsc --noEmit",
     "test": "tsc -p shared/tsconfig.json --noEmit && tsx --test shared/tests/*.test.ts worker/tests/*.test.ts worker/app/*.test.ts src/**/*.test.ts",
     "dev": "pnpm build:client && wrangler dev",
