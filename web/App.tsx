@@ -7,26 +7,16 @@ import { HealthView } from './ui/HealthView'
 import r from './resources.json'
 import './style.css'
 export default function App() {
-  const { authed, busy, code, login, logout, expire } = useAuth(authApi)
+  const { authed, busy, ready, code, login, logout, expire } = useAuth(authApi)
   const { data, loading, check } = useHealth(healthApi, authed, expire)
+  if (!ready) return <main className="card"><h1>{r.title}</h1><p>{r.loading}</p></main>
   return (
     <main className="card">
       <h1>{r.title}</h1>
-      {!authed ? (
-        <LoginForm busy={busy} onLogin={login} />
-      ) : (
-        <>
-          <HealthView
-            loading={loading}
-            status={data?.status}
-            error={data?.error}
-            onCheck={check}
-          />
-          <button className="btn" onClick={logout} disabled={busy}>
-            {r.logout}
-          </button>
-        </>
-      )}
+      {!authed ? <LoginForm busy={busy} onLogin={login} /> : <>
+        <HealthView loading={loading} status={data?.status} error={data?.error} onCheck={check} />
+        <button className="btn" onClick={logout} disabled={busy}>{r.logout}</button>
+      </>}
       {code && <p className="err">{r[code]}</p>}
     </main>
   )

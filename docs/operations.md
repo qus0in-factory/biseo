@@ -12,7 +12,7 @@ audience: user
 - 서버: Hono + Node.js, pnpm 의존성 관리
 - 프로세스: PM2 `biseo`
 - 로컬: `http://127.0.0.1:6543/health`
-- 공개: `https://youngins-mac-mini.taild60edd.ts.net/health`
+- 공개: `https://<device>.<tailnet>.ts.net/health`
 - 응답: 인증 없이 HTTP 200, `{"status":"ok"}`
 - 변경 가능한 기본값: `config/runtime.json`, 환경변수 `HOST`, `PORT`, `HEALTH_STATUS`, `PROCESS_NAME`
 
@@ -25,7 +25,7 @@ pnpm install --frozen-lockfile
 pnpm pm2:start
 pnpm pm2:restart
 curl -i http://127.0.0.1:6543/health
-curl -i https://youngins-mac-mini.taild60edd.ts.net/health
+curl -i https://<device>.<tailnet>.ts.net/health
 pnpm pm2:stop
 ```
 
@@ -46,3 +46,5 @@ pnpm pm2:stop
 - 다른 PM2 앱은 변경하지 않았다. 인증·워커 API·OS 부팅 자동기동은 구현하지 않았다.
 
 이전 인증·상세 수용 문서는 향후 참고 기록이며 현재 목표가 아니다. 현재 이슈·릴리스 범위는 [백로그](backlog.md), 승격 절차는 [개발 흐름](development.md)을 따른다.
+
+실제 호스트 값은 `.dev.vars`/Secret `FUNNEL_HEALTH_URL`.

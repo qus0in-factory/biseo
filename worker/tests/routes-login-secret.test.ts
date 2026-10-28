@@ -1,14 +1,24 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import app from '../index.js'
+import { mockPassRateLimiter } from './helpers.js'
 
-test('POST /api/login fails-closed on missing secret', async () => {
-  const req = new Request('http://localhost/api/login', {
+function loginReq() {
+  return new Request('http://localhost/api/login', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': '127.0.0.1' },
     body: JSON.stringify({ password: 'any' }),
   })
-  const res = await app.fetch(req, {})
+}
+
+test('POST /api/login fails-closed on missing limiter binding', async () => {
+  const res = await app.fetch(loginReq(), {})
+  assert.equal(res.status, 500)
+  assert.deepEqual(await res.json(), { error: 'misconfigured' })
+})
+
+test('POST /api/login fails-closed on missing secret', async () => {
+  const res = await app.fetch(loginReq(), { LOGIN_RATE_LIMITER: mockPassRateLimiter })
   assert.equal(res.status, 500)
   assert.deepEqual(await res.json(), { error: 'misconfigured' })
 })

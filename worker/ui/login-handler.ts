@@ -1,25 +1,18 @@
 import type { Context } from 'hono'
-import { setCookie } from 'hono/cookie'
 import { login } from '../app/login.js'
-import { createAdapters } from './adapters.js'
-import { DEFAULT_COOKIE_NAME, getClaimPolicy, getCookieOptions } from './config.js'
+import { checkRateLimit } from './rate-limit.js'
+import { createLoginDeps, setSessionCookie } from './login-deps.js'
 import type { SessionBindings } from './types.js'
 
 export async function handleLogin(c: Context<{ Bindings: SessionBindings }>) {
-  const ad = await createAdapters(c.env)
-  if (!ad) return c.json({ error: 'misconfigured' }, 500)
+  const rl = await checkRateLimit(c)
+  if (rl === 'misconfigured') return c.json({ error: 'misconfigured' }, 500)
+  if (rl === 'rate_limit_exceeded') return c.json({ error: 'rate_limit_exceeded' }, 429)
+  const deps = await createLoginDeps(c.env)
+  if (!deps) return c.json({ error: 'misconfigured' }, 500)
   const body = (await c.req.json().catch(() => null)) as { password?: unknown }
-  const policy = getClaimPolicy(c.env)
-  const deps = {
-    verifier: ad.pwVerifier,
-    signer: ad.signer,
-    policy,
-    storedVerifier: ad.storedVerifier,
-    subject: c.env.SESSION_SUBJECT || 'owner',
-  }
   const res = await login(deps, body?.password)
   if (!res.ok) return c.json({ error: 'unauthorized' }, 401)
-  const name = c.env.COOKIE_NAME || DEFAULT_COOKIE_NAME
-  setCookie(c, name, res.token, getCookieOptions(c.env))
+  setSessionCookie(c, res.token)
   return c.json({ ok: true })
 }
