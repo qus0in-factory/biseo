@@ -1,0 +1,19 @@
+name: Main PR source
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, edited, ready_for_review]
+permissions:
+  contents: read
+jobs:
+  main-source:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require this repository's dev branch
+        env:
+          HEAD_BRANCH: ${{ github.head_ref }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          INTEGRATION_BRANCH: dev
+        run: |
+          test "$HEAD_BRANCH" = "$INTEGRATION_BRANCH"
+          test "$HEAD_REPO" = "$GITHUB_REPOSITORY"
