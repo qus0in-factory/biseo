@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "biseo-health",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-28",
+  "assets": {
+    "directory": "dist/client",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "vars": {
+    "FUNNEL_HEALTH_URL": "https://youngins-mac-mini.taild60edd.ts.net/health",
+    "HEALTH_TIMEOUT_MS": "5000"
+  }
+}
