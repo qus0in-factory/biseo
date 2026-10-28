@@ -1,19 +1,22 @@
 import {prepare}from'./prepare-turn.js'
 import {makeItem}from'./turn-item.js'
 import type{TurnDeps}from'./turn-deps.js'
-import {sameInput,type TurnInput}from'./turn-input.js'
+import type{TurnInput}from'./turn-input.js'
 import {fail,type Fail,type Ok}from'./turn-result.js'
+import {existing}from'./turn-idempotency.js'
+import {claim,release}from'./turn-claim.js'
 export async function createTurn(d:TurnDeps,input:TurnInput):Promise<Ok|Fail>{
- const old=d.store.get(input.requestId)
- if(old)return sameInput(old,input)?{ok:true,item:old,reader:null,created:false,target:null}:fail(409,'conflict','request_id_payload_mismatch')
- if(!d.locks.reserve(input.paneId,input.requestId))return fail(409,'target_not_ready','agent_busy')
- const unlock=()=>d.locks.release(input.paneId,input.requestId)
+ const old=existing(d,input)
+ if(old)return old
+ const c=claim(d,input.paneId,input.requestId)
+ if(c)return c
+ const unlock=()=>release(d,input.paneId,input.requestId)
  try{
   const p=await prepare(d,input)
   if('ok' in p){unlock();return p}
-  const item=makeItem(input,p.target,d.store.next(),p.reader,p.reason)
+  if(!p.reader){unlock();return fail(409,'target_not_ready','response_capture_unavailable')}
+  const item=makeItem(input,p.target,d.store.next())
   d.store.add(item)
-  if(!p.reader)unlock()
   return {ok:true,item,reader:p.reader,created:true,target:p.target}
  }catch{
   unlock()

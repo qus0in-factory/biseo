@@ -3,19 +3,14 @@ import type { TimelineItem } from '../domain/timeline-types.js'
 import type { UpstreamEnv } from './herdr-upstream-config.js'
 import { callUpstreamJson } from './herdr-upstream-http.js'
 import { openUpstreamEvents } from './herdr-upstream-stream.js'
+import { resolveRequestId } from './upstream-log.js'
 
-export function createHerdrUpstream(env: UpstreamEnv): HerdrUpstreamPort {
+export function createHerdrUpstream(env: UpstreamEnv, src?: Parameters<typeof resolveRequestId>[0]): HerdrUpstreamPort {
+  const id = resolveRequestId(src)
   return {
-    listPanes: (wsId) =>
-      callUpstreamJson<PanesPayload>(
-        env,
-        `/herdr/workspaces/${encodeURIComponent(wsId)}/panes`,
-        'GET',
-      ),
-    submitTurn: (input) => callUpstreamJson(env, '/herdr/turns', 'POST', input),
-    getTurn: (id) =>
-      callUpstreamJson<TimelineItem>(env, `/herdr/turns/${encodeURIComponent(id)}`, 'GET'),
-    openEventStream: (wsId, lastEventId, signal) =>
-      openUpstreamEvents(env, wsId, lastEventId, signal),
+    listPanes: (ws) => callUpstreamJson<PanesPayload>(env, `/herdr/workspaces/${encodeURIComponent(ws)}/panes`, 'GET', undefined, id),
+    submitTurn: (input) => callUpstreamJson(env, '/herdr/turns', 'POST', input, id),
+    getTurn: (tid) => callUpstreamJson<TimelineItem>(env, `/herdr/turns/${encodeURIComponent(tid)}`, 'GET', undefined, id),
+    openEventStream: (ws, lastId, sig) => openUpstreamEvents(env, ws, lastId, sig, id),
   }
 }

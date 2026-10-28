@@ -10,14 +10,13 @@ export function registerTimelineRoutes(app: App) {
     const a = await requireOwner(c)
     if (!a.ok) return a.res
     const b = await c.req.json().catch(() => null)
-    const r = await submitTimelineMessage(createHerdrUpstream(c.env), c.env.ALLOWED_WORKSPACE_ID, b)
+    const r = await submitTimelineMessage(createHerdrUpstream(c.env, c), c.env.ALLOWED_WORKSPACE_ID, b)
     return jsonNoStore(c, r.body, r.status)
   })
   app.get('/api/timeline/messages/:requestId', async (c) => {
     const a = await requireOwner(c)
     if (!a.ok) return a.res
-    const id = c.req.param('requestId')
-    const r = await getTimelineMessage(createHerdrUpstream(c.env), c.env.ALLOWED_WORKSPACE_ID, id)
+    const r = await getTimelineMessage(createHerdrUpstream(c.env, c), c.env.ALLOWED_WORKSPACE_ID, c.req.param('requestId'))
     return jsonNoStore(c, r.body, r.status)
   })
 }

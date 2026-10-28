@@ -10,6 +10,7 @@ export const config:RuntimeConfig={
  allowedWorkspaceId:e.ALLOWED_WORKSPACE_ID??base.allowedWorkspaceId,
  turnTimeoutMs:Number(e.TURN_TIMEOUT_MS||base.turnTimeoutMs||120000),
  captureGraceMs:Number(e.CAPTURE_GRACE_MS||base.captureGraceMs||3000),
+ logLevel:e.LOG_LEVEL??base.logLevel??'info',
 }
 if(!config.serviceIssuer||!config.serviceAudience||!config.servicePublicKeyPath)throw new Error('service auth misconfigured')
 if(!(Number(config.turnTimeoutMs)>0)||!(Number(config.captureGraceMs)>=0))throw new Error('turn config misconfigured')

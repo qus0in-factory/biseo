@@ -3,6 +3,9 @@
   "name": "biseo",
   "main": "worker/index.ts",
   "compatibility_date": "2026-10-28",
+  "observability": {
+    "enabled": true
+  },
   "assets": {
     "directory": "dist/client",
     "binding": "ASSETS",
