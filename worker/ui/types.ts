@@ -1,4 +1,4 @@
-import type { RateLimit } from '@cloudflare/workers-types'
+import type { KVNamespace } from '@cloudflare/workers-types'
 
 export type SessionBindings = {
   AUTH_PASSWORD_VERIFIER?: string
@@ -19,5 +19,7 @@ export type SessionBindings = {
   SESSION_SUBJECT?: string
   FUNNEL_HEALTH_URL?: string
   HEALTH_TIMEOUT_MS?: string
-  LOGIN_RATE_LIMITER?: RateLimit
+  LOGIN_ATTEMPTS?: KVNamespace
+  LOGIN_MAX_ATTEMPTS?: string
+  LOGIN_ATTEMPT_TTL_SECONDS?: string
 }
