@@ -14,7 +14,7 @@ audience: user
 이 단계는 `read`로 입력을 받기 때문에 Claude Code의 `!` 모드에서는 동작하지 않는다. 별도의 터미널 창에서 실행한다.
 
 ```sh
-bash /tmp/biseo-tools/make-verifier.sh
+bash scripts/make-verifier.sh
 ```
 
 ## 2. 백엔드 전환

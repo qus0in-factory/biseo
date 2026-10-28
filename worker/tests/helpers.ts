@@ -24,3 +24,7 @@ export async function createTestFixture() {
   const publicKeyStr = (await (proto as any).ExportPublicKey(publicKey)) as string
   return { password, stored, secretKeyStr, publicKeyStr }
 }
+
+export const mockPassRateLimiter = {
+  limit: async () => ({ success: true }),
+}

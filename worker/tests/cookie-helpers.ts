@@ -12,10 +12,12 @@ export function parseCookieAttrs(header: string) {
 }
 
 export function postJson(path: string, body?: any, env?: any) {
+  const headers: Record<string, string> = { 'CF-Connecting-IP': '127.0.0.1' }
+  if (body) headers['Content-Type'] = 'application/json'
   return app.fetch(
     new Request(`http://localhost${path}`, {
       method: 'POST',
-      headers: body ? { 'Content-Type': 'application/json' } : undefined,
+      headers,
       body: body ? JSON.stringify(body) : undefined,
     }),
     env,

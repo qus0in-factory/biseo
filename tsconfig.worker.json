@@ -10,5 +10,5 @@
     "lib": ["ES2023"],
     "types": ["@cloudflare/workers-types", "node"]
   },
-  "include": ["worker/**/*.ts", "shared/**/*.ts"]
+  "include": ["worker/**/*.ts", "shared/**/*.ts", "scripts/**/*.ts"]
 }
