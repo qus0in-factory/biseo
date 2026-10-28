@@ -11,7 +11,7 @@ export function createCapture():CapturePort{
   if(s.source==='herdr:opencode')return beginOpencode(s.value,prompt)
   const path=await sessionPath(s,cwd)
   if(!path)return null
-  const parse=s.source==='herdr:claude'?claude:s.source==='biseo:codex'?codex:agy
+  const parse=s.source==='herdr:claude'?claude:s.source.endsWith(':codex')?codex:agy
   const offset=await sizeOf(path)
   return {read:async(ms)=>{
    const end=Date.now()+ms
