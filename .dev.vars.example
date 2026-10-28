@@ -3,3 +3,11 @@ FUNNEL_HEALTH_URL=https://<device>.<tailnet>.ts.net/health
 AUTH_PASSWORD_VERIFIER=
 USER_SESSION_PASETO_SECRET=
 SERVICE_PASETO_SECRET=
+
+# 0.3.0: local backend and Worker must use the same workspace ID.
+ALLOWED_WORKSPACE_ID=<workspace-id>
+# Optional: defaults to the origin of FUNNEL_HEALTH_URL.
+FUNNEL_BASE_URL=
+UPSTREAM_TIMEOUT_MS=10000
+# Optional comma-separated trusted browser origins; empty permits same-origin only.
+ALLOWED_ORIGINS=

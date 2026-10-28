@@ -5,5 +5,6 @@
   "processName": "biseo",
   "serviceIssuer": "biseo",
   "serviceAudience": "biseo-service",
-  "servicePublicKeyPath": "config/service-public.key"
+  "servicePublicKeyPath": "config/service-public.key",
+  "allowedWorkspaceId": "w1T"
 }

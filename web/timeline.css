@@ -1,0 +1,43 @@
+.timeline-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.timeline-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 480px;
+  overflow-y: auto;
+}
+.timeline-item {
+  padding: 0.75rem;
+  border: 1px solid var(--secondary);
+  border-radius: var(--r-md);
+  background: #fff;
+}
+.timeline-response {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: var(--surface);
+  border-left: 3px solid var(--primary);
+  font-family: monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.composer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.composer-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  border: 1px solid var(--secondary);
+  border-radius: var(--r-sm);
+}
+.spinner {
+  color: var(--muted);
+  font-size: 0.875rem;
+}

@@ -1,0 +1,10 @@
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+@media (min-width: 768px) {
+  .dashboard-layout {
+    grid-template-columns: 320px 1fr;
+  }
+}

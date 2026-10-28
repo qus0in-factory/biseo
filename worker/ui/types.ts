@@ -18,7 +18,11 @@ export type SessionBindings = {
   CLOCK_TOLERANCE_SECONDS?: string
   SESSION_SUBJECT?: string
   FUNNEL_HEALTH_URL?: string
+  FUNNEL_BASE_URL?: string
   HEALTH_TIMEOUT_MS?: string
+  UPSTREAM_TIMEOUT_MS?: string
+  ALLOWED_WORKSPACE_ID?: string
+  ALLOWED_ORIGINS?: string
   LOGIN_ATTEMPTS?: KVNamespace
   LOGIN_MAX_ATTEMPTS?: string
   LOGIN_ATTEMPT_TTL_SECONDS?: string
