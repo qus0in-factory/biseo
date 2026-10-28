@@ -1,10 +1,10 @@
-> 이 문서는 이전 상세 설계·검토 기록이다. 최신 0.1.0은 Hono + pnpm + PM2, 로컬 6543 → Funnel 443의 무인증 /health HTTP 200만 목표로 한다. 인증과 상세 운영 조건은 다음 단계로 보류하며 현재 출시에 적용하지 않는다. 최신 범위는 funnel-issue-plan.md와 backlog.md를 따른다.
+> 이 문서는 이전 상세 설계·검토 기록이다. 최신 0.1.0은 Hono + pnpm + PM2, 로컬 6543 → Funnel 443의 무인증 /health HTTP 200만 목표로 한다. 인증과 상세 운영 조건은 다음 단계로 보류하며 현재 출시에 적용하지 않는다. 최신 범위는 exposure/funnel-issue-plan.md와 backlog.md를 따른다.
 
 # Biseo Funnel Healthcheck·Worker API 수용 조건
 
 작성: ds-o · 상태: 구현 전 계획 · 검증 상태: 실제 구현·배포·Funnel 실행 없음
 대상: P1 health-only, P2 후속 워커 API
-관련 문서: `funnel-auth-plan.md`(Opus, 인증 방식·키 수명주기), 통합 검증(Sol)
+관련 문서: `auth/funnel-auth-plan.md`(Opus, 인증 방식·키 수명주기), 통합 검증(Sol)
 
 ## Why
 
@@ -223,7 +223,7 @@ P2 후속 범위이며 P1 health-only 수용을 막지 않는다.
 
 | 미정 항목 | 결정·기록 위치 |
 |---|---|
-| API key 세부(헤더 형식, 키 수명주기, 저장) | `funnel-auth-plan.md` (Opus) |
+| API key 세부(헤더 형식, 키 수명주기, 저장) | `auth/funnel-auth-plan.md` (Opus) |
 | health 공개 전환(별도 승인), 정확한 경로·응답 스키마 | 구현 PR + 본 문서 갱신 |
 | P2 route별 권한 매트릭스 | Opus + API 명세 |
 | JWT/PASETO 재평가 조건 | Opus |
@@ -300,7 +300,7 @@ curl -sS --connect-timeout "${CURL_CONNECT_TIMEOUT}" --max-time "${CURL_MAX_TIME
 3. Should 항목은 통과하거나, 실패 시 영향·완화·후속 이슈를 기록해 수용한다.
 4. Conditional 항목은 선택 결과에 따라 "적용/해당 없음"과 근거를 남긴다.
 5. 테스트 키를 정리하고 Funnel 설정을 원복하며, 증적을 이슈/PR에 첨부한다.
-6. Opus의 `funnel-auth-plan.md`와 모순이 없음을 확인하고, Sol의 통합 검증에 본 매트릭스를 인계한다.
+6. Opus의 `auth/funnel-auth-plan.md`와 모순이 없음을 확인하고, Sol의 통합 검증에 본 매트릭스를 인계한다.
 
 ### 한계
 
@@ -308,5 +308,5 @@ curl -sS --connect-timeout "${CURL_CONNECT_TIMEOUT}" --max-time "${CURL_MAX_TIME
 - 실제 구현·배포·Funnel 실행·외부 테스트는 수행하지 않았다. 코드와 실행 환경이 없어 실제 5xx 매핑, Funnel 뒤 출처 IP 가시성, 지연·복구 시간은 실측하지 못했다.
 - 본문 크기·TLS 최소 버전·복구 시간·클라이언트 한도는 **제안값**이며, 구현 단계에서 설정값으로 확정한다.
 - 현재 구현 대상은 API key뿐이다. JWT/PASETO는 재평가 후보이며 이 문서의 P1/P2 수용 범위가 아니다.
-- Opus의 `funnel-auth-plan.md` 개정안(`/health` API key + `health:read`, `/api/*` route별 권한)과 정합성을 확인했다. 이후 문서가 바뀌면 본 문서도 재확인한다.
+- Opus의 `auth/funnel-auth-plan.md` 개정안(`/health` API key + `health:read`, `/api/*` route별 권한)과 정합성을 확인했다. 이후 문서가 바뀌면 본 문서도 재확인한다.
 - 공식 문서 내용은 변경될 수 있으므로 구현 시 재확인한다.

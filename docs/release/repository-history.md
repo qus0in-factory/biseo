@@ -20,4 +20,4 @@
 
 변경 전 `git status`, `git remote -v`와 GitHub 상태를 재조회한다. 공개 문서와 이슈에는 비밀 값·실제 운영 접속 정보·개인 세션 식별자를 기록하지 않는다. 커밋 전 상위 AGENTS.md에 따라 `.gitignore`와 스테이징 파일을 검토한다.
 
-범용 운영 방법은 워크스페이스의 `manage-github-repositories` 스킬, 현재 서비스 계획은 `funnel-auth-plan.md`, 검증 조건은 `healthcheck-acceptance.md`를 따른다.
+범용 운영 방법은 워크스페이스의 `manage-github-repositories` 스킬, 현재 서비스 계획은 `auth/funnel-auth-plan.md`, 검증 조건은 `exposure/healthcheck-acceptance.md`를 따른다.

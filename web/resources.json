@@ -4,5 +4,10 @@
   "loading": "Checking...",
   "statusPrefix": "Status: ",
   "errorPrefix": "Error: ",
-  "unknown": "Network Error"
+  "unknown": "Network Error",
+  "passwordLabel": "Password",
+  "login": "Login",
+  "logout": "Logout",
+  "needPassword": "Enter password.",
+  "authFailed": "Invalid password."
 }

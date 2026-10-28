@@ -1,23 +1,33 @@
+import { useAuth } from './app/useAuth'
 import { useHealth } from './useHealth'
+import { authApi } from './infra/authApi'
+import { healthApi } from './infra/healthApi'
+import { LoginForm } from './ui/LoginForm'
+import { HealthView } from './ui/HealthView'
 import r from './resources.json'
 import './style.css'
-
 export default function App() {
-  const { data, loading, check } = useHealth()
-
+  const { authed, busy, code, login, logout, expire } = useAuth(authApi)
+  const { data, loading, check } = useHealth(healthApi, authed, expire)
   return (
     <main className="card">
       <h1>{r.title}</h1>
-      {loading && <p>{r.loading}</p>}
-      {!loading && data?.status && (
-        <p className="ok">{r.statusPrefix}{data.status}</p>
+      {!authed ? (
+        <LoginForm busy={busy} onLogin={login} />
+      ) : (
+        <>
+          <HealthView
+            loading={loading}
+            status={data?.status}
+            error={data?.error}
+            onCheck={check}
+          />
+          <button className="btn" onClick={logout} disabled={busy}>
+            {r.logout}
+          </button>
+        </>
       )}
-      {!loading && data?.error && (
-        <p className="err">{r.errorPrefix}{data.error}</p>
-      )}
-      <button className="btn" onClick={check} disabled={loading}>
-        {r.refresh}
-      </button>
+      {code && <p className="err">{r[code]}</p>}
     </main>
   )
 }

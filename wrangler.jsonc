@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "biseo-health",
+  "name": "biseo",
   "main": "worker/index.ts",
   "compatibility_date": "2026-10-28",
   "assets": {
@@ -11,6 +11,18 @@
   },
   "vars": {
     "FUNNEL_HEALTH_URL": "https://youngins-mac-mini.taild60edd.ts.net/health",
-    "HEALTH_TIMEOUT_MS": "5000"
+    "HEALTH_TIMEOUT_MS": "5000",
+    "COOKIE_NAME": "biseo_session",
+    "COOKIE_SAME_SITE": "Lax",
+    "COOKIE_MAX_AGE_SECONDS": "3600",
+    "TOKEN_TTL_SECONDS": "3600",
+    "TOKEN_ISSUER": "biseo",
+    "TOKEN_AUDIENCE": "biseo-user",
+    "CLOCK_TOLERANCE_SECONDS": "5",
+    "SESSION_SUBJECT": "owner",
+    "SERVICE_TOKEN_ISSUER": "biseo",
+    "SERVICE_TOKEN_AUDIENCE": "biseo-service",
+    "SERVICE_TOKEN_TTL_SECONDS": "300",
+    "SERVICE_TOKEN_SUBJECT": "biseo-worker"
   }
 }

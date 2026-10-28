@@ -1,0 +1,20 @@
+export type SessionBindings = {
+  AUTH_PASSWORD_VERIFIER?: string
+  USER_SESSION_PASETO_SECRET?: string
+  SERVICE_PASETO_SECRET?: string
+  SERVICE_TOKEN_ISSUER?: string
+  SERVICE_TOKEN_AUDIENCE?: string
+  SERVICE_TOKEN_TTL_SECONDS?: string
+  SERVICE_TOKEN_SUBJECT?: string
+  COOKIE_NAME?: string
+  COOKIE_DOMAIN?: string
+  COOKIE_SAME_SITE?: 'Strict' | 'Lax' | 'None'
+  COOKIE_MAX_AGE_SECONDS?: string
+  TOKEN_TTL_SECONDS?: string
+  TOKEN_ISSUER?: string
+  TOKEN_AUDIENCE?: string
+  CLOCK_TOLERANCE_SECONDS?: string
+  SESSION_SUBJECT?: string
+  FUNNEL_HEALTH_URL?: string
+  HEALTH_TIMEOUT_MS?: string
+}
