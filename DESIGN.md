@@ -6,23 +6,24 @@ description: Design system for Biseo, an operations and agent multiplexer dashbo
 
 ## Overview
 
-Biseo is an operational interface for monitoring and orchestrating agent panels within a designated Herdr workspace. The system provides clear situational visibility across pane allocations, an integrated single chat timeline, and D1 historical log retrieval.
+Biseo is an operational interface for monitoring and orchestrating agent panels within a designated Herdr workspace. The system provides clear situational visibility across pane allocations, an integrated single chat timeline, and refined responsive choreography.
 
 This document adheres to the official [Google Labs DESIGN.md Specification](https://stitch.withgoogle.com/docs/design-md/specification) and the [google-labs-code/design.md spec](https://github.com/google-labs-code/design.md/blob/main/docs/spec.md).
 
-### System Scope & Core Views
+### System Scope & Milestone Boundary (0.3.1 vs 0.3.2)
 
-The dashboard focuses on the designated Herdr workspace without multi-workspace routing or ancillary pages:
-- **Workspace Dashboard**: Complete panel list of all panes in the designated workspace (name, agent, operational status).
-- **Single Chat Timeline**: Integrated conversation stream with clear target/sender badges, rendering only completed final responses, alongside progress spinners for active runs.
-- **Message Dispatch**: Input composer with deterministic disabled states and explicit reason displays when agents are busy, blocked, or in an unknown state.
-- **History & Search**: D1-backed search and scrollable log retrieval for previous prompt/response turns.
+Following milestone reprioritization, milestone **0.3.1 (#25)** focuses strictly on the design system, mobile tabs/carousel UX, and responsive single chat interactions. D1 historical log retrieval and persistence search have been scheduled for milestone **0.3.2 (#24)**:
+
+- **Workspace Dashboard (0.3.1)**: Panel display of active panes in the designated workspace (name, agent, operational status) arranged via horizontal carousel/tabs on mobile to eliminate excessive vertical scrolling.
+- **Single Chat Timeline (0.3.1)**: Integrated conversation stream with clear target/sender badges, rendering only completed final responses, alongside progress spinners for active runs.
+- **Message Dispatch (0.3.1)**: Input composer with deterministic disabled states and explicit reason displays when agents are busy, blocked, or in an unknown state.
+- **History & Search (Deferred to 0.3.2 #24)**: D1-backed search and historical turn log retrieval. The 0.3.1 UI reserves the navigation tab slot and visual specifications, but backend query integration is bound in 0.3.2.
 
 ### Technology Stack & State Architecture
-- **Core Libraries**: React (19.3.1), shadcn/ui primitives, Tailwind CSS, React Router (`react-router@8.5.1` - peer compatible with React 19.3.1 / Node 24), Zustand, TanStack Query, ky, Zod.
+- **Core Libraries**: React (19.3.1), shadcn/ui primitives (`Tabs`, `Carousel`, `Card`, `Badge` etc. — bespoke reinvention is strictly prohibited), Tailwind CSS, React Router (`react-router@8.5.1` - peer compatible with React 19.3.1 / Node 24), Zustand, TanStack Query, ky, Zod.
 - **State Responsibility Split**:
-  - **Zustand**: Client/UI state management exclusively (drawer open/close, active filter toggles, local composer input draft, selection states).
-  - **TanStack Query**: Server state and cache orchestration (panel list, agent status polling/invalidation, D1 timeline log history, cursor pagination).
+  - **Zustand**: Client/UI state management exclusively (mobile tab index, carousel active snap, drawer open/close, composer draft, selection states).
+  - **TanStack Query**: Server state and cache orchestration (panel snapshot list, agent status invalidation, timeline events, cursor pagination).
 - **Typography Strategy**: **Pretendard** serves as the primary typeface for UI labels, titles, and body content. For code snippets, command parameters, and terminal identifiers, a system monospace stack (`ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace`) is prioritized ahead of sans fallback.
 
 ## Colors
@@ -30,36 +31,69 @@ The dashboard focuses on the designated Herdr workspace without multi-workspace 
 The visual identity is constructed from five foundational tones and their direct tonal variations:
 - **Rich Black** (`#08090A`): Foundation dark background and maximum-contrast dark mode surface.
 - **Deep Slate** (`#222823`): Dark mode container surface, card background, and subtle boundary framing.
-- **Slate Gray** (`#575A5E`): Light mode secondary copy, muted borders, and subtle divider chrome.
-- **Silver Gray** (`#A7A2A9`): Dark mode secondary copy, disabled control fills, and muted badge backgrounds.
+- **Slate Gray** (`#575A5E`): Light mode secondary copy, primary light borders, and subtle divider chrome.
+- **Silver Gray** (`#A7A2A9`): Dark mode secondary copy, disabled control fills, primary dark borders (`border-subtle`), and high-contrast dark badge elements.
 - **Off White** (`#F4F7F5`): Light mode foundation background, surface cards, and dark mode high-contrast text.
+- **Surface Subtle** (`#E2E6E3`): Light mode subtle container fill, mapped directly to `--muted`.
 
 ### Herdr Agent State Mapping & Status Tokens
 
-Rather than introducing unrelated saturated hues, lifecycle indicators derive directly from the five-tone palette with high-contrast text and icon pairings to ensure status is never conveyed by color alone. In particular, for `done` state inside dark mode (`surface-dark` / `#222823`), elements avoid placing identical `#222823` on `#222823`; instead, they use contrasting high-contrast text (`#F4F7F5`), silver icons (`#A7A2A9`), or a distinct outline (`border-subtle` / `#A7A2A9`) to guarantee unambiguous visual demarcation:
+Visual status indicators represent engine health, while message dispatching is strictly governed by `sendable: boolean` and explicit `disabledReason` tokens. Status is never conveyed by color alone.
 
-| Herdr Engine State | UI Display Label | Status Badge Treatment | Dispatch Availability |
-| :--- | :--- | :--- | :--- |
-| `idle` | Idle (대기) | Slate Gray outline + pause/check icon | Available (전송 가능) |
-| `done` | Done (완료) | High-contrast text/icon + outline on dark card; Deep Slate fill on light card | Available (전송 가능) |
-| `working` | Working (실행 중) | Off White / Slate Gray + spinning indicator | Disabled (전송 불가 — 실행 중) |
-| `blocked` | Blocked (차단됨) | Deep Slate fill + alert triangle icon | Disabled (전송 불가 — 사용자/의존성 차단) |
-| `unknown` | Unknown (알 수 없음) | Slate Gray dashed border + question icon | Disabled (전송 불가 — 상태 미확인 fail-closed) |
+#### 1. PaneStatus Display Tokens (Presentation Only)
+`PaneStatus` communicates current engine lifecycle state in UI badges paired with semantic icons. To maintain WCAG 2.1 Non-text Contrast (>= 3:1) on dark container surfaces (`#222823`), dark variants unify on high-contrast `#A7A2A9` outlines/fills:
+
+| Herdr Engine State | UI Display Label | Light Badge Treatment | Dark Badge Treatment (>= 3:1 Contrast) | Visual Icon Pairing |
+| :--- | :--- | :--- | :--- | :--- |
+| `idle` | Idle (대기) | Slate Gray outline (`#575A5E`) | Silver Gray outline (`#A7A2A9`, **6.01:1**) | Pause / Clock icon |
+| `done` | Done (완료) | Deep Slate fill (`#222823`) | Deep Slate fill + Silver Gray border (`#A7A2A9`, **6.01:1**) + Off White text (`#F4F7F5`, **13.95:1**) | Checkmark icon |
+| `working` | Working (실행 중) | Off White / Slate Gray fill | Silver Gray text & spinner (`#A7A2A9`, **6.01:1**) | Animated CSS spinner |
+| `blocked` | Blocked (차단됨) | Deep Slate fill (`#222823`) | Deep Slate fill + Silver Gray border (`#A7A2A9`, **6.01:1**) + Off White text (`#F4F7F5`, **13.95:1**) | Alert triangle icon |
+| `unknown` | Unknown (알 수 없음) | Slate Gray dashed border (`#575A5E`) | Silver Gray dashed border (`#A7A2A9`, **6.01:1**) | Help question icon |
+
+#### 2. Dispatch Gating & DisabledReason Mapping (7 Reasons)
+Message dispatch availability is deterministically governed by `sendable` and `disabledReason` (derived from `src/domain/pane-reason.ts` and `web/domain/paneState.ts`). When `sendable` is `false`, the composer input is disabled and displays one of the 7 deterministic rationale messages in a shadcn `Alert`:
+
+| DisabledReason Token | User-Facing Korean Rationale | Trigger Condition |
+| :--- | :--- | :--- |
+| `agent_busy` | 에이전트가 실행 중이거나 작업 락이 걸려 있습니다. | `status === 'working'`, `launch_pending === true`, or pane lock held |
+| `agent_blocked` | 에이전트가 사용자 입력 또는 의존성으로 인해 차단되었습니다. | `status === 'blocked'` |
+| `agent_unknown` | 에이전트 상태를 확인할 수 없습니다 (fail-closed). | `status === 'unknown'` or `interactive_ready === false` |
+| `no_agent_in_pane` | 패널에 실행 중인 에이전트가 없습니다. | Pane lacks active agent runtime (`!agentKind`) |
+| `response_capture_unavailable` | 이 에이전트의 완료 응답 수집은 아직 지원하지 않습니다. | Agent session does not support deterministic response capture |
+| `target_not_found` | 대상 패널을 찾을 수 없습니다. | Selected paneId does not exist in workspace snapshot |
+| `connection_unavailable` | 서버/SSE 연결이 끊어졌거나 오프라인 상태입니다. | EventSource disconnected, offline, or network error |
+
+#### 3. PaneSummary Domain Field Mapping
+Data received from the server snapshot conforms strictly to `PaneSummary` (`web/domain/timeline.ts`):
+- `name`: Fixed primary card title (`item.name`). Terminal command leakage is sanitized on the server.
+- `agentName`: Optional secondary agent alias (e.g., `opus`, `sol`, `gf`). Displayed as a subtle secondary caption (`label-sm`).
+- `agentKind`: Execution runtime tool (e.g., `claude`, `codex`, `agy`). Rendered as a distinct secondary tag pill (`label-sm`).
+- `status`: Engine state for display badges (`idle`, `done`, `working`, `blocked`, `unknown`).
+- `sendable`: Boolean dispatch gate.
+- `disabledReason`: Deterministic disable rationale from the 7 reasons above.
 
 ### Token Pair Contrast Verification (WCAG 2.1)
 
-Contrast is verified for the primary foreground-on-background token pairings:
+Contrast is verified for typography and non-text UI components (WCAG 2.1 SC 1.4.3 & 1.4.11):
 
 - **Light Mode (`surface` / `#F4F7F5`)**:
   - Primary text (`#08090A` on `#F4F7F5`): **18.48:1** (Exceeds WCAG AAA 7.0:1)
-  - Secondary text / Muted borders (`#575A5E` on `#F4F7F5`): **6.43:1** (Exceeds WCAG AA 4.5:1)
+  - Secondary text (`#575A5E` on `#F4F7F5`): **6.43:1** (Exceeds WCAG AA 4.5:1)
+  - Non-text border / Divider (`#575A5E` on `#F4F7F5`): **6.43:1** (Exceeds WCAG Non-text 3.0:1)
   - Dark container / Badge (`#222823` on `#F4F7F5`): **13.95:1** (Exceeds WCAG AAA 7.0:1)
-  - Disabled control text (`#08090A` on `#A7A2A9`): **7.96:1** (Exceeds WCAG AAA 7.0:1)
+  - Focus Ring (`--ring` / `#08090A` on `#F4F7F5`): **18.48:1** (Maximum focus visibility)
 - **Dark Mode (`canvas-dark` / `#08090A` & `surface-dark` / `#222823`)**:
   - High-contrast text (`#F4F7F5` on `#08090A`): **18.48:1** (Exceeds WCAG AAA 7.0:1)
   - Secondary label text (`#A7A2A9` on `#08090A`): **7.96:1** (Exceeds WCAG AAA 7.0:1)
   - High-contrast text on card surface (`#F4F7F5` on `#222823`): **13.95:1** (Exceeds WCAG AAA 7.0:1)
   - Secondary label text on card surface (`#A7A2A9` on `#222823`): **6.01:1** (Exceeds WCAG AA 4.5:1)
+  - Non-text border / Divider (`#A7A2A9` on `#222823`): **6.01:1** (Exceeds WCAG Non-text 3.0:1)
+  - Focus Ring (`--ring` / `#F4F7F5` on `#222823`): **13.95:1** (Maximum focus visibility)
+- **Dark Mode Badge Contrast Assurance (3:1 Non-Text Boundary)**:
+  - On dark surfaces (`#222823`), raw `#575A5E` achieves only **2.17:1** contrast (fails 3:1 threshold). Therefore, dark badges unify on `#A7A2A9` for outlines, text, and spinners, achieving **6.01:1** (exceeding 3:1).
+  - Dark badge fills (`status-done`, `status-blocked` using `#222823`) are explicitly framed with a 1px `#A7A2A9` border (**6.01:1**) and `#F4F7F5` text (**13.95:1**), guaranteeing unambiguous visual separation.
+  - The `timeout` status outline uses `#A7A2A9` (**6.01:1**) instead of dark fills to resolve 1:1 invisible outlines.
 
 ```yaml
 colors:
@@ -67,7 +101,7 @@ colors:
   surface: "#F4F7F5"
   surface-dark: "#222823"
   secondary: "#575A5E"
-  muted: "#A7A2A9"
+  muted: "#E2E6E3"
   canvas: "#F4F7F5"
   canvas-dark: "#08090A"
   border: "#575A5E"
@@ -80,17 +114,37 @@ colors:
 ```
 
 > [!NOTE]
-> **Token Usage, Linter Referencing & Semantic CSS Mapping**:
-> - `canvas-dark` serves as the root viewport background in dark mode, on which `panel-card-dark` and `timeline-bubble-agent` are layered.
-> - `border` and `border-subtle` define structural separators, container dividing lines, and input outlines described in [Elevation & Depth](#elevation--depth).
-> - `status-*` tokens (`status-idle`, `status-done`, `status-working`, `status-blocked`, `status-unknown`) define the semantic border/fill accents for agent status badge indicators in [Panel Overview Card](#1-panel-overview-card-panel-card) and are applied in conjunction with icons and explicit text labels. In dark containers, `status-done` pairs with contrasting text/icons rather than dark-on-dark fills.
-> - **shadcn Semantic CSS Mapping**: Standard shadcn/ui color tokens (`--secondary`, `--muted`) conflict in semantic intent with this design system's `#575A5E` / `#A7A2A9`. To resolve naming collisions, shadcn CSS variables are mapped explicitly in `globals.css`:
->   - `--background`: mapped to `var(--canvas)` (`#F4F7F5` light / `#08090A` dark)
->   - `--foreground`: mapped to `var(--primary)` (`#08090A` light / `#F4F7F5` dark)
->   - `--card`: mapped to `var(--surface)` (`#F4F7F5` light / `#222823` dark)
->   - `--muted`: mapped to `#F4F7F5` (light fill) / `#222823` (dark fill)
->   - `--muted-foreground`: mapped to `var(--secondary)` (`#575A5E` light) / `var(--muted)` (`#A7A2A9` dark)
->   - `--border`: mapped to `var(--border-subtle)` (`#A7A2A9` light / `#575A5E` dark)
+> **shadcn/ui Semantic CSS Mapping & Relation to `web/theme.css`**:
+> While `web/theme.css` defines a flat token palette (`--primary: #08090A; --secondary: #A7A2A9; --surface: #F4F7F5; --muted: #575A5E; --accent: #222823;`), the complete shadcn/ui component system requires bidirectional semantic mapping across light and dark modes with dedicated `.dark` overrides:
+>
+> ```css
+> :root {
+>   --background: var(--color-canvas); /* #F4F7F5 */
+>   --foreground: var(--color-primary); /* #08090A */
+>   --card: var(--color-surface); /* #F4F7F5 */
+>   --card-foreground: var(--color-primary); /* #08090A */
+>   --secondary: var(--color-secondary); /* #575A5E */
+>   --secondary-foreground: var(--color-canvas); /* #F4F7F5 */
+>   --muted: #E2E6E3; /* surface-subtle (defined in CSS / tokens) */
+>   --muted-foreground: var(--color-secondary); /* #575A5E */
+>   --border: var(--color-border); /* #575A5E (6.43:1 on light) */
+>   --ring: var(--foreground); /* #08090A */
+> }
+>
+> .dark {
+>   --background: var(--color-canvas-dark); /* #08090A */
+>   --foreground: var(--color-canvas); /* #F4F7F5 */
+>   --card: var(--color-surface-dark); /* #222823 */
+>   --card-foreground: var(--color-canvas); /* #F4F7F5 */
+>   --secondary: var(--color-surface-dark); /* #222823 */
+>   --secondary-foreground: var(--color-canvas); /* #F4F7F5 */
+>   --muted: var(--color-surface-dark); /* #222823 */
+>   --muted-foreground: var(--color-border-subtle); /* #A7A2A9, 6.01:1 on #222823 */
+>   --border: var(--color-border-subtle); /* #A7A2A9 (6.01:1 on #222823, exceeds 3:1) */
+>   --ring: var(--foreground); /* #F4F7F5 */
+> }
+> ```
+> This ensures that `--border` (`border-border`) maintains at least **6.01:1** non-text contrast in dark mode, and `--ring` universally tracks `--foreground` (`ring-ring`).
 
 ## Typography
 
@@ -177,14 +231,29 @@ screens: {
 ```
 
 **Navigation & Page Structure**:
-- **Mobile (`< md` / `< 768px`)**: Top application bar with a hamburger toggle opening an off-canvas drawer.
-- **Desktop (`>= md` / `>= 768px`)**: Fixed vertical left navigation menu (240px width) displaying the designated workspace identity and primary view tabs.
+- **Mobile (`< md` / `< 768px`) — Tabs & Carousel Driven UX**:
+  - **No Excessive Vertical Scrolling**: Stacking multiple panel cards vertically down the page is strictly prohibited. The viewport must maintain compact ergonomics for one-handed operational control.
+  - **View Switching Tabs (`shadcn Tabs`)**: Uses shadcn `Tabs` (`TabsList`, `TabsTrigger`, `TabsContent`) to cleanly switch between primary views: **Panels (패널)** ↔ **Chat (채팅)** ↔ **History (히스토리, 0.3.2)**.
+  - **Horizontal Panel Carousel (`shadcn Carousel` backed by Embla)**:
+    - **Active Card ↔ Composer Target Binding**: Swiping or snapping to an active pane card in the carousel (`api.selectedScrollSnap()`) immediately updates the Zustand UI state (`composer.targetPaneId`).
+    - **Chat Transition Persistence**: When the user switches to the Chat tab, the active target pane selected in Panels remains intact, ensuring seamless context transition.
+    - **Card Sizing & Peek Pattern**: Cards use `basis-[82%]` (or `85%`) width, allowing a 15–18% peek of the adjacent card to intuitively hint horizontal swipeability without horizontal scrollbars.
+    - **Pane Cardinality States**:
+      - `0 Panes`: Displays an accessible Empty State callout ("활성 에이전트 패널이 없습니다").
+      - `1 Pane`: Hides Carousel previous/next navigation buttons and locks the single card centered.
+      - `Multiple Panes`: Activates full touch swipe and keyboard navigation.
+    - **URL Query & Browser Back Navigation**: Synced bi-directionally with browser URL parameters (`?tab=panels&pane=w1T:p2`). Triggering browser back/forward accurately restores the previous tab and pane selection.
+    - **Deleted Pane Fallback**: If a selected pane is closed/removed from the live snapshot, selection automatically falls back to the first available valid pane, or transitions to the empty state if none remain.
+  - **Off-Canvas Drawer**: Secondary controls, connection details, and theme toggles are tucked inside a sliding sheet/drawer accessed from the top header hamburger icon.
+- **Desktop (`>= md` / `>= 768px`) — Structured Split Layout**:
+  - Fixed vertical left navigation menu (240px width) displaying the designated workspace identity and primary view tabs.
+  - Side-by-side split layout providing immediate overview of all agent panes alongside the live chat timeline and message dispatch composer.
 - **Route Titles**: Dynamic page titles are maintained on navigation (e.g., `Panels — Biseo`, `Chat — Biseo`, `Search Logs — Biseo`).
 - **Feature Modules**:
-  - `workspace-dashboard`: Full panel grid/list of the designated Herdr workspace.
-  - `chat-timeline`: Unified chat stream with agent identity badges and completed outputs.
-  - `composer`: Input box with disabled status handling and explicit blocked rationale.
-  - `history-search`: Scrollable historical turn logs backed by Cloudflare D1 query filters.
+  - `workspace-dashboard`: Horizontal carousel/card presentation of the designated Herdr workspace.
+  - `chat-timeline`: Unified chat stream with agent identity badges, completed turn cards, and failure indicators.
+  - `composer`: Input box with deterministic disabledReason gating and explicit reason callouts.
+  - `history-search`: (Scheduled for 0.3.2) Historical turn logs backed by Cloudflare D1 query filters.
 
 ```yaml
 spacing:
@@ -203,9 +272,11 @@ spacing:
 
 Visual depth is achieved through contrast differentiation and clean structural borders rather than blur shadows:
 
-- **Surface Contrast**: In dark mode, cards sit on `#222823` with a 1px `#575A5E` border over the `#08090A` canvas.
-- **Light Contrast**: In light mode, surface cards sit on `#F4F7F5` with subtle `#A7A2A9` division lines over the `#F4F7F5` foundation canvas.
-- **Focus Rings**: Active interactive inputs use a 2px outline using the foreground contrast token.
+- **Surface Contrast & Non-Text Borders (WCAG 3:1)**:
+  - In light mode, surface cards sit on `#F4F7F5` with a 1px `#575A5E` border (`colors.border`, **6.43:1** contrast) ensuring crisp non-text demarcation.
+  - In dark mode, cards sit on `#222823` with a 1px `#A7A2A9` border (`colors.border-subtle`, **6.01:1** contrast) over the `#08090A` canvas.
+- **Focus Rings (`--ring`)**:
+  - Interactive inputs and carousel controls use a 2px outline mapped directly to `foreground` (`#08090A` in light / `#F4F7F5` in dark), delivering **18.48:1** maximum focus ring visibility.
 
 ## Shapes
 
@@ -231,51 +302,156 @@ rounded:
 
 ## Components
 
-### 1. Panel Overview Card (`panel-card`)
-Displays each pane within the designated Herdr workspace:
-- Displays pane identifier, assigned agent name (e.g., `sol`, `opus`, `gf`), and current Herdr state (`idle`, `done`, `working`, `blocked`, `unknown`).
-- State is rendered with an accompanying semantic text label and icon badge.
+### 1. View Navigation Tabs & Application Bar (`app-tabs`, `app-header`)
+Provides top-level situational awareness and view switching:
+- **Navigation Tabs (`shadcn Tabs`)**: Reuses standard shadcn `Tabs` (`TabsList`, `TabsTrigger`, `TabsContent`) for instant switching between **Panels** ↔ **Chat** ↔ **History (0.3.2)** views on mobile. Prevents multiple view sections from simultaneously consuming vertical space.
+- **Keyboard Navigation**: Adheres to WAI-ARIA `tablist` standards, allowing Left/Right arrow key cycling, Home/End jumping, and clear focus indicator rings.
+- **Stream Status Indicator**: Replaces raw unstyled text with a clean 8px indicator dot paired with concise status copy (`label-sm`).
+- **Workspace Identity**: Prominently displays the current workspace identifier with subtle badge styling.
+- **Header Actions**: Refresh and navigation drawer toggles adhere to secondary button styling (`rounded.md`, 8px padding, smooth hover transition) instead of unstyled dark rectangular blocks.
 
-### 2. Unified Chat Timeline (`timeline-bubble`)
-Single stream representing the interaction sequence:
-- Agent badge indicates sender or dispatch target (e.g., `[sol]`, `[opus]`).
-- **Completed Responses Only**: Intermediate tool execution noise is omitted; only verified final agent responses are committed to the stream.
-- **Inline Activity Spinner**: When an agent state is `working`, a loading spinner and status caption indicate active background progress.
+### 2. Panel Horizontal Carousel & Overview Card (`panel-carousel`, `panel-card`)
+Renders agent pane status while eliminating excessive vertical scrolling and visual clutter:
+- **Card Hierarchy**: The primary card title is strictly bound to `name` (`item.name`). `agentName` (e.g., `opus`, `sol`) serves as an optional secondary sub-caption, while `agentKind` (e.g., `claude`, `codex`, `agy`) renders in an isolated secondary pill tag.
+- **Horizontal Carousel (`shadcn Carousel` backed by Embla)**: Reuses shadcn `Carousel` (`CarouselContent`, `CarouselItem`, `CarouselPrevious`, `CarouselNext`). In mobile viewports (`< md`), panel cards are arranged exclusively in a horizontal swipeable track governed by Embla Carousel APIs. **Stacking panel cards vertically down the page is strictly prohibited**.
+- **Touch Gesture & Keyboard Support**: Supports natural touch swipe gestures with momentum scrolling, drag threshold resistance, and Left/Right arrow key navigation for keyboard accessibility.
+- **Filtered Scope (Security Policy #27)**: Non-agent terminal panes and raw shell commands are strictly excluded; panes without agent runtimes are never rendered as cards.
+- **State Badge & Icons**: Herdr engine states are presented with dedicated status badges pairing explicit labels and semantic icons (pause, check, spinner, triangle, question). Status is never communicated via color alone.
+- **Clean Card Interior**: Lengthy reason disclaimers (e.g., capture unsupported messages) are excluded from the card surface to avoid visual noise; instead, unavailable actions are cleanly indicated via disabled badge icons, while detailed rationale is deferred to the composer dispatch view.
 
-### 3. Dispatch Composer (`composer-input`)
-- Textarea with submission trigger.
-- **Blocked / Busy Guard**: When the target agent is `working`, `blocked`, or `unknown`, user input is disabled.
-- **Explicit Rationale Display**: When disabled, a clear callout (e.g., `"Agent 'opus' is currently working. Input disabled."` or `"Agent status is unknown. Fail-closed dispatch prevented."`) is displayed directly adjacent to the input.
+### 3. Unified Chat Timeline & Turn Status Matrix (`timeline-bubble`)
+Single chronological stream representing interactions across all designated workspace agents:
+- **Exclusion of Tool Noise Only**: Intermediate agent scratchpad operations, command-line arguments, and raw terminal stream noise are omitted.
+- **Markdown Sanitization**: Agent completed markdown responses must pass through strict sanitization (or fallback to plain text) to prevent XSS and malformed layout injection.
+- **Comprehensive Turn State Representation**: All turn completions, failures, timeouts, and uncaptured dispatches are committed to the timeline with explicit semantic badges and status callouts. No terminal turns are silently swallowed.
+- **Retry Policy (Indeterminate Delivery Guard)**: Per `docs/contracts-0.3.0.md` and `src/app/prompt-error.ts`, a retry action is permitted **only for pre-send failures** (client-side validation errors or network failures prior to server dispatch). Once sent, outcomes with uncertain execution (`delivery_uncertain`, `agent_prompt_stalled`, `timeout`) **strictly forbid automatic or one-click prompt re-dispatch** to prevent unintended duplicate side-effects.
+- **TurnStatus 7-State Matrix**:
 
-### 4. D1 Log & History Viewer (`history-viewer`)
-- Scrollable list for browsing previous agent turns stored in Cloudflare D1.
-- Keyword search filter input querying log text and agent identifiers.
+| TurnStatus Token | Visual Badge Treatment | Icon Pairing | Content Display & User Guidance | Retry Availability |
+| :--- | :--- | :--- | :--- | :--- |
+| `queued` | Slate Gray outline (Light) / Silver outline (Dark, **6.01:1**) | Clock icon | Prompt text displayed with pending indicator; waiting for agent dispatch | N/A (In flight) |
+| `working` | Off White / Slate fill (Light) / Silver spinner (Dark, **6.01:1**) | Animated CSS spinner | Agent is processing turn; live working indicator displayed | N/A (In flight) |
+| `completed` | Deep Slate fill / high contrast + Silver outline (Dark) | Checkmark icon | Agent response text rendered with sanitized markdown | N/A (Completed) |
+| `capture_unavailable` | Silver Gray fill / outline | Info circle icon | Prompt recorded; displays "이 에이전트의 완료 응답 수집은 아직 지원하지 않습니다." | Disallowed |
+| `blocked` | Deep Slate fill + Silver outline (Dark, **6.01:1**) | Alert triangle icon | Prompt recorded; displays dependency/user intervention block | Disallowed |
+| `failed` | Slate Gray fill + Silver outline (Dark, **6.01:1**) | X circle icon | Displays error message & `errorCode` suffix; Retry allowed **only if pre-send failure** (`delivery_uncertain` & `agent_prompt_stalled` forbid retry) | Pre-send only |
+| `timeout` | Deep Slate outline (Light) / Silver outline (Dark, **6.01:1**) | Timer alert icon | Prompt recorded; displays execution timeout (`errorCode: turn_timeout`) without retry | Disallowed |
+
+### 4. Dispatch Composer (`composer-input`)
+- Textarea with submission trigger, bound to the active target pane selected in the carousel or panels list.
+- **Deterministic Gating**: When `sendable` is `false`, user input and dispatch triggers are strictly disabled.
+- **Explicit Rationale Display**: The active `disabledReason` is displayed directly adjacent to or above the textarea in a shadcn `Alert` (`AlertTitle`, `AlertDescription`), preventing user ambiguity.
+- **Offline Guard**: If SSE stream connectivity is lost, composer immediately locks with `connection_unavailable`.
+
+### 5. D1 Log & History Viewer (Scheduled for Milestone 0.3.2)
+- Reserved tab view slot and layout specification for D1-backed turn logs.
+- Milestone 0.3.1 implements the UI container, empty state, and keyword search input shell. Full persistence D1 query binding and scroll pagination are integrated in milestone 0.3.2 (#24).
+
+### 6. Status Badges (`badge-status-*`)
+Compact indicators adhering to the 5-tone palette:
+- `badge-status-idle`: Slate Gray outline with pause icon and "Idle" label (Silver Gray in dark mode).
+- `badge-status-done`: High-contrast checkmark and "Done" label (Deep Slate fill with 1px `#A7A2A9` border and `#F4F7F5` text in dark mode).
+- `badge-status-working`: Animated spinner with "Working" label (Silver Gray in dark mode).
+- `badge-status-blocked`: Deep Slate fill with alert triangle icon and "Blocked" label (1px `#A7A2A9` border and `#F4F7F5` text in dark mode).
+- `badge-status-unknown`: Silver Gray / Slate Gray border with question icon and "Unknown" label.
+
+### 7. SSE Event Streaming & State Hydration Protocol (Zero-Polling)
+Real-time reactivity strictly follows the server SSE contract, banning periodic client-side polling:
+- **`pane.updated` Event**: Delivers full snapshot payload `{ workspaceId, panes: PaneSummary[] }`. TanStack Query cache is updated atomically. Disposed or killed panes are eliminated immediately from carousel and panel views.
+- **`turn.updated` Event**: Delivers single turn state updates (`TimelineItem`). TanStack Query upserts the item into the timeline stream without duplicating optimistic turns or regressing status ranks.
+- **Connection Lifecycle & Reconnect Recovery**:
+  - `onerror`: Disables the composer immediately with `connection_unavailable`. The browser EventSource naturally attempts reconnection; during this time, client code never executes fallback polling loops.
+  - `onopen`: Executed solely upon genuine connection establishment / re-connection. Triggers a single explicit client REST request `GET /api/workspaces/:wsId/panes` and pending turns recovery (Worker handles `/herdr/...` upstream proxying internally).
+- **Scroll Positioning & Message Insertion UX**:
+  - **Stick to Bottom**: When user is scrolled to the latest message (within 64px bottom threshold), incoming turn updates and SSE completion turns automatically trigger smooth auto-scrolling to the bottom (`behavior: 'auto'` if `prefers-reduced-motion` is active; `behavior: 'smooth'` otherwise).
+  - **Scroll Lock on Reading**: If the user has scrolled up to inspect previous responses, incoming messages do not force-scroll the viewport; a floating pill ("새 메시지 도착 ↓") appears at the bottom.
+  - **Optimistic Turn Dispatch**: Prompt submissions immediately append an optimistic turn (`queued` status with inline spinner) prior to POST resolution, eliminating latency perception.
+
+### 8. Existing Components to shadcn/ui Mapping & Tailwind v4 @theme
+
+#### Tailwind v4 `@theme` Architecture
+Styling strictly adheres to Tailwind v4 CSS-first token declarations, unifying `--color-muted` to `#E2E6E3` to eliminate semantic collision and mapping semantic tokens via `@theme inline`:
+```css
+@theme {
+  --color-primary: #08090A;
+  --color-surface: #F4F7F5;
+  --color-surface-dark: #222823;
+  --color-secondary: #575A5E;
+  --color-muted: #E2E6E3; /* surface-subtle */
+  --color-canvas: #F4F7F5;
+  --color-canvas-dark: #08090A;
+  --color-border: #575A5E;
+  --color-border-subtle: #A7A2A9;
+  --font-headline-display: "Pretendard";
+  --font-body-md: "Pretendard";
+  --font-code-mono: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace";
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+}
+```
+
+#### Component Migration Matrix
+Existing prototype components in `web/ui/` map directly onto standard shadcn/ui primitives:
+
+| Existing Component | File Path | Target shadcn/ui Primitive | Implementation Specification |
+| :--- | :--- | :--- | :--- |
+| `PaneItem` | `web/ui/PaneItem.tsx` | `Card`, `Badge` | `CardHeader` houses primary title (`name`) & runtime badge (`agentKind`). Status rendered via `Badge` with icon. |
+| `PanesView` | `web/ui/PanesView.tsx` | `Carousel` (Mobile) / Grid (Desktop) | Reuses `CarouselContent`, `CarouselItem`, `CarouselPrevious`, `CarouselNext`. Binds active snap to target pane. |
+| `TimelineItemView` | `web/ui/TimelineItemView.tsx` | `Card`, `Badge`, `Alert` | Turn prompt and sanitized markdown response. Failures display shadcn `Alert` with `errorCode` (retry on pre-send only). |
+| `MessageComposer` | `web/ui/MessageComposer.tsx` | `Textarea`, `Button`, `Alert` | Controlled textarea with disabled state and explicit `disabledReason` in a shadcn `Alert`. Keyboard Enter-to-send support. |
+| `WorkspaceSection` | `web/ui/WorkspaceSection.tsx` | `Tabs`, `Sheet` | `TabsList` / `TabsTrigger` for mobile view switching; `Sheet` for off-canvas drawer settings. |
 
 ```yaml
 components:
   panel-card:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.primary}"
+    borderColor: "{colors.border}"
     rounded: "{rounded.lg}"
     padding: "{spacing.md}"
   panel-card-dark:
     backgroundColor: "{colors.surface-dark}"
     textColor: "{colors.canvas}"
+    borderColor: "{colors.border-subtle}"
     rounded: "{rounded.lg}"
     padding: "{spacing.md}"
   timeline-bubble:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.primary}"
+    borderColor: "{colors.border}"
     rounded: "{rounded.md}"
     padding: "{spacing.sm}"
   timeline-bubble-agent:
     backgroundColor: "{colors.surface-dark}"
     textColor: "{colors.canvas}"
+    borderColor: "{colors.border-subtle}"
     rounded: "{rounded.md}"
     padding: "{spacing.sm}"
   composer-input:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.primary}"
+    borderColor: "{colors.border}"
+    rounded: "{rounded.md}"
+    height: "48px"
+    padding: "{spacing.sm}"
+  composer-input-dark:
+    backgroundColor: "{colors.surface-dark}"
+    textColor: "{colors.canvas}"
+    borderColor: "{colors.border-subtle}"
     rounded: "{rounded.md}"
     height: "48px"
     padding: "{spacing.sm}"
@@ -285,16 +461,89 @@ components:
     rounded: "{rounded.md}"
     height: "48px"
     padding: "{spacing.sm}"
+  composer-button-disabled-dark:
+    backgroundColor: "{colors.surface-dark}"
+    textColor: "{colors.border-subtle}"
+    borderColor: "{colors.border-subtle}"
+    rounded: "{rounded.md}"
+    height: "48px"
+    padding: "{spacing.sm}"
+  badge-status-idle:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.status-idle}"
+    borderColor: "{colors.status-idle}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.xs}"
+  badge-status-idle-dark:
+    backgroundColor: "{colors.surface-dark}"
+    textColor: "{colors.border-subtle}"
+    borderColor: "{colors.border-subtle}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.xs}"
+  badge-status-done:
+    backgroundColor: "{colors.status-done}"
+    textColor: "{colors.canvas}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.xs}"
+  badge-status-done-dark:
+    backgroundColor: "{colors.surface-dark}"
+    textColor: "{colors.canvas}"
+    borderColor: "{colors.border-subtle}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.xs}"
+  badge-status-working:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.status-working}"
+    borderColor: "{colors.border}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.xs}"
+  badge-status-working-dark:
+    backgroundColor: "{colors.surface-dark}"
+    textColor: "{colors.border-subtle}"
+    borderColor: "{colors.border-subtle}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.xs}"
+  badge-status-blocked:
+    backgroundColor: "{colors.status-blocked}"
+    textColor: "{colors.canvas}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.xs}"
+  badge-status-blocked-dark:
+    backgroundColor: "{colors.surface-dark}"
+    textColor: "{colors.canvas}"
+    borderColor: "{colors.border-subtle}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.xs}"
+  badge-status-unknown:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.primary}"
+    borderColor: "{colors.status-unknown}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.xs}"
+  badge-status-unknown-dark:
+    backgroundColor: "{colors.surface-dark}"
+    textColor: "{colors.border-subtle}"
+    borderColor: "{colors.border-subtle}"
+    rounded: "{rounded.sm}"
+    padding: "{spacing.xs}"
+  layout-canvas-dark:
+    backgroundColor: "{colors.canvas-dark}"
+    textColor: "{colors.canvas}"
+  divider-border:
+    backgroundColor: "{colors.border}"
+  divider-border-subtle:
+    backgroundColor: "{colors.border-subtle}"
 ```
 
 ## Motion & Transitions
 
 ### Motion Architecture
-- **Standard CSS Transitions**: Default to lightweight CSS transitions (`transform`, `opacity` over `150ms-200ms ease-in-out`) for mobile drawer toggles, hover states, and input focus.
+- **Standard CSS Transitions**: Default to lightweight CSS transitions (`transform`, `opacity` over `150ms-200ms ease-in-out`) for mobile drawer toggles, tab switching cross-fades, hover states, and input focus.
+- **Carousel & Swipe Transitions**: Carousel slide translation operates via CSS transforms constrained within `200ms ease-out` with touch momentum dampening.
 - **CSS Spinners**: Indeterminate progress spinners operate via CSS `@keyframes spin { to { transform: rotate(360deg); } }` at `800ms linear infinite`.
 - **Motion Library Suggestion**: If complex gesture coordination or shared layout choreography is required across timeline updates, Framer Motion / Motion can be optionally integrated, keeping animations under 200ms.
 
-### Reduced Motion Accessibility
+### Reduced Motion & Gesture Accessibility
 All animations honor user accessibility preferences via `@media (prefers-reduced-motion: reduce)`:
 ```css
 @media (prefers-reduced-motion: reduce) {
@@ -308,20 +557,45 @@ All animations honor user accessibility preferences via `@media (prefers-reduced
   }
 }
 ```
-When reduced motion is active, spinners switch to a static progress icon and drawers transition instantaneously without sliding animation.
+- **Reduced Motion Fallback**: When reduced motion is active, spinners switch to a static progress icon, drawers transition instantaneously without sliding animation, carousel slides jump directly to the target snap point (`transition: none`), and tab views swap instantly.
+- **Keyboard & Touch Accessibility**:
+  - Carousel items and tabs support full keyboard focus with high-contrast outline rings (`focus-visible: ring-2 ring-ring`).
+  - Tabs cycle via Left/Right arrows; Carousel items scroll via Left/Right arrows or standard swipe gestures.
 
 ## Do's and Don'ts
 
 ### Do's
-- **Do** disable the input composer and display an explicit reason when an agent is `working`, `blocked`, or `unknown`.
-- **Do** treat `unknown` Herdr states with fail-closed behavior (disallow input submission).
-- **Do** accompany status indicators with textual labels and icons alongside color shifts.
+- **Do** gate message dispatch strictly via `sendable` and `disabledReason` (7 deterministic reasons) rather than visual engine status alone.
+- **Do** render all turn lifecycle states (including failed, timeout, and capture-unavailable turns) on the timeline with clear semantic badges and error callouts.
+- **Do** allow retry actions **strictly for pre-send failures**; forbid re-dispatch on indeterminate failures (`delivery_uncertain`, `agent_prompt_stalled`, `timeout`).
+- **Do** sanitize all agent markdown responses prior to timeline rendering to prevent XSS.
+- **Do** use `ring-ring` (`= foreground`) for all interactive element focus rings to ensure WCAG non-text contrast compliance.
+- **Do** maintain a minimum 3:1 non-text contrast ratio for all container borders, dividers, and dark badge boundaries across both light and dark themes.
+- **Do** hydrate client state atomically from full SSE `pane.updated` snapshots and single `turn.updated` events without polling.
+- **Do** recover state upon reconnection via the web REST endpoint `GET /api/workspaces/:wsId/panes`.
+- **Do** use `shadcn Tabs` on mobile (`< md`) to switch cleanly between Panels, Chat, and History views to prevent excessive vertical scrolling.
+- **Do** arrange panel cards horizontally in an Embla-backed `shadcn Carousel` on mobile viewports rather than stacking them vertically.
+- **Do** reuse standard shadcn/ui primitives (`Tabs`, `Carousel`, `Card`, `Badge`, `Alert`) and avoid custom reinventions.
+- **Do** ensure swipe gestures and keyboard arrow navigation work seamlessly across carousel and tab controls.
+- **Do** disable the input composer immediately on SSE disconnection with `connection_unavailable`.
+- **Do** visually separate agent identifiers from runtime tools (e.g., `opus` and `claude`) using typography and pill styling.
+- **Do** move lengthy dispatch-disabled error descriptions out of the panel card list into dedicated composer callouts.
 - **Do** use system monospace fonts for code and identifier elements.
 - **Do** maintain fixed navigation on desktop (`>= md`) and a drawer on mobile (`< md`).
-- **Do** provide `prefers-reduced-motion` fallbacks for all CSS animations.
+- **Do** provide `prefers-reduced-motion` fallbacks for all CSS animations, carousel slides, and tab transitions (setting `behavior: 'auto'` on auto-scroll).
+- **Do** keep D1 persistence search and log pagination isolated to milestone 0.3.2 (#24).
 
 ### Don'ts
+- **Don't** re-dispatch prompts on `delivery_uncertain`, `agent_prompt_stalled`, or `timeout`; require manual user evaluation.
+- **Don't** execute periodic polling loops for pane lists or turn statuses; rely exclusively on SSE snapshots and onopen recovery.
+- **Don't** swallow failed, timed out, or uncaptured turns silently from the timeline; omit intermediate scratchpad noise only.
+- **Don't** place dark-on-dark badges or borders without 3:1 contrasting boundaries or high-contrast text.
+- **Don't** list panel cards vertically down the page on mobile viewports; avoid inflating screen height with stacked cards.
+- **Don't** re-implement custom slider, carousel, or tab components from scratch when shadcn provides them.
+- **Don't** force animated sliding transitions or smooth scrolling when `prefers-reduced-motion` is enabled.
 - **Don't** add arbitrary saturated colors for status indicators; derive tints and shades from the core neutral palette.
-- **Don't** clutter the unified timeline with intermediate agent scratch tokens; display only final completed responses.
+- **Don't** concatenate agent names with runtime tags directly without spacing or visual distinction.
+- **Don't** clutter panel cards with long multiline error banners in the list overview.
+- **Don't** render non-agent terminal panes or raw command-line executions in the workspace panel list.
 - **Don't** claim universal contrast pass across all possible arbitrary element combinations; verify and validate explicit token-pair contrasts.
 - **Don't** introduce multi-workspace pickers or auxiliary management views outside the designated Herdr workspace scope.
