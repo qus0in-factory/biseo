@@ -1,5 +1,6 @@
 import app from '../index.js'
-import { createTestFixture, mockPassRateLimiter } from './helpers.js'
+import { createTestFixture } from './helpers.js'
+import { createMockKv } from './kv-helpers.js'
 
 export async function loginAndGetCookie(env: any, password: string) {
   const req = new Request('http://localhost/api/login', {
@@ -16,7 +17,7 @@ export async function createAuthedEnv() {
   const env = {
     AUTH_PASSWORD_VERIFIER: stored,
     USER_SESSION_PASETO_SECRET: secretKeyStr,
-    LOGIN_RATE_LIMITER: mockPassRateLimiter,
+    LOGIN_ATTEMPTS: createMockKv(),
   }
   const cookie = await loginAndGetCookie(env, password)
   return { env, cookie, password, stored, secretKeyStr }
