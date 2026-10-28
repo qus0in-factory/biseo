@@ -1,0 +1,5 @@
+body { font-family: system-ui, sans-serif; padding: 2rem; background: #fafafa; }
+.card { max-width: 400px; padding: 1.5rem; background: #fff; border: 1px solid #ddd; border-radius: 8px; }
+.btn { margin-top: 1rem; padding: 0.5rem 1rem; cursor: pointer; }
+.ok { color: #0e8a16; }
+.err { color: #d73a49; }

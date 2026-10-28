@@ -4,7 +4,7 @@ module.exports = {
   apps: [
     {
       name: process.env.PROCESS_NAME ?? config.processName,
-      script: 'src/index.js',
+      script: 'dist/server/index.js',
       cwd: __dirname,
     },
   ],

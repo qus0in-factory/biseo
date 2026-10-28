@@ -1,0 +1,8 @@
+{
+  "title": "Biseo Health Monitor",
+  "refresh": "Refresh",
+  "loading": "Checking...",
+  "statusPrefix": "Status: ",
+  "errorPrefix": "Error: ",
+  "unknown": "Network Error"
+}
