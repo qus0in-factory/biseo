@@ -5,3 +5,11 @@
   --status-blocked: var(--color-danger);
   --status-unknown: var(--status-idle);
 }
+
+.dark {
+  --status-idle: var(--color-border-subtle);
+  --status-working: var(--color-secondary);
+  --status-done: var(--color-success);
+  --status-blocked: var(--color-danger);
+  --status-unknown: var(--color-surface-dark);
+}
