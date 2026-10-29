@@ -4,6 +4,7 @@ import { interruptPane } from './interrupt-pane.js'
 import { makeDeps } from './turn-fixture.test.js'
 import { pane, reader } from './turn-fixture-data.test.js'
 import type { AuditLog } from './interrupt-audit.js'
+import type { PaneStatus } from '../domain/timeline.js'
 
 const allow = { default: ['esc'], opencode: ['esc'], claude: ['esc', 'ctrl+c'] }
 const limited = {
@@ -15,13 +16,14 @@ const limited = {
   window: 'primary' as const,
 }
 
-function setup(overrides: { agent?: string; workspace?: string; send?: () => Promise<void> } = {}) {
+function setup(overrides: { agent?: string; workspace?: string; status?: PaneStatus; send?: () => Promise<void> } = {}) {
   const d = makeDeps(reader)
   const logs: Record<string, unknown>[] = []
   const audit: AuditLog = { info: (o) => logs.push(o), msg: () => {} } as AuditLog
   d.herdr.getPane = async () => ({
     ...pane,
     agent: overrides.agent ?? 'claude',
+    agent_status: overrides.status ?? 'blocked',
     workspace_id: overrides.workspace ?? 'w',
   })
   d.herdr.sendKeys = overrides.send ?? (async () => {})
@@ -29,7 +31,7 @@ function setup(overrides: { agent?: string; workspace?: string; send?: () => Pro
   return { deps, logs }
 }
 
-test('default Esc interrupt is sent once and audited', async () => {
+test('default Esc interrupt is sent once to a blocked pane and audited', async () => {
   let sent: [string, string] | null = null
   const { deps, logs } = setup({ send: async (id, key) => { sent = [id, key] } })
   const r = await interruptPane(deps, 'w:p1', 'esc')
@@ -37,6 +39,18 @@ test('default Esc interrupt is sent once and audited', async () => {
   assert.deepEqual(r.body, { paneId: 'w:p1', key: 'esc', status: 'sent' })
   assert.deepEqual(sent, ['w:p1', 'esc'])
   assert.deepEqual(logs, [{ paneId: 'w:p1', key: 'esc', result: 'sent' }])
+})
+
+test('only blocked panes are interrupted; working, idle, done, unknown are rejected', async () => {
+  for (const status of ['working', 'idle', 'done', 'unknown'] as const) {
+    let sends = 0
+    const { deps, logs } = setup({ status, send: async () => { sends += 1 } })
+    const r = await interruptPane(deps, 'w:p1', 'esc')
+    assert.equal(r.status, 409, status)
+    assert.deepEqual(r.body, { error: 'target_not_ready', reason: 'pane_not_blocked' }, status)
+    assert.equal(sends, 0, status)
+    assert.equal(logs[0]?.result, 'not_blocked', status)
+  }
 })
 
 test('opencode Ctrl+C is rejected and never sent', async () => {
@@ -49,22 +63,24 @@ test('opencode Ctrl+C is rejected and never sent', async () => {
   assert.equal(logs[0]?.result, 'denied')
 })
 
-test('usage-limited panes return 409 before interrupt', async () => {
-  let sent = false
-  const { deps, logs } = setup({ send: async () => { sent = true } })
-  deps.availability = { get: async () => limited }
-  const r = await interruptPane(deps, 'w:p1', 'esc')
-  assert.equal(r.status, 409)
-  assert.deepEqual(r.body, {
-    error: 'target_not_ready',
-    reason: 'usage_limited',
-    resetsAt: limited.resetsAt,
-  })
-  assert.equal(sent, false)
-  assert.equal(logs[0]?.result, 'limited')
+test('confirmed usage limits block blocked and non-blocked panes before the status guard', async () => {
+  for (const status of ['blocked', 'idle'] as const) {
+    let sends = 0
+    const { deps, logs } = setup({ status, send: async () => { sends += 1 } })
+    deps.availability = { get: async () => limited }
+    const r = await interruptPane(deps, 'w:p1', 'esc')
+    assert.equal(r.status, 409, status)
+    assert.deepEqual(r.body, {
+      error: 'target_not_ready',
+      reason: 'usage_limited',
+      resetsAt: limited.resetsAt,
+    }, status)
+    assert.equal(sends, 0, status)
+    assert.equal(logs[0]?.result, 'limited', status)
+  }
 })
 
-test('expired usage limits release the interrupt instead of blocking forever', async () => {
+test('expired usage limits allow a blocked pane to be interrupted', async () => {
   let sent = false
   const { deps, logs } = setup({ send: async () => { sent = true } })
   deps.availability = {
