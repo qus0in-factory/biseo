@@ -12,7 +12,7 @@ export function postTurn(d:Deps){
   const w=workspaceIssue(d.allowedWorkspaceId,input.workspaceId)
   if(w)return c.json({error:w},w==='workspace_not_allowed'?403:503)
   const r=await createTurn(d,input)
-  if(!r.ok)return c.json(r.reason?{error:r.error,reason:r.reason}:{error:r.error},r.status)
+  if(!r.ok)return c.json({error:r.error,...r.reason?{reason:r.reason}:{},...r.resetsAt?{resetsAt:r.resetsAt}:{}},r.status)
   if(r.created&&r.reader&&r.target)void runTurn(d,r.item,r.reader,r.target)
   return c.json({requestId:r.item.requestId,status:r.item.status,createdAt:r.item.createdAt},r.created?202:200)
  }
