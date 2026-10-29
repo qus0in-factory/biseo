@@ -1,31 +1,19 @@
-import type { TimelineItem, TurnStatus } from './timeline'
+import type { TimelineItem } from './timeline'
+import { canTransition } from './canTransition'
+export { canTransition }
 
-export function canTransition(
-  from: TurnStatus,
-  to: TurnStatus,
-  fromErr?: string | null,
-): boolean {
-  if (from === to) return true
-  if (from === 'queued') return to !== 'queued'
-  if (from === 'working') return to !== 'queued' && to !== 'cancelled'
-  if (from === 'timeout') return to === 'completed'
-  if (from === 'failed' && fromErr === 'delivery_uncertain') {
-    return to === 'working' || to === 'completed'
+export function mergeTurn(prev: TimelineItem[], next: TimelineItem): TimelineItem[] {
+  const i = prev.findIndex((x) => x.requestId === next.requestId)
+  if (i === -1) return [...prev, next]
+  const cur = prev[i]
+  if (!canTransition(cur.status, next.status, cur.errorCode)) return prev
+  const res = [...prev]
+  res[i] = {
+    ...cur,
+    ...next,
+    responseText: next.responseText ?? cur.responseText,
+    completedAt: next.completedAt ?? cur.completedAt,
+    errorCode: next.errorCode ?? cur.errorCode,
   }
-  return false
-}
-
-export function mergeTurn(
-  prev: TimelineItem[],
-  next: TimelineItem,
-): TimelineItem[] {
-  const idx = prev.findIndex((t) => t.requestId === next.requestId)
-  if (idx === -1) return [...prev, next]
-  const current = prev[idx]
-  if (!canTransition(current.status, next.status, current.errorCode)) {
-    return prev
-  }
-  const updated = [...prev]
-  updated[idx] = next
-  return updated
+  return res
 }
