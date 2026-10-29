@@ -9,12 +9,11 @@ export function ChatPage() {
   usePageTitle('채팅 — Biseo')
   const params = useParams()
   const { paneId } = parseRouteParams(params)
-  const { setActiveTab, setSelectedPaneId } = useUiStore()
+  const setSelectedPaneId = useUiStore((s) => s.setSelectedPaneId)
 
   useEffect(() => {
-    setActiveTab('chat')
     if (paneId) setSelectedPaneId(paneId)
-  }, [paneId, setActiveTab, setSelectedPaneId])
+  }, [paneId, setSelectedPaneId])
 
   return <WorkspaceSection on={true} />
 }

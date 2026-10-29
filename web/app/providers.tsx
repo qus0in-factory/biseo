@@ -14,7 +14,7 @@ export const queryClient = new QueryClient({
   },
 })
 
-// Routes: panels / chat (+ per-route titles).
+// Single workspace route (+ per-route titles).
 export const router = createBrowserRouter([
   {
     path: '/',

@@ -1,13 +1,13 @@
 import type { DashboardProps } from './dashboardTypes'
 import { PanesView } from './PanesView'
-import { UsagePanel } from './UsagePanel'
+import { UsageSection } from './UsageSection'
 
-type P = Pick<DashboardProps, 'panes' | 'selectedId' | 'onSelect' | 'online'> & { agentKind?: string | null }
+type P = Pick<DashboardProps, 'panes' | 'selectedId' | 'onSelect' | 'online'>
 
-export function PaneDrawerContent({ panes, selectedId, onSelect, online, agentKind }: P) {
+export function PaneDrawerContent({ panes, selectedId, onSelect, online }: P) {
   return (
     <>
-      <UsagePanel enabled={online} agentKind={agentKind} />
+      <UsageSection enabled={online} />
       <PanesView panes={panes} selectedId={selectedId} onSelect={onSelect} />
     </>
   )

@@ -9,14 +9,13 @@ type P = Pick<DashboardProps, 'panes' | 'selectedId' | 'onSelect' | 'online'>
 
 export function DesktopPaneDrawer({ panes, selectedId, onSelect, online }: P) {
   const { open, toggle } = usePaneDrawer()
-  const target = panes.find((p) => p.paneId === selectedId)
   return (
     <aside className={paneDrawerClass(open)}>
       <div className={`flex items-center gap-2 ${open ? 'justify-between' : 'justify-center'}`}>
         {open&&<h2 className="text-base font-semibold">{r.panesTitle}</h2>}
         <PaneDrawerToggle open={open} onToggle={toggle} />
       </div>
-      {open&&<PaneDrawerContent panes={panes} selectedId={selectedId} onSelect={onSelect} online={online} agentKind={target?.agentKind} />}
+      {open&&<PaneDrawerContent panes={panes} selectedId={selectedId} onSelect={onSelect} online={online} />}
     </aside>
   )
 }
