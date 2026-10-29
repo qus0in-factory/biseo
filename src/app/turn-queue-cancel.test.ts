@@ -2,8 +2,8 @@ import test from'node:test'
 import assert from'node:assert/strict'
 import {createTurn}from'./create-turn.js'
 import {cancelTurn}from'./turn-queue-cancel.js'
-import {input,reader,agent}from'./turn-fixture-data.test.js'
-import {makeDeps}from'./turn-fixture.test.js'
+import {input,reader,agent}from'./turn-data-fixture.js'
+import {makeDeps}from'./turn-fixture.js'
 test('cancel is limited to queued turns',async()=>{
  const d=makeDeps(reader),work={...agent,agent_status:'working'}
  d.herdr.listAgents=async()=>[work]

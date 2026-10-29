@@ -1,21 +1,24 @@
+import { forwardRef } from 'react'
 import type { PaneSummary } from '../domain/timeline'
-import { PaneMeta } from './PaneMeta'
-import { PaneStatusBadge } from './PaneStatusBadge'
+import { PanePinButton } from './PanePinButton'
+import { PaneSelectButton } from './PaneSelectButton'
 
-type P = { item: PaneSummary; active: boolean; onClick: () => void }
+type P = {
+  item: PaneSummary
+  active: boolean
+  pinned?: boolean
+  onTogglePin?: () => void
+  onClick: () => void
+}
 
-export function PaneItem({ item, active, onClick }: P) {
+export const PaneItem = forwardRef<HTMLLIElement, P>(function PaneItem(
+  { item, active, pinned = false, onTogglePin, onClick },
+  ref,
+) {
   return (
-    <li>
-      <button type="button" className={`pane-item ${active ? 'selected' : ''}`} onClick={onClick}>
-        <span className="pane-item-row pane-item-primary">
-          <strong className="pane-name">{item.name}</strong>
-          <PaneStatusBadge status={item.status} />
-        </span>
-        <span className="pane-item-row pane-item-secondary">
-          <PaneMeta item={item} />
-        </span>
-      </button>
+    <li ref={ref} className="flex items-center gap-2">
+      <PanePinButton pinned={pinned} onTogglePin={onTogglePin} />
+      <PaneSelectButton item={item} active={active} onClick={onClick} />
     </li>
   )
-}
+})

@@ -10,6 +10,13 @@
   "turnTimeoutMs": 1800000,
   "lateCaptureMs": 7200000,
   "promptAcceptanceMs": 8000,
+  "firstSessionMs": 15000,
   "targetGraceMs": 1000,
+  "limitMarkers": ["usage limit", "rate limit reached", "5h limit", "limit reached", "quota exceeded"],
+  "interruptAllowlist": {
+    "default": ["esc"],
+    "opencode": ["esc"]
+  },
+  "availabilityTtlMs": 900000,
   "logLevel": "info"
 }

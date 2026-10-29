@@ -1,30 +1,13 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { createApp } from './app.js'
-import { makeDeps } from '../app/turn-fixture.test.js'
-import { input, reader } from '../app/turn-fixture-data.test.js'
-
-const resetsAt = new Date(Date.now() + 60000).toISOString()
+import { makeDeps } from '../app/turn-fixture.js'
+import { input, reader } from '../app/turn-data-fixture.js'
+import { appWith, limitedAvailability, resetsAt } from './post-turn-availability-fixture.js'
 
 test('POST returns the provider limit reason and reset time', async () => {
   const d = makeDeps(reader)
-  d.availability = {
-    get: async () => ({
-      state: 'limited',
-      source: 'codex',
-      checkedAt: new Date().toISOString(),
-      resetsAt,
-      reason: 'rate_limit_reached',
-      window: 'primary',
-    }),
-  }
-  const app = createApp({
-    ...d,
-    verify: async () => {},
-    healthStatus: 'ok',
-    timeoutMs: 1000,
-    graceMs: 0,
-  })
+  d.availability = limitedAvailability
+  const app = appWith(d)
   const r = await app.request('/herdr/turns', {
     method: 'POST',
     headers: {

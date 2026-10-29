@@ -1,38 +1,17 @@
 import type { DashboardProps } from './dashboardTypes'
-import { PanesView } from './PanesView'
-import { TimelineSection } from './TimelineSection'
-import { ConnectionStatusBadge } from './ConnectionStatusBadge'
-import r from '../resources.json'
+import { DashboardHeader } from './DashboardHeader'
+import { MobileDrawer } from './MobileDrawer'
+import { MobileDashboardBody } from './MobileDashboardBody'
+import { DesktopDashboardBody } from './DesktopDashboardBody'
 
-export function DashboardView({
-  panes,
-  selectedId,
-  onSelect,
-  timeline,
-  sending,
-  onSend,
-  onCancel,
-  online = true,
-  headerActions,
-}: DashboardProps) {
-  const target = panes.find((p) => p.paneId === selectedId)
+export function DashboardView(props: DashboardProps) {
+  const { online = true, headerActions } = props
   return (
-    <div className="dashboard-layout">
-      <div className="dashboard-header">
-        <ConnectionStatusBadge online={online} />
-        {headerActions}
-      </div>
-      <aside className="panes-panel">
-        <h2>{r.panesTitle}</h2>
-        <PanesView panes={panes} selectedId={selectedId} onSelect={onSelect} />
-      </aside>
-      <TimelineSection
-        target={target}
-        timeline={timeline}
-        sending={sending}
-        onSend={onSend}
-        onCancel={onCancel}
-      />
+    <div className="flex flex-col gap-4 w-full">
+      <DashboardHeader online={online} actions={headerActions} />
+      <MobileDrawer online={online} />
+      <MobileDashboardBody {...props} />
+      <DesktopDashboardBody {...props} />
     </div>
   )
 }

@@ -18,12 +18,12 @@ export function PaneAvailability({ availability }: { availability?: Availability
   const Icon = limited ? AlertTriangle : HelpCircle
   return (
     <span
-      className={`pane-availability availability-${note.state}`}
+      className="inline-flex shrink-0 items-center text-muted-foreground"
       title={label}
       aria-label={label}
       role="img"
     >
-      <Icon size={13} aria-hidden="true" />
+      <Icon size={13} aria-hidden="true" className="block shrink-0" />
     </span>
   )
 }

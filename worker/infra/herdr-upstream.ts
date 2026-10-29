@@ -11,6 +11,7 @@ export function createHerdrUpstream(e:E,src?:Parameters<typeof r>[0]):P{
   submitTurn:i=>j(e,'/herdr/turns','POST',i,id),
   getTurn:t=>j<T>(e,`/herdr/turns/${encodeURIComponent(t)}`,'GET',undefined,id),
   cancelTurn:t=>j(e,`/herdr/turns/${encodeURIComponent(t)}`,'DELETE',undefined,id),
+  interruptPane:(p,k)=>j(e,`/herdr/panes/${encodeURIComponent(p)}/interrupt`,'POST',{key:k},id),
   openEventStream:(w,l,g)=>s(e,w,l,g,id),
  }
 }

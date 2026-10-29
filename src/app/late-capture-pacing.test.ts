@@ -1,8 +1,8 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import {captureTurn}from'./capture-turn.js'
-import {item}from'./run-fixture-data.test.js'
-import {setup}from'./run-fixture.test.js'
+import {item}from'./run-data-fixture.js'
+import {setup}from'./run-fixture.js'
 test('immediate null late reader is paced and bounded',async t=>{
  t.mock.timers.enable({apis:['setTimeout','Date']})
  try{
@@ -14,6 +14,7 @@ test('immediate null late reader is paced and bounded',async t=>{
   await t.mock.timers.tick(1000)
   await new Promise(r=>setImmediate(r))
   assert.equal(n,2)
-  assert.equal(s.store.get('r1')?.status,'timeout')
+  assert.equal(s.store.get('r1')?.status,'failed')
+  assert.equal(s.store.get('r1')?.errorCode,'late_capture_expired')
  }finally{t.mock.timers.reset()}
 })

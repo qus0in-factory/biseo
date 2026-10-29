@@ -7,7 +7,7 @@ export function panesRoute(d:TurnDeps){
   const ws=c.req.param('wsId')??''
   const w=workspaceIssue(d.allowedWorkspaceId,ws)
   if(w)return c.json({error:w},w==='workspace_not_allowed'?403:503)
-  try{return c.json(await paneSnapshot(d.herdr,d.locks,ws,d.availability))}
+  try{return c.json(await paneSnapshot(d.herdr,d.locks,ws,d.availability,d.limit))}
   catch{return c.json({error:'herdr_unavailable'},502)}
  }
 }

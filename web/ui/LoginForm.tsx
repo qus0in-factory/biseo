@@ -1,30 +1,22 @@
 import { useState } from 'react'
+import { Button } from '../components/ui/button'
+import { PasswordField } from './PasswordField'
 import r from '../resources.json'
 type Props = { busy: boolean; onLogin: (pw: string) => void }
 export function LoginForm({ busy, onLogin }: Props) {
   const [pw, setPw] = useState('')
   return (
     <form
-      className="login-form"
+      className="mx-auto flex w-full max-w-[360px] flex-col gap-3"
       onSubmit={(e) => {
         e.preventDefault()
         onLogin(pw)
       }}
     >
-      <label className="login-field">
-        {r.passwordLabel}
-        <input
-          className="login-input"
-          type="password"
-          autoComplete="current-password"
-          value={pw}
-          onChange={(e) => setPw(e.target.value)}
-          disabled={busy}
-        />
-      </label>
-      <button className="btn" type="submit" disabled={busy}>
+      <PasswordField value={pw} onChange={setPw} disabled={busy} />
+      <Button className="w-full" type="submit" disabled={busy}>
         {r.login}
-      </button>
+      </Button>
     </form>
   )
 }

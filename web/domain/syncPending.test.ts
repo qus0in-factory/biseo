@@ -5,14 +5,16 @@ import { makeMockApi } from './syncPending.fixture.js'
 import { dummyItems } from './syncPending.data.js'
 import type { TimelineItem } from './timeline.js'
 
-test('syncPending calls getTurn only for queued/working items', async () => {
+test('syncPending calls getTurn for queued, working, and timeout items', async () => {
   const fetched: string[] = []
   const api = makeMockApi(fetched)
   const updated: TimelineItem[] = []
-  await syncPending(api, dummyItems, (i) => updated.push(i))
+  const items: TimelineItem[] = [
+    ...dummyItems,
+    { requestId: 'r4', workspaceId: 'w1', paneId: 'p1', targetName: 'T1', promptText: 'q4', status: 'timeout', createdAt: '2026-10-28T00:00:00Z' },
+  ]
+  await syncPending(api, items, (i) => updated.push(i))
 
-  assert.deepEqual(fetched, ['r1', 'r3'])
-  assert.equal(updated.length, 2)
-  assert.equal(updated[0].status, 'completed')
-  assert.equal(updated[1].status, 'completed')
+  assert.deepEqual(fetched, ['r1', 'r3', 'r4'])
+  assert.equal(updated.length, 3)
 })

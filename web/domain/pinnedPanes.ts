@@ -1,0 +1,6 @@
+import { MAX_PINNED_PANES } from './pinnedPaneLimits.js'
+export { MAX_PINNED_PANES } from './pinnedPaneLimits.js'
+export { parsePinnedPanes, serializePinnedPanes } from './pinnedPanes.parse.js'
+export { prunePinnedPanes } from './pinnedPanes.prune.js'
+export { togglePinnedPane } from './pinnedPanes.toggle.js'
+export { partitionPanes } from './pinnedPanes.partition.js'

@@ -1,25 +1,12 @@
 import type { PaneSummary } from '../domain/timeline'
-import { PaneItem } from './PaneItem'
+import { usePanesView } from './usePanesView'
+import { PanesViewLayout } from './PanesViewLayout'
 import r from '../resources.json'
 
-type Props = {
-  panes: PaneSummary[]
-  selectedId: string | null
-  onSelect: (paneId: string) => void
-}
+type P = { panes: PaneSummary[]; selectedId: string | null; onSelect: (id: string) => void; storageKey?: string }
 
-export function PanesView({ panes, selectedId, onSelect }: Props) {
-  if (panes.length === 0) return <p className="spinner">{r.emptyPanes}</p>
-  return (
-    <ul className="pane-list">
-      {panes.map((p) => (
-        <PaneItem
-          key={p.paneId}
-          item={p}
-          active={p.paneId === selectedId}
-          onClick={() => onSelect(p.paneId)}
-        />
-      ))}
-    </ul>
-  )
+export function PanesView(p: P) {
+  const v = usePanesView(p)
+  if (!v) return <p className="text-sm text-muted-foreground">{r.emptyPanes}</p>
+  return <PanesViewLayout a={v.pinnedPanes} b={v.rest} s={p.selectedId} p={v.pinned} t={v.toggle} c={p.onSelect} r={v.register} />
 }

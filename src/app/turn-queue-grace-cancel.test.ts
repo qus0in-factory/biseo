@@ -3,8 +3,8 @@ import assert from'node:assert/strict'
 import {createTurn}from'./create-turn.js'
 import {cancelTurn}from'./turn-queue-cancel.js'
 import {dispatchPane}from'./turn-queue-dispatch.js'
-import {input,reader,agent,pane}from'./turn-fixture-data.test.js'
-import {makeDeps}from'./turn-fixture.test.js'
+import {input,reader,agent,pane}from'./turn-data-fixture.js'
+import {makeDeps}from'./turn-fixture.js'
 test('cancel during target grace does not start the removed turn',async()=>{
  const d=makeDeps(reader),w={...agent,agent_status:'working'}
  const set=(s:typeof agent)=>{d.herdr.listAgents=async()=>[s];d.herdr.getAgent=async()=>s}

@@ -1,8 +1,8 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import {runTurn}from'./run-turn.js'
-import {item,target}from'./run-fixture-data.test.js'
-import {setup}from'./run-fixture.test.js'
+import {item,target}from'./run-data-fixture.js'
+import {setup}from'./run-fixture.js'
 test('session change blocks before prompt',async()=>{
  const s=setup({pane:{...target.pane,terminal_id:'other'}})
  await runTurn(s.d,item,{read:async()=> 'x'},target)

@@ -1,9 +1,10 @@
 import{runQueue}from'./turn-queue-run.js'
 import{clearRetry}from'./availability-retry.js'
+import{clearSoon}from'./dispatch-retry.js'
 import type{TurnDeps}from'./turn-deps.js'
 export async function dispatchPane(d:TurnDeps,p:string){
  const q=d.queue
- if(!q.has(p)){clearRetry(p);return}
+ if(!q.has(p)){clearRetry(p);clearSoon(p);return}
  if(!q.begin(p))return
  try{await runQueue(d,p,()=>void dispatchPane(d,p))}
  finally{

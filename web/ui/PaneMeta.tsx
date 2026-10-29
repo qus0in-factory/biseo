@@ -1,4 +1,5 @@
 import type { PaneSummary } from '../domain/timeline'
+import { BlockedReasonBadge } from './BlockedReasonBadge'
 import { PaneAvailability } from './PaneAvailability'
 import { ReasonDetails } from './ReasonDetails'
 import r from '../resources.json'
@@ -10,8 +11,9 @@ export function PaneMeta({ item }: { item: PaneSummary }) {
   const reason = d ? `${res.reasonPrefix}${res[d] ?? d}` : null
   return (
     <>
-      <small className="pane-agent-kind">{item.agentKind ?? ''}</small>
+      <small className="overflow-hidden text-ellipsis whitespace-nowrap text-xs text-muted-foreground">{item.agentKind ?? ''}</small>
       <PaneAvailability availability={item.availability} />
+      <BlockedReasonBadge item={item} />
       {reason && <ReasonDetails text={reason} />}
     </>
   )

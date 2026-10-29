@@ -19,7 +19,7 @@ export function SendIcon() {
 
 export function ReasonIcon({ title }: { title: string }) {
   return (
-    <span className="composer-reason-icon" title={title} aria-label={title}>
+    <span className="inline-flex" title={title} aria-label={title}>
       <svg
         width="18"
         height="18"

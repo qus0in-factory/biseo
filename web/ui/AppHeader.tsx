@@ -1,4 +1,7 @@
 import { LogOut } from 'lucide-react'
+import { Button } from '../components/ui/button'
+import { HeaderBrand } from './HeaderBrand'
+import { HeaderMenuButton } from './HeaderMenuButton'
 import r from '../resources.json'
 
 export interface AppHeaderProps {
@@ -9,27 +12,23 @@ export interface AppHeaderProps {
 
 export function AppHeader({ authed, busy, onLogout }: AppHeaderProps) {
   return (
-    <header className="header">
-      <h1 className="header-title">
-        <img
-          src="/favicon.svg"
-          alt=""
-          aria-hidden="true"
-          className="header-favicon"
-        />
-        <span className="header-text">{r.title}</span>
-      </h1>
+    <header className="mb-4 flex min-w-0 flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
+      <div className="flex items-center gap-2 min-w-0">
+        {authed && <HeaderMenuButton />}
+        <HeaderBrand />
+      </div>
       {authed && onLogout && (
-        <button
+        <Button
           type="button"
-          className="icon-btn"
+          variant="ghost"
+          size="icon"
+          className="ml-auto shrink-0"
           onClick={onLogout}
           disabled={busy}
           aria-label={r.logout}
-          title={r.logout}
         >
           <LogOut size={20} aria-hidden="true" />
-        </button>
+        </Button>
       )}
     </header>
   )

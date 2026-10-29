@@ -1,7 +1,8 @@
 import type { TimelineItem } from '../domain/timeline'
 import { AgentHeader } from './AgentHeader'
+import { AgentResult } from './AgentResult'
 import { TurnErrorDetails } from './TurnErrorDetails'
-import r from '../resources.json'
+import { Card } from '../components/ui/card'
 
 export function AgentBubble({
   item,
@@ -12,18 +13,11 @@ export function AgentBubble({
 }) {
   const { status, responseText, errorCode, cancelError } = item
   return (
-    <div className="chat-bubble chat-bubble-agent">
+    <Card className="mr-auto max-w-[85%] self-start rounded-md rounded-bl-[2px] px-3 py-2 break-words">
       <AgentHeader item={item} onCancel={onCancel} />
-      {status === 'working' && <p className="spinner">{r.spinner}</p>}
-      {status === 'capture_unavailable' && (
-        <p className="err">{r.captureUnavailable}</p>
-      )}
-      {status === 'timeout' && (
-        <p className="late-collect">{r.collectingLate}</p>
-      )}
-      {responseText && <pre className="timeline-response">{responseText}</pre>}
+      <AgentResult status={status} responseText={responseText} />
       <TurnErrorDetails code={errorCode} />
-      {cancelError && <span className="err">({cancelError})</span>}
-    </div>
+      {cancelError && <span className="text-error">({cancelError})</span>}
+    </Card>
   )
 }

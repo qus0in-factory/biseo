@@ -1,7 +1,7 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import {Hono}from'hono'
-import {agent,pane}from'../app/turn-fixture-data.test.js'
+import {agent,pane}from'../app/turn-data-fixture.js'
 import {PaneLocks}from'../app/pane-locks.js'
 import {runSse}from'./events-sse.js'
 import {Wake}from'./wake.js'

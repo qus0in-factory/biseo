@@ -1,0 +1,20 @@
+import test from 'node:test'
+import assert from 'node:assert/strict'
+import { parseRateLimits } from './codex-rate-limit-parse.js'
+import { line } from './codex-rate-limit-parse-fixture.test.js'
+
+test('reads only whitelisted rate limit fields', () => {
+  const r = parseRateLimits(
+    line({
+      primary: { used_percent: 20, resets_at: 1793245000, secret: 'x' },
+      secondary: { used_percent: 90, resets_at: 1793246000000 },
+      rate_limit_reached_type: 'secondary',
+      plan_type: 'plus',
+    }),
+  )
+  assert.equal(r?.reached, 'secondary')
+  assert.equal(r?.primary, new Date(1793245000000).toISOString())
+  assert.equal(r?.secondary, new Date(1793246000000).toISOString())
+  assert.deepEqual(Object.keys(r!).sort(), ['primary', 'reached', 'secondary', 'snapshotAt'])
+  assert.doesNotMatch(JSON.stringify(r), /SECRET/)
+})

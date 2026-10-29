@@ -1,0 +1,5 @@
+import './markdownUrlAllow.test.js'
+import './markdownUrlBlock.test.js'
+import './markdownLang.test.js'
+import './markdownResponseSource.test.js'
+import './mermaidSource.test.js'

@@ -1,11 +1,14 @@
 import r from '../resources.json'
+import { Button } from '../components/ui/button'
 export function JumpToBottomButton({ onClick }: { onClick: () => void }) {
   return (
-    <button
+    <Button
       type="button"
-      className="btn btn-jump"
+      variant="outline"
+      size="pill"
       onClick={onClick}
       aria-label={r.jumpToNew}
+      className="absolute bottom-3 left-1/2 z-5 -translate-x-1/2 bg-primary text-primary-foreground shadow-lg"
     >
       <svg
         width="16"
@@ -21,6 +24,6 @@ export function JumpToBottomButton({ onClick }: { onClick: () => void }) {
         <path d="M12 5v14M19 12l-7 7-7-7" />
       </svg>
       <span>{r.jumpToNew}</span>
-    </button>
+    </Button>
   )
 }

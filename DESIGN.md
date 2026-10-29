@@ -16,7 +16,7 @@ Following milestone reprioritization, milestone **0.3.1 (#25)** focuses strictly
 
 - **Workspace Dashboard (0.3.1)**: Panel display of active panes in the designated workspace (name, agent, operational status) arranged via horizontal carousel/tabs on mobile to eliminate excessive vertical scrolling.
 - **Single Chat Timeline (0.3.1)**: Integrated conversation stream with clear target/sender badges, rendering only completed final responses, alongside progress spinners for active runs.
-- **Message Dispatch (0.3.1)**: Input composer allowing continuous editing in textarea with send button gating and deterministic reason displays when agents are busy, blocked, or disconnected (turn reservation planned for 0.3.1). Textarea strictly enforces CSS `resize: none` with fixed height and internal scrolling.
+- **Message Dispatch (0.3.1)**: Input composer allowing continuous editing in textarea with send button gating and deterministic reason displays when agents are busy, blocked, or disconnected (turn reservation planned for 0.3.1). Textarea strictly enforces CSS `resize: none` with a two-line min/max height and internal scrolling.
 - **History & Search (Deferred to 0.3.2 #24)**: D1-backed search and historical turn log retrieval. The 0.3.1 UI reserves the navigation tab slot and visual specifications, but backend query integration is bound in 0.3.2.
 
 ### Technology Stack & State Architecture
@@ -46,13 +46,13 @@ Visual status indicators represent engine health, while message dispatching is s
 | Herdr Engine State | UI Display Label | Light Badge Treatment | Dark Badge Treatment (>= 3:1 Contrast) | Visual Icon Pairing |
 | :--- | :--- | :--- | :--- | :--- |
 | `idle` | Idle (대기) | Slate Gray outline (`#575A5E`) | Silver Gray outline (`#A7A2A9`, **6.01:1**) | Pause / Clock icon |
-| `done` | Done (완료) | Deep Slate fill (`#222823`) | Deep Slate fill + Silver Gray border (`#A7A2A9`, **6.01:1**) + Off White text (`#F4F7F5`, **13.95:1**) | Checkmark icon |
-| `working` | Working (실행 중) | Off White / Slate Gray fill | Silver Gray text & spinner (`#A7A2A9`, **6.01:1**) | Animated CSS spinner |
-| `blocked` | Blocked (차단됨) | Deep Slate fill (`#222823`) | Deep Slate fill + Silver Gray border (`#A7A2A9`, **6.01:1**) + Off White text (`#F4F7F5`, **13.95:1**) | Alert triangle icon |
+| `done` | Done (완료) | Success green fill (`#15803D`) + Off White text (`#F4F7F5`, **4.65:1**) | Deep Slate fill + Silver Gray border (`#A7A2A9`, **6.01:1**) + Off White text (`#F4F7F5`, **13.95:1**) | Checkmark icon |
+| `working` | Working (실행 중) | Slate Gray fill (`#575A5E`) + Off White text (`#F4F7F5`, **6.43:1**) | Silver Gray text & spinner (`#A7A2A9`, **6.01:1**) | Animated CSS spinner |
+| `blocked` | Blocked (차단됨) | Danger red fill (`#B91C1C`) + Off White text (`#F4F7F5`, **6.00:1**) | Deep Slate fill + Silver Gray border (`#A7A2A9`, **6.01:1**) + Off White text (`#F4F7F5`, **13.95:1**) | Alert triangle icon |
 | `unknown` | Unknown (알 수 없음) | Slate Gray dashed border (`#575A5E`) | Silver Gray dashed border (`#A7A2A9`, **6.01:1**) | Help question icon |
 
 #### 2. Dispatch Gating & DisabledReason Mapping (7 Reasons)
-Message dispatch gating is deterministically governed by `sendable` and `disabledReason` (derived from `src/domain/pane-reason.ts` and `web/domain/paneState.ts`). In 0.3.0, the input/textarea remains continuously editable while only the send button is disabled when `sendable` is `false` or an agent is busy. Dispatch reservation UI is scheduled for milestone 0.3.1. The textarea strictly enforces `resize: none` with a fixed height and internal scrolling. Deterministic rationale messages display in a companion callout/alert:
+Message dispatch gating is deterministically governed by `sendable` and `disabledReason` (derived from `src/domain/pane-reason.ts` and `web/domain/paneState.ts`). In 0.3.0, the input/textarea remains continuously editable while only the send button is disabled when `sendable` is `false` or an agent is busy. Dispatch reservation UI is scheduled for milestone 0.3.1. The textarea keeps `resize: none` with a two-line min/max height and internal scrolling. Deterministic rationale messages display in a companion callout/alert:
 
 | DisabledReason Token | User-Facing Korean Rationale | Trigger Condition |
 | :--- | :--- | :--- |
@@ -107,10 +107,10 @@ colors:
   border: "#575A5E"
   border-subtle: "#A7A2A9"
   status-idle: "#575A5E"
-  status-done: "#222823"
+  status-done: "#15803D"
   status-working: "#575A5E"
-  status-blocked: "#222823"
-  status-unknown: "#A7A2A9"
+  status-blocked: "#B91C1C"
+  status-unknown: "#575A5E"
 ```
 
 > [!NOTE]
@@ -346,12 +346,12 @@ Single chronological stream representing interactions across all designated work
 | `cancelled` | Slate Gray outline (Light) / Silver outline (Dark, **6.01:1**) | `Ban` icon | Prompt cancelled while queued prior to dispatch; displays '취소됨' badge; terminal state | Disallowed |
 
 ### 4. Dispatch Composer (`composer-input`) & Unified Capsule Container
-- **Unified Chat Capsule (`composer-box`)**: Textarea and circular send button are housed within a unified container with standard DESIGN radius (`border-radius: var(--r-lg); border: 1px solid var(--secondary); background: #fff; padding: 0.5rem;`). Symmetrical inner padding eliminates awkward baseline offsets.
+- **Unified Chat Capsule (`composer-box`)**: Textarea and circular send button are housed within a unified container with standard DESIGN radius (`border-radius: var(--r-lg); border: 1px solid var(--border); background: var(--card); padding: 0.5rem;`). Symmetrical inner padding eliminates awkward baseline offsets.
 - **Default 2-Line Input & Internal Scrolling**: The textarea defaults to 2 lines (`rows={2}; min-height: 2.8rem; max-height: 6rem; resize: none; overflow-y: auto; font-size: 16px; line-height: 1.4; padding: 0.375rem 0.5rem;`), keeping placeholder text and user input vertically balanced and preventing unwanted iOS zoom.
 - **Target Placeholder**: Target pane identity is cleanly integrated into the input placeholder (e.g., `'ds-g에게 메시지'`, or fallback `'대상 패널을 선택하세요'`) to eliminate redundant vertical header banners.
 - **Single-Line Flex & Bottom Alignment**: Textarea (`flex: 1; min-width: 0`) and bottom-aligned action controls (`.composer-actions { align-items: flex-end; align-self: flex-end; }`) are aligned on a single row without wrapping (`flex-wrap: nowrap`), even on narrow 320px mobile viewports.
-- **Circular Send Button (`btn-send-round`) & Reason Icon**: The 44px circular send button (`min-width: 44px; min-height: 44px; border-radius: 9999px;`) and small reason icon (`composer-reason-icon`) align cleanly to the bottom baseline.
-- **Sticky Bottom & Safe Area**: Composer is anchored to the bottom of the viewport (`position: sticky; bottom: 0; z-index: 10`) with `padding-bottom: max(0.5rem, env(safe-area-inset-bottom))`, avoiding occlusion when the virtual mobile keyboard activates.
+- **Circular Send Button (`btn-send-round`) & Reason Icon**: The 44px circular send button (`min-width: 44px; min-height: 44px; border-radius: 9999px;`) and the reason affordance (`ReasonTip`, 44px hit target with a compact visual icon) align cleanly to the bottom baseline. The pane reason icon is informational, not an error: it uses `text-muted-foreground` and shifts to `text-foreground` on hover; red (`text-error`) is reserved for failed or capture-unavailable content.
+- **Sticky Bottom & Safe Area**: The composer is a non-shrinking footer of the timeline flex column; the timeline and its empty state flex to fill the section so the composer sits at the section bottom. On mobile, where the page scrolls, `position: sticky; bottom: 0; z-index: 10` keeps it at the viewport bottom, with `padding-bottom: max(0.5rem, env(safe-area-inset-bottom))`, avoiding occlusion when the virtual mobile keyboard activates.
 - **Keyboard Interaction Matrix**:
   - **Desktop**: Pressing `Enter` dispatches the message when sendable; `Shift+Enter` inserts a newline. While an IME composition is active (`e.nativeEvent.isComposing`), `Enter` dispatch is strictly ignored to prevent half-composed Korean input transmission.
   - **Mobile (`pointer: coarse` or `< 768px`)**: `Enter` inserts a newline without triggering dispatch, allowing mobile soft-keyboard multiline typing.
@@ -366,9 +366,9 @@ Single chronological stream representing interactions across all designated work
 ### 6. Status Badges & Lucide Icon Pairing (`badge-status-*`)
 Compact indicators pairing explicit labels, `aria-label`, and `lucide-react` icons (color is never used alone):
 - `badge-status-idle`: Slate Gray outline with `Clock` icon and "Idle" label (Silver Gray in dark mode).
-- `badge-status-done`: High-contrast `CheckCircle2` icon and "Done" label (Deep Slate fill with 1px `#A7A2A9` border and `#F4F7F5` text in dark mode).
-- `badge-status-working`: Animated spinning `Loader2` icon with "Working" label (Silver Gray in dark mode; static icon under `prefers-reduced-motion`).
-- `badge-status-blocked`: Deep Slate fill with `AlertTriangle` icon and "Blocked" label (1px `#A7A2A9` border and `#F4F7F5` text in dark mode).
+- `badge-status-done`: Success green fill (`#15803D`) with `CheckCircle2` icon and "Done" label (`#F4F7F5` text, **4.65:1**); deep slate fill with 1px `#A7A2A9` border in dark mode.
+- `badge-status-working`: Slate Gray fill (`#575A5E`) with animated spinning `Loader2` icon and "Working" label (`#F4F7F5` text, **6.43:1**; static under `prefers-reduced-motion`); Silver Gray text in dark mode.
+- `badge-status-blocked`: Danger red fill (`#B91C1C`) with `AlertTriangle` icon and "Blocked" label (`#F4F7F5` text, **6.00:1**); deep slate fill with 1px `#A7A2A9` border in dark mode.
 - `badge-status-unknown`: Silver Gray / Slate Gray border with `HelpCircle` icon and "Unknown" label.
 - **Connection Status Badge**: `Wifi` icon ("연결됨", green `#15803d`) and `WifiOff` icon ("연결 끊김", red `#b91c1c`) displayed in dashboard header.
 
@@ -433,10 +433,10 @@ Existing prototype components in `web/ui/` map directly onto standard shadcn/ui 
 
 | Existing Component | File Path | Target shadcn/ui Primitive | Implementation Specification |
 | :--- | :--- | :--- | :--- |
-| `PaneItem` | `web/ui/PaneItem.tsx` | `Card`, `Badge` | 2-row card layout: Row 1 houses primary title (`name`) & status `Badge` (right). Row 2 houses runtime (`agentKind`) & muted reason icon. Standard 64px card height. |
+| `PaneItem` | `web/ui/PaneItem.tsx` | `Card`, `Badge` | 2-row card layout: Row 1 houses primary title (`name`) & status `Badge` (right). Row 2 houses runtime (`agentKind`) & muted reason icon. Standard 64px card height; the reason affordance keeps a 44px hit target, which may extend a few pixels beyond the compact card edge until #29 finalizes spacing. |
 | `PanesView` | `web/ui/PanesView.tsx` | `Carousel` (Mobile) / Grid (Desktop) | Reuses `CarouselContent`, `CarouselItem`, `CarouselPrevious`, `CarouselNext`. Binds active snap to target pane. |
 | `TimelineItemView` | `web/ui/TimelineItemView.tsx` | `Card`, `Badge`, `Alert` | Turn prompt and sanitized markdown response. Failures display shadcn `Alert` with `errorCode` (retry on pre-send only). |
-| `MessageComposer` | `web/ui/MessageComposer.tsx` | `Textarea`, `Button`, `Alert` | Continuously editable textarea (CSS `resize: none`, fixed height with internal scrolling) with send button gating and explicit `disabledReason` in a shadcn `Alert`. (Turn reservation UI planned for 0.3.1). |
+| `MessageComposer` | `web/ui/MessageComposer.tsx` | `Textarea`, `Button`, `Alert` | Continuously editable textarea (CSS `resize: none`, two-line min/max height with internal scrolling) with send button gating and explicit `disabledReason` in a shadcn `Alert`. (Turn reservation UI planned for 0.3.1). |
 | `WorkspaceSection` | `web/ui/WorkspaceSection.tsx` | `Tabs`, `Sheet` | `TabsList` / `TabsTrigger` for mobile view switching; `Sheet` for off-canvas drawer settings. |
 
 ```yaml
@@ -470,27 +470,29 @@ components:
     textColor: "{colors.primary}"
     borderColor: "{colors.border}"
     rounded: "{rounded.md}"
-    height: "48px"
+    minHeight: "44.8px"
+    maxHeight: "96px"
     padding: "{spacing.sm}"
   composer-input-dark:
     backgroundColor: "{colors.surface-dark}"
     textColor: "{colors.canvas}"
     borderColor: "{colors.border-subtle}"
     rounded: "{rounded.md}"
-    height: "48px"
+    minHeight: "44.8px"
+    maxHeight: "96px"
     padding: "{spacing.sm}"
   composer-button-disabled:
     backgroundColor: "{colors.muted}"
     textColor: "{colors.primary}"
     rounded: "{rounded.md}"
-    height: "48px"
+    height: "44px"
     padding: "{spacing.sm}"
   composer-button-disabled-dark:
     backgroundColor: "{colors.surface-dark}"
     textColor: "{colors.border-subtle}"
     borderColor: "{colors.border-subtle}"
     rounded: "{rounded.md}"
-    height: "48px"
+    height: "44px"
     padding: "{spacing.sm}"
   badge-status-idle:
     backgroundColor: "{colors.surface}"
@@ -593,6 +595,7 @@ All animations honor user accessibility preferences via `@media (prefers-reduced
 - **Do** render all turn lifecycle states (including failed, timeout, and capture-unavailable turns) on the timeline with clear semantic badges and error callouts.
 - **Do** allow retry actions **strictly for pre-send failures**; forbid re-dispatch on indeterminate failures (`delivery_uncertain`, `agent_prompt_stalled`, `timeout`).
 - **Do** sanitize all agent markdown responses prior to timeline rendering to prevent XSS.
+- **Do** pin (bookmark) panels with a star toggle (button, aria-pressed + aria-label, icon + label, 44px touch target); keep at most 2 pinned panels fixed above a scrollable list capped at 5 visible cards; prune stale pane ids from client storage.
 - **Do** use `ring-ring` (`= foreground`) for all interactive element focus rings to ensure WCAG non-text contrast compliance.
 - **Do** maintain a minimum 3:1 non-text contrast ratio for all container borders, dividers, and dark badge boundaries across both light and dark themes.
 - **Do** hydrate client state atomically from full SSE `pane.updated` snapshots and single `turn.updated` events without polling.

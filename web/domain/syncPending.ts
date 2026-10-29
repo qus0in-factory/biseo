@@ -6,7 +6,9 @@ export async function syncPending(
   items: TimelineItem[],
   onUpdate: (item: TimelineItem) => void,
 ) {
-  const pending = items.filter((i) => i.status === 'queued' || i.status === 'working')
+  const pending = items.filter(
+    (i) => i.status === 'queued' || i.status === 'working' || i.status === 'timeout',
+  )
   await Promise.all(
     pending.map(async (p) => {
       try {

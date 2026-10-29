@@ -49,6 +49,8 @@
   "reasonLabel": "사유",
   "uncertainDelivery": "전달 여부 불확실, 재전송 시 중복 가능",
   "collectingLate": "계속 수집 중(최대 2시간)",
+  "late_capture_expired": "응답 수집 기한이 만료되었습니다.",
+  "herdr_error": "에이전트 서비스 통신 오류가 발생했습니다.",
   "response_capture_unavailable": "이 에이전트의 완료 응답 수집은 아직 지원하지 않습니다.",
   "provider_rate_limited": "제공자 사용량 한도에 도달해 전송할 수 없습니다.",
   "availabilityLimited": "제공자 사용량 한도에 도달했습니다. 재개: {at}",
@@ -64,5 +66,15 @@
   "displayTimeZone": "Asia/Seoul",
   "displayTimeZoneLabel": "KST",
   "messageTo": "{name}에게 메시지",
-  "jumpToNew": "새 메시지"
+  "jumpToNew": "새 메시지",
+  "blocked_usage_limited": "사용량 한도 도달(차단 해제 불가). 재개: {at}",
+  "blocked_awaiting_input": "승인 또는 입력 대기 중",
+  "blocked_suspected_limit": "사용량 한도 도달 추정(확정 아님)",
+  "unblockEsc": "차단 해제 (Esc)",
+  "unblockConfirm": "에이전트에 Esc 키를 전송해 차단을 해제하시겠습니까?",
+  "unblockSuccess": "차단 해제(Esc) 신호를 전송했습니다.",
+  "unblockConflict": "사용량 한도에 도달했거나 해제할 수 없는 상태입니다.",
+  "unblockFailed": "차단 해제 요청에 실패했습니다.",
+  "unblockLimited": "사용량 한도 도달로 차단 해제 불가",
+  "unblockOffline": "백엔드 연결이 끊겨 차단 해제를 전송할 수 없습니다."
 }

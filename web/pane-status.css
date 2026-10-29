@@ -1,0 +1,25 @@
+.pane-badge.status-idle {
+  background: transparent;
+  color: var(--status-idle);
+  border: 1px solid var(--status-idle);
+}
+.pane-badge.status-working {
+  background: var(--status-working);
+  color: var(--surface);
+  border: 1px solid var(--status-working);
+}
+.pane-badge.status-done {
+  background: var(--status-done);
+  color: var(--surface);
+  border: 1px solid var(--status-done);
+}
+.pane-badge.status-blocked {
+  background: var(--status-blocked);
+  color: var(--surface);
+  border: 1px solid var(--status-blocked);
+}
+.pane-badge.status-unknown {
+  background: var(--surface);
+  color: var(--primary);
+  border: 1px dashed var(--status-unknown);
+}
