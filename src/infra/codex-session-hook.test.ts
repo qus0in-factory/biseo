@@ -1,14 +1,16 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import {spawnSync}from'node:child_process'
-import {existsSync,mkdirSync,mkdtempSync,readdirSync,readFileSync,rmSync,statSync,writeFileSync}from'node:fs'
+import {chmodSync,existsSync,mkdirSync,mkdtempSync,readdirSync,readFileSync,rmSync,statSync,writeFileSync}from'node:fs'
 import {tmpdir}from'node:os'
 import {join}from'node:path'
 import {fileURLToPath}from'node:url'
 const script=fileURLToPath(new URL('../../scripts/codex-session-hook.sh',import.meta.url))
 const run=(base:string,env:Record<string,string>,input:string)=>{
  const e={...process.env};delete e.HERDR_WORKSPACE_ID;delete e.HERDR_BIN_PATH
- return spawnSync('sh',[script],{input,encoding:'utf8',env:{...e,BISEO_STATE_DIR:base,...env}})
+ const bin=join(base,'__bin');mkdirSync(bin,{recursive:true})
+ writeFileSync(join(bin,'herdr'),`#!/bin/sh\ncase "$1 $2" in\n  "agent list") echo '{"result":{"agents":[]}}';;\n  "pane list") if [ -n "\${HERDR_PANE_ID:-}" ]; then printf '{"result":{"panes":[{"pane_id":"%s"}]}}' "$HERDR_PANE_ID"; else echo '{"result":{"panes":[]}}'; fi;;\n  *) echo '{}';;\nesac\n`,{mode:0o755})
+ return spawnSync('sh',[script],{input,encoding:'utf8',env:{...e,BISEO_STATE_DIR:base,HERDR_WORKSPACE_ID:'w',HERDR_BIN_PATH:join(bin,'herdr'),...env}})
 }
 const file=(base:string,pane:string)=>join(base,'codex',Buffer.from(pane).toString('hex')+'.json')
 test('writes a private atomic record for the pane',()=>{
@@ -83,5 +85,32 @@ test('keeps the env pane when herdr confirms it',()=>{
   const r=run(base,{HERDR_PANE_ID:'p',HERDR_WORKSPACE_ID:'w',HERDR_BIN_PATH:bin},JSON.stringify({session_id:'s1',transcript_path:'/home/test/.codex/sessions/a.jsonl'}))
   assert.equal(r.status,0)
   assert.equal(JSON.parse(readFileSync(file(base,'p'),'utf8')).pane_id,'p')
+ }finally{rmSync(base,{recursive:true,force:true})}
+})
+test('skips when pane verification fails',()=>{
+ const base=mkdtempSync(join(tmpdir(),'biseo-hook-'))
+ try{
+  const bin=fakeHerdr(base,`  "agent list") echo '{"result":{"agents":[]}}';;\n  "pane list") exit 1;;`)
+  const r=run(base,{HERDR_PANE_ID:'p',HERDR_WORKSPACE_ID:'w',HERDR_BIN_PATH:bin},JSON.stringify({session_id:'s1',transcript_path:'/home/test/.codex/sessions/a.jsonl'}))
+  assert.equal(r.status,0)
+  assert.equal(existsSync(join(base,'codex'))?readdirSync(join(base,'codex')).length:0,0)
+ }finally{rmSync(base,{recursive:true,force:true})}
+})
+test('skips when the workspace is missing',()=>{
+ const base=mkdtempSync(join(tmpdir(),'biseo-hook-'))
+ try{
+  const bin=fakeHerdr(base,`  "agent list") echo '{"result":{"agents":[]}}';;\n  "pane list") echo '{"result":{"panes":[{"pane_id":"p"}]}}';;`)
+  const r=run(base,{HERDR_PANE_ID:'p',HERDR_WORKSPACE_ID:'',HERDR_BIN_PATH:bin},JSON.stringify({session_id:'s1',transcript_path:'/home/test/.codex/sessions/a.jsonl'}))
+  assert.equal(r.status,0)
+  assert.equal(existsSync(join(base,'codex'))?readdirSync(join(base,'codex')).length:0,0)
+ }finally{rmSync(base,{recursive:true,force:true})}
+})
+test('repairs an existing state directory to 0700',()=>{
+ const base=mkdtempSync(join(tmpdir(),'biseo-hook-'))
+ try{
+  const dir=join(base,'codex');mkdirSync(dir,{recursive:true});chmodSync(dir,0o755)
+  const r=run(base,{HERDR_PANE_ID:'p'},JSON.stringify({session_id:'s1',transcript_path:'/home/test/.codex/sessions/a.jsonl'}))
+  assert.equal(r.status,0)
+  assert.equal(statSync(dir).mode&0o777,0o700)
  }finally{rmSync(base,{recursive:true,force:true})}
 })

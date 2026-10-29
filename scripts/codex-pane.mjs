@@ -8,8 +8,8 @@ export function resolvePane(id){
  const hits=a.ok?(a.v?.result?.agents??[]).filter(x=>x.agent_session?.value===id&&x.pane_id):[]
  if(hits.length===1)return hits[0].pane_id
  const ws=process.env.HERDR_WORKSPACE_ID
- if(!ws)return env
+ if(!ws||!env)return null
  const p=call(['pane','list','--workspace',ws])
- if(!p.ok)return env
+ if(!p.ok)return null
  return(p.v?.result?.panes??[]).some(x=>x.pane_id===env)?env:null
 }
