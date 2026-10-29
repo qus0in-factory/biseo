@@ -14,3 +14,18 @@
   cursor: not-allowed;
   opacity: 0.7;
 }
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--secondary);
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+.icon-btn:disabled { cursor: not-allowed; opacity: 0.6; }
+.icon-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.health-err { font-size: 0.75rem; }

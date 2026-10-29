@@ -4,6 +4,9 @@
   grid-column: 1 / -1;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin-bottom: 0.5rem;
 }
 .conn-status {

@@ -1,9 +1,10 @@
+import type { ReactNode } from 'react'
 import { useWorkspaceController } from '../app/useWorkspaceController'
 import { workspaceApi as api } from '../infra/workspaceApi'
 import { timelineStream as st } from '../infra/timelineStream'
 import { DashboardView } from './DashboardView'
 
-export function WorkspaceSection({ on }: { on: boolean }) {
+export function WorkspaceSection({ on, headerActions }: { on: boolean; headerActions?: ReactNode }) {
   const { panes, sel, setSel, items, sending, send, online } =
     useWorkspaceController(api, st, on)
 
@@ -16,6 +17,7 @@ export function WorkspaceSection({ on }: { on: boolean }) {
       sending={sending}
       onSend={send}
       online={online}
+      headerActions={headerActions}
     />
   )
 }

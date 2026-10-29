@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import type { PaneSummary as P, TimelineItem as T } from '../domain/timeline'
 
 export interface DashboardProps {
@@ -9,4 +10,5 @@ export interface DashboardProps {
   onSend: (text: string) => void
   onCancel?: (id: string) => void
   online?: boolean
+  headerActions?: ReactNode
 }

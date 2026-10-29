@@ -13,12 +13,14 @@ export function DashboardView({
   onSend,
   onCancel,
   online = true,
+  headerActions,
 }: DashboardProps) {
   const target = panes.find((p) => p.paneId === selectedId)
   return (
     <div className="dashboard-layout">
       <div className="dashboard-header">
         <ConnectionStatusBadge online={online} />
+        {headerActions}
       </div>
       <aside className="panes-panel">
         <h2>{r.panesTitle}</h2>
