@@ -14,7 +14,6 @@
   "panesTitle": "패널 목록",
   "timelineTitle": "타임라인",
   "selectTarget": "대상 패널을 선택하세요",
-  "messagePlaceholder": "메시지를 입력하세요...",
   "send": "전송",
   "sending": "전송 중...",
   "spinner": "작업 처리 중...",
@@ -54,5 +53,11 @@
   "cancelFailed": "취소 요청에 실패했습니다.",
   "pinnedStorageKey": "biseo:pinned-panes",
   "pinPane": "패널 상단 고정",
-  "unpinPane": "패널 고정 해제"
+  "unpinPane": "패널 고정 해제",
+  "versionPrefix": "v",
+  "lastUpdated": "최종 업데이트",
+  "displayTimeZone": "Asia/Seoul",
+  "displayTimeZoneLabel": "KST",
+  "messageTo": "{name}에게 메시지",
+  "jumpToNew": "새 메시지"
 }

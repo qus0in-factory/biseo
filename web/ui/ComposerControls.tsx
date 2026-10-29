@@ -1,5 +1,6 @@
 import type { PaneSummary } from '../domain/timeline'
 import { getPaneState } from '../domain/paneState'
+import { SendIcon, ReasonIcon } from './ComposerIcons'
 import r from '../resources.json'
 
 type P = Record<string, string>
@@ -19,11 +20,17 @@ export function ComposerControls({
   const btnLabel = busy ? res.sending : res.send
 
   return (
-    <div>
-      <button className="btn" type="submit" disabled={!can}>
-        {btnLabel}
+    <div className="composer-actions">
+      {err && <ReasonIcon title={err} />}
+      <button
+        className="btn-send-round"
+        type="submit"
+        disabled={!can}
+        aria-label={btnLabel}
+        title={btnLabel}
+      >
+        <SendIcon />
       </button>
-      {err && <span className="err"> ({err})</span>}
     </div>
   )
 }

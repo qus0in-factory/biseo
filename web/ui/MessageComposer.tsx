@@ -1,6 +1,6 @@
-import { useState } from 'react'
 import type { PaneSummary } from '../domain/timeline'
 import { ComposerControls } from './ComposerControls'
+import { useComposer } from './useComposer'
 import r from '../resources.json'
 
 export function MessageComposer({
@@ -12,28 +12,33 @@ export function MessageComposer({
   busy: boolean
   onSend: (text: string) => void
 }) {
-  const [t, setT] = useState('')
-  const canSend = Boolean(target?.sendable) && !busy && t.trim().length > 0
+  const { t, setT, ref, canSend, submit, onKey } = useComposer(
+    target,
+    busy,
+    onSend,
+  )
+  const ph = target ? r.messageTo.replace('{name}', target.name) : r.selectTarget
 
   return (
     <form
       className="composer"
       onSubmit={(e) => {
         e.preventDefault()
-        if (canSend) {
-          onSend(t)
-          setT('')
-        }
+        submit()
       }}
     >
-      <textarea
-        className="composer-input"
-        rows={3}
-        value={t}
-        placeholder={target ? r.messagePlaceholder : r.selectTarget}
-        onChange={(e) => setT(e.target.value)}
-      />
-      <ComposerControls target={target} busy={busy} can={canSend} />
+      <div className="composer-box">
+        <textarea
+          ref={ref}
+          className="composer-input"
+          rows={1}
+          value={t}
+          placeholder={ph}
+          onChange={(e) => setT(e.target.value)}
+          onKeyDown={onKey}
+        />
+        <ComposerControls target={target} busy={busy} can={canSend} />
+      </div>
     </form>
   )
 }

@@ -20,14 +20,9 @@ export function AppContent({
 }): ReactNode {
   if (!authed) return <LoginForm busy={busy} onLogin={login} />
   return (
-    <>
-      <HealthView
-        loading={loading}
-        status={data?.status}
-        error={data?.error}
-        onCheck={check}
-      />
-      <WorkspaceSection on={authed} />
-    </>
+    <WorkspaceSection
+      on={authed}
+      headerActions={<HealthView loading={loading} error={data?.error} onCheck={check} />}
+    />
   )
 }

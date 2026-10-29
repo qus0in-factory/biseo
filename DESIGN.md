@@ -321,6 +321,11 @@ Renders agent pane status while eliminating excessive vertical scrolling and vis
 
 ### 3. Unified Chat Timeline & Turn Status Matrix (`timeline-bubble`)
 Single chronological stream representing interactions across all designated workspace agents:
+- **Chat Bubble Choreography**: User dispatches align to the right (`chat-bubble-user`, surface container), while agent responses align to the left (`chat-bubble-agent`, white/surface-dark container). Each bubble displays the target pane name and timestamp (`HH:mm`), preserving the engine/turn status icon and cancel trigger.
+- **Scroll Container & dvh Architecture**: The timeline operates within a fixed-height scroll container anchored to dynamic viewport units (`height: calc(100dvh - ...); min-height: 360px; overscroll-behavior: contain`).
+- **Auto-Scroll & Reading Position Preservation**: When new messages arrive or turn statuses transition:
+  - If the user is near the bottom (within a 64px threshold), the view smoothly auto-scrolls to the bottom.
+  - If the user has scrolled up to review history, current scroll position is preserved without jumping, and an accessible '새 메시지' jump button (down arrow icon + label, min 44px touch target) is displayed.
 - **Exclusion of Tool Noise Only**: Intermediate agent scratchpad operations, command-line arguments, and raw terminal stream noise are omitted.
 - **Markdown Sanitization**: Agent completed markdown responses must pass through strict sanitization (or fallback to plain text) to prevent XSS and malformed layout injection.
 - **Comprehensive Turn State Representation**: All turn completions, failures, timeouts, and uncaptured dispatches are committed to the timeline with explicit semantic badges and status callouts. No terminal turns are silently swallowed.
@@ -338,10 +343,17 @@ Single chronological stream representing interactions across all designated work
 | `timeout` | Deep Slate outline (Light) / Silver outline (Dark, **6.01:1**) | `Timer` icon | Prompt recorded; displays "계속 수집 중(최대 2시간)" indicator; accepts late `completed` upgrade up to 2 hours | Disallowed |
 | `cancelled` | Slate Gray outline (Light) / Silver outline (Dark, **6.01:1**) | `Ban` icon | Prompt cancelled while queued prior to dispatch; terminal state | Disallowed |
 
-### 4. Dispatch Composer (`composer-input`) & Reservation UI
-- Textarea with submission trigger, bound to the active target pane selected in the carousel or panels list.
-- **Dispatch Gating in 0.3.0 & Reservation UI (0.3.1)**: Textarea remains continuously editable regardless of target status or connectivity (`resize: none` with fixed height and internal scrolling). Only the send button is disabled when `sendable` is `false`, the agent is busy, or offline. Turn reservation (202 queued dispatch) is scheduled for milestone 0.3.1.
-- **Explicit Rationale Display & Details Popover**: When send is gated (`agent_busy`, `agent_blocked`, `no_agent_in_pane`, `target_not_found`, `connection_unavailable`, `response_capture_unavailable`), deterministic rationale is displayed beside the send trigger without blocking textarea typing. Lengthy reasons collapse behind an accessible popover/tooltip (`ReasonDetails`).
+### 4. Dispatch Composer (`composer-input`) & Unified Capsule Container
+- **Unified Chat Capsule (`composer-box`)**: Textarea and circular send button are housed within a unified pill/rounded container (inspired by Discord/ChatGPT/WhatsApp, `border-radius: 1.5rem; border: 1px solid var(--secondary); background: #fff`).
+- **Target Placeholder**: Target pane identity is cleanly integrated into the input placeholder (e.g., `'ds-g에게 메시지'`, or fallback `'대상 패널을 선택하세요'`) to eliminate redundant vertical header banners.
+- **Single-Line Flex & Circular Send Button (`btn-send-round`)**: Textarea (`flex: 1; min-width: 0`) and 44px circular send button (`min-width: 44px; min-height: 44px; border-radius: 9999px; align-self: flex-end`) are aligned on a single row without wrapping (`flex-wrap: nowrap`), even on narrow 320px mobile viewports.
+- **Fixed Height & Internal Scrolling**: The textarea enforces `resize: none; height: 3.5rem; max-height: 3.5rem; overflow-y: auto; font-size: 16px;` to maintain predictable layout and prevent unwanted iOS zoom.
+- **Sticky Bottom & Safe Area**: Composer is anchored to the bottom of the viewport (`position: sticky; bottom: 0; z-index: 10`) with `padding-bottom: max(0.5rem, env(safe-area-inset-bottom))`, avoiding occlusion when the virtual mobile keyboard activates.
+- **Keyboard Interaction Matrix**:
+  - **Desktop**: Pressing `Enter` dispatches the message when sendable; `Shift+Enter` inserts a newline. While an IME composition is active (`e.nativeEvent.isComposing`), `Enter` dispatch is strictly ignored to prevent half-composed Korean input transmission.
+  - **Mobile (`pointer: coarse` or `< 768px`)**: `Enter` inserts a newline without triggering dispatch, allowing mobile soft-keyboard multiline typing.
+  - **Focus Preservation**: Focus is automatically retained in the textarea after message submission.
+- **Dispatch Gating & Icon Tooltip**: Textarea remains continuously editable regardless of target status or connectivity. When sending is gated (`agent_busy`, `agent_blocked`, `no_agent_in_pane`, `target_not_found`, `connection_unavailable`, `response_capture_unavailable`), only the circular send button is disabled (`opacity: 0.35`). Gating rationale is conveyed via an accessible inline icon with native/aria tooltip (`title={err}`), eliminating noisy full-sentence banners from the input row.
 - **Offline Guard**: If SSE stream connectivity is lost, only the send trigger is disabled with `connection_unavailable` while draft composition remains fully editable.
 
 ### 5. D1 Log & History Viewer (Scheduled for Milestone 0.3.2)
@@ -566,7 +578,7 @@ All animations honor user accessibility preferences via `@media (prefers-reduced
   }
 }
 ```
-- **Reduced Motion Fallback**: When reduced motion is active, spinners switch to a static progress icon, drawers transition instantaneously without sliding animation, carousel slides jump directly to the target snap point (`transition: none`), and tab views swap instantly.
+- **Reduced Motion Fallback**: When reduced motion is active, spinners switch to a static progress icon, drawers transition instantaneously without sliding animation, carousel slides jump directly to the target snap point (`transition: none`), tab views swap instantly, and chat timeline auto-scroll executes with `behavior: 'auto'` instead of smooth animated sliding.
 - **Keyboard & Touch Accessibility**:
   - Carousel items and tabs support full keyboard focus with high-contrast outline rings (`focus-visible: ring-2 ring-ring`).
   - Tabs cycle via Left/Right arrows; Carousel items scroll via Left/Right arrows or standard swipe gestures.

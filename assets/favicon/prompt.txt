@@ -1,0 +1,6 @@
+Design a minimal app icon (favicon) for "Biseo", a personal assistant dashboard.
+Subject: an abstract, friendly person wearing round glasses — only head and shoulders, reduced to simple geometric shapes. The glasses are the most recognizable element.
+Style: flat vector, bold clean shapes, no gradients, no text, no fine detail, must stay legible at 16x16 pixels.
+Palette only: #08090A (near black), #222823 (dark green-black), #575A5E (gray), #A7A2A9 (silver), #F4F7F5 (off-white).
+Composition: centered, generous padding (subject within the central 70%), solid #222823 rounded-square background filling the whole canvas, figure in #F4F7F5 with glasses outlined in #A7A2A9.
+Square 1:1, high contrast.

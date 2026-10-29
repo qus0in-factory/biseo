@@ -1,12 +1,19 @@
+import { RefreshCw } from 'lucide-react'
 import r from '../resources.json'
-type Props = { loading: boolean; status?: string; error?: string; onCheck: () => void }
+type Props = { loading: boolean; error?: string; onCheck: () => void }
 export function HealthView({ loading, error, onCheck }: Props) {
   return (
     <>
-      {loading && <p>{r.loading}</p>}
-      {!loading && error && <p className="err">{r.errorPrefix}{error}</p>}
-      <button className="btn" onClick={onCheck} disabled={loading}>
-        {r.refresh}
+      {!loading && error && <span className="err health-err">{r.errorPrefix}{error}</span>}
+      <button
+        className="icon-btn"
+        onClick={onCheck}
+        disabled={loading}
+        aria-busy={loading}
+        aria-label={r.refresh}
+        title={r.refresh}
+      >
+        <RefreshCw size={16} aria-hidden="true" className={loading ? 'spin' : undefined} />
       </button>
     </>
   )
