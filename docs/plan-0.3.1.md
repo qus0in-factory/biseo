@@ -1,6 +1,6 @@
 # 0.3.1 계획 (2026-10-29, GitHub 대조 정리)
 
-> 대조 기준: 2026-10-29, origin/main `e2f4f55`(PR #55), origin/dev `1fd3aee`. 인계문만 믿지 않고 원격 이슈·PR·커밋과 대조했다. 본 문서가 최신이며 이슈와 모순되지 않는다.
+> 대조 기준: 2026-10-29 07:42 UTC 조회, origin/main `e2f4f55`(PR #55), origin/dev `e958f08`. 인계문만 믿지 않고 원격 이슈·PR·커밋과 대조했다. 본 문서가 최신이며 이슈와 모순되지 않는다.
 
 ## 목표
 
@@ -17,11 +17,15 @@
 - #38 응답 마크다운 렌더링과 원본 보기 전환 (interface): 렌더링/원본 토글, XSS 방지, 모바일 320px.
 - #36 0.3.0 마감과 0.3.1 이월 정리 (tracking): 0.3.0 머지·배포 기록과 이월 항목 추적.
 - #47 수락 게이트 상태의 모달 오인 (service): promptAcceptanceMs 내 working/blocked·transcript 확인, 실패 시 `failed/prompt_not_accepted`, 자동 재전송 없음.
-- #51 첫 대화 전 OpenCode 세션 수집 (service): 세션 없음도 전송 허용 후 새 세션 seq 0부터 수집. 현 worktree 구현은 단주기 재조회라 요구 미충족, PR·완료 선언 불가.
+- #51 첫 대화 전 OpenCode 세션 수집 (service): 세션 없음도 전송 허용 후 새 세션 seq 0부터 수집. PR #66 OPEN(head `a817017`, base dev, `Closes #51`)로 이벤트 구독 전환·구독 직후 재확인·늦은 ack unsubscribe·종료 정리 보강. ds-o 최종 통과이나 실제 소켓 통합·최초 snapshot 종료/거절 테스트 잔여.
 - #57 차단 사유 구분과 안전한 해제 (service): 한도 확정·승인대기·추정 구분, Esc allowlist(OpenCode Ctrl+C 금지), 한도 확정은 해제 불가.
+- #63 패널 라벨/아이콘 컴포넌트 (interface): `web/panes.css`·`web/reason.css`·`web/theme.css`가 PR #56 변경 파일과 겹침; 소유권 경계 필요.
+- #64 타임아웃 후 회수 보정 (service): `src/app/capture-turn*.ts`, `late-capture*.ts`, `web/domain/mergeTurn.ts`, `syncPending.ts` 수정 중, 미커밋 변경 있음.
+- #65 AGENTS 보고 규칙 (process): 2분 규칙·콜백 중계 규칙 반영, 마일스톤·라벨 없음.
+- #66 #51 구현 PR (OPEN, base dev, head `a817017`).
 - #39 채팅 UI 잔여 권고 (interface), #42 version 정책·릴리스 태그 (process, 사용자 결정 대기).
 - #25 1단계 PR #56 (미병합, 아래 상태 참조), 2단계(모바일 Tabs/Carousel/Sheet, Router·Zustand·Query·Zod) 잔여.
-- #50 모바일 넘침 핫픽스: 마일스톤 없음, worktree `fix/50-mobile` 보존, #25와 순서 미결정.
+- #50 모바일 어긋남 핫픽스: 마일스톤 없음, worktree `fix/50-mobile` 보존, #25와 순서 미결정.
 - 신규 미분류 #60 (FIFO·입력) #61 (예약중 무응답): 마일스톤·라벨 없음, 재현·범위·완료기준 필요. 0.3.1/0.3.2에 배정하지 않는다.
 - 결정용 #62 Codex 전용 경로 유지·제거: 이 이슈에서 결정만, 실제 제거 금지.
 
@@ -31,7 +35,7 @@
 2. #30 백엔드 계약 안정화: 코드 반영 완료(PR #49 → #55 main 승격). 남은 것은 배포 환경 예약 왕복 검증으로 #30에서 추적한다.
 3. #25 디자인 시스템 기반: 반응형 컨테이너, 토큰, 모바일 safe-area를 먼저 정리한다.
 4. #29 패널 고정 UI: #25의 모바일 구조와 충돌하지 않게 구현한다.
-5. #30 웹 예약/취소 UI: #25/#29 이후 채팅 화면에 통합한다.
+5. #30 웹 예약/취소 UI: main에 포함됨. 추가 UI 통합은 #25/#29 이후 필요 시 검토한다.
 6. #38 마크다운 렌더링: #25 디자인 규칙과 XSS sanitize 규칙을 따른다.
 7. #32 가용성 정보: 독립적으로 진행하되 릴리스 전 availability 계약을 고정한다.
 
@@ -56,10 +60,14 @@
 - #42 version 정책·릴리스 태그 (사용자 결정 대기)
 - #43 테스트 시간 의존 잔여 정리 (CLOSED, main `e2f4f55` 포함 확인)
 - #47 수락 게이트·모달 오인 (코드 main 포함, 실제 모달 재현 잔여 → 열어둠)
-- #51 첫 세션 수집 (worktree `40e34fd`만, origin 미반영, 요구 미충족 → 열어둠)
+- #51 첫 세션 수집: PR #66 OPEN(head `a817017`, base dev). ds-o 최종 통과, 실제 소켓 통합·최초 snapshot 종료/거절 테스트 잔여.
 - #57 차단 사유·해제 (PR #58 backend `710a7ee` + PR #59 web `02cccc9`, 미병합)
 - #60 #61 신규 수정요청 (미분류, 스펙 필요)
 - #62 Codex 전용 경로 유지·제거 결정 (결정만, 제거 금지)
+- #63 패널 라벨/아이콘 (interface, 미커밋, PR #56 파일과 충돌)
+- #64 타임아웃 회수 보정 (service, 미커밋)
+- #65 AGENTS 보고 규칙 (process, 마일스톤·라벨 없음)
+- #66 #51 구현 PR (OPEN, base dev)
 
 ## 상태 (2026-10-29 대조)
 
@@ -70,7 +78,7 @@
 
 ### 코드 main 포함, 수용 검증 잔여 (열어둠, 닫지 않음)
 
-- #30 전송 예약·취소: PR #49 → #55 main 승격 확인. 배포 환경 예약 왕복 미검증 → 열어둠.
+- #30 전송 예약·취소: PR #49 → #55 main 승격 확인. 웹 예약됨 배지·취소 버튼은 main(`e2f4f55`)에 포함. 남은 것은 배포 환경 예약 왕복 검증 → 열어둠.
 - #32 가용성: PR #53 → #55 main 승격 확인. Codex 구조화 출처만 확정, ga 등 나머지 출처·최신성·수용 검증 잔여 → 열어둠.
 - #41 Codex hook: PR #54 → #55 main 승격 확인. 새 SessionStart 실제 상태 파일 재확인 잔여 → 열어둠.
 - #47 모달 오인: PR #49 수락 게이트 → #55 main 승격 확인. 실제 모달 1회 재현 미검증 → 열어둠.
@@ -79,14 +87,18 @@
 
 - #25: 1단계 PR #56 `feat/25-design`(`cf505d3` → dev, 미병합, 227 pass, JS +31.7%). 2단계(모바일 Tabs/Carousel/Sheet, Router·Zustand·Query·Zod) 미착수.
 - #29 패널 고정, #38 마크다운 토글, #39 잔여 권고: 미착수.
-- #57: backend PR #58(`feat/57-unblock` `710a7ee`, 교차 23 tests) + web PR #59(`feat/57-web` `02cccc9`, 254/254). 미병합·미배포, 실키 검증 없음. 권장 순서 #58 → #59.
-- #51: worktree `feat/51-first-session` `40e34fd`만 존재(origin 미반영, push 없음). 단주기 재조회라 이벤트 기반 요구 미충족. #61 완료 후 보정.
+- #57: backend PR #58(`feat/57-unblock` head `e98c378`, 기준 `710a7ee`, 교차 23 tests) + web PR #59(`feat/57-web` head `4a400cc`, 기준 `02cccc9`, 254/254). 미병합·미배포, 실키 검증 없음. 권장 순서 #58 → #59.
+- #51: PR #66 OPEN(head `a817017`, base dev). 이벤트 구독으로 폴링 교체·구독 직후 재확인·늦은 ack unsubscribe·종료 정리 보강. ds-o 최종 통과. 잔여: 실제 소켓 통합 미검증, 최초 snapshot 종료/거절 테스트(비차단).
+- #63 패널 라벨/아이콘: 미커밋 변경, PR #56 파일 충돌(`web/panes.css`·`web/reason.css`·`web/theme.css`).
+- #64 타임아웃 회수 보정: 미커밋 변경(`src/app/capture-turn*.ts`, `late-capture*.ts`, `web/domain/mergeTurn.ts`, `syncPending.ts`).
+- #65 AGENTS 보고 규칙: 마일스톤·라벨 없음, 문서 규칙 보정.
+- #66 #51 구현 PR: OPEN, base dev, head `a817017`, 미병합.
 
 ### 미정 (사용자 결정 대기, 임의 변경 없음)
 
 - #50 vs #56 순서: #50 worktree `fix/50-mobile`(`9950729`, 구 dev 기준) 보존. #25 충돌 해소 전 병합 없음.
 - #42 version 정책·릴리스 태그: `package.json` 0.3.0·footer 표시·태그 규칙 미결정.
-- hermes 연동 제거: 미사용이나 제거 여부 미결정.
+- hermes 연동 제거: 미사용이나 제거 여부 미결정(#36/#62 사용자 결정 대기).
 - #62 Codex 전용 경로: 유지·제거 결정용. 이 이슈에서 코드 제거 금지.
 
 ### 분리 (0.3.2·백로그)
@@ -96,7 +108,7 @@
 
 ## 완료 조건
 
-- 최신 사실·PR 링크·main 근거(`e2f4f55`·`1fd3aee`)·미결정이 위에 명시되고 이슈 본문과 모순이 없다.
+- 최신 사실·PR 링크·main/dev 근거(`e2f4f55`/`e958f08`)·미결정이 위에 명시되고 이슈 본문과 모순이 없다.
 - 마일스톤은 요청 목표만 유지하고 나머지는 백로그로 둔다.
 
 ## 수용 기준
