@@ -10,6 +10,6 @@ import type{TurnDeps}from'../app/turn-deps.js'
 type Verify=(t?:string)=>Promise<void>
 export function runtimeDeps(verify:Verify):TurnDeps&{verify:Verify;healthStatus:string}{
  const{store,locks,queue}=createState(),herdr=new WorkspaceHerdr(),availability=createAvailability(c.availabilityTtlMs)
- const usageCollector=new UsageCollector(availability)
+ const usageCollector=new UsageCollector()
  return{...c,verify,get allowedWorkspaceId(){return readWorkspace()},store,locks,queue,herdr,capture:createCapture(),availability,limit:limitScreen(herdr,c.limitMarkers),timeoutMs:c.turnTimeoutMs,graceMs:c.captureGraceMs,usageCollector}
 }

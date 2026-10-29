@@ -1,22 +1,15 @@
-import type { AvailabilityPort } from '../app/ports.js'
-import { toProviderUsage } from '../domain/usage-format.js'
-import type { UsageReport } from '../domain/usage-types.js'
-
-export class UsageCollector {
-  private last: UsageReport | null = null
-
-  constructor(private readonly avail: AvailabilityPort) {}
-
-  async getReport(now = new Date()): Promise<UsageReport> {
-    try {
-      const a = await this.avail.get({ source: 'biseo:codex', agent: 'codex', kind: 'id', value: 'default' }, now)
-      const rep: UsageReport = { providers: [toProviderUsage('codex', a)], updatedAt: now.toISOString() }
-      this.last = rep
-      return rep
-    } catch {
-      if (this.last) return this.last
-      const un = { state: 'unknown' as const, source: 'codex', checkedAt: null, observedAt: now.toISOString(), resetsAt: null, reason: 'err', window: null }
-      return { providers: [toProviderUsage('codex', un)], updatedAt: now.toISOString() }
-    }
+import{findLatestRollout}from'./codex-latest.js'
+import{readRateLimits}from'./codex-rate-limit-read.js'
+import{formatCodexWindows,unknownUsage}from'../domain/usage-format.js'
+import type{UsageReport}from'../domain/usage-types.js'
+export class UsageCollector{
+ async getReport(now=new Date()):Promise<UsageReport>{
+  try{
+   const p=await findLatestRollout()
+   const r=p?await readRateLimits(p):null
+   return{providers:[formatCodexWindows(r,now)],updatedAt:now.toISOString()}
+  }catch{
+   return{providers:[unknownUsage('codex')],updatedAt:now.toISOString()}
   }
+ }
 }

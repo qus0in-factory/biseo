@@ -1,49 +1,56 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { toProviderUsage } from '../domain/usage-format.js'
-import { UsageCollector } from '../infra/usage-collector.js'
-import type { Availability } from '../domain/timeline.js'
-import type { AvailabilityPort } from '../app/ports.js'
+import { formatCodexWindows } from '../domain/usage-format.js'
+import { UsageCollector } from './usage-collector.js'
+import type { RateLimits } from '../domain/availability.js'
 
-test('toProviderUsage formats availability correctly', () => {
-  const avail: Availability = {
-    state: 'limited',
-    source: 'codex',
-    checkedAt: '2026-10-29T21:00:00.000Z',
-    observedAt: '2026-10-29T21:00:00.000Z',
-    resetsAt: '2026-10-30T02:00:00.000Z',
-    reason: 'rate_limit_reached',
-    window: 'primary',
+test('formatCodexWindows preserves both primary and secondary values', () => {
+  const r: RateLimits = {
+    reached: null,
+    primary: '2026-10-30T00:00:00.000Z',
+    secondary: '2026-11-05T00:00:00.000Z',
+    primaryUsedPercent: 20,
+    secondaryUsedPercent: 90,
+    snapshotAt: '2026-10-29T21:00:00.000Z',
   }
-  const u = toProviderUsage('codex', avail)
+  const u = formatCodexWindows(r, new Date('2026-10-29T20:00:00.000Z'))
   assert.equal(u.provider, 'codex')
-  assert.equal(u.state, 'limited')
-  assert.equal(u.limitReached, true)
-  assert.equal(u.resetsAt, '2026-10-30T02:00:00.000Z')
+  assert.equal(u.state, 'available')
+  assert.equal(u.windows.length, 2)
+  assert.equal(u.windows[0].window, 'primary')
+  assert.equal(u.windows[0].usedPercent, 20)
+  assert.equal(u.windows[0].resetsAt, '2026-10-30T00:00:00.000Z')
+  assert.equal(u.windows[1].window, 'secondary')
+  assert.equal(u.windows[1].usedPercent, 90)
+  assert.equal(u.windows[1].resetsAt, '2026-11-05T00:00:00.000Z')
 })
 
-test('UsageCollector caches last successful report on failure', async () => {
-  let fail = false
-  const availPort: AvailabilityPort = {
-    get: async () => {
-      if (fail) throw new Error('availability error')
-      return {
-        state: 'available',
-        source: 'codex',
-        checkedAt: '2026-10-29T20:00:00.000Z',
-        observedAt: '2026-10-29T20:00:00.000Z',
-        resetsAt: null,
-        reason: null,
-        window: null,
-      }
-    },
+test('formatCodexWindows handles missing values as null without estimates', () => {
+  const r: RateLimits = {
+    reached: null,
+    primary: null,
+    secondary: null,
+    primaryUsedPercent: null,
+    secondaryUsedPercent: null,
+    snapshotAt: null,
   }
-  const collector = new UsageCollector(availPort)
-  const r1 = await collector.getReport()
-  assert.equal(r1.providers[0].state, 'available')
+  const u = formatCodexWindows(r, new Date())
+  assert.equal(u.windows[0].usedPercent, null)
+  assert.equal(u.windows[0].resetsAt, null)
+  assert.equal(u.windows[1].usedPercent, null)
+})
 
-  fail = true
-  const r2 = await collector.getReport()
-  assert.equal(r2.providers[0].state, 'available')
-  assert.deepEqual(r2, r1)
+test('UsageCollector returns unknown with empty windows on failure without disguise', async () => {
+  const c = new UsageCollector()
+  const prevDir = process.env.BISEO_CODEX_DIR
+  process.env.BISEO_CODEX_DIR = '/nonexistent/path'
+  try {
+    const rep = await c.getReport()
+    assert.equal(rep.providers[0].provider, 'codex')
+    assert.equal(rep.providers[0].state, 'unknown')
+    assert.equal(rep.providers[0].windows.length, 0)
+  } finally {
+    if (prevDir === undefined) delete process.env.BISEO_CODEX_DIR
+    else process.env.BISEO_CODEX_DIR = prevDir
+  }
 })
