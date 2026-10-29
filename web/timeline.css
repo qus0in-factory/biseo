@@ -1,0 +1,45 @@
+.timeline-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.timeline-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 480px;
+  overflow-y: auto;
+}
+.timeline-item {
+  padding: 0.75rem;
+  border: 1px solid var(--secondary);
+  border-radius: var(--r-md);
+  background: #fff;
+}
+.timeline-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.btn-cancel {
+  margin-left: auto;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  background: transparent;
+  color: #b91c1c;
+  border: 1px solid #b91c1c;
+}
+.timeline-response {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: var(--surface);
+  border-left: 3px solid var(--primary);
+  font-family: monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.spinner {
+  color: var(--muted);
+  font-size: 0.875rem;
+}

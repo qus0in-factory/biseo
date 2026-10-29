@@ -3,11 +3,16 @@
   "name": "biseo",
   "main": "worker/index.ts",
   "compatibility_date": "2026-10-28",
+  "observability": {
+    "enabled": true
+  },
   "assets": {
     "directory": "dist/client",
     "binding": "ASSETS",
     "not_found_handling": "single-page-application",
-    "run_worker_first": ["/api/*"]
+    "run_worker_first": [
+      "/api/*"
+    ]
   },
   "vars": {
     "HEALTH_TIMEOUT_MS": "5000",
@@ -24,9 +29,14 @@
     "SERVICE_TOKEN_TTL_SECONDS": "300",
     "SERVICE_TOKEN_SUBJECT": "biseo-worker",
     "LOGIN_MAX_ATTEMPTS": "5",
-    "LOGIN_ATTEMPT_TTL_SECONDS": "60"
+    "LOGIN_ATTEMPT_TTL_SECONDS": "60",
+    "ALLOWED_WORKSPACE_ID": "w1T",
+    "UPSTREAM_TIMEOUT_MS": "10000"
   },
   "kv_namespaces": [
-    { "binding": "LOGIN_ATTEMPTS", "id": "dc4ef10d3a9e4153a93e44fdcab18fba" }
+    {
+      "binding": "LOGIN_ATTEMPTS",
+      "id": "dc4ef10d3a9e4153a93e44fdcab18fba"
+    }
   ]
 }

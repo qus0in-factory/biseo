@@ -1,24 +1,17 @@
-import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
-type RuntimeConfig = {
-  host: string
-  port: number
-  healthStatus: string
-  serviceIssuer: string
-  serviceAudience: string
-  servicePublicKeyPath: string
+import {base}from'./config-file.js'
+const e=process.env
+export const config={
+ host:e.HOST??base.host,
+ port:Number(e.PORT??base.port),
+ healthStatus:e.HEALTH_STATUS??base.healthStatus,
+ serviceIssuer:e.SERVICE_ISSUER??base.serviceIssuer,
+ serviceAudience:e.SERVICE_AUDIENCE??base.serviceAudience,
+ servicePublicKeyPath:e.SERVICE_PUBLIC_KEY_PATH??base.servicePublicKeyPath,
+ allowedWorkspaceId:e.ALLOWED_WORKSPACE_ID??base.allowedWorkspaceId,
+ turnTimeoutMs:Number(e.TURN_TIMEOUT_MS||base.turnTimeoutMs||1800000),
+ lateCaptureMs:Number(e.LATE_CAPTURE_MS||base.lateCaptureMs||7200000),
+ captureGraceMs:Number(e.CAPTURE_GRACE_MS||base.captureGraceMs||3000),
+ logLevel:e.LOG_LEVEL??base.logLevel??'info',
 }
-const file = resolve(process.cwd(), 'config/runtime.json')
-const base = JSON.parse(readFileSync(file, 'utf8')) as RuntimeConfig
-const e = process.env
-export const config: RuntimeConfig = {
-  host: e.HOST ?? base.host,
-  port: Number(e.PORT ?? base.port),
-  healthStatus: e.HEALTH_STATUS ?? base.healthStatus,
-  serviceIssuer: e.SERVICE_ISSUER ?? base.serviceIssuer,
-  serviceAudience: e.SERVICE_AUDIENCE ?? base.serviceAudience,
-  servicePublicKeyPath: e.SERVICE_PUBLIC_KEY_PATH ?? base.servicePublicKeyPath,
-}
-if (!config.serviceIssuer || !config.serviceAudience || !config.servicePublicKeyPath) {
-  throw new Error('service auth misconfigured')
-}
+if(!config.serviceIssuer||!config.serviceAudience||!config.servicePublicKeyPath)throw new Error('service auth misconfigured')
+if(!(Number(config.turnTimeoutMs)>0)||!(Number(config.lateCaptureMs)>=0)||!(Number(config.captureGraceMs)>=0))throw new Error('turn config misconfigured')
