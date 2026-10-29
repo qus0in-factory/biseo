@@ -1,0 +1,37 @@
+.reason-details {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  flex-shrink: 0;
+}
+.reason-details summary {
+  list-style: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #b91c1c;
+}
+.reason-details summary::-webkit-details-marker {
+  display: none;
+}
+.reason-details svg {
+  display: block;
+  flex-shrink: 0;
+}
+.reason-popover {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 10;
+  overflow-wrap: anywhere;
+  background: #fff;
+  border: 1px solid var(--secondary);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--r-sm);
+  font-size: 0.75rem;
+  color: #b91c1c;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: max-content;
+  max-width: 240px;
+}

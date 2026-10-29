@@ -6,6 +6,7 @@
 @import "./btn.css";
 @import "./status.css";
 @import "./ios.css";
+@import "./login.css";
 
 body {
   font-family: Pretendard, system-ui, sans-serif;

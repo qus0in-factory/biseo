@@ -1,3 +1,5 @@
+@import "./pane-badge.css";
+
 .panes-panel {
   border: 1px solid var(--secondary);
   border-radius: var(--r-md);
@@ -14,6 +16,9 @@
 }
 .pane-item {
   width: 100%;
+  min-height: 64px;
+  height: 64px;
+  box-sizing: border-box;
   text-align: left;
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--secondary);
@@ -23,27 +28,23 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 .pane-item.selected {
   outline: 2px solid var(--primary);
 }
-.pane-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.125rem 0.375rem;
-  border-radius: var(--r-sm);
-  font-size: 0.75rem;
-  font-weight: 600;
-  background: var(--secondary);
+.pane-item strong {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.spin {
-  animation: spin 1s linear infinite;
-}
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .spin { animation: none; }
+.pane-item small {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--muted);
 }
