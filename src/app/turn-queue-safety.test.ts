@@ -4,7 +4,7 @@ import {createTurn}from'./create-turn.js'
 import {queueEvent}from'./turn-queue-bind.js'
 import {input,reader,agent}from'./turn-fixture-data.test.js'
 import {makeDeps}from'./turn-fixture.test.js'
-const wait=async(f:()=>boolean)=>{for(let i=0;i<100&&!f();i++)await new Promise(r=>setTimeout(r,1))}
+import {until as wait} from '../test-wait.test-util.js'
 test('lock release alone does not start while herdr is working',async()=>{
  const d=makeDeps(reader),work={...agent,agent_status:'working'}
  d.herdr.listAgents=async()=>[work]

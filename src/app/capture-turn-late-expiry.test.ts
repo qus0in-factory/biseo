@@ -9,6 +9,7 @@ test('late capture keeps timeout when no response arrives',async t=>{
   const s=setup();s.d.timeoutMs=1;s.d.lateCaptureMs=200
   let n=0
   await captureTurn(s.d,item,{read:async()=>{n++;return null}})
+  await t.mock.timers.tick(0)
   assert.ok(n>=2)
   assert.equal(s.store.get('r1')?.status,'timeout')
  }finally{t.mock.timers.reset()}

@@ -4,7 +4,7 @@ import {Hono}from'hono'
 import {runSse}from'./events-sse.js'
 import {Wake}from'./wake.js'
 import {lockDeps,readEvent,TrackedLocks}from'./events-lock-fixture.js'
-import {until}from'../test-wait.js'
+import {until}from'../test-wait.test-util.js'
 test('closing SSE removes its lock subscription',async()=>{
  const l=new TrackedLocks(),app=new Hono()
  app.get('/e',c=>runSse(c,lockDeps(l) as never,'w',()=>{},new Wake()))

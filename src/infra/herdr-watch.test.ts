@@ -1,7 +1,8 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import {startHerdrWatch}from'./herdr-watch.js'
-import {fakeWatch,wait}from'./herdr-watch-fixture.test.js'
+import {fakeWatch}from'./herdr-watch-fixture.test.js'
+import {until as wait}from'../test-wait.test-util.js'
 test('refreshes panes and reconnects after close',async()=>{
  let panes=['p1']
  let ready=0
