@@ -8,6 +8,6 @@ export function toSummaries(panes:PaneInfo[],agents:AgentInfo[],locked:{has(k:st
   if(!kind)return []
   const status=a?.agent_status??p.agent_status,session=a?.agent_session??p.agent_session??undefined,why=paneReason(status,kind,a,locked.has(p.pane_id),session)
   const agentName=a?.name??a?.display_agent??null,name=paneName(p,a)
-  return [{paneId:p.pane_id,tabId:p.tab_id,name,agentKind:kind,agentName,status,sendable:why===null,disabledReason:why,revision:p.revision}]
+  return [{paneId:p.pane_id,tabId:p.tab_id,name,agentKind:kind,agentName,status,sendable:why===null,disabledReason:why,blockedReason:null,revision:p.revision}]
  })
 }

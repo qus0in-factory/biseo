@@ -32,10 +32,16 @@ test('panes route exposes the availability axis and blocks the pane', async () =
   })
   assert.equal(r.status, 200)
   const b = (await r.json()) as {
-    panes: { sendable: boolean; disabledReason: string; availability: unknown }[]
+    panes: {
+      sendable: boolean
+      disabledReason: string
+      blockedReason: string
+      availability: unknown
+    }[]
   }
   assert.equal(b.panes[0].sendable, false)
   assert.equal(b.panes[0].disabledReason, 'provider_rate_limited')
+  assert.equal(b.panes[0].blockedReason, 'usage_limited')
   assert.deepEqual(b.panes[0].availability, availability)
 })
 
@@ -49,6 +55,7 @@ test('SSE pane.updated carries the availability field', async () => {
     const text = await readEvent(r.body!, /"availability"/)
     assert.match(text, /"state":"limited"/)
     assert.match(text, /"disabledReason":"provider_rate_limited"/)
+    assert.match(text, /"blockedReason":"usage_limited"/)
   } finally {
     await r.body?.cancel().catch(() => {})
   }
