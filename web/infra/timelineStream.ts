@@ -27,7 +27,13 @@ export const timelineStream: TimelineStreamPort = {
     }
 
     start()
-    const unbind = bindStreamLifecycle(() => closed || (sched.reset(), start()))
+    const reconnect = () => {
+      if (closed) return
+      if (es && es.readyState === EventSource.OPEN) return
+      sched.reset()
+      start()
+    }
+    const unbind = bindStreamLifecycle(reconnect)
 
     return () => {
       closed = true
