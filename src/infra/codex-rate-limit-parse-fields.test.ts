@@ -15,6 +15,6 @@ test('reads only whitelisted rate limit fields', () => {
   assert.equal(r?.reached, 'secondary')
   assert.equal(r?.primary, new Date(1793245000000).toISOString())
   assert.equal(r?.secondary, new Date(1793246000000).toISOString())
-  assert.deepEqual(Object.keys(r!).sort(), ['primary', 'reached', 'secondary', 'snapshotAt'])
+  assert.deepEqual(Object.keys(r!).sort(), ['primary', 'primaryUsedPercent', 'reached', 'secondary', 'secondaryUsedPercent', 'snapshotAt'])
   assert.doesNotMatch(JSON.stringify(r), /SECRET/)
 })
