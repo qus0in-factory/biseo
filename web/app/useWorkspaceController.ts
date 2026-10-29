@@ -1,21 +1,20 @@
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import type { WorkspaceApiPort as Api, TimelineStreamPort as St } from '../domain/ports'
-import { createRecoveryHandlers } from '../domain/recoveryHandlers'
+import { useWorkspaceRecovery } from './useWorkspaceRecovery'
 import { useWorkspaceBase } from './useWorkspaceBase'
 import { useStream } from './useStream'
 import { useSyncRefs } from './useSyncRefs'
+import { useUiStore } from './uiStore'
 
 export function useWorkspaceController(a: Api, s: St, on: boolean) {
   const [online, setOnline] = useState(false)
-  const [sel, setSel] = useState<string | null>(null)
+  const sel = useUiStore((x) => x.selectedPaneId)
+  const setSel = useUiStore((x) => x.setSelectedPaneId)
   const base = useWorkspaceBase(a, on, online, sel)
   const { getItems, getUpdate } = useSyncRefs(base.items, base.update)
+  const { reload, setSnapshot, markDisconnected } = base
 
-  const h = useMemo(
-    () => createRecoveryHandlers(a, base.reload, getItems, getUpdate, base.setSnapshot, setOnline, base.markDisconnected),
-    [a, base.reload, getItems, getUpdate, base.setSnapshot, base.markDisconnected],
-  )
-
+  const h = useWorkspaceRecovery(a, reload, getItems, getUpdate, setSnapshot, setOnline, markDisconnected)
   useStream(s, on ? base.wsId : null, { ...h, onTurn: base.update })
 
   return { ...base, sel, setSel, online }
