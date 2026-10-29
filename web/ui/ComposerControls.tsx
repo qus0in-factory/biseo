@@ -15,7 +15,7 @@ export function ComposerControls({ target, busy, can, online }: P) {
 
   return (
     <div className="composer-actions">
-      <InterruptButton target={target} online={online} />
+      <InterruptButton key={target?.paneId ?? 'none'} target={target} online={online} />
       {err && <ReasonIcon title={err} />}
       <button className="btn-send-round" type="submit" disabled={!can} aria-label={lbl} title={lbl}>
         <SendIcon />
