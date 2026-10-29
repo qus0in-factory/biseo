@@ -4,7 +4,7 @@ import {createTurn}from'./create-turn.js'
 import {dispatchPane}from'./turn-queue-dispatch.js'
 import {input,reader,agent}from'./turn-fixture-data.test.js'
 import {makeDeps}from'./turn-fixture.test.js'
-const wait=async(f:()=>boolean)=>{for(let i=0;i<100&&!f();i++)await new Promise(r=>setTimeout(r,1))}
+import {until as wait} from '../test-wait.test-util.js'
 test('busy POSTs queue FIFO per pane',async()=>{
  const d=makeDeps(reader),work={...agent,agent_status:'working'}
  d.herdr.listAgents=async()=>[work]

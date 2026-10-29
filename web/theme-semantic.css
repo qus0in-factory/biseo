@@ -3,9 +3,9 @@
   --foreground: var(--color-primary);
   --card: var(--color-surface);
   --card-foreground: var(--color-primary);
-  --muted: var(--color-mist);
+  --muted: #e2e6e3;
   --muted-foreground: var(--color-secondary);
-  --border: var(--color-line);
+  --border: var(--color-border);
   --ring: var(--foreground);
   --radius: 0.5rem;
 }
@@ -16,8 +16,7 @@
   --card: var(--color-surface-dark);
   --card-foreground: var(--color-canvas);
   --muted: var(--color-surface-dark);
-  --muted-foreground: var(--color-line-subtle);
-  --border: var(--color-line-subtle);
+  --muted-foreground: var(--color-border-subtle);
+  --border: var(--color-border-subtle);
   --ring: var(--foreground);
 }
-

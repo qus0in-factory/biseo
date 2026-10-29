@@ -6,7 +6,7 @@ export function AgentResult({ status, responseText }: { status: TurnStatus; resp
     <>
       {status === 'working' && <p className="text-sm text-muted-foreground">{r.spinner}</p>}
       {status === 'capture_unavailable' && (
-        <p className="text-[#d73a49]">{r.captureUnavailable}</p>
+        <p className="text-error">{r.captureUnavailable}</p>
       )}
       {status === 'timeout' && (
         <p className="mt-1 text-[0.8125rem] text-muted-foreground">{r.collectingLate}</p>

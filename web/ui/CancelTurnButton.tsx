@@ -11,7 +11,7 @@ export function CancelTurnButton({ requestId, title, onCancel }: { requestId: st
       onClick={() => onCancel(requestId)}
       aria-label={`${r.cancel} ${requestId}`}
       title={title ?? r.cancel}
-      className="ml-auto border border-[#b91c1c] px-2 py-0.5 text-xs text-[#b91c1c] hover:text-[#b91c1c]"
+      className="ml-auto border border-danger text-danger hover:text-danger"
     >
       <X size={14} aria-hidden="true" />
     </Button>

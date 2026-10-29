@@ -5,7 +5,7 @@ type Props = { loading: boolean; error?: string; onCheck: () => void }
 export function HealthView({ loading, error, onCheck }: Props) {
   return (
     <>
-      {!loading && error && <span className="text-xs text-[#d73a49]">{r.errorPrefix}{error}</span>}
+      {!loading && error && <span className="text-xs text-error">{r.errorPrefix}{error}</span>}
       <Button
         variant="ghost"
         size="icon"

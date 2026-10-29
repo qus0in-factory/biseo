@@ -1,6 +1,6 @@
 import type { PaneSummary } from '../domain/timeline'
+import { PaneMeta } from './PaneMeta'
 import { PaneStatusBadge } from './PaneStatusBadge'
-import { PaneMetaRow } from './PaneMetaRow'
 
 type P = { item: PaneSummary; active: boolean; onClick: () => void }
 
@@ -17,7 +17,9 @@ export function PaneItem({ item, active, onClick }: P) {
           <strong className="min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-sm">{item.name}</strong>
           <PaneStatusBadge status={item.status} />
         </span>
-        <PaneMetaRow agentKind={item.agentKind} disabledReason={item.disabledReason} />
+        <span className="flex w-full items-center justify-start gap-1.5">
+          <PaneMeta item={item} />
+        </span>
       </button>
     </li>
   )

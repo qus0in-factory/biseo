@@ -7,7 +7,7 @@ export function ConnectionStatusBadge({ online }: { online: boolean }) {
   const label = online ? r.connected : r.disconnected
 
   return (
-    <Badge variant="outline" aria-label={label} role="status" className={online ? 'text-[#15803d]' : 'text-[#b91c1c]'}>
+    <Badge variant="outline" aria-label={label} role="status" className={online ? 'text-success' : 'text-danger'}>
       <Icon size={14} aria-hidden="true" />
       <span>{label}</span>
     </Badge>

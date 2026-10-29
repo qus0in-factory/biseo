@@ -18,7 +18,7 @@ export function TimelineItemHeader({
       {isQueued && onCancel && (
         <CancelTurnButton requestId={item.requestId} title={`${r.cancel} (${item.requestId})`} onCancel={onCancel} />
       )}
-      {item.cancelError && <span className="text-[#d73a49]">({item.cancelError})</span>}
+      {item.cancelError && <span className="text-error">({item.cancelError})</span>}
     </div>
   )
 }

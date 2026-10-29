@@ -25,7 +25,7 @@ export default function App() {
         data={data}
         check={check}
       />
-      {code && <p className="text-[#d73a49]">{r[code]}</p>}
+      {code && <p className="text-error">{r[code]}</p>}
       {authed && <AppFooter />}
     </AppFrame>
   )

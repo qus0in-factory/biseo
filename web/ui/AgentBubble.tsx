@@ -17,7 +17,7 @@ export function AgentBubble({
       <AgentHeader item={item} onCancel={onCancel} />
       <AgentResult status={status} responseText={responseText} />
       <TurnErrorDetails code={errorCode} />
-      {cancelError && <span className="text-[#d73a49]">({cancelError})</span>}
+      {cancelError && <span className="text-error">({cancelError})</span>}
     </Card>
   )
 }

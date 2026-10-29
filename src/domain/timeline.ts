@@ -1,1 +1,1 @@
-export type{PaneStatus,DisabledReason,TurnStatus,PaneSummary,TimelineItem}from'../../shared/domain/timeline.js'
+export type{PaneStatus,DisabledReason,AvailabilityState,AvailabilityWindow,Availability,TurnStatus,PaneSummary,TimelineItem}from'../../shared/domain/timeline.js'

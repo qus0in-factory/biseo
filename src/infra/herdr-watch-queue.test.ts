@@ -4,7 +4,8 @@ import {createTurn}from'../app/create-turn.js'
 import {queueEvent}from'../app/turn-queue-bind.js'
 import {input,reader,agent}from'../app/turn-fixture-data.test.js'
 import {makeDeps}from'../app/turn-fixture.test.js'
-import {fakeWatch,wait}from'./herdr-watch-fixture.test.js'
+import {fakeWatch}from'./herdr-watch-fixture.test.js'
+import {until as wait}from'../test-wait.test-util.js'
 import {startHerdrWatch}from'./herdr-watch.js'
 test('server watch dispatches without SSE',async()=>{
  const d=makeDeps(reader),work={...agent,agent_status:'working'}
