@@ -304,11 +304,13 @@ rounded:
 
 ### 1. View Navigation Tabs & Application Bar (`app-tabs`, `app-header`)
 Provides top-level situational awareness and view switching:
+- **Application Bar Brand Identity**: Displays the official workspace favicon (`/favicon.svg`, decorative `alt=""` and `aria-hidden="true"`, sized to line-height `1.25em` and centered vertically) immediately preceding the primary title (`Biseo Workspace`).
+- **Responsive Header Layout (320px ~ 1280px)**: The header container enforces `flex-wrap: wrap` and `min-width: 0`. On narrow mobile viewports (down to 320px), long title text gracefully truncates with `text-overflow: ellipsis` (`min-width: 0`) without overflowing or overlapping controls.
+- **Header Actions & Logout Icon Button**: Secondary and session actions (e.g., refresh, logout via `lucide LogOut`) employ borderless ghost styling (`.icon-btn`) with guaranteed 44px minimum touch targets (`min-width: 44px; min-height: 44px;`), high-contrast focus rings (`:focus-visible`), and localized accessibility metadata (`aria-label` and `title`). The logout button stays strictly fixed and fully visible (`flex-shrink: 0; margin-left: auto;`) without wrapping off-screen.
 - **Navigation Tabs (`shadcn Tabs`)**: Reuses standard shadcn `Tabs` (`TabsList`, `TabsTrigger`, `TabsContent`) for instant switching between **Panels** ↔ **Chat** ↔ **History (0.3.2)** views on mobile. Prevents multiple view sections from simultaneously consuming vertical space.
 - **Keyboard Navigation**: Adheres to WAI-ARIA `tablist` standards, allowing Left/Right arrow key cycling, Home/End jumping, and clear focus indicator rings.
 - **Stream Status Indicator**: Replaces raw unstyled text with a clean 8px indicator dot paired with concise status copy (`label-sm`).
 - **Workspace Identity**: Prominently displays the current workspace identifier with subtle badge styling.
-- **Header Actions**: Refresh and navigation drawer toggles adhere to secondary button styling (`rounded.md`, 8px padding, smooth hover transition) instead of unstyled dark rectangular blocks.
 
 ### 2. Panel Horizontal Carousel & Overview Card (`panel-carousel`, `panel-card`)
 Renders agent pane status while eliminating excessive vertical scrolling and visual clutter:
@@ -382,7 +384,7 @@ Real-time reactivity strictly follows the server SSE contract, banning periodic 
   - **Viewport Fit & Safe Area Insets**: `<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />` paired with `padding-top: max(1rem, env(safe-area-inset-top))` and composer `padding-bottom: max(0.5rem, env(safe-area-inset-bottom))`.
   - **Dynamic Viewport Unit**: Primary shell styled with `min-height: 100dvh` to absorb mobile browser address bar shifts.
   - **Auto-Zoom Prevention**: Input and textarea font size pinned to `16px` minimum to avoid iOS Safari viewport scaling on focus.
-  - **Touch Target & Tap Feedback**: Interactive buttons, tabs, and panel items enforce minimum 44px touch targets (`min-height: 44px; min-width: 44px;`) with `-webkit-tap-highlight-color: transparent`. Top header action buttons (e.g., refresh `icon-btn`) employ borderless ghost styling while maintaining the 44px touch boundary to vertically harmonize with adjacent status badges.
+  - **Touch Target & Tap Feedback**: Interactive buttons, tabs, and panel items enforce minimum 44px touch targets (`min-height: 44px; min-width: 44px;`) with `-webkit-tap-highlight-color: transparent`. Top header action buttons (e.g., refresh and logout `.icon-btn`) employ borderless ghost styling while maintaining the 44px touch boundary to vertically harmonize with adjacent status badges and headers.
   - **Dynamic Theme Color**: Dual `<meta name="theme-color">` for light (`#F4F7F5`) and dark (`#222823`) scheme transitions.
 - **Scroll Positioning & Message Insertion UX**:
   - **Stick to Bottom**: When user is scrolled to the latest message (within 64px bottom threshold), incoming turn updates and SSE completion turns automatically trigger smooth auto-scrolling to the bottom (`behavior: 'auto'` if `prefers-reduced-motion` is active; `behavior: 'smooth'` otherwise).
