@@ -9,6 +9,7 @@ import {
   Ban,
 } from 'lucide-react'
 import type { TurnStatus } from '../domain/timeline'
+import { Badge } from '../components/ui/badge'
 import r from '../resources.json'
 
 const res = r as Record<string, string>
@@ -27,12 +28,12 @@ const icons: Record<TurnStatus, typeof Clock> = {
 export function TurnStatusBadge({ status }: { status: TurnStatus }) {
   const Icon = icons[status] ?? Info
   const label = res[`turn_${status}`] ?? status
-  const spin = status === 'working' ? 'spin' : ''
+  const spin = status === 'working' ? 'motion-safe:animate-spin' : ''
 
   return (
-    <span className={`pane-badge turn-${status}`} aria-label={label} role="status">
+    <Badge variant="outline" aria-label={label} role="status" className="min-w-0 flex-shrink">
       <Icon size={14} className={spin} aria-hidden="true" />
       <span>{label}</span>
-    </span>
+    </Badge>
   )
 }

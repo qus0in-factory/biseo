@@ -17,7 +17,7 @@ export function TimelineSection({
   onCancel?: (id: string) => void
 }) {
   return (
-    <section className="timeline-panel">
+    <section className="flex h-[calc(100dvh-12rem)] min-h-[360px] flex-col">
       <h2>{r.timelineTitle}</h2>
       <TimelineView items={timeline} onCancel={onCancel} />
       <MessageComposer target={target} busy={sending} onSend={onSend} />

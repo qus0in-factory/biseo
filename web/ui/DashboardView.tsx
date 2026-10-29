@@ -1,7 +1,8 @@
 import type { DashboardProps } from './dashboardTypes'
 import { PanesView } from './PanesView'
 import { TimelineSection } from './TimelineSection'
-import { ConnectionStatusBadge } from './ConnectionStatusBadge'
+import { DashboardHeader } from './DashboardHeader'
+import { Card } from '../components/ui/card'
 import r from '../resources.json'
 
 export function DashboardView({
@@ -17,15 +18,12 @@ export function DashboardView({
 }: DashboardProps) {
   const target = panes.find((p) => p.paneId === selectedId)
   return (
-    <div className="dashboard-layout">
-      <div className="dashboard-header">
-        <ConnectionStatusBadge online={online} />
-        {headerActions}
-      </div>
-      <aside className="panes-panel">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-[320px_1fr]">
+      <DashboardHeader online={online} actions={headerActions} />
+      <Card className="rounded-md bg-surface p-4">
         <h2>{r.panesTitle}</h2>
         <PanesView panes={panes} selectedId={selectedId} onSelect={onSelect} />
-      </aside>
+      </Card>
       <TimelineSection
         target={target}
         timeline={timeline}

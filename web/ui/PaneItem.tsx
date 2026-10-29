@@ -1,26 +1,23 @@
 import type { PaneSummary } from '../domain/timeline'
 import { PaneStatusBadge } from './PaneStatusBadge'
-import { ReasonDetails } from './ReasonDetails'
-import r from '../resources.json'
+import { PaneMetaRow } from './PaneMetaRow'
 
-const res = r as Record<string, string>
 type P = { item: PaneSummary; active: boolean; onClick: () => void }
 
 export function PaneItem({ item, active, onClick }: P) {
-  const d = item.disabledReason
-  const reason = d ? `${res.reasonPrefix}${res[d] ?? d}` : null
-
   return (
     <li>
-      <button type="button" className={`pane-item ${active ? 'selected' : ''}`} onClick={onClick}>
-        <span className="pane-item-row pane-item-primary">
-          <strong className="pane-name">{item.name}</strong>
+      <button
+        type="button"
+        onClick={onClick}
+        aria-pressed={active}
+        className={`flex h-16 min-h-16 w-full cursor-pointer flex-col justify-center gap-1 rounded-sm border border-border bg-white p-2 px-3 text-left ${active ? 'outline-2 outline-offset-0 outline-ring' : ''}`}
+      >
+        <span className="flex w-full items-center justify-between gap-2">
+          <strong className="min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-sm">{item.name}</strong>
           <PaneStatusBadge status={item.status} />
         </span>
-        <span className="pane-item-row pane-item-secondary">
-          <small className="pane-agent-kind">{item.agentKind ?? ''}</small>
-          {reason && <ReasonDetails text={reason} />}
-        </span>
+        <PaneMetaRow agentKind={item.agentKind} disabledReason={item.disabledReason} />
       </button>
     </li>
   )

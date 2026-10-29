@@ -10,7 +10,7 @@ export function TimelineItemView({
   onCancel?: (id: string) => void
 }) {
   return (
-    <article className="timeline-item chat-turn">
+    <article className="flex w-full flex-col gap-2">
       <UserBubble item={item} />
       <AgentBubble item={item} onCancel={onCancel} />
     </article>

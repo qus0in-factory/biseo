@@ -13,10 +13,12 @@ test('header contract and assets exist', () => {
   const favPath = path.resolve(import.meta.dirname, '../public/favicon.svg')
   assert.ok(fs.existsSync(favPath), 'favicon.svg must exist')
 
-  const cssPath = path.resolve(import.meta.dirname, '../header.css')
-  assert.ok(fs.existsSync(cssPath), 'header.css must exist')
-  const css = fs.readFileSync(cssPath, 'utf8')
-  assert.ok(css.includes('flex-wrap: wrap;'))
-  assert.ok(css.includes('text-overflow: ellipsis;'))
-  assert.ok(css.includes('min-width: 0;'))
+  const read = (f: string) =>
+    fs.readFileSync(path.resolve(import.meta.dirname, f), 'utf8')
+  const header = read('../ui/AppHeader.tsx')
+  assert.ok(header.includes('flex-wrap'), 'header wraps on narrow viewports')
+  assert.ok(header.includes('shrink-0'), 'logout button never shrinks off-screen')
+  const brand = read('../ui/HeaderBrand.tsx')
+  assert.ok(brand.includes('text-ellipsis'), 'header title truncates with ellipsis')
+  assert.ok(brand.includes('min-w-0'), 'header flex children may shrink')
 })

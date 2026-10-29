@@ -1,5 +1,8 @@
 import type { PaneSummary } from '../domain/timeline'
 import { ComposerControls } from './ComposerControls'
+import { ComposerCapsule } from './ComposerCapsule'
+import { ComposerField } from './ComposerField'
+import { ComposerShell } from './ComposerShell'
 import { useComposer } from './useComposer'
 import r from '../resources.json'
 
@@ -20,25 +23,11 @@ export function MessageComposer({
   const ph = target ? r.messageTo.replace('{name}', target.name) : r.selectTarget
 
   return (
-    <form
-      className="composer"
-      onSubmit={(e) => {
-        e.preventDefault()
-        submit()
-      }}
-    >
-      <div className="composer-box">
-        <textarea
-          ref={ref}
-          className="composer-input"
-          rows={2}
-          value={t}
-          placeholder={ph}
-          onChange={(e) => setT(e.target.value)}
-          onKeyDown={onKey}
-        />
+    <ComposerShell onSubmit={(e) => { e.preventDefault(); submit() }}>
+      <ComposerCapsule>
+        <ComposerField inputRef={ref} value={t} onChange={setT} onKey={onKey} placeholder={ph} />
         <ComposerControls target={target} busy={busy} can={canSend} />
-      </div>
-    </form>
+      </ComposerCapsule>
+    </ComposerShell>
   )
 }

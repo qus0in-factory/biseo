@@ -1,15 +1,15 @@
 import { Wifi, WifiOff } from 'lucide-react'
+import { Badge } from '../components/ui/badge'
 import r from '../resources.json'
 
 export function ConnectionStatusBadge({ online }: { online: boolean }) {
   const Icon = online ? Wifi : WifiOff
   const label = online ? r.connected : r.disconnected
-  const cls = online ? 'connected' : 'disconnected'
 
   return (
-    <span className={`conn-status ${cls}`} aria-label={label} role="status">
+    <Badge variant="outline" aria-label={label} role="status" className={online ? 'text-[#15803d]' : 'text-[#b91c1c]'}>
       <Icon size={14} aria-hidden="true" />
       <span>{label}</span>
-    </span>
+    </Badge>
   )
 }
