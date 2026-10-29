@@ -30,4 +30,3 @@ export const usagePercentText = (value: number | null, unknown: string) =>
 
 export const usageWindowName = (window: string, labels: Record<string, string>) =>
   labels[`usageWindow_${window}`] ?? window
-
