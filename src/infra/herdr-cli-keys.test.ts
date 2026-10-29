@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { HerdrCli } from './herdr-cli.js'
-import { expectedRead, expectedSendKeys, mkBin, readArgs, rmBin, scriptRead } from './herdr-cli-fixture.test.js'
+import { expectedRead, expectedSendKeys, mkBin, readArgs, rmBin, scriptRead } from './herdr-cli-fixture.js'
 
 test('sends allowlisted keys and reads only recent plain-text lines', async () => {
   const { dir, bin, args } = mkBin(scriptRead)

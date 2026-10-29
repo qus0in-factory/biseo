@@ -1,7 +1,7 @@
 import type { Availability } from '../domain/timeline.js'
 import { makeItem } from './turn-item.js'
-import { input, agent, pane } from './turn-fixture-data.test.js'
-import type { makeDeps } from './turn-fixture.test.js'
+import { input, agent, pane } from './turn-data-fixture.js'
+import type { makeDeps } from './turn-fixture.js'
 
 export const limited: Availability = {
   state: 'limited',

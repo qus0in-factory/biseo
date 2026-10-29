@@ -1,4 +1,4 @@
-import { setup } from './run-fixture.test.js'
+import { setup } from './run-fixture.js'
 
 export const timeoutCase = () => {
   const s = setup()

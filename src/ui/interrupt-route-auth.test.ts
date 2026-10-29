@@ -1,9 +1,9 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { makeDeps } from '../app/turn-fixture.test.js'
-import { pane, reader } from '../app/turn-fixture-data.test.js'
-import { appOf } from './route-app-fixture.test.js'
-import { post } from './interrupt-route-fixture.test.js'
+import { makeDeps } from '../app/turn-fixture.js'
+import { pane, reader } from '../app/turn-data-fixture.js'
+import { appOf } from './route-app-fixture.js'
+import { post } from './interrupt-route-fixture.js'
 
 test('POST /herdr/panes/:paneId/interrupt is authenticated and sends Esc', async () => {
   const d = makeDeps(reader)

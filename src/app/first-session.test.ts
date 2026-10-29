@@ -1,8 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { beginReader } from './turn-queue-target.js'
-import { pane, session } from './first-session-fixture.test.js'
-import { ag, deps } from './first-session-deps-fixture.test.js'
+import { pane, session } from './first-session-fixture.js'
+import { ag, deps } from './first-session-deps-fixture.js'
 
 const input = { requestId: 'r1', workspaceId: 'w', paneId: 'w:p1', text: 'hi' }
 

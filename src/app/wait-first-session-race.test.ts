@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { waitFirstSession } from './wait-first-session.js'
 import type { EventSub } from './first-session-snap.js'
-import { mk, ses } from './wait-first-session-fixture.test.js'
+import { mk, ses } from './wait-first-session-fixture.js'
 
 test('session reported between first read and subscribe wins without events', async () => {
   let cur: unknown

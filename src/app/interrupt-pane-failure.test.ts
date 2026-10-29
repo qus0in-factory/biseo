@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { interruptPane } from './interrupt-pane.js'
-import { setup } from './interrupt-pane-setup-fixture.test.js'
+import { setup } from './interrupt-pane-setup-fixture.js'
 
 test('invalid keys and send failures are audited', async () => {
   const { deps, logs } = setup({ send: async () => Promise.reject(new Error('down')) })

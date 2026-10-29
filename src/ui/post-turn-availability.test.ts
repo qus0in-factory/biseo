@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { makeDeps } from '../app/turn-fixture.test.js'
-import { input, reader } from '../app/turn-fixture-data.test.js'
+import { makeDeps } from '../app/turn-fixture.js'
+import { input, reader } from '../app/turn-data-fixture.js'
 import { appWith, limitedAvailability, resetsAt } from './post-turn-availability-fixture.js'
 
 test('POST returns the provider limit reason and reset time', async () => {

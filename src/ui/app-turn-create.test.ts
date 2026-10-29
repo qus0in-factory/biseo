@@ -1,7 +1,7 @@
 import test from'node:test'
 import assert from'node:assert/strict'
-import {auth}from'./app-fixture-data.test.js'
-import {makeApp}from'./app-fixture.test.js'
+import {auth}from'./app-data-fixture.js'
+import {makeApp}from'./app-fixture.js'
 const body=JSON.stringify({requestId:'r1',workspaceId:'w',paneId:'w:p1',text:'hi'})
 test('creates a queued turn when capture is supported',async()=>{
  const res=await makeApp({read:async()=>'answer'}).request('/herdr/turns',{method:'POST',headers:{...auth,'content-type':'application/json'},body})

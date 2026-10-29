@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { interruptPane } from './interrupt-pane.js'
-import { setup } from './interrupt-pane-setup-fixture.test.js'
+import { setup } from './interrupt-pane-setup-fixture.js'
 
 test('opencode Ctrl+C is rejected and never sent', async () => {
   let sent = false

@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { waitFirstSession } from './wait-first-session.js'
-import { mk, mkSub, tick } from './wait-first-session-fixture.test.js'
+import { mk, mkSub, tick } from './wait-first-session-fixture.js'
 
 test('timeout ends wait, unsubscribes, never polls', async () => {
   const { h, reads } = mk(() => undefined)

@@ -1,8 +1,8 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import {createTurn}from'./create-turn.js'
-import {input,reader,pane}from'./turn-fixture-data.test.js'
-import {makeDeps}from'./turn-fixture.test.js'
+import {input,reader,pane}from'./turn-data-fixture.js'
+import {makeDeps}from'./turn-fixture.js'
 test('same requestId on another pane is rejected while prepare is in flight',async()=>{
  const d=makeDeps(reader)
  let open!:()=>void

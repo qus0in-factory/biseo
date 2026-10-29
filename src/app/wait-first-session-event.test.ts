@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { waitFirstSession } from './wait-first-session.js'
-import { mk, mkSub, ses, tick } from './wait-first-session-fixture.test.js'
+import { mk, mkSub, ses, tick } from './wait-first-session-fixture.js'
 
 test('event resolves session with bounded reads and unsubscribes', async () => {
   let cur: unknown

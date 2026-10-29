@@ -4,9 +4,9 @@ import { Hono } from 'hono'
 import { runSse } from './events-sse.js'
 import { Wake } from './wake.js'
 import { readEvent } from './events-lock-fixture.js'
-import { makeDeps } from '../app/turn-fixture.test.js'
-import { reader } from '../app/turn-fixture-data.test.js'
-import { availability } from './panes-availability-fixture.test.js'
+import { makeDeps } from '../app/turn-fixture.js'
+import { reader } from '../app/turn-data-fixture.js'
+import { availability } from './panes-availability-fixture.js'
 
 test('SSE pane.updated carries the availability field', async () => {
   const d = makeDeps(reader)

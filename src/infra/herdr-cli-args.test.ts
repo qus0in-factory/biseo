@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { HerdrCli } from './herdr-cli.js'
-import { mkBin, readArgs, rmBin, scriptEcho } from './herdr-cli-fixture.test.js'
+import { mkBin, readArgs, rmBin, scriptEcho } from './herdr-cli-fixture.js'
 
 test('canonical args keep hyphen text positional', async () => {
   const { dir, bin, args } = mkBin(scriptEcho)

@@ -1,8 +1,8 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import {runTurn}from'./run-turn.js'
-import {item,target}from'./run-fixture-data.test.js'
-import {setup}from'./run-fixture.test.js'
+import {item,target}from'./run-data-fixture.js'
+import {setup}from'./run-fixture.js'
 test('transcript confirmation accepts a stalled prompt',async()=>{
  const e=Object.assign(new Error('x'),{code:'agent_prompt_stalled'})
  const s=setup({error:e})

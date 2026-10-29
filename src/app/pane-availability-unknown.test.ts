@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { availabilitySummaries } from './pane-availability.js'
 import { PaneLocks } from './pane-locks.js'
-import { agent, pane } from './turn-fixture-data.test.js'
+import { agent, pane } from './turn-data-fixture.js'
 
 test('unknown or failing availability keeps execution gating intact', async () => {
   const s = await availabilitySummaries(

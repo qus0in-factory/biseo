@@ -1,8 +1,8 @@
 import {PaneLocks}from'./pane-locks.js'
 import {TurnStore}from'./turn-store.js'
 import type{PaneInfo}from'../domain/herdr.js'
-import {agent,pane}from'./turn-fixture-data.test.js'
-import {item}from'./run-fixture-data.test.js'
+import {agent,pane}from'./turn-data-fixture.js'
+import {item}from'./run-data-fixture.js'
 export function setup(over:{pane?:PaneInfo;error?:unknown}={}){
  const store=new TurnStore(),locks=new PaneLocks(),calls={prompt:0}
  store.add({...item})

@@ -3,8 +3,8 @@ import assert from 'node:assert/strict'
 import { captureTurn } from './capture-turn.js'
 import { beginFirstReader } from './first-session-reader.js'
 import { TurnStore } from './turn-store.js'
-import { noSub, pane } from './first-session-fixture.test.js'
-import { captureHerdr, captureItem } from './first-session-capture-fixture.test.js'
+import { noSub, pane } from './first-session-fixture.js'
+import { captureHerdr, captureItem } from './first-session-capture-fixture.js'
 
 test('missing session ends capture_unavailable with one prompt', async () => {
   const t = { pane }

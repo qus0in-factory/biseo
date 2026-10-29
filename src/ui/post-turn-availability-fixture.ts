@@ -1,6 +1,6 @@
 import type { Availability } from '../domain/timeline.js'
 import { createApp } from './app.js'
-import type { makeDeps } from '../app/turn-fixture.test.js'
+import type { makeDeps } from '../app/turn-fixture.js'
 
 export const resetsAt = new Date(Date.now() + 60000).toISOString()
 

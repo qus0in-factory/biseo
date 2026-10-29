@@ -1,9 +1,9 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { makeDeps } from '../app/turn-fixture.test.js'
-import { reader } from '../app/turn-fixture-data.test.js'
-import { appOf } from './route-app-fixture.test.js'
-import { availability, type PanesBody } from './panes-availability-fixture.test.js'
+import { makeDeps } from '../app/turn-fixture.js'
+import { reader } from '../app/turn-data-fixture.js'
+import { appOf } from './route-app-fixture.js'
+import { availability, type PanesBody } from './panes-availability-fixture.js'
 
 test('panes route exposes the availability axis and blocks the pane', async () => {
   const d = makeDeps(reader)

@@ -1,5 +1,5 @@
 import { createApp } from './app.js'
-import { makeDeps } from '../app/turn-fixture.test.js'
+import { makeDeps } from '../app/turn-fixture.js'
 
 export const appOf = (d: ReturnType<typeof makeDeps>) =>
   createApp({

@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { availabilitySummaries } from './pane-availability.js'
 import { PaneLocks } from './pane-locks.js'
-import { agent, pane } from './turn-fixture-data.test.js'
+import { agent, pane } from './turn-data-fixture.js'
 import { availableClaim, fresh, ttl } from './pane-availability-fixture.test.js'
 
 test('a fresh available claim is kept', async () => {

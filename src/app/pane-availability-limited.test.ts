@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { availabilitySummaries } from './pane-availability.js'
 import { PaneLocks } from './pane-locks.js'
-import { agent, pane } from './turn-fixture-data.test.js'
+import { agent, pane } from './turn-data-fixture.js'
 import { limited } from './pane-availability-fixture.test.js'
 
 test('limited availability disables a pane and is carried in the summary', async () => {

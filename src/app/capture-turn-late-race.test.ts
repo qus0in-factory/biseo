@@ -1,8 +1,8 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import{captureTurn}from'./capture-turn.js'
-import{item}from'./run-fixture-data.test.js'
-import{setup}from'./run-fixture.test.js'
+import{item}from'./run-data-fixture.js'
+import{setup}from'./run-fixture.js'
 import type{AgentInfo as A}from'../domain/herdr.js'
 test('chk after generation change does not contaminate previous turn',async()=>{
  const s=setup();s.d.timeoutMs=1;s.d.lateCaptureMs=100

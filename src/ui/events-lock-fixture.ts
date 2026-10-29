@@ -1,6 +1,6 @@
 import {PaneLocks}from'../app/pane-locks.js'
 import {TurnStore}from'../app/turn-store.js'
-import {agent,pane}from'../app/turn-fixture-data.test.js'
+import {agent,pane}from'../app/turn-data-fixture.js'
 export async function readEvent(b:ReadableStream<Uint8Array>,p:RegExp,ms=1500){
  const r=b.getReader(),d=new TextDecoder()
  let s='',t:NodeJS.Timeout|undefined

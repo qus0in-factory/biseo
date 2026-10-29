@@ -2,8 +2,8 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { availabilitySummaries } from './pane-availability.js'
 import { PaneLocks } from './pane-locks.js'
-import { agent, pane } from './turn-fixture-data.test.js'
-import { screen } from './pane-blocked-availability-fixture.test.js'
+import { agent, pane } from './turn-data-fixture.js'
+import { screen } from './pane-blocked-availability-fixture.js'
 
 test('blocked screens without a marker are awaiting_input and failures fall back', async () => {
   const blocked = { ...agent, agent_status: 'blocked' as const }

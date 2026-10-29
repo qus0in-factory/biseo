@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import{captureTurn}from'./capture-turn.js'
-import{item}from'./run-fixture-data.test.js'
+import{item}from'./run-data-fixture.js'
 import{timeoutCase}from'./capture-turn-timeout-fixture.js'
 test('timeout is shown then upgraded when a late response arrives',async t=>{
  t.mock.timers.enable({apis:['setTimeout','Date']})

@@ -1,8 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { dispatchPane } from './turn-queue-dispatch.js'
-import { reader } from './turn-fixture-data.test.js'
-import { makeDeps } from './turn-fixture.test.js'
+import { reader } from './turn-data-fixture.js'
+import { makeDeps } from './turn-fixture.js'
 import { limited, queue } from './turn-queue-availability-fixture.js'
 
 test('limited providers hold queued turns without sending', async () => {
