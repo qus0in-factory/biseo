@@ -1,4 +1,5 @@
 @import "./pane-badge.css";
+@import "./pane-status.css";
 @import "./pane-item.css";
 
 .panes-panel {
@@ -14,4 +15,21 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.pane-availability {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+.pane-availability.availability-limited {
+  color: var(--accent);
+}
+.pane-availability.availability-unknown {
+  color: var(--muted);
 }

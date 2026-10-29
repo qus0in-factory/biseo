@@ -4,6 +4,11 @@
   --surface: #F4F7F5;
   --muted: #575A5E;
   --accent: #222823;
+  --status-idle: var(--muted);
+  --status-working: var(--muted);
+  --status-done: #15803D;
+  --status-blocked: #B91C1C;
+  --status-unknown: var(--muted);
   --r-sm: 4px;
   --r-md: 6px;
   --r-lg: 8px;

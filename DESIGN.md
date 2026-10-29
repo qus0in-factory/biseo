@@ -46,9 +46,9 @@ Visual status indicators represent engine health, while message dispatching is s
 | Herdr Engine State | UI Display Label | Light Badge Treatment | Dark Badge Treatment (>= 3:1 Contrast) | Visual Icon Pairing |
 | :--- | :--- | :--- | :--- | :--- |
 | `idle` | Idle (대기) | Slate Gray outline (`#575A5E`) | Silver Gray outline (`#A7A2A9`, **6.01:1**) | Pause / Clock icon |
-| `done` | Done (완료) | Deep Slate fill (`#222823`) | Deep Slate fill + Silver Gray border (`#A7A2A9`, **6.01:1**) + Off White text (`#F4F7F5`, **13.95:1**) | Checkmark icon |
-| `working` | Working (실행 중) | Off White / Slate Gray fill | Silver Gray text & spinner (`#A7A2A9`, **6.01:1**) | Animated CSS spinner |
-| `blocked` | Blocked (차단됨) | Deep Slate fill (`#222823`) | Deep Slate fill + Silver Gray border (`#A7A2A9`, **6.01:1**) + Off White text (`#F4F7F5`, **13.95:1**) | Alert triangle icon |
+| `done` | Done (완료) | Success green fill (`#15803D`) + Off White text (`#F4F7F5`, **4.65:1**) | Deep Slate fill + Silver Gray border (`#A7A2A9`, **6.01:1**) + Off White text (`#F4F7F5`, **13.95:1**) | Checkmark icon |
+| `working` | Working (실행 중) | Slate Gray fill (`#575A5E`) + Off White text (`#F4F7F5`, **6.43:1**) | Silver Gray text & spinner (`#A7A2A9`, **6.01:1**) | Animated CSS spinner |
+| `blocked` | Blocked (차단됨) | Danger red fill (`#B91C1C`) + Off White text (`#F4F7F5`, **6.00:1**) | Deep Slate fill + Silver Gray border (`#A7A2A9`, **6.01:1**) + Off White text (`#F4F7F5`, **13.95:1**) | Alert triangle icon |
 | `unknown` | Unknown (알 수 없음) | Slate Gray dashed border (`#575A5E`) | Silver Gray dashed border (`#A7A2A9`, **6.01:1**) | Help question icon |
 
 #### 2. Dispatch Gating & DisabledReason Mapping (7 Reasons)
@@ -107,10 +107,10 @@ colors:
   border: "#575A5E"
   border-subtle: "#A7A2A9"
   status-idle: "#575A5E"
-  status-done: "#222823"
+  status-done: "#15803D"
   status-working: "#575A5E"
-  status-blocked: "#222823"
-  status-unknown: "#A7A2A9"
+  status-blocked: "#B91C1C"
+  status-unknown: "#575A5E"
 ```
 
 > [!NOTE]
@@ -366,9 +366,9 @@ Single chronological stream representing interactions across all designated work
 ### 6. Status Badges & Lucide Icon Pairing (`badge-status-*`)
 Compact indicators pairing explicit labels, `aria-label`, and `lucide-react` icons (color is never used alone):
 - `badge-status-idle`: Slate Gray outline with `Clock` icon and "Idle" label (Silver Gray in dark mode).
-- `badge-status-done`: High-contrast `CheckCircle2` icon and "Done" label (Deep Slate fill with 1px `#A7A2A9` border and `#F4F7F5` text in dark mode).
-- `badge-status-working`: Animated spinning `Loader2` icon with "Working" label (Silver Gray in dark mode; static icon under `prefers-reduced-motion`).
-- `badge-status-blocked`: Deep Slate fill with `AlertTriangle` icon and "Blocked" label (1px `#A7A2A9` border and `#F4F7F5` text in dark mode).
+- `badge-status-done`: Success green fill (`#15803D`) with `CheckCircle2` icon and "Done" label (`#F4F7F5` text, **4.65:1**); deep slate fill with 1px `#A7A2A9` border in dark mode.
+- `badge-status-working`: Slate Gray fill (`#575A5E`) with animated spinning `Loader2` icon and "Working" label (`#F4F7F5` text, **6.43:1**; static under `prefers-reduced-motion`); Silver Gray text in dark mode.
+- `badge-status-blocked`: Danger red fill (`#B91C1C`) with `AlertTriangle` icon and "Blocked" label (`#F4F7F5` text, **6.00:1**); deep slate fill with 1px `#A7A2A9` border in dark mode.
 - `badge-status-unknown`: Silver Gray / Slate Gray border with `HelpCircle` icon and "Unknown" label.
 - **Connection Status Badge**: `Wifi` icon ("연결됨", green `#15803d`) and `WifiOff` icon ("연결 끊김", red `#b91c1c`) displayed in dashboard header.
 
