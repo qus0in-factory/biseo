@@ -1,0 +1,30 @@
+.btn-send-round {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 9999px;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary);
+  color: #fff;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.btn-send-round:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.composer-reason-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: var(--muted);
+  cursor: help;
+  flex-shrink: 0;
+}
+.btn-send-round:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
