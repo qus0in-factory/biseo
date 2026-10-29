@@ -7,5 +7,5 @@ import type{TurnDeps}from'../app/turn-deps.js'
 type Verify=(t?:string)=>Promise<void>
 export function runtimeDeps(verify:Verify):TurnDeps&{verify:Verify;healthStatus:string}{
  const{store,locks,queue}=createState()
- return{verify,healthStatus:c.healthStatus,allowedWorkspaceId:c.allowedWorkspaceId,store,locks,queue,herdr:new HerdrCli(),capture:createCapture(),availability:createAvailability(),timeoutMs:c.turnTimeoutMs,graceMs:c.captureGraceMs,lateCaptureMs:c.lateCaptureMs,promptAcceptanceMs:c.promptAcceptanceMs,targetGraceMs:c.targetGraceMs}
+ return{verify,healthStatus:c.healthStatus,allowedWorkspaceId:c.allowedWorkspaceId,store,locks,queue,herdr:new HerdrCli(),capture:createCapture(),availability:createAvailability(),timeoutMs:c.turnTimeoutMs,graceMs:c.captureGraceMs,lateCaptureMs:c.lateCaptureMs,promptAcceptanceMs:c.promptAcceptanceMs,firstSessionMs:c.firstSessionMs,targetGraceMs:c.targetGraceMs}
 }
