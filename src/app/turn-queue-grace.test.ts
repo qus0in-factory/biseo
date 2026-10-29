@@ -4,7 +4,7 @@ import {createTurn}from'./create-turn.js'
 import {dispatchPane}from'./turn-queue-dispatch.js'
 import {input,reader,agent,pane}from'./turn-fixture-data.test.js'
 import {makeDeps}from'./turn-fixture.test.js'
-const wait=async(f:()=>boolean)=>{for(let i=0;i<100&&!f();i++)await new Promise(r=>setTimeout(r,1))}
+import {until as wait} from '../test-wait.test-util.js'
 test('target_not_found waits for a transient pane loss',async()=>{
  const d=makeDeps(reader),w={...agent,agent_status:'working'}
  d.herdr.listAgents=async()=>[w];d.herdr.getAgent=async()=>w

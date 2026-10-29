@@ -7,4 +7,3 @@ export function fakeWatch(){
  }
  return{f,subscribe}
 }
-export const wait=async(f:()=>boolean)=>{for(let i=0;i<100&&!f();i++)await new Promise(r=>setTimeout(r,1))}
