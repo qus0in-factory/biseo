@@ -8,8 +8,8 @@ test('does not reconnect when readyState is OPEN', () => {
   ;(globalThis as any).window = env.window
   ;(globalThis as any).document = env.document
   ;(globalThis as any).EventSource = FakeEventSource
-  FakeEventSource.instances = []
-  const unbind=connectTimelineStream('w',()=>{},{},()=>{})
+  FakeEventSource.instances=[]
+  const unbind=connectTimelineStream('w',()=>{},()=>{},()=>{})
   FakeEventSource.instances[0].readyState=FakeEventSource.OPEN
   env.document.visibilityState = 'visible'
   for(const cb of env.docListeners.visibilitychange || []) cb()
