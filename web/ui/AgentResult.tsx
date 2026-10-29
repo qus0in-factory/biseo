@@ -1,4 +1,5 @@
 import type { TurnStatus } from '../domain/timeline'
+import { MarkdownResponse } from './MarkdownResponse.js'
 import r from '../resources.json'
 
 export function AgentResult({ status, responseText }: { status: TurnStatus; responseText?: string | null }) {
@@ -11,7 +12,10 @@ export function AgentResult({ status, responseText }: { status: TurnStatus; resp
       {status === 'timeout' && (
         <p className="mt-1 text-[0.8125rem] text-muted-foreground">{r.collectingLate}</p>
       )}
-      {responseText && <pre className="mt-2 border-l-[3px] border-l-primary bg-surface p-2 font-mono whitespace-pre-wrap break-words">{responseText}</pre>}
+      {responseText && status === 'completed' && <MarkdownResponse text={responseText} />}
+      {responseText && status !== 'completed' && (
+        <pre className="mt-2 border-l-[3px] border-l-primary bg-surface p-2 font-mono whitespace-pre-wrap break-words">{responseText}</pre>
+      )}
     </>
   )
 }
