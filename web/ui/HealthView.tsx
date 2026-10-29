@@ -9,6 +9,7 @@ export function HealthView({ loading, error, onCheck }: Props) {
         className="icon-btn"
         onClick={onCheck}
         disabled={loading}
+        aria-busy={loading}
         aria-label={r.refresh}
         title={r.refresh}
       >
