@@ -10,16 +10,25 @@ import { codexAvailability } from './codex-availability.js'
 const now = new Date('2026-10-29T10:00:00.000Z')
 const future = '2026-10-29T11:00:00.000Z'
 const past = '2026-10-29T09:00:00.000Z'
+const ttl = 15 * 60 * 1000
 
 test('only a reached rate limit is limited', () => {
-  const missing = codexAvailability(null, now)
+  const missing = codexAvailability(null, now, ttl)
   assert.equal(missing.state, 'unknown')
-  const free = codexAvailability({ reached: null, primary: future, secondary: null }, now)
-  assert.equal(free.state, 'available')
+  assert.equal(missing.checkedAt, null)
+  assert.equal(missing.observedAt, now.toISOString())
+  const free = codexAvailability(
+    { reached: null, primary: future, secondary: null, snapshotAt: now.toISOString() },
+    now,
+    ttl,
+  )
+  assert.equal(free.state, 'unknown')
+  assert.equal(free.reason, 'no_limit_signal')
   assert.equal(free.source, 'codex')
   const limited = codexAvailability(
-    { reached: 'secondary', primary: future, secondary: future },
+    { reached: 'secondary', primary: future, secondary: future, snapshotAt: now.toISOString() },
     now,
+    ttl,
   )
   assert.equal(limited.state, 'limited')
   assert.equal(limited.window, 'secondary')
@@ -27,13 +36,33 @@ test('only a reached rate limit is limited', () => {
   assert.equal(limited.reason, 'rate_limit_reached')
 })
 
+test('checkedAt is the data reference time and observedAt the check time', () => {
+  const at = '2026-10-29T09:58:00.000Z'
+  const a = codexAvailability(
+    { reached: null, primary: null, secondary: null, snapshotAt: at },
+    now,
+    ttl,
+  )
+  assert.equal(a.checkedAt, at)
+  assert.equal(a.observedAt, now.toISOString())
+  assert.notEqual(a.checkedAt, a.observedAt)
+})
+
 test('a missing or elapsed reset becomes unknown', () => {
   assert.equal(
-    codexAvailability({ reached: 'primary', primary: null, secondary: null }, now).state,
+    codexAvailability(
+      { reached: 'primary', primary: null, secondary: null, snapshotAt: now.toISOString() },
+      now,
+      ttl,
+    ).state,
     'unknown',
   )
   assert.equal(
-    codexAvailability({ reached: 'primary', primary: past, secondary: null }, now).state,
+    codexAvailability(
+      { reached: 'primary', primary: past, secondary: null, snapshotAt: now.toISOString() },
+      now,
+      ttl,
+    ).state,
     'unknown',
   )
 })
@@ -41,8 +70,9 @@ test('a missing or elapsed reset becomes unknown', () => {
 test('the reached window is matched exactly', () => {
   const other = '2026-10-29T12:00:00.000Z'
   const a = codexAvailability(
-    { reached: 'xsecondary', primary: future, secondary: other },
+    { reached: 'xsecondary', primary: future, secondary: other, snapshotAt: now.toISOString() },
     now,
+    ttl,
   )
   assert.equal(a.state, 'limited')
   assert.equal(a.window, 'primary')

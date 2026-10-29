@@ -2,8 +2,9 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { parseRateLimits } from './codex-rate-limit-parse.js'
 
-const line = (rate: unknown) =>
+const line = (rate: unknown, at: unknown = '2026-10-29T10:00:00.000Z') =>
   JSON.stringify({
+    timestamp: at,
     type: 'event_msg',
     payload: { type: 'token_count', rate_limits: rate, message: 'SECRET body' },
   })
@@ -20,8 +21,15 @@ test('reads only whitelisted rate limit fields', () => {
   assert.equal(r?.reached, 'secondary')
   assert.equal(r?.primary, new Date(1793245000000).toISOString())
   assert.equal(r?.secondary, new Date(1793246000000).toISOString())
-  assert.deepEqual(Object.keys(r!).sort(), ['primary', 'reached', 'secondary'])
+  assert.deepEqual(Object.keys(r!).sort(), ['primary', 'reached', 'secondary', 'snapshotAt'])
   assert.doesNotMatch(JSON.stringify(r), /SECRET/)
+})
+
+test('the rollout timestamp becomes the data reference time', () => {
+  const r = parseRateLimits(line({ rate_limit_reached_type: null }))
+  assert.equal(r?.snapshotAt, '2026-10-29T10:00:00.000Z')
+  assert.equal(parseRateLimits(line({}, null))?.snapshotAt, null)
+  assert.equal(parseRateLimits(line({}, 'not-a-date'))?.snapshotAt, null)
 })
 
 test('ignores non-token events and corrupt lines', () => {

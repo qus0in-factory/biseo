@@ -13,6 +13,6 @@ export function parseRateLimits(line:string):RateLimits|null{
   if(p.type!=='token_count')return null
   const r=(p.rate_limits??o.rate_limits) as R|undefined
   if(!r||typeof r!=='object')return null
-  return{reached:typeof r.rate_limit_reached_type==='string'?r.rate_limit_reached_type:null,primary:win(r.primary),secondary:win(r.secondary)}
+  return{reached:typeof r.rate_limit_reached_type==='string'?r.rate_limit_reached_type:null,primary:win(r.primary),secondary:win(r.secondary),snapshotAt:at(o.timestamp)}
  }catch{return null}
 }

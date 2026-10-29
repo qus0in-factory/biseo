@@ -1,6 +1,6 @@
 import type{AgentInfo,AgentSession,PaneInfo}from'../domain/herdr.js'
 import type{Availability}from'../domain/timeline.js'
-export interface AvailabilityPort{get(session:AgentSession|undefined,now?:Date):Promise<Availability>}
+export interface AvailabilityPort{get(session:AgentSession|undefined,now?:Date):Promise<Availability>;ttlMs?:number}
 export interface HerdrPort{
  listPanes(ws:string):Promise<PaneInfo[]>
  listAgents():Promise<AgentInfo[]>

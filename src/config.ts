@@ -14,6 +14,7 @@ export const config={
  captureGraceMs:Number(e.CAPTURE_GRACE_MS||base.captureGraceMs||3000),
  promptAcceptanceMs:Number(e.PROMPT_ACCEPTANCE_MS||base.promptAcceptanceMs||8000),
  targetGraceMs:Number(e.TARGET_GRACE_MS||base.targetGraceMs||1000),
+ availabilityTtlMs:Number(e.AVAILABILITY_TTL_MS??base.availabilityTtlMs),
  logLevel:e.LOG_LEVEL??base.logLevel??'info',
 }
 validateConfig(config)

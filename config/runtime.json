@@ -11,5 +11,6 @@
   "lateCaptureMs": 7200000,
   "promptAcceptanceMs": 8000,
   "targetGraceMs": 1000,
+  "availabilityTtlMs": 900000,
   "logLevel": "info"
 }
