@@ -17,7 +17,8 @@ export function isOriginAllowed(
     .split(',')
     .map((s) => s.trim())
     .filter(Boolean)
-  if (list.length === 0) return givenOrigin === reqOrigin
+  if (givenOrigin === reqOrigin) return true
+  if (list.length === 0) return false
   return list.includes(givenOrigin)
 }
 

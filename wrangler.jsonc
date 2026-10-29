@@ -31,7 +31,8 @@
     "LOGIN_MAX_ATTEMPTS": "5",
     "LOGIN_ATTEMPT_TTL_SECONDS": "60",
     "ALLOWED_WORKSPACE_ID": "w1T",
-    "UPSTREAM_TIMEOUT_MS": "10000"
+    "UPSTREAM_TIMEOUT_MS": "10000",
+    "ALLOWED_ORIGINS": "https://biseo.qus0in.workers.dev,https://biseo.qus0in.dev"
   },
   "kv_namespaces": [
     {
