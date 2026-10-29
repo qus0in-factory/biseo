@@ -16,9 +16,12 @@ test('first reader collects rows written before session report',async()=>{
  ins.run('ses_9','idle',2,JSON.stringify({outcome:'succeeded'}))
  const full={pane_id:'w:p1',terminal_id:'term',agent_status:'idle',agent:'opencode',agent_session:ses}
  const herdr={listPanes:async()=>[],listAgents:async()=>[],getPane:async()=>full,getAgent:async()=>undefined,prompt:async()=>{}}
+ let subCalls=0
+ const sub=async()=>()=>{subCalls++}
  process.env.BISEO_OPENCODE_DB=p
  try{
-  const r=beginFirstReader({herdr:herdr as never,firstSessionMs:50},noSes,'hi')!
+  const r=beginFirstReader({herdr:herdr as never,firstSessionMs:50,sub},noSes,'hi')!
   assert.equal(await r.read(1000),'ok')
+  assert.equal(subCalls,0)
  }finally{db.close();delete process.env.BISEO_OPENCODE_DB;rm(dir,{recursive:true})}
 })

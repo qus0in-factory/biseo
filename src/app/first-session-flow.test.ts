@@ -12,7 +12,7 @@ test('missing session ends capture_unavailable with one prompt',async()=>{
  const store=new TurnStore()
  const item={requestId:'r1',workspaceId:'w',paneId:'w:p1',targetName:'o',agentKind:'opencode',promptText:'hi',status:'queued' as const,responseText:null,errorCode:null,createdAt:'2026-01-01T00:00:00Z',seq:1,completedAt:null}
  store.add({...item})
- const r=beginFirstReader({herdr:herdr as never,firstSessionMs:20},t,'hi')!
+ const r=beginFirstReader({herdr:herdr as never,firstSessionMs:20,sub:async()=>()=>{}},t,'hi')!
  await captureTurn({herdr:herdr as never,store,timeoutMs:500,lateCaptureMs:0},item,r)
  assert.equal(store.get('r1')?.status,'capture_unavailable')
  assert.equal(store.get('r1')?.errorCode,'response_capture_unavailable')
