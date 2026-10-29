@@ -7,6 +7,7 @@
 @import "./status.css";
 @import "./ios.css";
 @import "./login.css";
+@import "./footer.css";
 
 body {
   font-family: Pretendard, system-ui, sans-serif;

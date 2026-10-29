@@ -3,6 +3,7 @@ import { useHealth } from './useHealth'
 import { authApi } from './infra/authApi'
 import { healthApi } from './infra/healthApi'
 import { AppContent } from './ui/AppContent'
+import { AppFooter } from './ui/AppFooter'
 import r from './resources.json'
 import './style.css'
 
@@ -26,6 +27,7 @@ export default function App() {
         check={check}
       />
       {code && <p className="err">{r[code]}</p>}
+      {authed && <AppFooter />}
     </main>
   )
 }
