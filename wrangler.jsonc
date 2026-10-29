@@ -3,6 +3,7 @@
   "name": "biseo",
   "main": "worker/index.ts",
   "compatibility_date": "2026-10-28",
+  "routes": [{ "pattern": "biseo.qus0in.dev", "custom_domain": true }],
   "observability": {
     "enabled": true
   },
