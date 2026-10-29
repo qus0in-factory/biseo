@@ -1,10 +1,15 @@
-const K = ['idle', 'working', 'done', 'blocked', 'unknown']
-const B = ['transparent', 'status-working', 'status-done', 'status-blocked', 'color-surface']
-const T = ['status-idle', 'color-canvas', 'color-canvas', 'color-canvas', 'color-primary']
-const E = ['status-idle', 'status-working', 'status-done', 'status-blocked', 'status-unknown']
+import type { PaneStatus } from '../domain/timeline'
 
-export function statusStyle(s: string): Record<string, string> {
-  const i = K.indexOf(s)
-  const bg = B[i] === 'transparent' ? 'transparent' : `var(--${B[i]})`
-  return { background: bg, color: `var(--${T[i]})`, border: `1px ${i === 4 ? 'dashed' : 'solid'} var(--${E[i]})` }
+type S = { background: string; color: string; border: string }
+
+const styles: Record<PaneStatus, S> = {
+  idle: { background: 'transparent', color: 'var(--status-idle)', border: '1px solid var(--status-idle)' },
+  working: { background: 'var(--status-working)', color: 'var(--color-canvas)', border: '1px solid var(--status-working)' },
+  done: { background: 'var(--status-done)', color: 'var(--color-canvas)', border: '1px solid var(--status-done)' },
+  blocked: { background: 'var(--status-blocked)', color: 'var(--color-canvas)', border: '1px solid var(--status-blocked)' },
+  unknown: { background: 'var(--color-surface)', color: 'var(--color-primary)', border: '1px dashed var(--status-unknown)' },
+}
+
+export function statusStyle(status: PaneStatus): S {
+  return styles[status]
 }

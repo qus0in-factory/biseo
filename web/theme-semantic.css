@@ -1,2 +1,31 @@
-@theme inline {--color-primary-foreground:var(--primary-foreground);--color-secondary-foreground:var(--secondary-foreground);}
-:root {--background:var(--color-canvas);--foreground:var(--color-primary);--primary-foreground:var(--color-canvas);--secondary-foreground:var(--color-canvas);--card:var(--color-surface);--card-foreground:var(--color-primary);--secondary:var(--color-secondary);--muted:#e2e6e3;--muted-foreground:var(--color-secondary);--border:var(--color-border);--ring:var(--foreground);--radius:0.5rem;--status-idle:var(--secondary);--status-working:var(--status-idle);--status-done:var(--color-success);--status-blocked:var(--color-danger);--status-unknown:var(--status-idle);}.dark {--background:var(--color-canvas-dark);--foreground:var(--color-canvas);--card:var(--color-surface-dark);--card-foreground:var(--color-canvas);--secondary:var(--color-surface-dark);--muted:var(--color-surface-dark);--muted-foreground:var(--color-border-subtle);--border:var(--color-border-subtle);--ring:var(--foreground);}
+@theme inline {
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary-foreground: var(--secondary-foreground);
+}
+
+:root {
+  --background: var(--color-canvas);
+  --foreground: var(--color-primary);
+  --primary-foreground: var(--color-canvas);
+  --secondary-foreground: var(--color-canvas);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-primary);
+  --secondary: var(--color-secondary);
+  --muted: #e2e6e3;
+  --muted-foreground: var(--color-secondary);
+  --border: var(--color-border);
+  --ring: var(--foreground);
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: var(--color-canvas-dark);
+  --foreground: var(--color-canvas);
+  --card: var(--color-surface-dark);
+  --card-foreground: var(--color-canvas);
+  --secondary: var(--color-surface-dark);
+  --muted: var(--color-surface-dark);
+  --muted-foreground: var(--color-border-subtle);
+  --border: var(--color-border-subtle);
+  --ring: var(--foreground);
+}

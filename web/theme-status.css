@@ -1,0 +1,7 @@
+:root {
+  --status-idle: var(--secondary);
+  --status-working: var(--status-idle);
+  --status-done: var(--color-success);
+  --status-blocked: var(--color-danger);
+  --status-unknown: var(--status-idle);
+}
