@@ -593,6 +593,7 @@ All animations honor user accessibility preferences via `@media (prefers-reduced
 - **Do** render all turn lifecycle states (including failed, timeout, and capture-unavailable turns) on the timeline with clear semantic badges and error callouts.
 - **Do** allow retry actions **strictly for pre-send failures**; forbid re-dispatch on indeterminate failures (`delivery_uncertain`, `agent_prompt_stalled`, `timeout`).
 - **Do** sanitize all agent markdown responses prior to timeline rendering to prevent XSS.
+- **Do** pin (bookmark) panels with a star toggle (button, aria-pressed + aria-label, icon + label, 44px touch target); keep at most 2 pinned panels fixed above a scrollable list capped at 5 visible cards; prune stale pane ids from client storage.
 - **Do** use `ring-ring` (`= foreground`) for all interactive element focus rings to ensure WCAG non-text contrast compliance.
 - **Do** maintain a minimum 3:1 non-text contrast ratio for all container borders, dividers, and dark badge boundaries across both light and dark themes.
 - **Do** hydrate client state atomically from full SSE `pane.updated` snapshots and single `turn.updated` events without polling.
