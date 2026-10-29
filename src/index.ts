@@ -1,17 +1,14 @@
-import {serve}from'@hono/node-server'
-import {createVerifyService}from'./app/verify-service.js'
-import {PaneLocks}from'./app/pane-locks.js'
-import {TurnStore}from'./app/turn-store.js'
-import {config}from'./config.js'
-import {HerdrCli}from'./infra/herdr-cli.js'
-import {logger}from'./infra/logger.js'
-import {loadServiceVerifier}from'./infra/service-verifier.js'
-import {createCapture}from'./infra/transcript-capture.js'
-import {createApp}from'./ui/app.js'
-const verify=createVerifyService(await loadServiceVerifier(config.servicePublicKeyPath),{issuer:config.serviceIssuer,audience:config.serviceAudience})
-const app=createApp({
- verify,healthStatus:config.healthStatus,allowedWorkspaceId:config.allowedWorkspaceId,
- store:new TurnStore(),locks:new PaneLocks(),herdr:new HerdrCli(),capture:createCapture(),
- timeoutMs:config.turnTimeoutMs,graceMs:config.captureGraceMs,lateCaptureMs:config.lateCaptureMs,
-})
-serve({fetch:app.fetch,hostname:config.host,port:config.port},i=>logger.info({port:i.port},'listening'))
+import{serve}from'@hono/node-server'
+import{createVerifyService}from'./app/verify-service.js'
+import{createState,startQueueWatch}from'./infra/herdr-watch-boot.js'
+import{config as c}from'./config.js'
+import{HerdrCli}from'./infra/herdr-cli.js'
+import{logger}from'./infra/logger.js'
+import{loadServiceVerifier as f}from'./infra/service-verifier.js'
+import{createCapture}from'./infra/transcript-capture.js'
+import{createApp}from'./ui/app.js'
+const v=createVerifyService(await f(c.servicePublicKeyPath),{issuer:c.serviceIssuer,audience:c.serviceAudience})
+const{store,locks,queue}=createState()
+const d={verify:v,healthStatus:c.healthStatus,allowedWorkspaceId:c.allowedWorkspaceId,store,locks,queue,herdr:new HerdrCli(),capture:createCapture(),timeoutMs:c.turnTimeoutMs,graceMs:c.captureGraceMs,lateCaptureMs:c.lateCaptureMs,promptAcceptanceMs:c.promptAcceptanceMs,targetGraceMs:c.targetGraceMs}
+startQueueWatch(d)
+serve({fetch:createApp(d).fetch,hostname:c.host,port:c.port},i=>logger.info({port:i.port},'listening'))

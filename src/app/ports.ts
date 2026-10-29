@@ -4,7 +4,7 @@ export interface HerdrPort{
  listAgents():Promise<AgentInfo[]>
  getPane(id:string):Promise<PaneInfo|undefined>
  getAgent(id:string):Promise<AgentInfo|undefined>
- prompt(id:string,text:string,timeoutMs:number):Promise<void>
+ prompt(id:string,text:string,timeoutMs:number,acceptanceMs?:number):Promise<void>
 }
-export type CaptureReader={read(graceMs:number):Promise<string|null>}
+export type CaptureReader={read(graceMs:number):Promise<string|null>;confirm?():Promise<boolean>;close?():void}
 export interface CapturePort{begin(session:AgentSession|undefined,cwd:string|undefined,prompt:string):Promise<CaptureReader|null>}

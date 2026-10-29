@@ -9,5 +9,7 @@
   "allowedWorkspaceId": "w1T",
   "turnTimeoutMs": 1800000,
   "lateCaptureMs": 7200000,
+  "promptAcceptanceMs": 8000,
+  "targetGraceMs": 1000,
   "logLevel": "info"
 }

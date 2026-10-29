@@ -1,3 +1,4 @@
+import { X } from 'lucide-react'
 import type { TimelineItem } from '../domain/timeline'
 import { TurnStatusBadge } from './TurnStatusBadge'
 import r from '../resources.json'
@@ -17,11 +18,12 @@ export function TimelineItemHeader({
       {isQueued && onCancel && (
         <button
           type="button"
-          className="btn btn-cancel"
+          className="icon-btn btn-cancel"
           onClick={() => onCancel(item.requestId)}
           aria-label={`${r.cancel} ${item.requestId}`}
+          title={`${r.cancel} (${item.requestId})`}
         >
-          {r.cancel}
+          <X size={14} aria-hidden="true" />
         </button>
       )}
       {item.cancelError && <span className="err">({item.cancelError})</span>}
