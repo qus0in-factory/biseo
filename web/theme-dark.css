@@ -1,0 +1,25 @@
+.dark {
+  --background: var(--color-canvas-dark);
+  --foreground: var(--color-canvas);
+  --card: var(--color-surface-dark);
+  --card-foreground: var(--color-canvas);
+  --secondary: var(--color-surface-dark);
+  --muted: var(--color-surface-dark);
+  --muted-foreground: var(--color-border-subtle);
+  --border: var(--color-border-subtle);
+  --ring: var(--foreground);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: var(--color-canvas-dark);
+    --foreground: var(--color-canvas);
+    --card: var(--color-surface-dark);
+    --card-foreground: var(--color-canvas);
+    --secondary: var(--color-surface-dark);
+    --muted: var(--color-surface-dark);
+    --muted-foreground: var(--color-border-subtle);
+    --border: var(--color-border-subtle);
+    --ring: var(--foreground);
+  }
+}
