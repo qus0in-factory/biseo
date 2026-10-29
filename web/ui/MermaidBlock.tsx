@@ -3,7 +3,7 @@ import type React from "react"
 import { sanitizeSvg } from './sanitizeSvg.js'
 
 const PELE_STYLE = {
-  '--_bg': 'var(--background, #ffffff)',
+  '--_bg': 'var(--background, var(--color-surface))',
   '--_s': 'var(--surface, #f8fafc)',
   '--_a': 'var(--muted, #e2e8f0)',
   '--_b': 'var(--border, #cbd5e1)',

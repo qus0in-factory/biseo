@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useOutlet } from 'react-router'
 import { LoginForm } from './LoginForm'
 import { HealthView } from './HealthView'
 import { WorkspaceSection } from './WorkspaceSection'
@@ -19,10 +20,8 @@ export function AppContent({
   check: () => void
 }): ReactNode {
   if (!authed) return <LoginForm busy={busy} onLogin={login} />
-  return (
-    <WorkspaceSection
-      on={authed}
-      headerActions={<HealthView loading={loading} error={data?.error} onCheck={check} />}
-    />
-  )
+  const outlet = useOutlet()
+  const actions = <HealthView loading={loading} error={data?.error} onCheck={check} />
+  if (outlet) return outlet
+  return <WorkspaceSection on={authed} headerActions={actions} />
 }
