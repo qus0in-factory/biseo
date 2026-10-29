@@ -3,7 +3,7 @@ import assert from'node:assert/strict'
 import {captureTurn}from'./capture-turn.js'
 import {item}from'./run-fixture-data.test.js'
 import {setup}from'./run-fixture.test.js'
-const wait=(ms:number)=>new Promise(r=>setTimeout(r,ms))
+import {wait} from '../test-wait.test-util.js'
 test('immediate null late reader stops on pane generation change',async()=>{
  const s=setup();s.d.timeoutMs=1;s.d.lateCaptureMs=100
  const second={...item,requestId:'r2',seq:2}

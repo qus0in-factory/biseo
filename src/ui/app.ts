@@ -1,6 +1,7 @@
 import {Hono}from'hono'
 import type{TurnDeps}from'../app/turn-deps.js'
 import {eventsRoute}from'./events-route.js'
+import {deleteTurn}from'./delete-turn-route.js'
 import {getTurn}from'./get-turn-route.js'
 import {panesRoute}from'./panes-route.js'
 import {postTurn}from'./post-turn-route.js'
@@ -16,6 +17,7 @@ export function createApp(d:Deps){
  app.get('/herdr/workspaces/:wsId/panes',panesRoute(d))
  app.post('/herdr/turns',postTurn(d))
  app.get('/herdr/turns/:requestId',getTurn(d))
+ app.delete('/herdr/turns/:requestId',deleteTurn(d))
  app.get('/herdr/events',eventsRoute(d))
  return app
 }

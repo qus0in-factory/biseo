@@ -3,7 +3,7 @@ import assert from'node:assert/strict'
 import {captureTurn}from'./capture-turn.js'
 import {item}from'./run-fixture-data.test.js'
 import {setup}from'./run-fixture.test.js'
-const wait=(ms:number)=>new Promise(r=>setTimeout(r,ms))
+import {wait} from '../test-wait.test-util.js'
 test('a new turn on the same pane aborts the previous late capture',async()=>{
  const s=setup()
  s.d.timeoutMs=1;s.d.lateCaptureMs=100
