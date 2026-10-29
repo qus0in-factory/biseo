@@ -7,7 +7,7 @@ const styles: Record<PaneStatus, S> = {
   working: { background: 'var(--status-working)', color: 'var(--color-canvas)', border: '1px solid var(--status-working)' },
   done: { background: 'var(--status-done)', color: 'var(--color-canvas)', border: '1px solid var(--status-done)' },
   blocked: { background: 'var(--status-blocked)', color: 'var(--color-canvas)', border: '1px solid var(--status-blocked)' },
-  unknown: { background: 'var(--color-surface)', color: 'var(--color-primary)', border: '1px dashed var(--status-unknown)' },
+  unknown: { background: 'var(--color-surface)', color: 'var(--status-unknown-fg)', border: '1px dashed var(--status-unknown)' },
 }
 
 export function statusStyle(status: PaneStatus): S {
