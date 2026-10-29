@@ -1,5 +1,6 @@
 import { useState, useRef, type KeyboardEvent } from 'react'
 import type { PaneSummary } from '../domain/timeline'
+import { canInputTarget } from '../domain/paneState'
 import { shouldSendOnEnter } from './composerKey'
 
 export function useComposer(
@@ -9,7 +10,7 @@ export function useComposer(
 ) {
   const [t, setT] = useState('')
   const ref = useRef<HTMLTextAreaElement>(null)
-  const canSend = Boolean(target?.sendable) && !busy && t.trim().length > 0
+  const canSend = canInputTarget(target) && !busy && t.trim().length > 0
 
   const submit = () => {
     if (!canSend) return

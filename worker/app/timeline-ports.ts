@@ -16,6 +16,7 @@ export interface HerdrUpstreamPort {
   listPanes(workspaceId: string): Promise<UpstreamResult<PanesPayload>>
   submitTurn(input: SubmitMessageInput): Promise<UpstreamResult<Record<string, unknown>>>
   getTurn(requestId: string): Promise<UpstreamResult<TimelineItem>>
+  cancelTurn(requestId: string): Promise<UpstreamResult<Record<string, unknown>>>
   openEventStream(
     workspaceId: string,
     lastEventId?: string | null,

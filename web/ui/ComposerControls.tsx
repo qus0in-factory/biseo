@@ -1,5 +1,5 @@
 import type { PaneSummary } from '../domain/timeline'
-import { getPaneState } from '../domain/paneState'
+import { getPaneState, isQueuedTarget } from '../domain/paneState'
 import { SendIcon, ReasonIcon } from './ComposerIcons'
 import r from '../resources.json'
 
@@ -17,7 +17,11 @@ export function ComposerControls({
 }) {
   const { reason } = getPaneState(target)
   const err = reason ? res[reason] ?? reason : null
-  const btnLabel = busy ? res.sending : res.send
+  const btnLabel = busy
+    ? res.sending
+    : isQueuedTarget(target)
+      ? (res.reserveSend ?? res.send)
+      : res.send
 
   return (
     <div className="composer-actions">
