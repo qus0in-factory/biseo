@@ -1,12 +1,15 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import {spawnSync}from'node:child_process'
-import {existsSync,mkdtempSync,readdirSync,readFileSync,rmSync,statSync}from'node:fs'
+import {existsSync,mkdirSync,mkdtempSync,readdirSync,readFileSync,rmSync,statSync,writeFileSync}from'node:fs'
 import {tmpdir}from'node:os'
 import {join}from'node:path'
 import {fileURLToPath}from'node:url'
 const script=fileURLToPath(new URL('../../scripts/codex-session-hook.sh',import.meta.url))
-const run=(base:string,env:Record<string,string>,input:string)=>spawnSync('sh',[script],{input,encoding:'utf8',env:{...process.env,BISEO_STATE_DIR:base,...env}})
+const run=(base:string,env:Record<string,string>,input:string)=>{
+ const e={...process.env};delete e.HERDR_WORKSPACE_ID;delete e.HERDR_BIN_PATH
+ return spawnSync('sh',[script],{input,encoding:'utf8',env:{...e,BISEO_STATE_DIR:base,...env}})
+}
 const file=(base:string,pane:string)=>join(base,'codex',Buffer.from(pane).toString('hex')+'.json')
 test('writes a private atomic record for the pane',()=>{
  const base=mkdtempSync(join(tmpdir(),'biseo-hook-'))
@@ -48,4 +51,37 @@ test('silently ignores missing pane or invalid input',()=>{
    assert.equal(existsSync(join(base,'codex'))?readdirSync(join(base,'codex')).length:0,0)
   }finally{rmSync(base,{recursive:true,force:true})}
  }
+})
+function fakeHerdr(base:string,body:string){
+ const dir=join(base,'bin'),f=join(dir,'herdr')
+ mkdirSync(dir,{recursive:true});writeFileSync(f,`#!/bin/sh\ncase "$1 $2" in\n${body}\n  *) echo '{}';;\nesac\n`,{mode:0o755})
+ return f
+}
+test('uses the herdr session owner when the daemon pane is stale',()=>{
+ const base=mkdtempSync(join(tmpdir(),'biseo-hook-'))
+ try{
+  const bin=fakeHerdr(base,`  "agent list") echo '{"result":{"agents":[{"pane_id":"w1T:p1","agent_session":{"value":"s1"}}]}}';;`)
+  const r=run(base,{HERDR_PANE_ID:'wW:p5',HERDR_WORKSPACE_ID:'wW',HERDR_BIN_PATH:bin},JSON.stringify({session_id:'s1',transcript_path:'/home/test/.codex/sessions/a.jsonl'}))
+  assert.equal(r.status,0)
+  assert.equal(JSON.parse(readFileSync(file(base,'w1T:p1'),'utf8')).pane_id,'w1T:p1')
+  assert.equal(existsSync(file(base,'wW:p5')),false)
+ }finally{rmSync(base,{recursive:true,force:true})}
+})
+test('skips the record when a stale pane cannot be verified',()=>{
+ const base=mkdtempSync(join(tmpdir(),'biseo-hook-'))
+ try{
+  const bin=fakeHerdr(base,`  "agent list") echo '{"result":{"agents":[]}}';;`)
+  const r=run(base,{HERDR_PANE_ID:'wW:p5',HERDR_WORKSPACE_ID:'wW',HERDR_BIN_PATH:bin},JSON.stringify({session_id:'s1',transcript_path:'/home/test/.codex/sessions/a.jsonl'}))
+  assert.equal(r.status,0)
+  assert.equal(existsSync(join(base,'codex'))?readdirSync(join(base,'codex')).length:0,0)
+ }finally{rmSync(base,{recursive:true,force:true})}
+})
+test('keeps the env pane when herdr confirms it',()=>{
+ const base=mkdtempSync(join(tmpdir(),'biseo-hook-'))
+ try{
+  const bin=fakeHerdr(base,`  "agent list") echo '{"result":{"agents":[]}}';;\n  "pane list") echo '{"result":{"panes":[{"pane_id":"p"}]}}';;`)
+  const r=run(base,{HERDR_PANE_ID:'p',HERDR_WORKSPACE_ID:'w',HERDR_BIN_PATH:bin},JSON.stringify({session_id:'s1',transcript_path:'/home/test/.codex/sessions/a.jsonl'}))
+  assert.equal(r.status,0)
+  assert.equal(JSON.parse(readFileSync(file(base,'p'),'utf8')).pane_id,'p')
+ }finally{rmSync(base,{recursive:true,force:true})}
 })
