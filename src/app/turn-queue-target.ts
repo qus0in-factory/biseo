@@ -1,4 +1,5 @@
 import{findTarget,targetIssue,type Target}from'../domain/turn-policy.js'
+import{beginFirstReader}from'./first-session-reader.js'
 import type{CaptureReader}from'./ports.js'
 import type{TurnDeps}from'./turn-deps.js'
 import type{TurnInput}from'./turn-input.js'
@@ -12,5 +13,5 @@ export async function resolveTarget(d:TurnDeps,input:TurnInput):Promise<Resolved
 }
 export async function beginReader(d:TurnDeps,input:TurnInput,target:Target):Promise<CaptureReader|null>{
  const s=target.agent?.agent_session??target.pane.agent_session??undefined
- return d.capture.begin(s,target.pane.cwd,input.text)
+ return(await d.capture.begin(s,target.pane.cwd,input.text))??beginFirstReader(d,target,input.text)
 }
