@@ -5,15 +5,18 @@ export function LoginForm({ busy, onLogin }: Props) {
   const [pw, setPw] = useState('')
   return (
     <form
+      className="login-form"
       onSubmit={(e) => {
         e.preventDefault()
         onLogin(pw)
       }}
     >
-      <label>
+      <label className="login-field">
         {r.passwordLabel}
         <input
+          className="login-input"
           type="password"
+          autoComplete="current-password"
           value={pw}
           onChange={(e) => setPw(e.target.value)}
           disabled={busy}
