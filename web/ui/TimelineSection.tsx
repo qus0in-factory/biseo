@@ -14,7 +14,8 @@ type P = {
 
 export function TimelineSection({ target, timeline, sending, onSend, onCancel, online }: P) {
   return (
-    <section className="flex h-[calc(100dvh-12rem)] min-h-[360px] flex-col">
+    <section className="flex h-[calc(var(--visual-viewport-height,100dvh)-12rem)] min-h-[240px] flex-col">
+
       <h2>{r.timelineTitle}</h2>
       <TimelineView items={timeline} onCancel={onCancel} />
       <MessageComposer target={target} busy={sending} onSend={onSend} online={online} />
