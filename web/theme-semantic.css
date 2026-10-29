@@ -1,6 +1,13 @@
+@theme inline {
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary-foreground: var(--secondary-foreground);
+}
+
 :root {
   --background: var(--color-canvas);
   --foreground: var(--color-primary);
+  --primary-foreground: var(--color-canvas);
+  --secondary-foreground: var(--color-canvas);
   --card: var(--color-surface);
   --card-foreground: var(--color-primary);
   --muted: #e2e6e3;

@@ -12,7 +12,5 @@ export const scrollDown = (el: HTMLElement): void => {
   el.scrollTo({ top: el.scrollHeight, behavior })
 }
 
-export const itemsKey = (list: TimelineItem[]): string => {
-  const last = list[list.length - 1]
-  return `${list.length}:${last?.requestId ?? ''}:${last?.status ?? ''}`
-}
+export const itemsKey = (list: TimelineItem[]): string =>
+  `${list.length}:${list.map((i) => `${i.requestId}:${i.status}`).join('|')}`

@@ -12,7 +12,7 @@ type Props = {
 export function TimelineView({ items, onCancel }: Props) {
   const { ref, showJump, scrollToBottom, onScroll } = useTimelineScroll(items)
 
-  if (items.length === 0) return <p className="text-sm text-muted-foreground">{r.emptyTimeline}</p>
+  if (items.length === 0) return <p className="flex-1 text-sm text-muted-foreground">{r.emptyTimeline}</p>
 
   return (
     <div className="relative flex min-h-0 flex-1 flex-col">

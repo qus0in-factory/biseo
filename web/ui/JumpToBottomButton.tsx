@@ -8,7 +8,7 @@ export function JumpToBottomButton({ onClick }: { onClick: () => void }) {
       size="pill"
       onClick={onClick}
       aria-label={r.jumpToNew}
-      className="absolute bottom-3 left-1/2 z-5 -translate-x-1/2 bg-primary text-white shadow-lg"
+      className="absolute bottom-3 left-1/2 z-5 -translate-x-1/2 bg-primary text-primary-foreground shadow-lg"
     >
       <svg
         width="16"

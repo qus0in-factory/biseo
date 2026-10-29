@@ -1,5 +1,7 @@
 import '../ui/composerKey.test.js'
+import '../ui/layoutRegression.test.js'
 import '../ui/scrollHelper.test.js'
+import '../ui/scrollHelperIntermediate.test.js'
 import '../ui/timeFormat.test.js'
 import '../ui/sanitizeSvg.test.js'
 import '../ui/markdown.test.js'

@@ -13,7 +13,7 @@ export function AgentBubble({
 }) {
   const { status, responseText, errorCode, cancelError } = item
   return (
-    <Card className="mr-auto max-w-[85%] self-start rounded-md rounded-bl-[2px] bg-white px-3 py-2 break-words">
+    <Card className="mr-auto max-w-[85%] self-start rounded-md rounded-bl-[2px] px-3 py-2 break-words">
       <AgentHeader item={item} onCancel={onCancel} />
       <AgentResult status={status} responseText={responseText} />
       <TurnErrorDetails code={errorCode} />
