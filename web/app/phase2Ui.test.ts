@@ -5,20 +5,20 @@ import { parseRouteParams } from '../domain/schemas/routeParams'
 import { validateMessageInput } from '../domain/schemas/messageInput'
 import { useUiStore } from './uiStore'
 
-test('appRoutes contains expected phase-2 routes', () => {
+test('routes exclude history', () => {
   const paths = routePaths
-  for (const p of ['/', '/panels', '/chat', '/chat/:paneId', '/history']) {
-    assert.ok(paths.includes(p))
-  }
+  for (const p of ['/', '/panels', '/chat', '/chat/:paneId']) assert.ok(paths.includes(p))
+  assert.ok(!paths.includes('/history'))
 })
 
-test('phase-2 schemas validate inputs', () => {
+test('schemas validate', () => {
   assert.equal(validateMessageInput('hello').ok, true)
   assert.equal(validateMessageInput('   ').ok, false)
   assert.deepEqual(parseRouteParams({ tab: 'chat' }), { tab: 'chat' })
+  assert.deepEqual(parseRouteParams({ tab: 'history' }), {})
 })
 
-test('phase-2 uiStore tracks mobile and view state', () => {
+test('uiStore tracks tabs', () => {
   const s = useUiStore.getState()
   s.setActiveTab('chat')
   assert.equal(useUiStore.getState().activeTab, 'chat')
