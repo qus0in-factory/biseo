@@ -16,7 +16,7 @@ Following milestone reprioritization, milestone **0.3.1 (#25)** focuses strictly
 
 - **Workspace Dashboard (0.3.1)**: Panel display of active panes in the designated workspace (name, agent, operational status) arranged via horizontal carousel/tabs on mobile to eliminate excessive vertical scrolling.
 - **Single Chat Timeline (0.3.1)**: Integrated conversation stream with clear target/sender badges, rendering only completed final responses, alongside progress spinners for active runs.
-- **Message Dispatch (0.3.1)**: Input composer with deterministic disabled states and explicit reason displays when agents are busy, blocked, or in an unknown state.
+- **Message Dispatch (0.3.1)**: Input composer allowing continuous editing in textarea with send button gating and deterministic reason displays when agents are busy, blocked, or disconnected (turn reservation planned for 0.3.1). Textarea strictly enforces CSS `resize: none` with fixed height and internal scrolling.
 - **History & Search (Deferred to 0.3.2 #24)**: D1-backed search and historical turn log retrieval. The 0.3.1 UI reserves the navigation tab slot and visual specifications, but backend query integration is bound in 0.3.2.
 
 ### Technology Stack & State Architecture
@@ -52,7 +52,7 @@ Visual status indicators represent engine health, while message dispatching is s
 | `unknown` | Unknown (알 수 없음) | Slate Gray dashed border (`#575A5E`) | Silver Gray dashed border (`#A7A2A9`, **6.01:1**) | Help question icon |
 
 #### 2. Dispatch Gating & DisabledReason Mapping (7 Reasons)
-Message dispatch availability is deterministically governed by `sendable` and `disabledReason` (derived from `src/domain/pane-reason.ts` and `web/domain/paneState.ts`). When `sendable` is `false`, the composer input is disabled and displays one of the 7 deterministic rationale messages in a shadcn `Alert`:
+Message dispatch gating is deterministically governed by `sendable` and `disabledReason` (derived from `src/domain/pane-reason.ts` and `web/domain/paneState.ts`). In 0.3.0, the input/textarea remains continuously editable while only the send button is disabled when `sendable` is `false` or an agent is busy. Dispatch reservation UI is scheduled for milestone 0.3.1. The textarea strictly enforces `resize: none` with a fixed height and internal scrolling. Deterministic rationale messages display in a companion callout/alert:
 
 | DisabledReason Token | User-Facing Korean Rationale | Trigger Condition |
 | :--- | :--- | :--- |
@@ -325,43 +325,52 @@ Single chronological stream representing interactions across all designated work
 - **Markdown Sanitization**: Agent completed markdown responses must pass through strict sanitization (or fallback to plain text) to prevent XSS and malformed layout injection.
 - **Comprehensive Turn State Representation**: All turn completions, failures, timeouts, and uncaptured dispatches are committed to the timeline with explicit semantic badges and status callouts. No terminal turns are silently swallowed.
 - **Retry Policy (Indeterminate Delivery Guard)**: Per `docs/contracts-0.3.0.md` and `src/app/prompt-error.ts`, a retry action is permitted **only for pre-send failures** (client-side validation errors or network failures prior to server dispatch). Once sent, outcomes with uncertain execution (`delivery_uncertain`, `agent_prompt_stalled`, `timeout`) **strictly forbid automatic or one-click prompt re-dispatch** to prevent unintended duplicate side-effects.
-- **TurnStatus 7-State Matrix**:
+- **TurnStatus 8-State Matrix**:
 
-| TurnStatus Token | Visual Badge Treatment | Icon Pairing | Content Display & User Guidance | Retry Availability |
+| TurnStatus Token | Visual Badge Treatment | Icon Pairing (Lucide) | Content Display & User Guidance | Retry Availability |
 | :--- | :--- | :--- | :--- | :--- |
-| `queued` | Slate Gray outline (Light) / Silver outline (Dark, **6.01:1**) | Clock icon | Prompt text displayed with pending indicator; waiting for agent dispatch | N/A (In flight) |
-| `working` | Off White / Slate fill (Light) / Silver spinner (Dark, **6.01:1**) | Animated CSS spinner | Agent is processing turn; live working indicator displayed | N/A (In flight) |
-| `completed` | Deep Slate fill / high contrast + Silver outline (Dark) | Checkmark icon | Agent response text rendered with sanitized markdown | N/A (Completed) |
-| `capture_unavailable` | Silver Gray fill / outline | Info circle icon | Prompt recorded; displays "이 에이전트의 완료 응답 수집은 아직 지원하지 않습니다." | Disallowed |
-| `blocked` | Deep Slate fill + Silver outline (Dark, **6.01:1**) | Alert triangle icon | Prompt recorded; displays dependency/user intervention block | Disallowed |
-| `failed` | Slate Gray fill + Silver outline (Dark, **6.01:1**) | X circle icon | Displays error message & `errorCode` suffix; Retry allowed **only if pre-send failure** (`delivery_uncertain` & `agent_prompt_stalled` forbid retry) | Pre-send only |
-| `timeout` | Deep Slate outline (Light) / Silver outline (Dark, **6.01:1**) | Timer alert icon | Prompt recorded; displays execution timeout (`errorCode: turn_timeout`) without retry | Disallowed |
+| `queued` | Slate Gray outline (Light) / Silver outline (Dark, **6.01:1**) | `Clock` icon | Prompt queued / reserved for busy panel; cancellation button (`DELETE /api/turns/:requestId`) exposed | Cancellation permitted |
+| `working` | Off White / Slate fill (Light) / Silver spinner (Dark, **6.01:1**) | `Loader2` (spinning) | Agent is processing turn; live working indicator displayed | N/A (In flight) |
+| `completed` | Deep Slate fill / high contrast + Silver outline (Dark) | `CheckCircle2` icon | Agent response text rendered with sanitized markdown; supports late completion upgrade after timeout | N/A (Completed) |
+| `capture_unavailable` | Silver Gray fill / outline | `Info` icon | Prompt recorded; displays "이 에이전트의 완료 응답 수집은 아직 지원하지 않습니다." | Disallowed |
+| `blocked` | Deep Slate fill + Silver outline (Dark, **6.01:1**) | `AlertTriangle` icon | Prompt recorded; displays dependency/user intervention block | Disallowed |
+| `failed` | Slate Gray fill + Silver outline (Dark, **6.01:1**) | `XCircle` icon | Displays error message; if `delivery_uncertain`, renders tooltip guidance: "전달 여부 불확실, 재전송 시 중복 가능"; automatic or one-click retry is strictly forbidden | Pre-send only |
+| `timeout` | Deep Slate outline (Light) / Silver outline (Dark, **6.01:1**) | `Timer` icon | Prompt recorded; displays "계속 수집 중(최대 2시간)" indicator; accepts late `completed` upgrade up to 2 hours | Disallowed |
+| `cancelled` | Slate Gray outline (Light) / Silver outline (Dark, **6.01:1**) | `Ban` icon | Prompt cancelled while queued prior to dispatch; terminal state | Disallowed |
 
-### 4. Dispatch Composer (`composer-input`)
+### 4. Dispatch Composer (`composer-input`) & Reservation UI
 - Textarea with submission trigger, bound to the active target pane selected in the carousel or panels list.
-- **Deterministic Gating**: When `sendable` is `false`, user input and dispatch triggers are strictly disabled.
-- **Explicit Rationale Display**: The active `disabledReason` is displayed directly adjacent to or above the textarea in a shadcn `Alert` (`AlertTitle`, `AlertDescription`), preventing user ambiguity.
-- **Offline Guard**: If SSE stream connectivity is lost, composer immediately locks with `connection_unavailable`.
+- **Dispatch Gating in 0.3.0 & Reservation UI (0.3.1)**: Textarea remains continuously editable regardless of target status or connectivity (`resize: none` with fixed height and internal scrolling). Only the send button is disabled when `sendable` is `false`, the agent is busy, or offline. Turn reservation (202 queued dispatch) is scheduled for milestone 0.3.1.
+- **Explicit Rationale Display & Details Popover**: When send is gated (`agent_busy`, `agent_blocked`, `no_agent_in_pane`, `target_not_found`, `connection_unavailable`, `response_capture_unavailable`), deterministic rationale is displayed beside the send trigger without blocking textarea typing. Lengthy reasons collapse behind an accessible popover/tooltip (`ReasonDetails`).
+- **Offline Guard**: If SSE stream connectivity is lost, only the send trigger is disabled with `connection_unavailable` while draft composition remains fully editable.
 
 ### 5. D1 Log & History Viewer (Scheduled for Milestone 0.3.2)
 - Reserved tab view slot and layout specification for D1-backed turn logs.
 - Milestone 0.3.1 implements the UI container, empty state, and keyword search input shell. Full persistence D1 query binding and scroll pagination are integrated in milestone 0.3.2 (#24).
 
-### 6. Status Badges (`badge-status-*`)
-Compact indicators adhering to the 5-tone palette:
-- `badge-status-idle`: Slate Gray outline with pause icon and "Idle" label (Silver Gray in dark mode).
-- `badge-status-done`: High-contrast checkmark and "Done" label (Deep Slate fill with 1px `#A7A2A9` border and `#F4F7F5` text in dark mode).
-- `badge-status-working`: Animated spinner with "Working" label (Silver Gray in dark mode).
-- `badge-status-blocked`: Deep Slate fill with alert triangle icon and "Blocked" label (1px `#A7A2A9` border and `#F4F7F5` text in dark mode).
-- `badge-status-unknown`: Silver Gray / Slate Gray border with question icon and "Unknown" label.
+### 6. Status Badges & Lucide Icon Pairing (`badge-status-*`)
+Compact indicators pairing explicit labels, `aria-label`, and `lucide-react` icons (color is never used alone):
+- `badge-status-idle`: Slate Gray outline with `Clock` icon and "Idle" label (Silver Gray in dark mode).
+- `badge-status-done`: High-contrast `CheckCircle2` icon and "Done" label (Deep Slate fill with 1px `#A7A2A9` border and `#F4F7F5` text in dark mode).
+- `badge-status-working`: Animated spinning `Loader2` icon with "Working" label (Silver Gray in dark mode; static icon under `prefers-reduced-motion`).
+- `badge-status-blocked`: Deep Slate fill with `AlertTriangle` icon and "Blocked" label (1px `#A7A2A9` border and `#F4F7F5` text in dark mode).
+- `badge-status-unknown`: Silver Gray / Slate Gray border with `HelpCircle` icon and "Unknown" label.
+- **Connection Status Badge**: `Wifi` icon ("연결됨", green `#15803d`) and `WifiOff` icon ("연결 끊김", red `#b91c1c`) displayed in dashboard header.
 
-### 7. SSE Event Streaming & State Hydration Protocol (Zero-Polling)
+### 7. SSE Event Streaming & Exponential Backoff Reconnection (Zero-Polling)
 Real-time reactivity strictly follows the server SSE contract, banning periodic client-side polling:
-- **`pane.updated` Event**: Delivers full snapshot payload `{ workspaceId, panes: PaneSummary[] }`. TanStack Query cache is updated atomically. Disposed or killed panes are eliminated immediately from carousel and panel views.
-- **`turn.updated` Event**: Delivers single turn state updates (`TimelineItem`). TanStack Query upserts the item into the timeline stream without duplicating optimistic turns or regressing status ranks.
-- **Connection Lifecycle & Reconnect Recovery**:
-  - `onerror`: Disables the composer immediately with `connection_unavailable`. The browser EventSource naturally attempts reconnection; during this time, client code never executes fallback polling loops.
-  - `onopen`: Executed solely upon genuine connection establishment / re-connection. Triggers a single explicit client REST request `GET /api/workspaces/:wsId/panes` and pending turns recovery (Worker handles `/herdr/...` upstream proxying internally).
+- **`pane.updated` Event**: Delivers full snapshot payload `{ workspaceId, panes: PaneSummary[] }`. Panes cache is updated atomically.
+- **`turn.updated` Event**: Delivers single turn state updates (`TimelineItem`). Upserts into the timeline stream without duplicating optimistic turns or regressing status ranks (allows `timeout` -> `completed` transition).
+- **Exponential Backoff Reconnect & Fast Browser Recovery**:
+  - `onerror`: Disables composer immediately with `connection_unavailable`. Client closes broken stream and schedules reconnection with exponential backoff (`baseMs=1000`, `factor=2`, `maxMs=30000` with jitter). Periodic polling loops remain strictly banned.
+  - `online`, `visibilitychange` & `pageshow` (bfcache): When browser recovers network, tab gains focus, or page restores from mobile background bfcache (`pageshow` with `event.persisted`), client immediately clears backoff delay and attempts immediate reconnection (`reconnectNow()`).
+  - `onopen`: Executed upon genuine connection establishment / re-connection. Triggers snapshot fetch `GET /api/workspaces/:wsId/panes` and synchronization of pending turns.
+- **Safari / iOS Viewport & Touch Ergonomics**:
+  - **Viewport Fit & Safe Area Insets**: `<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />` paired with `padding-top: max(1rem, env(safe-area-inset-top))` and composer `padding-bottom: max(0.5rem, env(safe-area-inset-bottom))`.
+  - **Dynamic Viewport Unit**: Primary shell styled with `min-height: 100dvh` to absorb mobile browser address bar shifts.
+  - **Auto-Zoom Prevention**: Input and textarea font size pinned to `16px` minimum to avoid iOS Safari viewport scaling on focus.
+  - **Touch Target & Tap Feedback**: Interactive buttons, tabs, and panel items enforce minimum 44px touch targets (`min-height: 44px; min-width: 44px;`) with `-webkit-tap-highlight-color: transparent`.
+  - **Dynamic Theme Color**: Dual `<meta name="theme-color">` for light (`#F4F7F5`) and dark (`#222823`) scheme transitions.
 - **Scroll Positioning & Message Insertion UX**:
   - **Stick to Bottom**: When user is scrolled to the latest message (within 64px bottom threshold), incoming turn updates and SSE completion turns automatically trigger smooth auto-scrolling to the bottom (`behavior: 'auto'` if `prefers-reduced-motion` is active; `behavior: 'smooth'` otherwise).
   - **Scroll Lock on Reading**: If the user has scrolled up to inspect previous responses, incoming messages do not force-scroll the viewport; a floating pill ("새 메시지 도착 ↓") appears at the bottom.
@@ -412,7 +421,7 @@ Existing prototype components in `web/ui/` map directly onto standard shadcn/ui 
 | `PaneItem` | `web/ui/PaneItem.tsx` | `Card`, `Badge` | `CardHeader` houses primary title (`name`) & runtime badge (`agentKind`). Status rendered via `Badge` with icon. |
 | `PanesView` | `web/ui/PanesView.tsx` | `Carousel` (Mobile) / Grid (Desktop) | Reuses `CarouselContent`, `CarouselItem`, `CarouselPrevious`, `CarouselNext`. Binds active snap to target pane. |
 | `TimelineItemView` | `web/ui/TimelineItemView.tsx` | `Card`, `Badge`, `Alert` | Turn prompt and sanitized markdown response. Failures display shadcn `Alert` with `errorCode` (retry on pre-send only). |
-| `MessageComposer` | `web/ui/MessageComposer.tsx` | `Textarea`, `Button`, `Alert` | Controlled textarea with disabled state and explicit `disabledReason` in a shadcn `Alert`. Keyboard Enter-to-send support. |
+| `MessageComposer` | `web/ui/MessageComposer.tsx` | `Textarea`, `Button`, `Alert` | Continuously editable textarea (CSS `resize: none`, fixed height with internal scrolling) with send button gating and explicit `disabledReason` in a shadcn `Alert`. (Turn reservation UI planned for 0.3.1). |
 | `WorkspaceSection` | `web/ui/WorkspaceSection.tsx` | `Tabs`, `Sheet` | `TabsList` / `TabsTrigger` for mobile view switching; `Sheet` for off-canvas drawer settings. |
 
 ```yaml
@@ -577,7 +586,7 @@ All animations honor user accessibility preferences via `@media (prefers-reduced
 - **Do** arrange panel cards horizontally in an Embla-backed `shadcn Carousel` on mobile viewports rather than stacking them vertically.
 - **Do** reuse standard shadcn/ui primitives (`Tabs`, `Carousel`, `Card`, `Badge`, `Alert`) and avoid custom reinventions.
 - **Do** ensure swipe gestures and keyboard arrow navigation work seamlessly across carousel and tab controls.
-- **Do** disable the input composer immediately on SSE disconnection with `connection_unavailable`.
+- **Do** disable the send action while keeping the textarea editable on SSE disconnection with `connection_unavailable`.
 - **Do** visually separate agent identifiers from runtime tools (e.g., `opus` and `claude`) using typography and pill styling.
 - **Do** move lengthy dispatch-disabled error descriptions out of the panel card list into dedicated composer callouts.
 - **Do** use system monospace fonts for code and identifier elements.

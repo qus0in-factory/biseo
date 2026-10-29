@@ -17,7 +17,7 @@
     "build": "pnpm build:server && pnpm build:client",
     "secret:verifier": "bash scripts/make-verifier.sh",
     "typecheck": "tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.worker.json && tsc --noEmit",
-    "test": "tsc -p shared/tsconfig.json --noEmit && tsx --test shared/tests/*.test.ts worker/tests/*.test.ts worker/app/*.test.ts src/**/*.test.ts web/domain/*.test.ts",
+    "test": "tsc -p shared/tsconfig.json --noEmit && tsx --test shared/tests/*.test.ts worker/tests/*.test.ts worker/app/*.test.ts src/**/*.test.ts web/domain/*.test.ts web/app/*.test.ts",
     "dev": "pnpm build:client && wrangler dev",
     "deploy": "pnpm build:client && wrangler deploy"
   },
@@ -25,6 +25,7 @@
     "@hono/node-server": "^2.1.5",
     "hono": "^4.13.14",
     "ky": "^2.2.0",
+    "lucide-react": "^1.62.0",
     "paseto": "^4.0.1",
     "pino": "^10.4.0",
     "react": "^19.3.1",

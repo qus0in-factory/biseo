@@ -4,11 +4,8 @@ import { timelineStream as st } from '../infra/timelineStream'
 import { DashboardView } from './DashboardView'
 
 export function WorkspaceSection({ on }: { on: boolean }) {
-  const { panes, sel, setSel, items, sending, send } = useWorkspaceController(
-    api,
-    st,
-    on,
-  )
+  const { panes, sel, setSel, items, sending, send, online } =
+    useWorkspaceController(api, st, on)
 
   return (
     <DashboardView
@@ -18,6 +15,7 @@ export function WorkspaceSection({ on }: { on: boolean }) {
       timeline={items}
       sending={sending}
       onSend={send}
+      online={online}
     />
   )
 }

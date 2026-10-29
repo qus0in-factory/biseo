@@ -8,5 +8,5 @@ export function setup(over:{pane?:PaneInfo;error?:unknown}={}){
  store.add({...item})
  locks.reserve('w:p1','r1')
  const herdr={listPanes:async()=>[pane],listAgents:async()=>[agent],getPane:async()=>over.pane??pane,getAgent:async()=>agent,prompt:async()=>{calls.prompt++;if(over.error)throw over.error}}
- return {d:{herdr,store,locks,timeoutMs:1000,graceMs:0},store,locks,calls}
+ return {d:{herdr,store,locks,timeoutMs:1000,graceMs:0,lateCaptureMs:0},store,locks,calls}
 }

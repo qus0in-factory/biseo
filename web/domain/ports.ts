@@ -21,6 +21,7 @@ export interface WorkspaceApiPort {
   getPanes(workspaceId: string): Promise<PaneSummary[]>
   sendMessage(input: SendMessageInput): Promise<{ requestId: string }>
   getTurn(requestId: string): Promise<TimelineItem>
+  cancelTurn(requestId: string): Promise<void>
 }
 
 export type SseEvent =

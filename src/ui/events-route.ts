@@ -16,6 +16,7 @@ export function eventsRoute(d:TurnDeps){
    const panes=await d.herdr.listPanes(ws)
    unsub=await subscribe(panes.map(p=>p.pane_id),e=>isCloseEvent(e)?wake.end():wake.call(),()=>wake.end())
   }catch{return c.json({error:'event_source_unavailable'},502)}
-  return runSse(c,d,ws,unsub,wake)
+  const last=c.req.header('last-event-id')??c.req.query('lastEventId')??undefined
+  return runSse(c,d,ws,unsub,wake,last)
  }
 }

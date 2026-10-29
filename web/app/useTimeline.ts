@@ -2,28 +2,15 @@ import { useState, useCallback } from 'react'
 import type { WorkspaceApiPort as P } from '../domain/ports'
 import type { PaneSummary as S, TimelineItem as I } from '../domain/timeline'
 import { mergeTurn } from '../domain/mergeTurn'
-import { markFailed } from '../domain/markFailed'
-import { prepareTurn, submitTurn } from '../domain/sendTurn'
+import { executeSend } from './sendAction'
+import { executeCancel } from './cancelAction'
 
 export function useTimeline(p: P, w: string | null, t?: S) {
   const [items, set] = useState<I[]>([])
   const [busy, setBusy] = useState(false)
   const update = useCallback((x: I) => set((m) => mergeTurn(m, x)), [])
+  const send = useCallback((txt: string) => executeSend(p, w, t, txt, set, setBusy), [p, w, t])
+  const cancel = useCallback((id: string) => executeCancel(p, id, set), [p])
 
-  const send = useCallback(async (txt: string) => {
-    const s = txt.trim()
-    if (!w || !t?.sendable || !s) return
-    setBusy(true)
-    const { item, input } = prepareTurn(w, t, s)
-    set((m) => mergeTurn(m, item))
-    try {
-      await submitTurn(p, input)
-    } catch {
-      set((m) => markFailed(m, input.requestId))
-    } finally {
-      setBusy(false)
-    }
-  }, [p, w, t])
-
-  return { items, sending: busy, send, update }
+  return { items, sending: busy, send, cancel, update }
 }

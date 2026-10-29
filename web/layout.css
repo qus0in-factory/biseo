@@ -1,3 +1,7 @@
+body {
+  min-height: 100dvh;
+  padding-top: max(1rem, env(safe-area-inset-top));
+}
 .dashboard-layout {
   display: grid;
   grid-template-columns: 1fr;

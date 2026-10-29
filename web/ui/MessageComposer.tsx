@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import type { PaneSummary } from '../domain/timeline'
-import { getPaneState } from '../domain/paneState'
 import { ComposerControls } from './ComposerControls'
 import r from '../resources.json'
 
@@ -14,15 +13,14 @@ export function MessageComposer({
   onSend: (text: string) => void
 }) {
   const [t, setT] = useState('')
-  const { ok } = getPaneState(target)
-  const can = ok && t.trim().length > 0 && !busy
+  const canSend = Boolean(target?.sendable) && !busy && t.trim().length > 0
 
   return (
     <form
       className="composer"
       onSubmit={(e) => {
         e.preventDefault()
-        if (can) {
+        if (canSend) {
           onSend(t)
           setT('')
         }
@@ -34,9 +32,8 @@ export function MessageComposer({
         value={t}
         placeholder={target ? r.messagePlaceholder : r.selectTarget}
         onChange={(e) => setT(e.target.value)}
-        disabled={!ok || busy}
       />
-      <ComposerControls target={target} busy={busy} can={can} />
+      <ComposerControls target={target} busy={busy} can={canSend} />
     </form>
   )
 }

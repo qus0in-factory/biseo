@@ -1,7 +1,7 @@
-import type { PaneSummary as P, TimelineItem as T } from '../domain/timeline'
+import type { DashboardProps } from './dashboardTypes'
 import { PanesView } from './PanesView'
-import { TimelineView } from './TimelineView'
-import { MessageComposer } from './MessageComposer'
+import { TimelineSection } from './TimelineSection'
+import { ConnectionStatusBadge } from './ConnectionStatusBadge'
 import r from '../resources.json'
 
 export function DashboardView({
@@ -11,26 +11,26 @@ export function DashboardView({
   timeline,
   sending,
   onSend,
-}: {
-  panes: P[]
-  selectedId: string | null
-  onSelect: (paneId: string) => void
-  timeline: T[]
-  sending: boolean
-  onSend: (text: string) => void
-}) {
+  onCancel,
+  online = true,
+}: DashboardProps) {
   const target = panes.find((p) => p.paneId === selectedId)
   return (
     <div className="dashboard-layout">
+      <div className="dashboard-header">
+        <ConnectionStatusBadge online={online} />
+      </div>
       <aside className="panes-panel">
         <h2>{r.panesTitle}</h2>
         <PanesView panes={panes} selectedId={selectedId} onSelect={onSelect} />
       </aside>
-      <section className="timeline-panel">
-        <h2>{r.timelineTitle}</h2>
-        <TimelineView items={timeline} />
-        <MessageComposer target={target} busy={sending} onSend={onSend} />
-      </section>
+      <TimelineSection
+        target={target}
+        timeline={timeline}
+        sending={sending}
+        onSend={onSend}
+        onCancel={onCancel}
+      />
     </div>
   )
 }

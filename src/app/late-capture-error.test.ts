@@ -1,0 +1,18 @@
+import test from'node:test'
+import assert from'node:assert/strict'
+import {captureTurn}from'./capture-turn.js'
+import {item}from'./run-fixture-data.test.js'
+import {setup}from'./run-fixture.test.js'
+const until=async(f:()=>boolean)=>{for(let i=0;i<50&&!f();i++)await new Promise(r=>setTimeout(r,1))}
+test('late capture read errors end quietly and keep timeout',async()=>{
+ const s=setup()
+ s.d.timeoutMs=1;s.d.lateCaptureMs=10
+ let n=0
+ await captureTurn(s.d,item,{read:async()=>{
+  if(++n===1)return null
+  throw new Error('late read')
+ }})
+ await until(()=>n===2)
+ await new Promise(r=>setTimeout(r,10))
+ assert.equal(s.store.get('r1')?.status,'timeout')
+})

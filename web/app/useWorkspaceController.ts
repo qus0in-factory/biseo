@@ -18,5 +18,5 @@ export function useWorkspaceController(a: Api, s: St, on: boolean) {
 
   useStream(s, on ? base.wsId : null, { ...h, onTurn: base.update })
 
-  return { ...base, sel, setSel }
+  return { ...base, sel, setSel, online }
 }

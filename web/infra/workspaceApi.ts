@@ -19,4 +19,8 @@ export const workspaceApi: WorkspaceApiPort = {
 
   getTurn: (id: string) =>
     ky.get(`/api/timeline/messages/${encodeURIComponent(id)}`, opts).json<TimelineItem>(),
+
+  cancelTurn: async (id: string) => {
+    await ky.delete(`/api/turns/${encodeURIComponent(id)}`, opts)
+  },
 }

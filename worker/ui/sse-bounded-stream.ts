@@ -13,6 +13,7 @@ export function createBoundedStream(
   }
   return new ReadableStream<Uint8Array>({
     start(ctrl) {
+      ctrl.enqueue(new TextEncoder().encode('retry: 3000\n\n'))
       timer = setTimeout(() => {
         stop()
         try {

@@ -3,10 +3,10 @@ import assert from'node:assert/strict'
 import {runTurn}from'./run-turn.js'
 import {item,target}from'./run-fixture-data.test.js'
 import {setup}from'./run-fixture.test.js'
-test('timeout is recorded without retry',async()=>{
- const s=setup({error:{code:'timeout'}})
+test('collector timeout is recorded without retry',async()=>{
+ const s=setup()
  s.locks.reserveRequest('r1')
- await runTurn(s.d,item,{read:async()=> 'x'},target)
+ await runTurn(s.d,item,{read:async()=>null},target)
  const got=s.store.get('r1')
  assert.equal(got?.status,'timeout')
  assert.equal(got?.errorCode,'turn_timeout')

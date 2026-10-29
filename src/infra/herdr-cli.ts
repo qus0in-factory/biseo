@@ -8,6 +8,6 @@ export class HerdrCli implements HerdrPort{
  async getPane(id:string){try{const r=await call(['pane','get',id],15000);return withCodex(r.result?.pane as PaneInfo|undefined)}catch(e){if(notFound(e))return;throw e}}
  async getAgent(id:string){try{const r=await call(['agent','get',id],15000);return withCodex(r.result?.agent as AgentInfo|undefined)}catch(e){if(notFound(e))return;throw e}}
  async prompt(id:string,text:string,timeoutMs:number){
-  await call(['agent','prompt',id,text,'--wait','--timeout',String(timeoutMs)],timeoutMs+10000)
+  await call(['agent','prompt',id,text],Math.min(timeoutMs,15000))
  }
 }

@@ -1,9 +1,9 @@
 import { useState, useCallback } from 'react'
-import type { WorkspaceApiPort } from '../domain/ports'
+import type { WorkspaceApiPort as Api } from '../domain/ports'
 import type { PaneSummary } from '../domain/timeline'
 import { markOffline } from '../domain/markOffline'
 
-export function usePanes(api: WorkspaceApiPort, wsId: string | null) {
+export function usePanes(api: Api, wsId: string | null) {
   const [panes, set] = useState<PaneSummary[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)

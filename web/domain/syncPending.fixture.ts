@@ -18,5 +18,6 @@ export function makeMockApi(fetched: string[]): WorkspaceApiPort {
         createdAt: '2026-10-28T00:00:00Z',
       }
     },
+    cancelTurn: async () => {},
   }
 }

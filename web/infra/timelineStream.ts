@@ -1,43 +1,38 @@
 import type { SseEventHandler, TimelineStreamPort } from '../domain/ports'
+import { createRetryScheduler } from '../domain/retryScheduler'
+import { openSse } from './sseSource'
+import { bindStreamLifecycle } from './streamLifecycle'
 
 export const timelineStream: TimelineStreamPort = {
-  connect(
-    workspaceId: string,
-    onOpen: () => void,
-    onEvent: SseEventHandler,
-    onError: () => void,
-  ) {
-    const url = `/api/timeline/stream?workspaceId=${encodeURIComponent(workspaceId)}`
-    const es = new EventSource(url, { withCredentials: true })
+  connect(wsId, onOpen, onEvent, onError) {
+    let es: EventSource | null = null
+    let closed = false
+    const sched = createRetryScheduler(() => start())
 
-    es.onopen = () => {
-      onOpen()
+    const stop = () => {
+      sched.cancel()
+      es?.close()
+      es = null
     }
 
-    es.addEventListener('pane.updated', (e) => {
-      try {
-        const data = JSON.parse(e.data)
-        onEvent({ type: 'pane.updated', data })
-      } catch {
-        // ignore parse error
-      }
-    })
-
-    es.addEventListener('turn.updated', (e) => {
-      try {
-        const data = JSON.parse(e.data)
-        onEvent({ type: 'turn.updated', data })
-      } catch {
-        // ignore parse error
-      }
-    })
-
-    es.onerror = () => {
-      onError()
+    const start = () => {
+      if (closed) return
+      stop()
+      es = openSse(
+        wsId,
+        () => (sched.reset(), onOpen()),
+        onEvent,
+        () => closed || (onError(), stop(), sched.schedule()),
+      )
     }
+
+    start()
+    const unbind = bindStreamLifecycle(() => closed || (sched.reset(), start()))
 
     return () => {
-      es.close()
+      closed = true
+      stop()
+      unbind()
     }
   },
 }

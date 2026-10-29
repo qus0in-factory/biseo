@@ -2,6 +2,10 @@
 @import "./layout.css";
 @import "./panes.css";
 @import "./timeline.css";
+@import "./composer.css";
+@import "./btn.css";
+@import "./status.css";
+@import "./ios.css";
 
 body {
   font-family: Pretendard, system-ui, sans-serif;
@@ -17,22 +21,6 @@ body {
   background: #fff;
   border: 1px solid var(--secondary);
   border-radius: var(--r-lg);
-}
-.btn {
-  padding: 0.5rem 1rem;
-  background: var(--primary);
-  color: #fff;
-  border: 1px solid var(--primary);
-  border-radius: var(--r-md);
-  font-weight: 500;
-  cursor: pointer;
-}
-.btn:disabled {
-  background: var(--secondary);
-  color: var(--primary);
-  border-color: var(--secondary);
-  cursor: not-allowed;
-  opacity: 0.7;
 }
 .header {
   display: flex;

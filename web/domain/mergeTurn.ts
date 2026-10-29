@@ -1,13 +1,18 @@
 import type { TimelineItem, TurnStatus } from './timeline'
 
-const rank: Record<TurnStatus, number> = {
-  queued: 1,
-  working: 2,
-  blocked: 3,
-  completed: 4,
-  capture_unavailable: 4,
-  failed: 4,
-  timeout: 4,
+export function canTransition(
+  from: TurnStatus,
+  to: TurnStatus,
+  fromErr?: string | null,
+): boolean {
+  if (from === to) return true
+  if (from === 'queued') return to !== 'queued'
+  if (from === 'working') return to !== 'queued' && to !== 'cancelled'
+  if (from === 'timeout') return to === 'completed'
+  if (from === 'failed' && fromErr === 'delivery_uncertain') {
+    return to === 'working' || to === 'completed'
+  }
+  return false
 }
 
 export function mergeTurn(
@@ -17,7 +22,7 @@ export function mergeTurn(
   const idx = prev.findIndex((t) => t.requestId === next.requestId)
   if (idx === -1) return [...prev, next]
   const current = prev[idx]
-  if (rank[current.status] > rank[next.status]) {
+  if (!canTransition(current.status, next.status, current.errorCode)) {
     return prev
   }
   const updated = [...prev]

@@ -16,6 +16,20 @@
   border-radius: var(--r-md);
   background: #fff;
 }
+.timeline-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.btn-cancel {
+  margin-left: auto;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  background: transparent;
+  color: #b91c1c;
+  border: 1px solid #b91c1c;
+}
 .timeline-response {
   margin-top: 0.5rem;
   padding: 0.5rem;
@@ -24,18 +38,6 @@
   font-family: monospace;
   white-space: pre-wrap;
   word-break: break-word;
-}
-.composer {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-.composer-input {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0.5rem;
-  border: 1px solid var(--secondary);
-  border-radius: var(--r-sm);
 }
 .spinner {
   color: var(--muted);

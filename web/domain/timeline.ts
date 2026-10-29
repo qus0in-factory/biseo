@@ -29,6 +29,7 @@ export type TurnStatus =
   | 'blocked'
   | 'failed'
   | 'timeout'
+  | 'cancelled'
 
 export interface TimelineItem {
   requestId: string
@@ -43,4 +44,5 @@ export interface TimelineItem {
   createdAt: string
   seq?: number
   completedAt?: string | null
+  cancelError?: string | null
 }

@@ -1,22 +1,22 @@
-import type{TimelineItem,TurnStatus}from'../domain/timeline.js'
-import{finish}from'./finish-turn.js'
+import type{TimelineItem}from'../domain/timeline.js'
+import{awaitFinish,finish}from'./finish-turn.js'
+import{beginTurn}from'./pane-generation.js'
 import type{CaptureReader,HerdrPort}from'./ports.js'
-import {postIssue}from'./post-issue.js'
-import {promptError}from'./prompt-error.js'
-import {readResponse}from'./read-response.js'
+import{promptError}from'./prompt-error.js'
 import type{TurnStore}from'./turn-store.js'
-type Deps={herdr:HerdrPort;store:TurnStore;timeoutMs:number;graceMs:number}
+type Deps={herdr:HerdrPort;store:TurnStore;timeoutMs:number;lateCaptureMs?:number}
 export async function captureTurn(d:Deps,item:TimelineItem,reader:CaptureReader){
- const id=item.requestId
- const f=(s:TurnStatus,e:string|null,t:string|null=null)=>finish(d.store,id,s,e,t)
+ const id=item.requestId,gen=beginTurn(item.paneId)
  let sent=false
  try{
-  await d.herdr.prompt(item.paneId,item.promptText,d.timeoutMs)
+  await d.herdr.prompt(item.paneId,item.promptText,15000)
   sent=true
-  const issue=postIssue(await d.herdr.getAgent(item.paneId));if(issue)return f(issue.status,issue.errorCode)
-  const text=await readResponse(reader,d.graceMs);return text?f('completed',null,text):f('capture_unavailable','response_capture_unavailable')
+  const a=await d.herdr.getAgent(item.paneId)
+  if(!a)return finish(d.store,id,'failed','delivery_uncertain')
+  if(a.agent_status==='blocked')return finish(d.store,id,'blocked','agent_blocked')
+  await awaitFinish(d.store,id,item.paneId,gen,reader,d.timeoutMs,d.lateCaptureMs)
  }catch(e){
   const o=promptError(e,sent)
-  return f(o.status,o.errorCode)
+  finish(d.store,id,o.status,o.errorCode)
  }
 }

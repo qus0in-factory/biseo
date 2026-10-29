@@ -1,4 +1,5 @@
 import type{CaptureReader}from'./ports.js'
-export async function readResponse(r:CaptureReader,graceMs:number):Promise<string|null>{
- try{return await r.read(graceMs)}catch{return null}
+export type ReadResult={text:string|null;error:boolean}
+export async function readResponse(r:CaptureReader,ms:number):Promise<ReadResult>{
+ try{return {text:await r.read(ms),error:false}}catch{return {text:null,error:true}}
 }

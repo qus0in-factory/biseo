@@ -11,8 +11,8 @@ test('canonical args keep hyphen text positional',async()=>{
  process.env.HERDR_BIN_PATH=b;process.env.ARGS_FILE=a
  try{
   for(const text of ['-hello','--wait']){
-   await new HerdrCli().prompt('w:p1',text,100)
-   assert.deepEqual(readFileSync(a,'utf8').trim().split('\n'),['agent','prompt','w:p1',text,'--wait','--timeout','100'])
+   await new HerdrCli().prompt('w:p1',text,15000)
+   assert.deepEqual(readFileSync(a,'utf8').trim().split('\n'),['agent','prompt','w:p1',text])
   }
  }finally{
   if(old===undefined)delete process.env.HERDR_BIN_PATH;else process.env.HERDR_BIN_PATH=old

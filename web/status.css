@@ -1,0 +1,47 @@
+.dashboard-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.5rem;
+}
+.conn-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--secondary);
+}
+.conn-status.connected {
+  color: #15803d;
+}
+.conn-status.disconnected {
+  color: #b91c1c;
+}
+.reason-details {
+  display: inline-block;
+  position: relative;
+}
+.reason-details summary {
+  list-style: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  color: #b91c1c;
+}
+.reason-details summary::-webkit-details-marker {
+  display: none;
+}
+.reason-popover {
+  position: absolute;
+  z-index: 10;
+  background: #fff;
+  border: 1px solid var(--secondary);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--r-sm);
+  font-size: 0.75rem;
+  color: #b91c1c;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: max-content;
+  max-width: 240px;
+}

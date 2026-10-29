@@ -16,10 +16,12 @@ export function ComposerControls({
 }) {
   const { reason } = getPaneState(target)
   const err = reason ? res[reason] ?? reason : null
+  const btnLabel = busy ? res.sending : res.send
+
   return (
     <div>
       <button className="btn" type="submit" disabled={!can}>
-        {busy ? res.sending : res.send}
+        {btnLabel}
       </button>
       {err && <span className="err"> ({err})</span>}
     </div>
