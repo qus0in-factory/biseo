@@ -4,6 +4,11 @@ import { LoginForm } from './LoginForm'
 import { HealthView } from './HealthView'
 import { WorkspaceSection } from './WorkspaceSection'
 
+export interface AppOutletContext {
+  headerActions?: ReactNode
+  authed?: boolean
+}
+
 export function AppContent({
   authed,
   busy,
@@ -19,9 +24,9 @@ export function AppContent({
   data?: { status?: string; error?: string } | null
   check: () => void
 }): ReactNode {
-  if (!authed) return <LoginForm busy={busy} onLogin={login} />
-  const outlet = useOutlet()
   const actions = <HealthView loading={loading} error={data?.error} onCheck={check} />
+  const outlet = useOutlet({ headerActions: actions, authed })
+  if (!authed) return <LoginForm busy={busy} onLogin={login} />
   if (outlet) return outlet
   return <WorkspaceSection on={authed} headerActions={actions} />
 }
