@@ -9,7 +9,11 @@ export function SheetHeader({
 }) {
   return (
     <div className="flex items-center justify-between pb-3 border-b border-border">
-      {title && <h2 className="text-base font-semibold">{title}</h2>}
+      {title && (
+        <h2 id="sheet-title" className="text-base font-semibold">
+          {title}
+        </h2>
+      )}
       <button
         type="button"
         aria-label="닫기"

@@ -1,33 +1,26 @@
-import type { PaneSummary } from '../domain/timeline'
-import { Carousel, CarouselContent, CarouselItem } from '../components/ui/carousel'
-import { PaneItem } from './PaneItem'
+import type { DashboardProps } from './dashboardTypes'
+import { Carousel, CarouselContent } from '../components/ui/carousel'
+import { PanesCarouselList } from './PanesCarouselList'
+import { usePanesView } from './usePanesView'
 import r from '../resources.json'
 
-export function PanesCarouselView({
-  panes,
-  selectedId,
-  onSelect,
-}: {
-  panes: PaneSummary[]
-  selectedId: string | null
-  onSelect: (id: string) => void
-}) {
-  if (panes.length === 0) {
-    return <p className="text-sm text-muted-foreground py-4">{r.emptyPanes}</p>
-  }
+type P = Pick<DashboardProps, 'panes' | 'selectedId' | 'onSelect'>
+
+export function PanesCarouselView({ panes, selectedId, onSelect }: P) {
+  const v = usePanesView({ panes, selectedId })
+  if (!panes.length || !v) return <p className="text-sm text-muted-foreground py-4">{r.emptyPanes}</p>
+  const list = [...v.pinnedPanes, ...v.rest]
 
   return (
     <Carousel className="w-full">
       <CarouselContent>
-        {panes.map((p) => (
-          <CarouselItem key={p.paneId}>
-            <PaneItem
-              item={p}
-              active={p.paneId === selectedId}
-              onClick={() => onSelect(p.paneId)}
-            />
-          </CarouselItem>
-        ))}
+        <PanesCarouselList
+          panes={list}
+          selectedId={selectedId}
+          pinned={v.pinned}
+          onToggle={v.toggle}
+          onSelect={onSelect}
+        />
       </CarouselContent>
     </Carousel>
   )
