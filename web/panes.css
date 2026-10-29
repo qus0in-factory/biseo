@@ -1,0 +1,35 @@
+@import "./pane-badge.css";
+@import "./pane-status.css";
+@import "./pane-item.css";
+
+.panes-panel {
+  border: 1px solid var(--secondary);
+  border-radius: var(--r-md);
+  padding: 1rem;
+  background: var(--surface);
+}
+.pane-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.pane-availability {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+.pane-availability.availability-limited {
+  color: var(--accent);
+}
+.pane-availability.availability-unknown {
+  color: var(--muted);
+}
