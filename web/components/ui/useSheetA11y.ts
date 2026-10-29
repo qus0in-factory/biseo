@@ -1,11 +1,14 @@
 import { useEffect, useRef } from 'react'
 import { trapTabKey } from './trapTabKey'
 
-const Q = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+const Q =
+  'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
 
 export function useSheetA11y(open: boolean, onClose: () => void) {
   const ref = useRef<HTMLDivElement>(null)
   const prev = useRef<HTMLElement | null>(null)
+  const onCloseRef = useRef(onClose)
+  onCloseRef.current = onClose
 
   useEffect(() => {
     if (!open) return
@@ -17,7 +20,7 @@ export function useSheetA11y(open: boolean, onClose: () => void) {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.preventDefault()
-        onClose()
+        onCloseRef.current()
         return
       }
       trapTabKey(e, list())
@@ -28,7 +31,7 @@ export function useSheetA11y(open: boolean, onClose: () => void) {
       document.removeEventListener('keydown', onKey)
       prev.current?.focus()
     }
-  }, [open, onClose])
+  }, [open])
 
   return ref
 }
