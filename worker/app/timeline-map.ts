@@ -1,0 +1,4 @@
+import type{TimelineItem}from'../domain/timeline-types.js'
+import type{TurnRecord}from'../domain/timeline-record.js'
+export const toItem=(r:TurnRecord):TimelineItem=>({requestId:r.requestId,workspaceId:r.workspaceId,paneId:r.paneId,targetName:r.targetName,agentKind:r.agentKind,promptText:r.promptText,status:r.status,responseText:r.responseText,errorCode:r.errorCode,createdAt:r.createdAt,seq:0,completedAt:r.completedAt})
+export const fromItem=(i:TimelineItem,owner:string):TurnRecord=>({requestId:i.requestId,workspaceId:i.workspaceId,ownerSubject:owner,paneId:i.paneId,targetName:i.targetName,agentKind:i.agentKind??null,promptText:i.promptText,status:i.status,responseText:i.responseText??null,errorCode:i.errorCode??null,createdAt:i.createdAt,updatedAt:new Date().toISOString(),completedAt:i.completedAt??null})

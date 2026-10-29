@@ -31,7 +31,7 @@
     "SERVICE_TOKEN_SUBJECT": "biseo-worker",
     "LOGIN_MAX_ATTEMPTS": "5",
     "LOGIN_ATTEMPT_TTL_SECONDS": "60",
-    "ALLOWED_WORKSPACE_ID": "w1T",
+    "WORKSPACE_CONFIG_SOURCE": "server",
     "UPSTREAM_TIMEOUT_MS": "10000",
     "ALLOWED_ORIGINS": "https://biseo.qus0in.workers.dev,https://biseo.qus0in.dev"
   },
@@ -40,5 +40,16 @@
       "binding": "LOGIN_ATTEMPTS",
       "id": "dc4ef10d3a9e4153a93e44fdcab18fba"
     }
-  ]
+  ],
+  "triggers": {
+    "crons": ["* * * * *"]
+  }
+  // D1 is intentionally not bound yet: no approved biseo database exists.
+  // After approval, create the DB, add the real id, and apply worker/migrations:
+  // "d1_databases": [{
+  //   "binding": "BISEO_DB",
+  //   "database_name": "biseo",
+  //   "database_id": "<approved-d1-database-id>",
+  //   "migrations_dir": "worker/migrations"
+  // }]
 }

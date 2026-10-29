@@ -10,9 +10,10 @@ export function useWorkspaceRecovery(
   setSnapshot: (s: any) => void,
   setOnline: (o: boolean) => void,
   markDisconnected: () => void,
+  reloadTimeline?: () => void,
 ) {
   return useMemo(
-    () => createRecoveryHandlers(a, reload, getItems, getUpdate, setSnapshot, setOnline, markDisconnected),
-    [a, reload, getItems, getUpdate, setSnapshot, markDisconnected],
+    () => createRecoveryHandlers(a, reload, getItems, getUpdate, setSnapshot, setOnline, markDisconnected, reloadTimeline),
+    [a, reload, getItems, getUpdate, setSnapshot, setOnline, markDisconnected, reloadTimeline],
   )
 }

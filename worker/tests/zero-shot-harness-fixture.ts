@@ -1,4 +1,5 @@
 import { createAuthedEnv } from './auth-helpers.js'
+import { createFakeD1 } from './fake-d1.js'
 import { createTestFixture } from './helpers.js'
 import { createZeroShotBackend } from './zero-shot-backend-fixture.js'
 import { startZeroShotSocket } from './zero-shot-socket-fixture.js'
@@ -17,7 +18,7 @@ export async function createZeroShotHarness() {
   }) as typeof fetch
   return {
     cookie,
-    env: { ...env, SERVICE_PASETO_SECRET: svc.secretKeyStr, FUNNEL_BASE_URL: 'https://f.test', ALLOWED_WORKSPACE_ID: 'w1T' },
+    env: { ...env, SERVICE_PASETO_SECRET: svc.secretKeyStr, FUNNEL_BASE_URL: 'https://f.test', ALLOWED_WORKSPACE_ID: 'w1T', TURN_TIMEOUT_MS: '1000', BISEO_DB: createFakeD1() },
     getPromptCalls, getTurnGets: () => gets,
     cleanup: async () => { globalThis.fetch = orig; await close() },
   }

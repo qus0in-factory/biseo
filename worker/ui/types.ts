@@ -1,5 +1,3 @@
-import type { KVNamespace } from '@cloudflare/workers-types'
-
 export type SessionBindings = {
   AUTH_PASSWORD_VERIFIER?: string
   USER_SESSION_PASETO_SECRET?: string
@@ -22,6 +20,8 @@ export type SessionBindings = {
   HEALTH_TIMEOUT_MS?: string
   UPSTREAM_TIMEOUT_MS?: string
   ALLOWED_WORKSPACE_ID?: string
+  WORKSPACE_CONFIG_SOURCE?: 'server'
+  BISEO_DB?: D1Database
   ALLOWED_ORIGINS?: string
   LOGIN_ATTEMPTS?: KVNamespace
   LOGIN_MAX_ATTEMPTS?: string

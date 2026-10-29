@@ -14,6 +14,13 @@ export const workspaceApi: WorkspaceApiPort = {
     return res.panes || []
   },
 
+  getTimeline: async (ws: string) => {
+    const res = await ky
+      .get(`/api/timeline/messages?workspaceId=${encodeURIComponent(ws)}&limit=50`, opts)
+      .json<{ items: TimelineItem[] }>()
+    return res.items || []
+  },
+
   sendMessage: (input: SendMessageInput) =>
     ky.post('/api/timeline/messages', { ...opts, json: input }).json(),
 
