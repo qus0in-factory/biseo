@@ -23,6 +23,7 @@
   justify-content: center;
   width: 24px;
   height: 24px;
+  margin-bottom: 10px;
   color: var(--muted);
   cursor: help;
   flex-shrink: 0;

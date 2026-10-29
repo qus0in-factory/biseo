@@ -10,10 +10,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #b91c1c;
+  color: var(--muted);
+  min-height: unset;
+  padding: 0;
 }
 .reason-details summary::-webkit-details-marker {
   display: none;
+}
+.reason-details summary:hover {
+  color: var(--primary);
 }
 .reason-details svg {
   display: block;
@@ -22,7 +27,7 @@
 .reason-popover {
   position: absolute;
   top: 100%;
-  right: 0;
+  left: 0;
   z-index: 10;
   overflow-wrap: anywhere;
   background: #fff;
@@ -30,7 +35,7 @@
   padding: 0.25rem 0.5rem;
   border-radius: var(--r-sm);
   font-size: 0.75rem;
-  color: #b91c1c;
+  color: var(--primary);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: max-content;
   max-width: 240px;
