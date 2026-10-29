@@ -7,11 +7,9 @@ import { useUiStore } from './uiStore'
 
 test('appRoutes contains expected phase-2 routes', () => {
   const paths = appRoutes.map((r) => r.path)
-  assert.ok(paths.includes('/'))
-  assert.ok(paths.includes('/panels'))
-  assert.ok(paths.includes('/chat'))
-  assert.ok(paths.includes('/chat/:paneId'))
-  assert.ok(paths.includes('/history'))
+  for (const p of ['/', '/panels', '/chat', '/chat/:paneId', '/history']) {
+    assert.ok(paths.includes(p))
+  }
 })
 
 test('phase-2 schemas validate inputs', () => {
@@ -22,6 +20,8 @@ test('phase-2 schemas validate inputs', () => {
 
 test('phase-2 uiStore tracks mobile and view state', () => {
   const s = useUiStore.getState()
+  s.setActiveTab('chat')
+  assert.equal(useUiStore.getState().activeTab, 'chat')
   s.setActiveTab('panels')
   assert.equal(useUiStore.getState().activeTab, 'panels')
 })
