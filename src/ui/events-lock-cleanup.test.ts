@@ -10,6 +10,7 @@ test('closing SSE removes its lock subscription',async()=>{
  const r=await app.request('/e')
  await readEvent(r.body!,/pane\.updated/)
  await r.body?.cancel()
- await new Promise(x=>setTimeout(x,20))
+ const t0=Date.now()
+ while(l.off!==1&&Date.now()-t0<2000)await new Promise(x=>setTimeout(x,10))
  assert.equal(l.off,1)
 })

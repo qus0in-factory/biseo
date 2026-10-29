@@ -1,4 +1,5 @@
 @import "./pane-badge.css";
+@import "./pane-item.css";
 
 .panes-panel {
   border: 1px solid var(--secondary);
@@ -13,38 +14,4 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-}
-.pane-item {
-  width: 100%;
-  min-height: 64px;
-  height: 64px;
-  box-sizing: border-box;
-  text-align: left;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--secondary);
-  border-radius: var(--r-sm);
-  background: #fff;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: nowrap;
-}
-.pane-item.selected {
-  outline: 2px solid var(--primary);
-}
-.pane-item strong {
-  flex: 1 1 auto;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.pane-item small {
-  flex: 0 1 auto;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--muted);
 }

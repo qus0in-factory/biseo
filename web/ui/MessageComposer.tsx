@@ -31,7 +31,7 @@ export function MessageComposer({
         <textarea
           ref={ref}
           className="composer-input"
-          rows={1}
+          rows={2}
           value={t}
           placeholder={ph}
           onChange={(e) => setT(e.target.value)}

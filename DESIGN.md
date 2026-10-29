@@ -344,10 +344,11 @@ Single chronological stream representing interactions across all designated work
 | `cancelled` | Slate Gray outline (Light) / Silver outline (Dark, **6.01:1**) | `Ban` icon | Prompt cancelled while queued prior to dispatch; terminal state | Disallowed |
 
 ### 4. Dispatch Composer (`composer-input`) & Unified Capsule Container
-- **Unified Chat Capsule (`composer-box`)**: Textarea and circular send button are housed within a unified pill/rounded container (inspired by Discord/ChatGPT/WhatsApp, `border-radius: 1.5rem; border: 1px solid var(--secondary); background: #fff`).
+- **Unified Chat Capsule (`composer-box`)**: Textarea and circular send button are housed within a unified container with standard DESIGN radius (`border-radius: var(--r-lg); border: 1px solid var(--secondary); background: #fff; padding: 0.5rem;`). Symmetrical inner padding eliminates awkward baseline offsets.
+- **Default 2-Line Input & Internal Scrolling**: The textarea defaults to 2 lines (`rows={2}; min-height: 2.8rem; max-height: 6rem; resize: none; overflow-y: auto; font-size: 16px; line-height: 1.4; padding: 0.375rem 0.5rem;`), keeping placeholder text and user input vertically balanced and preventing unwanted iOS zoom.
 - **Target Placeholder**: Target pane identity is cleanly integrated into the input placeholder (e.g., `'ds-g에게 메시지'`, or fallback `'대상 패널을 선택하세요'`) to eliminate redundant vertical header banners.
-- **Single-Line Flex & Circular Send Button (`btn-send-round`)**: Textarea (`flex: 1; min-width: 0`) and 44px circular send button (`min-width: 44px; min-height: 44px; border-radius: 9999px; align-self: flex-end`) are aligned on a single row without wrapping (`flex-wrap: nowrap`), even on narrow 320px mobile viewports.
-- **Fixed Height & Internal Scrolling**: The textarea enforces `resize: none; height: 3.5rem; max-height: 3.5rem; overflow-y: auto; font-size: 16px;` to maintain predictable layout and prevent unwanted iOS zoom.
+- **Single-Line Flex & Bottom Alignment**: Textarea (`flex: 1; min-width: 0`) and bottom-aligned action controls (`.composer-actions { align-items: flex-end; align-self: flex-end; }`) are aligned on a single row without wrapping (`flex-wrap: nowrap`), even on narrow 320px mobile viewports.
+- **Circular Send Button (`btn-send-round`) & Reason Icon**: The 44px circular send button (`min-width: 44px; min-height: 44px; border-radius: 9999px;`) and small reason icon (`composer-reason-icon`) align cleanly to the bottom baseline.
 - **Sticky Bottom & Safe Area**: Composer is anchored to the bottom of the viewport (`position: sticky; bottom: 0; z-index: 10`) with `padding-bottom: max(0.5rem, env(safe-area-inset-bottom))`, avoiding occlusion when the virtual mobile keyboard activates.
 - **Keyboard Interaction Matrix**:
   - **Desktop**: Pressing `Enter` dispatches the message when sendable; `Shift+Enter` inserts a newline. While an IME composition is active (`e.nativeEvent.isComposing`), `Enter` dispatch is strictly ignored to prevent half-composed Korean input transmission.
@@ -381,7 +382,7 @@ Real-time reactivity strictly follows the server SSE contract, banning periodic 
   - **Viewport Fit & Safe Area Insets**: `<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />` paired with `padding-top: max(1rem, env(safe-area-inset-top))` and composer `padding-bottom: max(0.5rem, env(safe-area-inset-bottom))`.
   - **Dynamic Viewport Unit**: Primary shell styled with `min-height: 100dvh` to absorb mobile browser address bar shifts.
   - **Auto-Zoom Prevention**: Input and textarea font size pinned to `16px` minimum to avoid iOS Safari viewport scaling on focus.
-  - **Touch Target & Tap Feedback**: Interactive buttons, tabs, and panel items enforce minimum 44px touch targets (`min-height: 44px; min-width: 44px;`) with `-webkit-tap-highlight-color: transparent`.
+  - **Touch Target & Tap Feedback**: Interactive buttons, tabs, and panel items enforce minimum 44px touch targets (`min-height: 44px; min-width: 44px;`) with `-webkit-tap-highlight-color: transparent`. Top header action buttons (e.g., refresh `icon-btn`) employ borderless ghost styling while maintaining the 44px touch boundary to vertically harmonize with adjacent status badges.
   - **Dynamic Theme Color**: Dual `<meta name="theme-color">` for light (`#F4F7F5`) and dark (`#222823`) scheme transitions.
 - **Scroll Positioning & Message Insertion UX**:
   - **Stick to Bottom**: When user is scrolled to the latest message (within 64px bottom threshold), incoming turn updates and SSE completion turns automatically trigger smooth auto-scrolling to the bottom (`behavior: 'auto'` if `prefers-reduced-motion` is active; `behavior: 'smooth'` otherwise).
@@ -430,7 +431,7 @@ Existing prototype components in `web/ui/` map directly onto standard shadcn/ui 
 
 | Existing Component | File Path | Target shadcn/ui Primitive | Implementation Specification |
 | :--- | :--- | :--- | :--- |
-| `PaneItem` | `web/ui/PaneItem.tsx` | `Card`, `Badge` | `CardHeader` houses primary title (`name`) & runtime badge (`agentKind`). Status rendered via `Badge` with icon. |
+| `PaneItem` | `web/ui/PaneItem.tsx` | `Card`, `Badge` | 2-row card layout: Row 1 houses primary title (`name`) & status `Badge` (right). Row 2 houses runtime (`agentKind`) & muted reason icon. Standard 64px card height. |
 | `PanesView` | `web/ui/PanesView.tsx` | `Carousel` (Mobile) / Grid (Desktop) | Reuses `CarouselContent`, `CarouselItem`, `CarouselPrevious`, `CarouselNext`. Binds active snap to target pane. |
 | `TimelineItemView` | `web/ui/TimelineItemView.tsx` | `Card`, `Badge`, `Alert` | Turn prompt and sanitized markdown response. Failures display shadcn `Alert` with `errorCode` (retry on pre-send only). |
 | `MessageComposer` | `web/ui/MessageComposer.tsx` | `Textarea`, `Button`, `Alert` | Continuously editable textarea (CSS `resize: none`, fixed height with internal scrolling) with send button gating and explicit `disabledReason` in a shadcn `Alert`. (Turn reservation UI planned for 0.3.1). |

@@ -6,8 +6,9 @@
   justify-content: flex-end;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.25rem;
   margin-bottom: 0.5rem;
+  min-height: 44px;
 }
 .conn-status {
   display: inline-flex;
@@ -17,6 +18,7 @@
   padding: 0.25rem 0.5rem;
   border-radius: var(--r-sm);
   border: 1px solid var(--secondary);
+  line-height: 1.2;
 }
 .conn-status.connected {
   color: #15803d;
