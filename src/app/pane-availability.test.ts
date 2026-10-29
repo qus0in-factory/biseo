@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { availabilitySummaries } from './pane-availability.js'
 import { PaneLocks } from './pane-locks.js'
-import { agent, pane } from './turn-fixture-data.test.js'
+import { agent, pane } from './turn-data-fixture.js'
 
 const at = '2026-10-29T11:00:00.000Z'
 const limited = {

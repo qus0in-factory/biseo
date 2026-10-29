@@ -1,8 +1,8 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import {createApp}from'./app.js'
-import {makeDeps}from'../app/turn-fixture.test.js'
-import {input,reader,agent}from'../app/turn-fixture-data.test.js'
+import {makeDeps}from'../app/turn-fixture.js'
+import {input,reader,agent}from'../app/turn-data-fixture.js'
 const auth={authorization:'Bearer x'}
 test('DELETE route cancels a queued turn',async()=>{
  const d=makeDeps(reader),work={...agent,agent_status:'working'}

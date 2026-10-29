@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { interruptPane } from './interrupt-pane.js'
-import { setup } from './interrupt-pane-setup-fixture.test.js'
+import { setup } from './interrupt-pane-setup-fixture.js'
 
 test('pane lookup is restricted to the allowed workspace and known panes', async () => {
   const { deps } = setup({ workspace: 'other' })

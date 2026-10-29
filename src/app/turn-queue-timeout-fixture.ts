@@ -1,8 +1,8 @@
 import {createTurn}from'./create-turn.js'
 import {runTurn}from'./run-turn.js'
-import {input,agent}from'./turn-fixture-data.test.js'
-import {makeDeps}from'./turn-fixture.test.js'
-export const work={...agent,agent_status:'working'}
+import {input,agent}from'./turn-data-fixture.js'
+import {makeDeps}from'./turn-fixture.js'
+export const work={...agent,agent_status:'working' as const}
 export async function startTimeoutTurn(){
  const d=makeDeps(null)
  d.timeoutMs=1;d.lateCaptureMs=0

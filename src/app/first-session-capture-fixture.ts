@@ -1,5 +1,5 @@
 import type { TimelineItem } from '../domain/timeline.js'
-import { herdStub, pane } from './first-session-fixture.test.js'
+import { herdStub, pane } from './first-session-fixture.js'
 
 export const captureItem: TimelineItem = {
   requestId: 'r1',

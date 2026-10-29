@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { beginFirstReader } from './first-session-reader.js'
-import { herdStub, noSes, noSub } from './first-session-fixture.test.js'
+import { herdStub, noSes, noSub } from './first-session-fixture.js'
 
 const base = { pane_id: 'w:p1', terminal_id: 'term', agent_status: 'idle', agent: 'opencode' }
 

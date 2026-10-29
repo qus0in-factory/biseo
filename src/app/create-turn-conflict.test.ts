@@ -1,8 +1,8 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import {createTurn}from'./create-turn.js'
-import {input,reader}from'./turn-fixture-data.test.js'
-import {makeDeps}from'./turn-fixture.test.js'
+import {input,reader}from'./turn-data-fixture.js'
+import {makeDeps}from'./turn-fixture.js'
 test('payload mismatch is rejected and a busy pane is queued',async()=>{
  const d=makeDeps(reader)
  await createTurn(d,input)

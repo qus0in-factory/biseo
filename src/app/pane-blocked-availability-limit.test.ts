@@ -2,8 +2,8 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { availabilitySummaries } from './pane-availability.js'
 import { PaneLocks } from './pane-locks.js'
-import { agent, pane } from './turn-fixture-data.test.js'
-import { limited, screen } from './pane-blocked-availability-fixture.test.js'
+import { agent, pane } from './turn-data-fixture.js'
+import { limited, screen } from './pane-blocked-availability-fixture.js'
 
 test('confirmed usage limits set usage_limited and keep the provider reason', async () => {
   const s = await availabilitySummaries(

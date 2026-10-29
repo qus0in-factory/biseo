@@ -1,7 +1,7 @@
 import test from'node:test'
 import assert from'node:assert/strict'
-import {auth}from'./app-fixture-data.test.js'
-import {makeApp}from'./app-fixture.test.js'
+import {auth}from'./app-data-fixture.js'
+import {makeApp}from'./app-fixture.js'
 const app=makeApp({read:async()=>'answer'})
 test('reads a created turn and 404s unknown ids',async()=>{
  const body=JSON.stringify({requestId:'r1',workspaceId:'w',paneId:'w:p1',text:'hi'})

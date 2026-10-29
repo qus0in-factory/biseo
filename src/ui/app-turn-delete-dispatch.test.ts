@@ -1,8 +1,8 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import {createApp}from'./app.js'
-import {makeDeps}from'../app/turn-fixture.test.js'
-import {input,reader,agent}from'../app/turn-fixture-data.test.js'
+import {makeDeps}from'../app/turn-fixture.js'
+import {input,reader,agent}from'../app/turn-data-fixture.js'
 test('cancelling the head dispatches the next queued turn',async()=>{
  const d=makeDeps(reader),w={...agent,agent_status:'working'},a={authorization:'Bearer x'}
  d.herdr.listAgents=async()=>[w];d.herdr.getAgent=async()=>w

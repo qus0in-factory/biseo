@@ -2,8 +2,8 @@ import test from'node:test'
 import assert from'node:assert/strict'
 import {createTurn}from'./create-turn.js'
 import {dispatchPane}from'./turn-queue-dispatch.js'
-import {input,reader,agent,pane}from'./turn-fixture-data.test.js'
-import {makeDeps}from'./turn-fixture.test.js'
+import {input,reader,agent,pane}from'./turn-data-fixture.js'
+import {makeDeps}from'./turn-fixture.js'
 import {until as wait} from '../test-wait.test-util.js'
 test('target_not_found waits for a transient pane loss',async()=>{
  const d=makeDeps(reader),w={...agent,agent_status:'working'}

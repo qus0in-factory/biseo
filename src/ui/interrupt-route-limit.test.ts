@@ -1,9 +1,9 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { makeDeps } from '../app/turn-fixture.test.js'
-import { reader } from '../app/turn-fixture-data.test.js'
-import { appOf } from './route-app-fixture.test.js'
-import { limitedAvailability, limitedBody, post } from './interrupt-route-fixture.test.js'
+import { makeDeps } from '../app/turn-fixture.js'
+import { reader } from '../app/turn-data-fixture.js'
+import { appOf } from './route-app-fixture.js'
+import { limitedAvailability, limitedBody, post } from './interrupt-route-fixture.js'
 
 test('server interrupt rejects unknown keys and relays usage limits as 409', async () => {
   const d = makeDeps(reader)

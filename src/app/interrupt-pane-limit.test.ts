@@ -1,8 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { interruptPane } from './interrupt-pane.js'
-import { limited } from './interrupt-pane-fixture.test.js'
-import { setup } from './interrupt-pane-setup-fixture.test.js'
+import { limited } from './interrupt-pane-fixture.js'
+import { setup } from './interrupt-pane-setup-fixture.js'
 
 test('confirmed usage limits block blocked and non-blocked panes before the status guard', async () => {
   for (const status of ['blocked', 'idle'] as const) {

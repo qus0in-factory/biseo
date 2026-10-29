@@ -1,8 +1,8 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import {createTurn}from'./create-turn.js'
-import {input,reader,agent}from'./turn-fixture-data.test.js'
-import {makeDeps}from'./turn-fixture.test.js'
+import {input,reader,agent}from'./turn-data-fixture.js'
+import {makeDeps}from'./turn-fixture.js'
 const spy=()=>{const d=makeDeps(reader);let n=0;d.capture.begin=async()=>{n++;return reader};return{d,n:()=>n}}
 test('busy agent and queued pane do not open a reader',async()=>{
  const a=spy(),w={...agent,agent_status:'working'}

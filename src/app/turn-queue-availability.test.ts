@@ -4,8 +4,8 @@ import { dispatchPane } from './turn-queue-dispatch.js'
 import { cancelTurn } from './turn-queue-cancel.js'
 import { hasRetry } from './availability-retry.js'
 import { makeItem } from './turn-item.js'
-import { input, reader, agent, pane } from './turn-fixture-data.test.js'
-import { makeDeps } from './turn-fixture.test.js'
+import { input, reader, agent, pane } from './turn-data-fixture.js'
+import { makeDeps } from './turn-fixture.js'
 import type { Availability } from '../domain/timeline.js'
 
 const limited: Availability = {

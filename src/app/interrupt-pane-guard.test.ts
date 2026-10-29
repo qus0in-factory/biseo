@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { interruptPane } from './interrupt-pane.js'
-import { setup } from './interrupt-pane-setup-fixture.test.js'
+import { setup } from './interrupt-pane-setup-fixture.js'
 
 test('only blocked panes are interrupted; working, idle, done, unknown are rejected', async () => {
   for (const status of ['working', 'idle', 'done', 'unknown'] as const) {

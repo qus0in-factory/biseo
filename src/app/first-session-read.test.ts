@@ -1,8 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { beginFirstReader } from './first-session-reader.js'
-import { herdStub, noSes, session } from './first-session-fixture.test.js'
-import { withSessionDb } from './first-session-db-fixture.test.js'
+import { herdStub, noSes, session } from './first-session-fixture.js'
+import { withSessionDb } from './first-session-db-fixture.js'
 
 test('first reader collects rows written before session report', async () => {
   await withSessionDb(async () => {

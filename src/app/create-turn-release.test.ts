@@ -1,8 +1,8 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import {createTurn}from'./create-turn.js'
-import {input,reader}from'./turn-fixture-data.test.js'
-import {makeDeps}from'./turn-fixture.test.js'
+import {input,reader}from'./turn-data-fixture.js'
+import {makeDeps}from'./turn-fixture.js'
 test('failed prepare releases the pane lock and busy panes queue',async()=>{
  const missing=makeDeps(reader)
  missing.herdr.listPanes=async()=>[]
