@@ -43,13 +43,13 @@
   ],
   "triggers": {
     "crons": ["* * * * *"]
-  }
-  // D1 is intentionally not bound yet: no approved biseo database exists.
-  // After approval, create the DB, add the real id, and apply worker/migrations:
-  // "d1_databases": [{
-  //   "binding": "BISEO_DB",
-  //   "database_name": "biseo",
-  //   "database_id": "<approved-d1-database-id>",
-  //   "migrations_dir": "worker/migrations"
-  // }]
+  },
+  "d1_databases": [
+    {
+      "binding": "BISEO_DB",
+      "database_name": "biseo-db",
+      "database_id": "c68fcb2d-38c8-4df8-928b-a07f41f216e6",
+      "migrations_dir": "worker/migrations"
+    }
+  ]
 }
