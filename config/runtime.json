@@ -17,5 +17,6 @@
     "default": ["esc"],
     "opencode": ["esc"]
   },
+  "availabilityTtlMs": 900000,
   "logLevel": "info"
 }

@@ -36,6 +36,16 @@
 - 전송 차단은 `limited`이고 `resetsAt` 이전일 때만 한다. `unknown`은 차단하지 않는다.
 - TDD: codex 어댑터 fixture(키만 있는 합성 JSONL)로 limited/만료/null/손상 줄을 테스트한다.
 
+## 결정 기록 (2026-10-29, feat/32-ttl)
+- 스냅샷 시각: rollout 줄의 최상위 `timestamp`만 추출해 `RateLimits.snapshotAt`에 둔다. 원문·본문은 보관하지 않는다.
+- `checkedAt`은 확인 시각이 아니라 **데이터 기준 시각**(= `snapshotAt`)이다. 확인 시각은 `observedAt`에 둔다.
+- `rate_limit_reached_type`이 null이면 `available`이 아니라 `unknown`이다. 스냅샷은 "그 시점에 한도 미도달"만 뜻하지 않는다.
+- TTL: `config/runtime.json`의 `availabilityTtlMs`(기본 900000ms=15분). 코드에 상수를 두지 않고 config→`config.ts`→어댑터→app 계층으로 전달한다.
+- TTL이 지난 스냅샷은 `available`로 승격하지 않고 `unknown`으로 남긴다(reason `stale_snapshot`).
+- `limited`는 TTL이 아니라 `resetsAt`로만 유효한다. `resetsAt`이 지나면 `unknown`으로 되돌린다(차단 해제).
+- 차단 규칙은 그대로다: `unknown`은 차단하지 않고 `limited`는 `resetsAt` 이전에만 차단한다.
+
 ## 미확인·후속
 - claude·opencode·agy의 한도 이벤트는 로컬 transcript에서 확인하지 않았다. 각 CLI의 실제 한도 도달 로그 샘플이 필요하다.
 - pane과 rollout 파일의 매핑 방법(cwd, 세션 id)은 설계 단계에서 확정한다.
+- claude·opencode·agy 어댑터, 모델별 한도 키, 수동 확인 입력 UI는 미구현이다(#32 잔여).

@@ -13,5 +13,6 @@ export const config={
  targetGraceMs:Number(e.TARGET_GRACE_MS||base.targetGraceMs||1000),
  limitMarkers:parseLimitMarkers(e.LIMIT_MARKERS)??base.limitMarkers??[],
  interruptAllowlist:parseInterruptAllowlist(e.INTERRUPT_ALLOWLIST)??base.interruptAllowlist??{default:['esc']},
+ availabilityTtlMs:Number(e.AVAILABILITY_TTL_MS??base.availabilityTtlMs),
  logLevel:e.LOG_LEVEL??base.logLevel??'info',
 }
