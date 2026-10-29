@@ -3,20 +3,6 @@
 @import "./theme-tokens.css";
 @import "./theme-semantic.css";
 @import "./theme-status.css";
-
-@layer base {
-  body {
-    font-family: var(--font-sans);
-    background: var(--background);
-    color: var(--foreground);
-    min-height: 100dvh;
-    padding: 1rem;
-    padding-top: max(1rem, env(safe-area-inset-top));
-  }
-  button, input, textarea, select { color: inherit; }
-  input, textarea { font-size: 16px; }
-  button, summary {
-    min-height: 44px;
-    -webkit-tap-highlight-color: transparent;
-  }
-}
+@import "./theme-dark.css";
+@import "./safe-area.css";
+@import "./base.css";
