@@ -1,13 +1,18 @@
+import { useNavigate } from 'react-router'
 import { Sheet, SheetContent } from '../components/ui/sheet'
 import { useUiStore } from '../app/uiStore'
 import { MobileDrawerNav } from './MobileDrawerNav'
+import { tabToPath } from '../lib/tabToPath'
+import type { TabName } from '../domain/schemas/routeParams'
 
 export function MobileDrawer({ online = true }: { online?: boolean }) {
-  const { drawerOpen, setDrawerOpen, setActiveTab } = useUiStore()
+  const navigate = useNavigate()
+  const { drawerOpen, setDrawerOpen, setActiveTab, selectedPaneId } = useUiStore()
 
-  const nav = (t: Parameters<typeof setActiveTab>[0]) => {
+  const nav = (t: TabName) => {
     setActiveTab(t)
     setDrawerOpen(false)
+    navigate(tabToPath(t, selectedPaneId))
   }
 
   return (
