@@ -64,5 +64,15 @@
   "displayTimeZone": "Asia/Seoul",
   "displayTimeZoneLabel": "KST",
   "messageTo": "{name}에게 메시지",
-  "jumpToNew": "새 메시지"
+  "jumpToNew": "새 메시지",
+  "blocked_usage_limited": "사용량 한도 도달(차단 해제 불가). 재개: {at}",
+  "blocked_awaiting_input": "승인 또는 입력 대기 중",
+  "blocked_suspected_limit": "사용량 한도 도달 추정(확정 아님)",
+  "unblockEsc": "차단 해제 (Esc)",
+  "unblockConfirm": "에이전트에 Esc 키를 전송해 차단을 해제하시겠습니까?",
+  "unblockSuccess": "차단 해제(Esc) 신호를 전송했습니다.",
+  "unblockConflict": "사용량 한도에 도달했거나 해제할 수 없는 상태입니다.",
+  "unblockFailed": "차단 해제 요청에 실패했습니다.",
+  "unblockLimited": "사용량 한도 도달로 차단 해제 불가",
+  "unblockOffline": "백엔드 연결이 끊겨 차단 해제를 전송할 수 없습니다."
 }

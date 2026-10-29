@@ -3,24 +3,21 @@ import { TimelineView } from './TimelineView'
 import { MessageComposer } from './MessageComposer'
 import r from '../resources.json'
 
-export function TimelineSection({
-  target,
-  timeline,
-  sending,
-  onSend,
-  onCancel,
-}: {
+type P = {
   target?: PaneSummary
   timeline: TimelineItem[]
   sending: boolean
   onSend: (text: string) => void
   onCancel?: (id: string) => void
-}) {
+  online?: boolean
+}
+
+export function TimelineSection({ target, timeline, sending, onSend, onCancel, online }: P) {
   return (
     <section className="timeline-panel">
       <h2>{r.timelineTitle}</h2>
       <TimelineView items={timeline} onCancel={onCancel} />
-      <MessageComposer target={target} busy={sending} onSend={onSend} />
+      <MessageComposer target={target} busy={sending} onSend={onSend} online={online} />
     </section>
   )
 }
