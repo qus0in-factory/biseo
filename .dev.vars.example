@@ -10,4 +10,8 @@ ALLOWED_WORKSPACE_ID=<workspace-id>
 FUNNEL_BASE_URL=
 UPSTREAM_TIMEOUT_MS=10000
 # Optional comma-separated trusted browser origins; empty permits same-origin only.
-ALLOWED_ORIGINS=
+ALLOWED_ORIGINS=http://localhost,http://127.0.0.1:5173
+
+# Optional: set only when sharing cookies across subdomains.
+# Default (unset) is host-only cookies, recommended for workers.dev + custom domain.
+# COOKIE_DOMAIN=biseo.qus0in.dev
