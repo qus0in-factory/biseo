@@ -1,25 +1,11 @@
-import { resolveUsageIds } from '../domain/usageOrder'
-import type { UsageOrderState } from '../app/useUsageOrder'
-import type { UsageProvider } from '../domain/usage'
-import { UsageOrderItem } from './UsageOrderItem'
-import r from '../resources.json'
-
-type P = { providers: UsageProvider[]; orderState: UsageOrderState }
-
-export function UsageOrderSection({ providers, orderState }: P) {
-  const ids = resolveUsageIds(
-    orderState.order,
-    providers.map((p) => p.provider),
-  )
-  return (
-    <details className="mb-2 text-xs">
-      <summary className="cursor-pointer text-muted-foreground">{r.usageEditOrder}</summary>
-      <ul className="mt-1 flex flex-col gap-1">
-        {ids.map((id) => (
-          <UsageOrderItem key={id} id={id} hidden={orderState.hidden.includes(id)}
-            onMove={(dir) => orderState.move(ids, id, dir)} onToggleHide={() => orderState.toggleHide(id)} />
-        ))}
-      </ul>
-    </details>
-  )
+import{useState}from'react'
+import{resolveUsageIds,moveUsageIdTo}from'../domain/usageOrder'
+import r from'../resources.json'
+export function UsageOrderSection({providers,orderState}:any){
+const ids=resolveUsageIds(orderState.order,providers.map((p:any)=>p.provider))
+const[e,setE]=useState(false)
+const[d,setD]=useState(ids)
+const[g,setG]=useState<string|null>(null)
+if(!e)return<button type="button"onClick={()=>{setD(ids);setE(true)}}>{r.usageEditOrder}</button>
+return(<div><ul>{d.map((id:string)=>(<li key={id}draggable onDragStart={()=>setG(id)}onDragOver={(ev:any)=>{ev.preventDefault();if(g&&g!==id)setD(moveUsageIdTo(d,g,d.indexOf(id)))}}onDragEnd={()=>setG(null)}>{id}</li>))}</ul><button type="button"onClick={()=>{orderState.setOrder(d);setE(false)}} title={r.usageEditOrderDone}>{r.status_done}</button><button type="button"onClick={()=>setE(false)} title={r.usageEditOrderCancel}>{r.cancel}</button></div>)
 }

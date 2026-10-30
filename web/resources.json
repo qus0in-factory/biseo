@@ -146,5 +146,7 @@
   "usageUnitCredits": "credits",
   "usageUnitTokens": "tokens",
   "usageUnitRequests": "reqs",
-  "usageUsedSuffix": "used"
+  "usageUsedSuffix": "used",
+  "usageEditOrderDone": "완료",
+  "usageEditOrderCancel": "취소"
 }

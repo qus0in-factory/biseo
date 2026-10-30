@@ -27,3 +27,5 @@ export const moveUsageId = (list: string[], id: string, dir: number): string[] =
   next[j] = id
   return next
 }
+
+export * from './usageOrderMove.js'
