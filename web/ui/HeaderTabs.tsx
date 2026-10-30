@@ -8,7 +8,7 @@ type P = { value: string | null; onSelect: (v: string | null) => void }
 export function HeaderTabs({ value, onSelect }: P) {
   const unread = useNotificationStore((s) => unreadCount(s.items))
   return (
-    <Tabs value={value ?? undefined} onValueChange={onSelect} className="mr-auto">
+    <Tabs value={value ?? undefined} onValueChange={onSelect} className="mr-auto min-w-0">
       <TabsList className="gap-2">
         <TabsTrigger value="usage" className="gap-2"><Gauge size={16} />{r.usageTab}</TabsTrigger>
         <TabsTrigger value="notify" className="gap-2" aria-label={r.notifyUnreadLabel.replace('{n}', String(unread))}>
