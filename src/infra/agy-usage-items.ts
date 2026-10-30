@@ -6,7 +6,8 @@ export function collectAgyItems(groups: any[], chk: string) {
   const metrics: UsageMetric[] = [], windows: WindowUsage[] = []
   for (const g of groups) {
     const gn = g?.displayName ?? 'Default'
-    for (const b of (Array.isArray(g?.buckets) ? g.buckets : [])) metrics.push(makeAgyMetric(gn, b))
+    const fams = Array.isArray(g?.families) ? (g.families as string[]) : []
+    for (const b of (Array.isArray(g?.buckets) ? g.buckets : [])) metrics.push(makeAgyMetric(gn, b, fams))
   }
   const f = groups[0]?.buckets ?? []
   const b5h = f.find((b: any) => b.window === '5h' || b.bucketId === '3p-5h')
