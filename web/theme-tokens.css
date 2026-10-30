@@ -1,11 +1,9 @@
 @theme {
   --color-primary: #08090a;
   --color-surface: #f4f7f5;
-  --color-surface-dark: #222823;
   --color-secondary: #575a5e;
   --color-muted: #e2e6e3;
   --color-canvas: #f4f7f5;
-  --color-canvas-dark: #08090a;
   --color-border: #575a5e;
   --color-border-subtle: #a7a2a9;
   --color-success: #15803d;

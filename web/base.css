@@ -1,5 +1,5 @@
 @layer base {
-  html, body { overscroll-behavior-y: contain; }
+  html, body { overscroll-behavior-y: contain; color-scheme: light; }
   body {
     font-family: var(--font-sans);
     background: var(--background);

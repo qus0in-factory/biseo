@@ -13,6 +13,10 @@ describe('MarkdownResponse source', () => {
   it('uses aria-pressed toggle', () => {
     assert.match(src, /aria-pressed/)
   })
+  it('places the toggle at the start of the response footer', () => {
+    assert.match(src, /justify-start/)
+    assert.doesNotMatch(src, /justify-end/)
+  })
   it('uses noopener noreferrer links', () => {
     assert.match(src, /noopener noreferrer/)
   })
