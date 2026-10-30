@@ -1,20 +1,18 @@
-import type { UsageMetric } from '../domain/usage-types.js'
+import type { AgyBucket, AgyGroup } from './agy-quota-types.js'
+import { quotaGroup } from './agy-quota-group.js'
 
-export function groupModelBuckets(buckets: any[]): UsageMetric[] {
-  if (!Array.isArray(buckets) || buckets.length === 0) return []
-  const gemini = buckets.filter(b => typeof b.modelId === 'string' && b.modelId.includes('gemini'))
-  if (gemini.length === 0) return []
-  const minRem = Math.min(...gemini.map(b => typeof b.remainingFraction === 'number' ? b.remainingFraction : 1))
-  const reset = gemini.find(b => typeof b.resetTime === 'string')?.resetTime ?? null
-  const used = Math.round((1 - minRem) * 100)
-  const remaining = Math.round(minRem * 100)
-  return [{
-    id: 'Gemini models:gemini-daily',
-    label: 'Gemini models - Daily Limit Remaining',
-    unit: 'percent',
-    used,
-    limit: 100,
-    remaining,
-    resetsAt: reset
-  }]
+const F: [string, RegExp][] = [
+  ['Gemini Models', /^gemini-/],
+  ['Claude and GPT models', /^(claude|gpt)-/],
+  ['Gemini 4 Argon', /^chat_/]
+]
+
+const fam = (id: string) => F.find(([, r]) => r.test(id))?.[0] ?? null
+
+export function modelBucketsToGroups(buckets: AgyBucket[]): AgyGroup[] {
+  if (!Array.isArray(buckets)) return []
+  const known = buckets.filter((b) =>
+    typeof b.modelId === 'string' && typeof b.remainingFraction === 'number' && fam(b.modelId))
+  const names = [...new Set(known.map((b) => fam(b.modelId as string) as string))]
+  return names.map((n) => quotaGroup(n, known.filter((b) => fam(b.modelId as string) === n)))
 }
