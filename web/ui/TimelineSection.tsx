@@ -21,7 +21,7 @@ export function TimelineSection({ target, timeline, sending, onSend, onCancel, o
       <div className="flex min-h-0 flex-1 flex-col border-b border-border">
         <TimelineView items={timeline} onCancel={onCancel} onLoadOlder={onLoadOlder} olderLoaded={olderLoaded} />
       </div>
-      <MessageComposer target={target} busy={sending} onSend={onSend} online={online} />
+      <MessageComposer target={target} busy={sending} onSend={onSend} online={online} timeline={timeline} />
     </section>
   )
 }

@@ -13,7 +13,7 @@ export function AgentHeader({ item: i, onCancel }: P) {
     <div className="mb-1 flex flex-wrap items-center gap-2">
       <strong>{i.targetName}</strong>
       {i.agentKind && <small>({i.agentKind})</small>}
-      <TurnStatusBadge status={i.status} />
+      <TurnStatusBadge status={i.status} errorCode={i.errorCode} />
       {isQ && onCancel && <CancelTurnButton requestId={i.requestId} onCancel={onCancel} />}
       {t && <time className="text-xs text-muted-foreground">{t}</time>}
     </div>

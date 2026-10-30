@@ -9,7 +9,7 @@ export function continueLate(o:LateOpts){
   try{
    while(o.isLive()){
     const left=end-Date.now()
-    if(left<=0)return
+    if(left<=0){o.onDone('timeout','late_capture_expired');return}
     const t0=Date.now(),ok=await pollLateStep(o,Math.min(left,chunk))
     if(!ok||!o.isLive())return
     const pause=Math.min(end-Date.now(),chunk-(Date.now()-t0))
