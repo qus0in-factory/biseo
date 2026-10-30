@@ -12,7 +12,7 @@ export async function loadAgyCliGroups(nowMs: number): Promise<AgyGroup[] | null
   if (!c.enabled) return null
   if (cache && nowMs - cache.at < c.cacheMs) return cache.groups
   const out = await runAgyCli()
-  const groups = out === null ? null : parseAgyCliTsv(out)
+  const groups = out === null ? null : parseAgyCliTsv(out, nowMs)
   cache = { at: nowMs, groups }
   return groups
 }
