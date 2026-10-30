@@ -5,7 +5,7 @@ import r from '../resources.json'
 
 const res = r as Record<string, string>
 
-export function UsagePanelRow({ provider }: { provider: UsageProvider }) {
+export function UsagePanelRow({ provider, remaining = true }: { provider: UsageProvider; remaining?: boolean }) {
   const state = res[`usage_${provider.state}`] ?? provider.state
   const hasMetrics = Array.isArray(provider.metrics) && provider.metrics.length > 0
   return (
@@ -15,8 +15,8 @@ export function UsagePanelRow({ provider }: { provider: UsageProvider }) {
         <span className={provider.state === 'limited' ? 'text-error' : 'text-muted-foreground'}>{state}</span>
       </div>
       {hasMetrics
-        ? provider.metrics!.map((m) => <UsageMetricRow key={m.id} metric={m} />)
-        : provider.windows.map((w) => <UsageWindowRow key={w.window} value={w} />)}
+        ? provider.metrics!.map((m) => <UsageMetricRow key={m.id} metric={m} remaining={remaining} />)
+        : provider.windows.map((w) => <UsageWindowRow key={w.window} value={w} remaining={remaining} />)}
     </div>
   )
 }
