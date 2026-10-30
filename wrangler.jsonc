@@ -31,7 +31,7 @@
     "SERVICE_TOKEN_SUBJECT": "biseo-worker",
     "LOGIN_MAX_ATTEMPTS": "5",
     "LOGIN_ATTEMPT_TTL_SECONDS": "60",
-    "ALLOWED_WORKSPACE_ID": "w1T",
+    "WORKSPACE_CONFIG_SOURCE": "server",
     "UPSTREAM_TIMEOUT_MS": "10000",
     "ALLOWED_ORIGINS": "https://biseo.qus0in.workers.dev,https://biseo.qus0in.dev"
   },
@@ -39,6 +39,17 @@
     {
       "binding": "LOGIN_ATTEMPTS",
       "id": "dc4ef10d3a9e4153a93e44fdcab18fba"
+    }
+  ],
+  "triggers": {
+    "crons": ["* * * * *"]
+  },
+  "d1_databases": [
+    {
+      "binding": "BISEO_DB",
+      "database_name": "biseo-db",
+      "database_id": "c68fcb2d-38c8-4df8-928b-a07f41f216e6",
+      "migrations_dir": "worker/migrations"
     }
   ]
 }

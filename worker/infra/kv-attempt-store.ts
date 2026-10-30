@@ -1,4 +1,3 @@
-import type { KVNamespace } from '@cloudflare/workers-types'
 import type { AttemptStore } from '../app/ports.js'
 
 export function createKvAttemptStore(kv: KVNamespace): AttemptStore {

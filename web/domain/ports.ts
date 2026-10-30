@@ -19,6 +19,7 @@ export interface PaneSnapshot {
 export interface WorkspaceApiPort {
   getConfig(): Promise<AppConfig>
   getPanes(workspaceId: string): Promise<PaneSummary[]>
+  getTimeline?(workspaceId: string): Promise<TimelineItem[]>
   sendMessage(input: SendMessageInput): Promise<{ requestId: string }>
   getTurn(requestId: string): Promise<TimelineItem>
   cancelTurn(requestId: string): Promise<void>

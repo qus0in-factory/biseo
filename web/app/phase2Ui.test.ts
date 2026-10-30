@@ -5,23 +5,21 @@ import { parseRouteParams } from '../domain/schemas/routeParams'
 import { validateMessageInput } from '../domain/schemas/messageInput'
 import { useUiStore } from './uiStore'
 
-test('appRoutes contains expected phase-2 routes', () => {
+test('single workspace route excludes mode paths', () => {
   const paths = routePaths
-  for (const p of ['/', '/panels', '/chat', '/chat/:paneId', '/history']) {
-    assert.ok(paths.includes(p))
-  }
+  for (const p of ['/', '/chat/:paneId']) assert.ok(paths.includes(p))
+  for (const p of ['/panels', '/chat', '/history']) assert.ok(!paths.includes(p))
 })
 
-test('phase-2 schemas validate inputs', () => {
+test('schemas validate', () => {
   assert.equal(validateMessageInput('hello').ok, true)
   assert.equal(validateMessageInput('   ').ok, false)
-  assert.deepEqual(parseRouteParams({ tab: 'chat' }), { tab: 'chat' })
+  assert.deepEqual(parseRouteParams({ paneId: 'p1' }), { paneId: 'p1' })
+  assert.deepEqual(parseRouteParams({ tab: 'chat' }), {})
 })
 
-test('phase-2 uiStore tracks mobile and view state', () => {
+test('uiStore tracks selected pane', () => {
   const s = useUiStore.getState()
-  s.setActiveTab('chat')
-  assert.equal(useUiStore.getState().activeTab, 'chat')
-  s.setActiveTab('panels')
-  assert.equal(useUiStore.getState().activeTab, 'panels')
+  s.setSelectedPaneId('w1T:p1')
+  assert.equal(useUiStore.getState().selectedPaneId, 'w1T:p1')
 })

@@ -12,9 +12,9 @@ export function useWorkspaceController(a: Api, s: St, on: boolean) {
   const setSel = useUiStore((x) => x.setSelectedPaneId)
   const base = useWorkspaceBase(a, on, online, sel)
   const { getItems, getUpdate } = useSyncRefs(base.items, base.update)
-  const { reload, setSnapshot, markDisconnected } = base
+  const { reload, setSnapshot, markDisconnected, reloadTimeline } = base
 
-  const h = useWorkspaceRecovery(a, reload, getItems, getUpdate, setSnapshot, setOnline, markDisconnected)
+  const h = useWorkspaceRecovery(a, reload, getItems, getUpdate, setSnapshot, setOnline, markDisconnected, reloadTimeline)
   useStream(s, on ? base.wsId : null, { ...h, onTurn: base.update })
 
   return { ...base, sel, setSel, online }

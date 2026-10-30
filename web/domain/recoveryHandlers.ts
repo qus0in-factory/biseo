@@ -16,11 +16,13 @@ export function createRecoveryHandlers(
   setSnapshot: (p: P[]) => void,
   setOnline: (ok: boolean) => void,
   onDisconnect: () => void,
+  reloadTimeline?: () => void,
 ): SyncHandlers {
   return {
     onOpen: () => {
       setOnline(true)
       reload()
+      reloadTimeline?.()
       syncPending(api, getItems(), getUpdate())
     },
     onPanes: (s) => {
