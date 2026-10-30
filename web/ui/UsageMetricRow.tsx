@@ -1,10 +1,10 @@
 import type{UsageMetric}from'../domain/usage'
-import{usageMetricName}from'../domain/usage-metric-name'
+import{usageMetricLabel}from'../domain/usage-metric-name'
 import{formatMetricValue}from'../domain/usage-metric-format'
 import{UsageWindowTime}from'./UsageWindowTime'
 import r from'../resources.json'
 export function UsageMetricRow({provider,metric,remaining=true}:{provider:string;metric:UsageMetric;remaining?:boolean}){
-const label=usageMetricName(provider,metric.id,metric.label,r as Record<string,string>)
+const label=usageMetricLabel(provider,metric.id,metric.label,r as Record<string,string>)
 const d={window:metric.id,usedPercent:metric.used,resetsAt:metric.resetsAt,checkedAt:null,
 limitReached:metric.unit==='percent'&&metric.used!==null&&metric.used>=100,source:null}
 return(

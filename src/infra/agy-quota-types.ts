@@ -11,4 +11,6 @@ export type AgyBucket = {
 export type AgyGroup = {
   displayName: string
   buckets: AgyBucket[]
+  // Model family keys detected on the quota model ids of this pool.
+  families?: string[]
 }

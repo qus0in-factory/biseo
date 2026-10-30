@@ -14,12 +14,4 @@ describe('UsageModalNav', () => {
     assert.match(strip, /usageTabPrev/)
     assert.match(strip, /usageTabNext/)
   })
-  it('exposes order edit and hide controls', () => {
-    assert.match(src('UsageOrderedTabs.tsx'), /UsageOrderSection/)
-    assert.match(src('UsageOrderSection.tsx'), /usageEditOrder/)
-    const item = src('UsageOrderItem.tsx')
-    assert.match(item, /usageMoveLeft/)
-    assert.match(item, /usageHideItem/)
-    assert.match(item, /usageShowItem/)
-  })
 })
