@@ -3,9 +3,12 @@ import type { Availability, BlockedReason, PaneSummary } from '../domain/timelin
 export function paneBlocked(
   summary: Pick<PaneSummary, 'status'>,
   availability: Availability,
-  suspected: boolean,
+  limitSuspected: boolean,
+  inputSuspected = false,
 ): BlockedReason {
-  if (availability.state === 'limited') return 'usage_limited'
+  if (availability.state === 'limited') return 'usage_limit'
   if (summary.status !== 'blocked') return null
-  return suspected ? 'suspected_limit' : 'awaiting_input'
+  if (limitSuspected) return 'usage_limit'
+  if (inputSuspected) return 'input_request'
+  return 'unknown'
 }

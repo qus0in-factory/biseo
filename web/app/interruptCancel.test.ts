@@ -21,7 +21,7 @@ test('interrupt 0 calls on cancel, offline, limited', async () => {
   await triggerInterrupt(base, false, false, send, () => true)
   assert.equal(c, 0)
 
-  const lim = { ...base, blockedReason: 'usage_limited' as const }
+  const lim = { ...base, blockedReason: 'usage_limit' as const }
   await triggerInterrupt(lim, true, false, send, () => true)
   assert.equal(c, 0)
 

@@ -9,3 +9,12 @@ export async function suspectedLimit(
   if (summary.status !== 'blocked' || availability.state === 'limited' || !limits) return false
   return limits.classify(summary.paneId).catch(() => false)
 }
+
+export async function suspectedInput(
+  summary: Omit<PaneSummary, 'availability'>,
+  availability: Availability,
+  inputs: LimitScreen | undefined,
+): Promise<boolean> {
+  if (summary.status !== 'blocked' || availability.state === 'limited' || !inputs) return false
+  return inputs.classify(summary.paneId).catch(() => false)
+}
