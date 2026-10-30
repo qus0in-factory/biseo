@@ -1,12 +1,7 @@
-import test from'node:test'
 import assert from'node:assert/strict'
-import {createTurn}from'./create-turn.js'
-import {cancelTurn}from'./turn-queue-cancel.js'
-import {dispatchPane}from'./turn-queue-dispatch.js'
-import {input,reader,agent,pane}from'./turn-data-fixture.js'
-import {makeDeps}from'./turn-fixture.js'
-test('cancel during target grace does not start the removed turn',async()=>{
- const d=makeDeps(reader),w={...agent,agent_status:'working'}
+import{createTurn,cancelTurn,dispatchPane,input,reader,agent,pane,makeDeps}from'./turn-queue-grace-fixture.js'
+export const cancelDuringGrace=async()=>{
+ const d=makeDeps(reader),w={...agent,agent_status:'working'as const}
  const set=(s:typeof agent)=>{d.herdr.listAgents=async()=>[s];d.herdr.getAgent=async()=>s}
  set(w)
  for(const t of'12')await createTurn(d,{...input,requestId:t,text:t})
@@ -23,4 +18,4 @@ test('cancel during target grace does not start the removed turn',async()=>{
  d.locks.release('w:p1','h')
  for(let i=0;i<100&&got!=='2';i++)await new Promise(r=>setTimeout(r,1))
  assert.equal(got,'2')
-})
+}
