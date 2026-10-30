@@ -11,8 +11,8 @@ export function parseUsage(body:unknown,now=new Date().toISOString()):UsageSnaps
   const p=v as Record<string,unknown>
   if(typeof p.provider!=='string'||!p.provider.trim())return[]
   const state=states.has(p.state as UsageState)?p.state as UsageState:'unknown'
-  const list=Array.isArray(p.windows)?p.windows:[p]
-  const windows:(unknown[])=list.length?list:[{}]
-  return windows.flatMap(w=>w&&typeof w==='object'?[windowSnapshot(p.provider as string,state,p,w as Record<string,unknown>,updatedAt)]:[])
+  const list=(Array.isArray(p.metrics)&&p.metrics.length)?p.metrics:(Array.isArray(p.windows)?p.windows:[p])
+  const items:(unknown[])=list.length?list:[{}]
+  return items.flatMap(w=>w&&typeof w==='object'?[windowSnapshot(p.provider as string,state,p,w as Record<string,unknown>,updatedAt)]:[])
  })
 }

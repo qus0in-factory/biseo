@@ -1,21 +1,19 @@
-import type { ProviderUsage, WindowUsage } from '../domain/usage-types.js'
+import type { ProviderUsage, WindowUsage as W } from '../domain/usage-types.js'
+import { windowsToMetrics as m } from '../domain/usage-metric-compat.js'
 import { getFreeLock } from './opencode-free-lock.js'
 
 export function evaluateFreeUsage(now = new Date()): ProviderUsage {
   const l = getFreeLock()
-  if (!l) return { provider: 'opencode-free', state: 'unknown', windows: [] }
-  if (!l.isLocked) {
-    const w: WindowUsage = { window: 'primary', usedPercent: 0, resetsAt: null, checkedAt: l.checkedAt, limitReached: false, source: l.source }
-    return { provider: 'opencode-free', state: 'available', windows: [w] }
-  }
-  const isPast = Boolean(l.resetsAt && Date.parse(l.resetsAt) <= now.getTime())
-  const w: WindowUsage = {
+  if (!l) return { provider: 'opencode-free', state: 'unknown', metrics: [], windows: [] }
+  const isPast = Boolean(l.isLocked && l.resetsAt && Date.parse(l.resetsAt) <= now.getTime())
+  const lim = l.isLocked && !isPast
+  const w: W = {
     window: 'primary',
-    usedPercent: isPast ? 0 : 100,
+    usedPercent: lim ? 100 : 0,
     resetsAt: l.resetsAt,
     checkedAt: l.checkedAt,
-    limitReached: !isPast,
+    limitReached: lim,
     source: isPast ? 'expected-unlocked' : l.source
   }
-  return { provider: 'opencode-free', state: isPast ? 'available' : 'limited', windows: [w] }
+  return { provider: 'opencode-free', state: lim ? 'limited' : 'available', metrics: m([w]), windows: [w] }
 }

@@ -1,5 +1,15 @@
 export type UsageProviderState = 'available' | 'limited' | 'unknown'
 
+export interface UsageMetric {
+  id: string
+  label: string
+  unit: 'percent' | 'credits' | 'currency' | 'tokens' | 'requests' | string
+  used: number | null
+  limit: number | null
+  remaining: number | null
+  resetsAt: string | null
+}
+
 export interface UsageWindow {
   window: string
   usedPercent: number | null
@@ -13,6 +23,7 @@ export interface UsageProvider {
   provider: string
   state: UsageProviderState
   windows: UsageWindow[]
+  metrics?: UsageMetric[]
 }
 
 export interface UsageResponse {
@@ -25,8 +36,5 @@ export interface UsageApiPort {
   getUsage(): Promise<UsageResponse>
 }
 
-export const usagePercentText = (value: number | null, unknown: string) =>
-  value === null ? unknown : `${value}%`
-
-export const usageWindowName = (window: string, labels: Record<string, string>) =>
-  labels[`usageWindow_${window}`] ?? window
+export const usagePercentText = (v: number | null, unk: string) => v === null ? unk : `${v}%`
+export const usageWindowName = (w: string, l: Record<string, string>) => l[`usageWindow_${w}`] ?? w

@@ -1,5 +1,6 @@
 import type { ProviderUsage, WindowUsage } from '../domain/usage-types.js'
 import { unknownUsage } from '../domain/usage-unknown.js'
+import { windowsToMetrics } from '../domain/usage-metric-compat.js'
 
 export function parseGrokBilling(data: any, now = new Date()): ProviderUsage {
   const root = data?.config ?? data
@@ -18,10 +19,6 @@ export function parseGrokBilling(data: any, now = new Date()): ProviderUsage {
     limitReached: u >= 100,
     source: 'grok'
   }
-
-  return {
-    provider: 'grok',
-    state: lim ? 'limited' : 'available',
-    windows: [w]
-  }
+  const windows = [w]
+  return { provider: 'grok', state: lim ? 'limited' : 'available', metrics: windowsToMetrics(windows), windows }
 }

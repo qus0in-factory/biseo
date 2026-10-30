@@ -6,10 +6,11 @@ export const getLastGrokSnapshot = () => lastGrokSnapshot
 export const setLastGrokSnapshot = (s: ProviderUsage | null) => { lastGrokSnapshot = s }
 
 export function makeStaleGrokUsage(last: ProviderUsage | null): ProviderUsage {
-  if (!last) return { provider: 'grok', state: 'unknown', windows: [] }
+  if (!last) return { provider: 'grok', state: 'unknown', metrics: [], windows: [] }
   return {
     ...last,
-    windows: last.windows.map(w => ({
+    metrics: (last.metrics ?? []).map(m => ({ ...m })),
+    windows: (last.windows ?? []).map(w => ({
       ...w,
       source: 'grok-stale'
     }))

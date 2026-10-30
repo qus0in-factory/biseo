@@ -1,4 +1,5 @@
 import type { ProviderUsage, WindowUsage } from '../domain/usage-types.js'
+import { windowsToMetrics } from '../domain/usage-metric-compat.js'
 
 export function agyUnknownUsage(now = new Date(), retryAfterMs = 300000): ProviderUsage {
   const chk = now.toISOString()
@@ -11,9 +12,14 @@ export function agyUnknownUsage(now = new Date(), retryAfterMs = 300000): Provid
     limitReached: false,
     source: 'google-oauth-unauthenticated'
   }
+  const windows = [w]
   return {
     provider: 'agy',
     state: 'unknown',
-    windows: [w]
+    metrics: windowsToMetrics(windows),
+    windows,
+    source: 'google-oauth-unauthenticated',
+    checkedAt: chk,
+    retryAt: r
   }
 }

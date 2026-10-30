@@ -39,6 +39,7 @@ test('fetchGrokUsage refreshes on expired token and succeeds', async () => {
     assert.equal(res.state, 'available')
     assert.equal(res.windows[0].usedPercent, 30)
     assert.equal(res.windows[0].source, 'grok')
+    assert.equal(res.metrics[0].used, 30)
     assert.equal(refreshCalls, 1)
     assert.equal(billingCalls, 2)
   } finally {
@@ -57,6 +58,15 @@ test('fetchGrokUsage returns stale snapshot when refresh fails', async () => {
   setLastGrokSnapshot({
     provider: 'grok',
     state: 'available',
+    metrics: [{
+      id: 'primary',
+      label: 'primary',
+      unit: 'percent',
+      used: 45,
+      limit: 100,
+      remaining: 55,
+      resetsAt: '2026-11-01T00:00:00Z'
+    }],
     windows: [{
       window: 'primary',
       usedPercent: 45,
@@ -81,6 +91,7 @@ test('fetchGrokUsage returns stale snapshot when refresh fails', async () => {
     assert.equal(res.state, 'available')
     assert.equal(res.windows[0].usedPercent, 45)
     assert.equal(res.windows[0].source, 'grok-stale')
+    assert.equal(res.metrics[0].used, 45)
   } finally {
     server.close()
     if (prevUrl) process.env.BISEO_GROK_BILLING_URL = prevUrl
