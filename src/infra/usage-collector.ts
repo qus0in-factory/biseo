@@ -1,15 +1,21 @@
-import{findLatestRollout}from'./codex-latest.js'
-import{readRateLimits}from'./codex-rate-limit-read.js'
-import{formatCodexWindows,unknownUsage}from'../domain/usage-format.js'
-import type{UsageReport}from'../domain/usage-types.js'
-export class UsageCollector{
- async getReport(now=new Date()):Promise<UsageReport>{
-  try{
-   const p=await findLatestRollout()
-   const r=p?await readRateLimits(p):null
-   return{providers:[formatCodexWindows(r,now)],updatedAt:now.toISOString()}
-  }catch{
-   return{providers:[unknownUsage('codex')],updatedAt:now.toISOString()}
+import type { UsageReport } from '../domain/usage-types.js'
+import { safeFetch } from './usage-safe-fetch.js'
+import { fetchCodexUsage as cx } from './codex-wham-fetch.js'
+import { fetchClaudeUsage as cl } from './claude-oauth-fetch.js'
+import { fetchOpencodeGoUsage as og } from './opencode-go-fetch.js'
+import { fetchOpencodeFreeUsage as of } from './opencode-free-fetch.js'
+import { fetchGrokUsage as gk } from './grok-billing-fetch.js'
+import { fetchOllamaUsage as ol } from './ollama-usage-fetch.js'
+import { fetchAgyUsage as ag } from './agy-usage-fetch.js'
+
+export class UsageCollector {
+  async getReport(now = new Date()): Promise<UsageReport> {
+    const providers = await Promise.all([
+      safeFetch('codex', cx, now), safeFetch('claude', cl, now),
+      safeFetch('opencode-go', og, now), safeFetch('opencode-free', of, now),
+      safeFetch('grok', gk, now), safeFetch('ollama', ol, now),
+      safeFetch('agy', ag, now)
+    ])
+    return { providers, updatedAt: now.toISOString() }
   }
- }
 }

@@ -13,9 +13,9 @@ test('switch has a localized name and exposes raw state without visible text', (
     assert.match(html, /role="switch"/)
     assert.match(html, new RegExp(`aria-checked="${raw}"`))
     assert.ok(html.includes(`aria-label="${label}"`))
-    assert.match(html, /h-11 w-14/)
+    assert.match(html, /h-11 w-20/)
     assert.ok(html.indexOf('lucide-eye') < html.indexOf('lucide-code-2'))
-    assert.equal(html.includes('translate-x-6'), raw)
+    assert.equal(html.includes('translate-x-9'), raw)
     assert.equal(html.replace(/<[^>]*>/g, ''), '')
   }
 })

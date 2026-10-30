@@ -18,6 +18,8 @@ export function useTimeline(p: P, w: string | null, t?: S) {
     cancel,
     update: pg.update,
     reloadTimeline: pg.reload,
+    retryTimeline: pg.reload,
+    timelineState: pg.timelineState,
     loadOlder: pg.loadOlder,
     olderLoaded: pg.olderLoaded,
   }
