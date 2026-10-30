@@ -18,5 +18,6 @@
     "opencode": ["esc"]
   },
   "availabilityTtlMs": 900000,
+  "ollamaIncludedUsd": 60,
   "logLevel": "info"
 }

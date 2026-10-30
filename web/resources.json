@@ -89,6 +89,8 @@
   "usageWindow_opencode-go_monthly": "m",
   "usageWindow_grok_primary": "m",
   "usageWindow_ollama_primary": "m",
+  "usageWindow_ollama_included_balance": "Included Balance",
+  "usageWindow_ollama_purchased_balance": "Purchased Balance",
   "usageWindow_opencode-free_primary": "primary",
   "usage_available": "사용 가능",
   "usage_limited": "한도 도달",

@@ -1,4 +1,5 @@
 import {base}from'./config-file.js'
+import {ollamaConfig as o}from'./config-ollama.js'
 import {parseInterruptAllowlist,parseLimitMarkers}from'./config-parse.js'
 const e=process.env
 export const envConfig={
@@ -13,4 +14,5 @@ export const envConfig={
  interruptAllowlist:parseInterruptAllowlist(e.INTERRUPT_ALLOWLIST)??base.interruptAllowlist??{default:['esc']},
  availabilityTtlMs:Number(e.AVAILABILITY_TTL_MS??base.availabilityTtlMs),
  logLevel:e.LOG_LEVEL??base.logLevel??'info',
+ ...o
 }

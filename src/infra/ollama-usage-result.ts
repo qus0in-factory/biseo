@@ -1,5 +1,9 @@
 import type { ProviderUsage, WindowUsage } from '../domain/usage-types.js'
-export function ollamaUsageResult(chk: string, metrics: any[], primaryPercent: number | null): ProviderUsage {
-  const w: WindowUsage = { window: 'primary', usedPercent: primaryPercent, resetsAt: null, checkedAt: chk, limitReached: primaryPercent === 100, source: 'ollama-cloud' }
+import { balancePercent } from './ollama-balance-percent.js'
+
+export function ollamaUsageResult(chk: string, metrics: any[]): ProviderUsage {
+  const inc = metrics.find((m: any) => m.id === 'included_balance')
+  const pct = balancePercent(inc?.used ?? null, inc?.limit ?? null)
+  const w: WindowUsage = { window: 'primary', usedPercent: pct, resetsAt: inc?.resetsAt ?? null, checkedAt: chk, limitReached: pct === 100, source: 'ollama-cloud' }
   return { provider: 'ollama', state: 'available', metrics, windows: [w], source: 'ollama-cloud', checkedAt: chk }
 }
