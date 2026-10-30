@@ -1,3 +1,5 @@
+import { base } from '../config-file.js'
+
 export interface AgyCliConfig {
   enabled: boolean
   path: string
@@ -13,8 +15,9 @@ const ms = (v: string | undefined, d: number): number => {
 
 export function agyCliConfig(): AgyCliConfig {
   const e = process.env
+  const flag = e.BISEO_AGY_CLI_ENABLED
   return {
-    enabled: e.BISEO_AGY_CLI_ENABLED === '1',
+    enabled: flag === '1' ? true : flag === '0' ? false : base.agyCliEnabled ?? true,
     path: e.BISEO_AGY_CLI_PATH ?? 'agy',
     args: (e.BISEO_AGY_CLI_ARGS ?? '-p /usage').split(/\s+/).filter(Boolean),
     timeoutMs: ms(e.BISEO_AGY_CLI_TIMEOUT_MS, 15000),
