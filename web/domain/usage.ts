@@ -36,5 +36,6 @@ export interface UsageApiPort {
   getUsage(): Promise<UsageResponse>
 }
 
-export const usagePercentText = (v: number | null, unk: string) => v === null ? unk : `${v}%`
-export const usageWindowName = (w: string, l: Record<string, string>) => l[`usageWindow_${w}`] ?? w
+export const usagePercentText=(v:number|null,unk:string)=>v===null?unk:`${v}%`
+type L=Record<string,string>
+export const usageWindowName=(p:string,w:string,l:L)=>l[`usageWindow_${p}_${w}`]??l[`usageWindow_${w}`]??w
