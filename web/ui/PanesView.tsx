@@ -1,12 +1,18 @@
-import type { PaneSummary } from '../domain/timeline'
-import { usePanesView } from './usePanesView'
-import { PanesViewLayout } from './PanesViewLayout'
-import r from '../resources.json'
-
-type P = { panes: PaneSummary[]; selectedId: string | null; onSelect: (id: string) => void; storageKey?: string }
-
-export function PanesView(p: P) {
-  const v = usePanesView(p)
-  if (!v) return <p className="text-sm text-muted-foreground">{r.emptyPanes}</p>
-  return <PanesViewLayout a={v.pinnedPanes} b={v.rest} s={p.selectedId} p={v.pinned} t={v.toggle} c={p.onSelect} r={v.register} />
+import type{PaneSummary}from'../domain/timeline'
+import type{AsyncState}from'../domain/asyncState'
+import{listState}from'../domain/asyncListState'
+import{usePanesView}from'./usePanesView'
+import{PanesList}from'./PanesList'
+import{AsyncList}from'./AsyncList'
+import{ListSkeleton}from'./ListSkeleton'
+import r from'../resources.json'
+type P={panes:PaneSummary[];selectedId:string|null;onSelect:(id:string)=>void;storageKey?:string;state?:AsyncState<PaneSummary[]>;onRetry?:()=>void}
+export function PanesView(p:P){
+ const view=usePanesView(p)
+ const state=p.state??listState(p.panes,false,null)
+ return(
+  <AsyncList state={state} skeleton={<ListSkeleton rows={4}/>} empty={<p className="text-sm text-muted-foreground">{r.emptyPanes}</p>} errorText={r.panesError} onRetry={p.onRetry}>
+   {()=>view?<PanesList view={view} selectedId={p.selectedId} onSelect={p.onSelect}/>:null}
+  </AsyncList>
+ )
 }
