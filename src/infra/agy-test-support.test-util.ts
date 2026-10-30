@@ -14,6 +14,7 @@ export function agyTestEnv(path: string): void {
   process.env.BISEO_AGY_TOKEN_PATH = path
   process.env.BISEO_AGY_TOKEN_URL ??= 'https://token.example/o'
   process.env.BISEO_AGY_CLIENT_ID ??= 'synthetic-id'
+  process.env.BISEO_AGY_CLIENT_ID_FILE = join(tmpdir(), 'agy129-no-client-id')
   process.env.BISEO_AGY_KEYCHAIN_ENABLED = '0'
 }
 
