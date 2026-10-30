@@ -11,14 +11,17 @@ export function startQueueWatch(d:TurnDeps){
  const ws=d.allowedWorkspaceId
  if(!ws){logger.warn({reason:'allowed_workspace_id_missing'},'herdr.watch.disabled');return}
  const w=startHerdrWatch({
-  listPanes:async()=> (await d.herdr.listPanes(ws)).map(p=>p.pane_id),
+  listPanes:async()=> d.allowedWorkspaceId?(await d.herdr.listPanes(d.allowedWorkspaceId)).map(p=>p.pane_id):[],
   subscribe,
   onEvent:e=>queueEvent(d,e),
   onReady:()=>dispatchAll(d),
   onError:e=>logger.warn({err:e},'herdr.watch.retry'),
  })
  d.watch=()=>w.refresh()
- const stop=()=>{w.stop();process.exit(0)}
+ let current=ws
+ const timer=setInterval(()=>{const next=d.allowedWorkspaceId;if(next!==current){current=next!;w.refresh();dispatchAll(d)}},1000)
+ timer.unref()
+ const stop=()=>{clearInterval(timer);w.stop();process.exit(0)}
  process.once('SIGTERM',stop)
  process.once('SIGINT',stop)
 }

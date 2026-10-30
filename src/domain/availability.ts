@@ -1,5 +1,5 @@
 import type{Availability}from'./timeline.js'
-export type RateLimits={reached:string|null;primary:string|null;secondary:string|null;snapshotAt:string|null}
+export type RateLimits={reached:string|null;primary:string|null;secondary:string|null;primaryUsedPercent:number|null;secondaryUsedPercent:number|null;snapshotAt:string|null}
 const unknown=(now:Date):Availability=>({state:'unknown',source:null,checkedAt:null,observedAt:now.toISOString(),resetsAt:null,reason:null,window:null})
 export function unknownAvailability(now=new Date()){return unknown(now)}
 export function isLimited(a:Availability){return a.state==='limited'&&!!a.resetsAt}

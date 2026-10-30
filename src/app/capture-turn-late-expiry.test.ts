@@ -3,7 +3,7 @@ import assert from'node:assert/strict'
 import {captureTurn}from'./capture-turn.js'
 import {item}from'./run-data-fixture.js'
 import {setup}from'./run-fixture.js'
-test('late capture expires to failed late_capture_expired',async t=>{
+test('late capture expiry keeps timeout status',async t=>{
  t.mock.timers.enable({apis:['setTimeout','Date']})
  try{
   const s=setup();s.d.timeoutMs=1;s.d.lateCaptureMs=200
@@ -12,7 +12,7 @@ test('late capture expires to failed late_capture_expired',async t=>{
   await t.mock.timers.tick(300)
   await new Promise(r=>setImmediate(r))
   assert.ok(n>=2)
-  assert.equal(s.store.get('r1')?.status,'failed')
-  assert.equal(s.store.get('r1')?.errorCode,'late_capture_expired')
+  assert.equal(s.store.get('r1')?.status,'timeout')
+  assert.equal(s.store.get('r1')?.errorCode,'turn_timeout')
  }finally{t.mock.timers.reset()}
 })

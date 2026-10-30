@@ -1,20 +1,24 @@
 import type{Hono}from'hono'
-import {deleteTurn}from'./delete-turn-route.js'
-import {eventsRoute}from'./events-route.js'
-import {getTurn}from'./get-turn-route.js'
-import {interruptRoute}from'./interrupt-route.js'
-import {panesRoute}from'./panes-route.js'
-import {postTurn}from'./post-turn-route.js'
-import {serviceAuth}from'./service-auth.js'
+import{workspaceConfig as wc}from'./workspace-config-route.js'
+import{deleteTurn as dt}from'./delete-turn-route.js'
+import{eventsRoute as er}from'./events-route.js'
+import{getTurn as gt}from'./get-turn-route.js'
+import{interruptRoute as ir}from'./interrupt-route.js'
+import{panesRoute as pr}from'./panes-route.js'
+import{postTurn as pt}from'./post-turn-route.js'
+import{serviceAuth as sa}from'./service-auth.js'
+import{usageRoute as ur}from'./usage-route.js'
 import type{AppDeps}from'./app-deps.js'
-export function registerRoutes(app:Hono,d:AppDeps){
- app.use('/health',serviceAuth(d.verify))
- app.get('/health',c=>c.json({status:d.healthStatus}))
- app.use('/herdr/*',serviceAuth(d.verify))
- app.get('/herdr/workspaces/:wsId/panes',panesRoute(d))
- app.post('/herdr/panes/:paneId/interrupt',interruptRoute(d))
- app.post('/herdr/turns',postTurn(d))
- app.get('/herdr/turns/:requestId',getTurn(d))
- app.delete('/herdr/turns/:requestId',deleteTurn(d))
- app.get('/herdr/events',eventsRoute(d))
-}
+export function registerRoutes(a:Hono,d:AppDeps){
+ const v=sa(d.verify)
+ a.use('/health',v)
+ a.get('/health',c=>c.json({status:d.healthStatus}))
+ a.use('/herdr/*',v)
+ if(d.usageCollector)a.get('/herdr/usage',ur(d.usageCollector))
+ a.get('/herdr/config',wc(d))
+ a.get('/herdr/workspaces/:wsId/panes',pr(d))
+ a.post('/herdr/panes/:paneId/interrupt',ir(d))
+ a.post('/herdr/turns',pt(d))
+ a.get('/herdr/turns/:requestId',gt(d))
+ a.delete('/herdr/turns/:requestId',dt(d))
+ a.get('/herdr/events',er(d))}
