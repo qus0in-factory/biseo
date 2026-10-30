@@ -8,7 +8,7 @@ export const getUsageEndpoints = (): UsageEndpoints => ({
   opencodeFree: e.BISEO_OPENCODE_FREE_URL ?? 'https://opencode.ai/zen/v1/chat/completions',
   grok: e.BISEO_GROK_BILLING_URL ?? 'https://cli-chat-proxy.grok.com/v1/billing?format=credits',
   grokRefresh: e.BISEO_GROK_REFRESH_URL ?? 'https://auth.x.ai/oauth2/token',
-  ollama: e.BISEO_OLLAMA_TAGS_URL ?? 'http://localhost:11434/api/tags',
+  ollama: e.BISEO_OLLAMA_BALANCE_URL ?? 'http://127.0.0.1:11434/api/balance',
   agy: e.BISEO_AGY_USAGE_URL ?? 'https://cloudcode-pa.googleapis.com/v1internal:retrieveUserQuotaSummary'
 })
 

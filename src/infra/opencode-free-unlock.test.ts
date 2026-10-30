@@ -9,7 +9,7 @@ test('evaluateFreeUsage switches to expected-unlocked after reset time passed', 
   const res = evaluateFreeUsage(past)
   assert.equal(res.state, 'available')
   assert.equal(res.windows[0].limitReached, false)
-  assert.equal(res.windows[0].source, 'expected-unlocked')
+  assert.equal(res.windows[0].source, '해제 예상')
 })
 
 test('recordFreeTurn 200 confirms unlock', () => {
@@ -17,5 +17,5 @@ test('recordFreeTurn 200 confirms unlock', () => {
   recordFreeTurn(null, 200, null, now)
   const res = evaluateFreeUsage(now)
   assert.equal(res.state, 'available')
-  assert.equal(res.windows[0].source, 'unlocked')
+  assert.equal(res.windows[0].source, '잠김 없음')
 })

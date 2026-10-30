@@ -3,11 +3,13 @@ import assert from 'node:assert/strict'
 import { setFreeLock, recordFreeTurn } from './opencode-free-lock.js'
 import { evaluateFreeUsage } from './opencode-free-eval.js'
 
-test('evaluateFreeUsage unknown when no turn recorded', () => {
+test('evaluateFreeUsage shows pending status when no turn recorded', () => {
   setFreeLock(null)
   const res = evaluateFreeUsage()
-  assert.equal(res.state, 'unknown')
-  assert.equal(res.windows.length, 0)
+  assert.equal(res.state, 'available')
+  assert.equal(res.source, '판정 대기')
+  assert.equal(res.metrics[0].id, 'status')
+  assert.equal(res.metrics[0].unit, 'status')
 })
 
 test('recordFreeTurn 429 sets limited with resetsAt', () => {
