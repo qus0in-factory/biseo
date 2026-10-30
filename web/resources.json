@@ -114,5 +114,9 @@
   "usageRemaining": "남은 한도",
   "usageUsed": "사용량",
   "usageBookmark": "북마크",
-  "usageBookmarkAria": "제공자 북마크"
+  "usageBookmarkAria": "제공자 북마크",
+  "usageUnitCredits": "credits",
+  "usageUnitTokens": "tokens",
+  "usageUnitRequests": "reqs",
+  "usageUsedSuffix": "used"
 }

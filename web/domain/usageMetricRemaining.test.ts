@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
-import { metricRemaining } from './usage-metric-format.js'
+import { metricRemaining } from './metricRemaining.js'
 import type { UsageMetric } from './usage.js'
 
 describe('metricRemaining', () => {
