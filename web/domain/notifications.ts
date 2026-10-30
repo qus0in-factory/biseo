@@ -26,3 +26,11 @@ export const toNotification = (item: TimelineItem, paneName: string): Notificati
         read: false,
       }
     : null
+
+export const isPinnedPane = (paneId: string, pinned: string[]) => pinned.includes(paneId)
+
+export const toPinnedNotification = (
+  item: TimelineItem,
+  paneName: string,
+  pinned: string[],
+): NotificationItem | null => (isPinnedPane(item.paneId, pinned) ? toNotification(item, paneName) : null)
