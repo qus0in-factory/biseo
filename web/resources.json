@@ -106,6 +106,7 @@
   "notifyTitle": "알림",
   "notifyEmpty": "알림이 없습니다.",
   "notifyReadAll": "모두 읽음",
+  "notifyOpen": "알림 열기",
   "notifyUnread": "읽지 않음 {n}개",
   "notifyUnreadLabel": "읽지 않은 알림 {n}개",
   "notifyMarkRead": "알림 읽음으로 표시"
