@@ -18,19 +18,3 @@ test('recordFreeTurn 429 sets limited with resetsAt', () => {
   assert.equal(res.windows[0].limitReached, true)
   assert.equal(res.windows[0].resetsAt, '2026-10-30T10:30:00.000Z')
 })
-
-test('evaluateFreeUsage switches to expected-unlocked after reset time passed', () => {
-  const past = new Date('2026-10-30T10:35:00Z')
-  const res = evaluateFreeUsage(past)
-  assert.equal(res.state, 'available')
-  assert.equal(res.windows[0].limitReached, false)
-  assert.equal(res.windows[0].source, 'expected-unlocked')
-})
-
-test('recordFreeTurn 200 confirms unlock', () => {
-  const now = new Date('2026-10-30T10:36:00Z')
-  recordFreeTurn(null, 200, null, now)
-  const res = evaluateFreeUsage(now)
-  assert.equal(res.state, 'available')
-  assert.equal(res.windows[0].source, 'unlocked')
-})

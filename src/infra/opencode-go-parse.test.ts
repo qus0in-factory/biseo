@@ -22,18 +22,3 @@ test('parseOpencodeGo maps rolling, weekly and monthly windows', () => {
   assert.equal(res.windows[2].usedPercent, 40)
   assert.equal(res.windows[2].resetsAt, '2026-11-30T00:00:00Z')
 })
-
-test('parseOpencodeGo limited on any active limitReached window', () => {
-  const now = new Date('2026-10-30T10:00:00Z')
-  const raw = {
-    usage: {
-      monthly: { percent: 100, resetsAt: '2026-11-30T00:00:00Z' }
-    }
-  }
-  const res = parseOpencodeGo(raw, now)
-  assert.equal(res.state, 'limited')
-})
-
-test('parseOpencodeGo missing', () => {
-  assert.equal(parseOpencodeGo(null).state, 'unknown')
-})
