@@ -141,7 +141,6 @@
   "usageBookmarkAria": "제공자 북마크",
   "usageTabPrev": "이전 제공자",
   "usageTabNext": "다음 제공자",
-  "usageEditOrder": "표시 순서 편집",
   "usageHideItem": "숨김",
   "usageShowItem": "표시",
   "usageUnitCredits": "credits",
@@ -155,7 +154,5 @@
   "blocked_input_request": "승인 또는 입력 대기 중",
   "blocked_unknown": "차단 원인 미확인",
   "blockedUsageLimitSuspected": "사용량 한도 의심(차단 해제 가능). 화면을 확인하세요.",
-  "blocked_usage_limit_suspected": "사용량 한도 의심(차단 해제 가능). 재개: {at}",
-  "usageEditOrderDone": "완료",
-  "usageEditOrderCancel": "취소"
+  "blocked_usage_limit_suspected": "사용량 한도 의심(차단 해제 가능). 재개: {at}"
 }

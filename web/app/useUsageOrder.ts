@@ -10,24 +10,22 @@ const KEY = 'biseo:usage-order'
 
 export type UsageOrderState = UsageOrder & {
   toggleHide: (id: string) => void
-  setOrder: (order: string[]) => void
 }
 
 export function useUsageOrder(): UsageOrderState {
   const [saved, setSaved] = useState<UsageOrder>(() =>
     typeof window === 'undefined'
       ? { order: [], hidden: [] }
-      : parseUsageOrder(window.localStorage.getItem(KEY))
+      : { order: [], hidden: parseUsageOrder(window.localStorage.getItem(KEY)).hidden }
   )
   useEffect(() => {
     try {
-      window.localStorage.setItem(KEY, serializeUsageOrder(saved))
+      window.localStorage.setItem(KEY, serializeUsageOrder({ order: [], hidden: saved.hidden }))
     } catch {}
   }, [saved])
   return {
     ...saved,
     toggleHide: (id) =>
       setSaved((p) => ({ ...p, hidden: t(p.hidden, id) })),
-    setOrder: (order) => setSaved((p) => ({ ...p, order })),
   }
 }

@@ -4,10 +4,8 @@ import { readFileSync } from 'node:fs'
 
 const src = (f: string) => readFileSync(new URL(`./${f}`, import.meta.url), 'utf8')
 
-describe('UsageOrderSection edit flow', () => {
-  it('keeps per-item hide/show toggle in edit list', () => {
-    const list = src('UsageOrderEditList.tsx')
-    assert.match(list, /toggleHide/)
+describe('UsageOrderSection toggle flow', () => {
+  it('keeps per-item hide/show toggle', () => {
     const item = src('UsageOrderItem.tsx')
     assert.match(item, /onToggleHide/)
     const actions = src('UsageOrderItemActions.tsx')
