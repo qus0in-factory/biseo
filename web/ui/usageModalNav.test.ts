@@ -17,6 +17,8 @@ describe('UsageModalNav', () => {
   it('exposes order edit and hide controls', () => {
     assert.match(src('UsageOrderedTabs.tsx'), /UsageOrderSection/)
     assert.match(src('UsageOrderSection.tsx'), /usageEditOrder/)
+    assert.match(src('UsageOrderSection.tsx'), /draggable/)
+    assert.match(src('UsageOrderSection.tsx'), /UsageOrderItem/)
     const item = src('UsageOrderItem.tsx')
     assert.match(item, /usageMoveLeft/)
     assert.match(item, /usageHideItem/)
