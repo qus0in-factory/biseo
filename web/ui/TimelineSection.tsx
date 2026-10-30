@@ -1,7 +1,7 @@
 import type { PaneSummary, TimelineItem } from '../domain/timeline'
 import { TimelineView } from './TimelineView'
 import { MessageComposer } from './MessageComposer'
-import r from '../resources.json'
+import { TimelineHeader } from './TimelineHeader'
 
 type P = {
   target?: PaneSummary
@@ -17,7 +17,7 @@ type P = {
 export function TimelineSection({ target, timeline, sending, onSend, onCancel, online, onLoadOlder, olderLoaded }: P) {
   return (
     <section className="flex min-h-0 flex-1 flex-col">
-      <h2>{r.timelineTitle}</h2>
+      <TimelineHeader />
       <div className="flex min-h-0 flex-1 flex-col border-b border-border">
         <TimelineView items={timeline} onCancel={onCancel} onLoadOlder={onLoadOlder} olderLoaded={olderLoaded} />
       </div>
