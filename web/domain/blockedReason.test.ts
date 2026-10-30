@@ -13,12 +13,14 @@ test('blockedReason: usage_limit without reset time', () => {
   assert.match(t ?? '', /재개 시각 미확인/)
 })
 
+
 test('blockedReason: input_request and unknown', () => {
   const a = getBlockedReasonText('input_request')
   assert.match(a ?? '', /승인 또는 입력 대기/)
   const s = getBlockedReasonText('unknown')
   assert.match(s ?? '', /미확인|추정/)
 })
+
 
 test('blockedReason: null returns null', () => {
   assert.equal(getBlockedReasonText(undefined), null)

@@ -7,7 +7,7 @@ export function BlockedReasonNotice({ target }: { target?: PaneSummary }) {
   const at = target.availability?.resetsAt
   const msg =
     target.blockedReason === 'usage_limit'
-      ? `${r.blockedUsageLimit}${at ? ` (${r.usageReset}: ${formatTime(at)})` : ''}`
+      ? `${target.usageLimitSuspected ? r.blockedUsageLimitSuspected : r.blockedUsageLimit}${at ? ` (${r.usageReset}: ${formatTime(at)})` : ''}`
       : target.blockedReason === 'input_request'
         ? r.blockedInputRequest
         : r.blockedUnknown
