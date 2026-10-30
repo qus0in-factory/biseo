@@ -5,9 +5,9 @@ import { paneDrawerClass } from './paneDrawerClass'
 import { usePaneDrawer } from './usePaneDrawer'
 import r from '../resources.json'
 
-type P = Pick<DashboardProps, 'panes' | 'selectedId' | 'onSelect' | 'online'>
+type P = Pick<DashboardProps, 'panes' | 'selectedId' | 'onSelect'>
 
-export function DesktopPaneDrawer({ panes, selectedId, onSelect, online }: P) {
+export function DesktopPaneDrawer({ panes, selectedId, onSelect }: P) {
   const { open, toggle } = usePaneDrawer()
   return (
     <aside className={paneDrawerClass(open)}>
@@ -15,7 +15,7 @@ export function DesktopPaneDrawer({ panes, selectedId, onSelect, online }: P) {
         {open&&<h2 className="text-base font-semibold">{r.panesTitle}</h2>}
         <PaneDrawerToggle open={open} onToggle={toggle} />
       </div>
-      {open&&<PaneDrawerContent panes={panes} selectedId={selectedId} onSelect={onSelect} online={online} />}
+      {open&&<PaneDrawerContent panes={panes} selectedId={selectedId} onSelect={onSelect} />}
     </aside>
   )
 }

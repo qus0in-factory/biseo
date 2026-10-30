@@ -1,22 +1,18 @@
-import { useEffect, useState } from 'react'
-import { parsePinnedPanes, prunePinnedPanes, serializePinnedPanes } from '../domain/pinnedPanes.js'
-import r from '../resources.json'
+import { useEffect } from 'react'
+import { prunePinnedPanes, serializePinnedPanes } from '../domain/pinnedPanes.js'
+import { useUiStore } from '../app/uiStore'
 
 export function usePinnedPanes(panes: { paneId: string }[], key: string) {
-  const [pinned, setPinned] = useState<string[]>(() =>
-    typeof window === 'undefined' ? [] : parsePinnedPanes(window.localStorage.getItem(key)),
-  )
+  const pinned = useUiStore((s) => s.pinned)
+  const setPinned = useUiStore((s) => s.setPinned)
 
   useEffect(() => {
     if (panes.length === 0) return
-    const available = new Set(panes.map((pane) => pane.paneId))
-    setPinned((prev) => {
-      const next = prunePinnedPanes(prev, available)
-      if (next.length===prev.length && next.every((id,i)=>id===prev[i])) return prev
-      try { window.localStorage.setItem(key, serializePinnedPanes(next)) } catch {}
-      return next
-    })
-  }, [panes, key])
+    const next = prunePinnedPanes(pinned, panes.map((pane) => pane.paneId))
+    if (next.length === pinned.length && next.every((id, i) => id === pinned[i])) return
+    setPinned(next)
+    try { window.localStorage.setItem(key, serializePinnedPanes(next)) } catch {}
+  }, [panes, pinned, key, setPinned])
 
   const updatePinned = (next: string[]) => {
     setPinned(next)

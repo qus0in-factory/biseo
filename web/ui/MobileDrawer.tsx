@@ -8,15 +8,14 @@ type P = {
   panes: PaneSummary[]
   selectedId: string | null
   onSelect: (paneId: string) => void
-  online?: boolean
 }
 
-export function MobileDrawer({ panes, selectedId, onSelect, online = true }: P) {
+export function MobileDrawer({ panes, selectedId, onSelect }: P) {
   const { drawerOpen, setDrawerOpen } = useUiStore()
   return (
     <Sheet open={drawerOpen} onOpenChange={setDrawerOpen}>
       <SheetContent title="패널">
-        <PaneDrawerContent panes={panes} selectedId={selectedId} onSelect={onSelect} online={online} />
+        <PaneDrawerContent panes={panes} selectedId={selectedId} onSelect={onSelect} />
       </SheetContent>
     </Sheet>
   )
