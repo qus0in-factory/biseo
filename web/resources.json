@@ -82,6 +82,7 @@
   "displayTimeZone": "Asia/Seoul",
   "displayTimeZoneLabel": "KST",
   "messageTo": "{name}에게 메시지",
+  "markdownToggleLabel": "응답 표시 형식",
   "jumpToNew": "새 메시지",
   "blocked_usage_limited": "사용량 한도 도달(차단 해제 불가). 재개: {at}",
   "blocked_awaiting_input": "승인 또는 입력 대기 중",

@@ -19,7 +19,7 @@ export function MarkdownResponse({ text }: { text: string }) {
   return (
     <div className="mt-2">
       {body}
-      <div className="mt-2 flex justify-start">{toggle}</div>
+      <div className="flex justify-start">{toggle}</div>
     </div>
   )
 }
