@@ -1,20 +1,17 @@
-import { Star } from 'lucide-react'
 import { TabsList, TabsTrigger } from '../components/ui/tabs'
 import type { UsageProvider } from '../domain/usage'
+import { UsageBookmarkStar } from './UsageBookmarkStar'
 import r from '../resources.json'
 
 type P = { providers: UsageProvider[]; bookmarks: string[]; onToggleBookmark: (id: string) => void }
 
 export function UsageTabList({ providers, bookmarks, onToggleBookmark }: P) {
   return (
-    <TabsList className="mb-2 flex-wrap">
-      <TabsTrigger value="bookmarked">{r.usageBookmarkedTab}</TabsTrigger>
+    <TabsList className="min-w-0 flex-1 flex-nowrap justify-start overflow-x-auto">
+      <TabsTrigger value="bookmarked" className="shrink-0">{r.usageBookmarkedTab}</TabsTrigger>
       {providers.map((p) => (
-        <TabsTrigger key={p.provider} value={p.provider} className="gap-1">
-          <button type="button" aria-label={r.usageBookmarkAria} aria-pressed={bookmarks.includes(p.provider)}
-            onClick={(e) => { e.stopPropagation(); onToggleBookmark(p.provider) }}>
-            <Star size={14} className={bookmarks.includes(p.provider) ? 'fill-current' : ''} />
-          </button>
+        <TabsTrigger key={p.provider} value={p.provider} className="shrink-0 gap-1">
+          <UsageBookmarkStar marked={bookmarks.includes(p.provider)} onToggle={() => onToggleBookmark(p.provider)} />
           {p.provider}
         </TabsTrigger>
       ))}

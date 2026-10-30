@@ -20,8 +20,8 @@ export function MarkdownToggle({
     >
       <MarkdownToggleTrack
         on={raw}
-        left={<Eye className={`relative z-10 h-4 w-4 ${raw ? 'text-muted-foreground' : 'text-foreground'}`} aria-hidden="true" />}
-        right={<Code2 className={`relative z-10 h-4 w-4 ${raw ? 'text-foreground' : 'text-muted-foreground'}`} aria-hidden="true" />}
+        left={<Eye className="relative z-10 h-4 w-4" aria-hidden="true" />}
+        right={<Code2 className="relative z-10 h-4 w-4" aria-hidden="true" />}
       />
     </button>
   )
