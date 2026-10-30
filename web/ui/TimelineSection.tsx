@@ -14,9 +14,11 @@ type P = {
 
 export function TimelineSection({ target, timeline, sending, onSend, onCancel, online }: P) {
   return (
-    <section className="flex min-h-0 flex-1 flex-col border-b border-border">
+    <section className="flex min-h-0 flex-1 flex-col">
       <h2>{r.timelineTitle}</h2>
-      <TimelineView items={timeline} onCancel={onCancel} />
+      <div className="flex min-h-0 flex-1 flex-col border-b border-border">
+        <TimelineView items={timeline} onCancel={onCancel} />
+      </div>
       <MessageComposer target={target} busy={sending} onSend={onSend} online={online} />
     </section>
   )
