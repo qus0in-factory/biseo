@@ -1,5 +1,5 @@
 export interface WindowUsage {
-  window: 'primary' | 'secondary'
+  window: string
   usedPercent: number | null
   resetsAt: string | null
   checkedAt: string | null
