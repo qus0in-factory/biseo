@@ -7,7 +7,7 @@ type P = Pick<DashboardProps, 'timeline' | 'sending' | 'onSend' | 'onCancel'>
 
 export function WorkspaceMain({ target, timeline, sending, onSend, onCancel, online }: P) {
   return (
-    <div className="min-w-0 flex-1">
+    <div className="min-h-0 min-w-0 flex-1">
       <TimelineSection
         target={target}
         timeline={timeline}
