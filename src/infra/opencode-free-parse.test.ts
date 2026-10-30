@@ -3,10 +3,10 @@ import assert from 'node:assert/strict'
 import { setFreeLock, recordFreeTurn } from './opencode-free-lock.js'
 import { evaluateFreeUsage } from './opencode-free-eval.js'
 
-test('evaluateFreeUsage shows pending status when no turn recorded', () => {
+test('evaluateFreeUsage shows unknown (never available) when no turn recorded', () => {
   setFreeLock(null)
   const res = evaluateFreeUsage()
-  assert.equal(res.state, 'available')
+  assert.equal(res.state, 'unknown')
   assert.equal(res.source, 'pending')
   assert.equal(res.metrics[0].id, 'status')
   assert.equal(res.metrics[0].unit, 'status')
