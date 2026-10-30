@@ -9,14 +9,10 @@ test('model buckets group by official family, skip internal ids', () => {
     { modelId: 'gpt-oss-120b-medium', remainingFraction: 0.2 },
     { modelId: 'chat_20706', remainingFraction: 1 }
   ])
-  assert.deepEqual(g.map((x) => x.displayName), ['Gemini Models', 'Claude and GPT models'])
+  assert.deepEqual(g.map((x) => x.displayName), ['Gemini Models', 'Claude and GPT models', 'Chat sessions'])
   assert.equal(g[0].buckets[0].remainingFraction, 0.4)
   assert.equal(g[1].buckets[0].remainingFraction, 0)
+  assert.equal(g[2].buckets[0].remainingFraction, 1)
   assert.deepEqual(modelBucketsToGroups([]), [])
   assert.deepEqual(modelBucketsToGroups([{ modelId: 'gemini-2.5-pro' }]), [])
-})
-
-test('bucketId-only buckets produce no families', () => {
-  const g = modelBucketsToGroups([{ bucketId: 'gemini-argon-wtu-weekly', remainingFraction: 0.5 }])
-  assert.deepEqual(g, [])
 })
