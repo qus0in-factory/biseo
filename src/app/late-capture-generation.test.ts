@@ -9,16 +9,16 @@ test('late read survives newer turn',async t=>{
  try{
   const s=setup();s.d.lateCaptureMs=100
   const second={...item,requestId:'r2',seq:2};s.store.add(second)
-  const started=deferred(),released=deferred(),closed=deferred()
+  const started=deferred(),released=deferred(),cl=deferred()
   let n=0
-  await captureTurn(s.d,item,{read:async()=>{if(++n===2){started.resolve();await released.promise}return null},close:closed.resolve})
+  await captureTurn(s.d,item,{read:async()=>{if(++n===2){started.resolve();await released.promise}return null},close:cl.resolve})
   await started.promise
   await captureTurn(s.d,second,{read:async()=>'new'})
   released.resolve()
   t.mock.timers.tick(100)
-  await closed.promise
+  await cl.promise
   const old=s.store.get('r1'),current=s.store.get('r2')
   assert.equal(n,2)
-  assert.deepEqual([old?.status,old?.errorCode,current?.status],['timeout','turn_timeout','completed'])
+  assert.deepEqual([old?.status,old?.errorCode,current?.status],['timeout','late_capture_expired','completed'])
  }finally{t.mock.timers.reset()}
 })

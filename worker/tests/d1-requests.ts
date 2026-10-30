@@ -10,3 +10,6 @@ export const getList = (cookie: string) =>
 
 export const getOne = (id: string, cookie: string) =>
   new Request(`http://localhost/api/timeline/messages/${id}`, { headers: { Cookie: cookie } })
+
+export const delTurn = (id: string, cookie: string) =>
+  new Request(`http://localhost/api/turns/${id}`, { method: 'DELETE', headers: { Cookie: cookie, Origin: 'http://localhost' } })

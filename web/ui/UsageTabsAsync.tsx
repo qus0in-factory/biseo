@@ -2,7 +2,7 @@ import type { AsyncState } from '../domain/asyncState'
 import type { UsageProvider } from '../domain/usage'
 import { AsyncList } from './AsyncList'
 import { ListSkeleton } from './ListSkeleton'
-import { UsageTabs } from './UsageTabs'
+import { UsageOrderedTabs } from './UsageOrderedTabs'
 import r from '../resources.json'
 
 type P = {
@@ -24,7 +24,7 @@ export function UsageTabsAsync({ state, retry, ...tabs }: P) {
       errorText={r.usageError}
       onRetry={retry}
     >
-      {(providers) => <UsageTabs providers={providers} {...tabs} />}
+      {(providers) => <UsageOrderedTabs providers={providers} {...tabs} />}
     </AsyncList>
   )
 }

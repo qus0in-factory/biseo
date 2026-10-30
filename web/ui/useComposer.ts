@@ -8,11 +8,12 @@ export function useComposer(
   target: PaneSummary | undefined,
   busy: boolean,
   onSend: (text: string) => void,
+  hold = false,
 ) {
   const [t, setT] = useState('')
   const ref = useRef<HTMLTextAreaElement>(null)
   const valid = validateMessageInput(t)
-  const canSend = canInputTarget(target) && !busy && valid.ok
+  const canSend = canInputTarget(target) && !busy && !hold && valid.ok
 
   const submit = () => {
     if (!canSend || !valid.ok) return

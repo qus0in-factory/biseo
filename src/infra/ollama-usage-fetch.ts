@@ -1,23 +1,18 @@
-import type { ProviderUsage, WindowUsage } from '../domain/usage-types.js'
+import type { ProviderUsage } from '../domain/usage-types.js'
 import { unknownUsage } from '../domain/usage-unknown.js'
-import { windowsToMetrics } from '../domain/usage-metric-compat.js'
-import { getUsageEndpoints as ep, getUsageTimeoutMs as to } from '../domain/usage-endpoints.js'
+import { readOllamaAuthorize } from './ollama-usage-auth.js'
+import { fetchOllamaCloudMetrics } from './ollama-cloud-http.js'
+import { fetchOllamaBalanceMetrics } from './ollama-balance-http.js'
+import { ollamaUsageResult } from './ollama-usage-result.js'
 
 export async function fetchOllamaUsage(now = new Date()): Promise<ProviderUsage> {
-  try {
-    const res = await fetch(ep().ollama, { signal: AbortSignal.timeout(to()) })
-    if (!res.ok) return unknownUsage('ollama')
-    const w: WindowUsage = {
-      window: 'primary',
-      usedPercent: null,
-      resetsAt: null,
-      checkedAt: now.toISOString(),
-      limitReached: false,
-      source: 'ollama'
-    }
-    const windows = [w]
-    return { provider: 'ollama', state: 'available', metrics: windowsToMetrics(windows), windows }
-  } catch {
-    return unknownUsage('ollama')
-  }
+  const chk = now.toISOString()
+  const authorize = await readOllamaAuthorize()
+  if (!authorize) return unknownUsage('ollama')
+  const ts = Math.floor(now.getTime() / 1000)
+  const { metrics: cloud, primaryPercent } = await fetchOllamaCloudMetrics(authorize, ts)
+  const balance = await fetchOllamaBalanceMetrics(authorize, ts)
+  const metrics = [...cloud, ...balance]
+  if (metrics.length === 0) return unknownUsage('ollama')
+  return ollamaUsageResult(chk, metrics, primaryPercent)
 }
