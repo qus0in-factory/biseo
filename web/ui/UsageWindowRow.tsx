@@ -1,5 +1,5 @@
 import type { UsageWindow } from '../domain/usage'
-import { usagePercentText, usageWindowName } from '../domain/usage'
+import { usagePercentText, usageWindowName } from '../domain/usage-text'
 import { UsageWindowTime } from './UsageWindowTime'
 import r from '../resources.json'
 

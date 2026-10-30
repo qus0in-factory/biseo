@@ -1,4 +1,8 @@
-export interface AgyMemToken { access: string; expiresAt: number | null }
+export interface AgyMemToken {
+  access: string
+  expiresAt: number | null
+  refresh: string | null
+}
 
 let mem: AgyMemToken | null = null
 let flight: Promise<unknown> | null = null

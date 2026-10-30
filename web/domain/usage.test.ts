@@ -1,6 +1,6 @@
 import assert from'node:assert/strict'
 import test from'node:test'
-import{usagePercentText,usageWindowName}from'./usage.js'
+import{usagePercentText,usageWindowName}from'./usage-text.js'
 import r from'../resources.json'
 const l=r as Record<string,string>
 const eq:(a:unknown,b:unknown)=>void=assert.equal
