@@ -7,7 +7,7 @@ export function makeAgyWindow(
 ): WindowUsage {
   const rem = typeof bucket?.remainingFraction === 'number' ? bucket.remainingFraction : null
   const u = rem !== null ? Math.round((1 - rem) * 100) : null
-  const resetsAt = typeof bucket?.resetTime === 'string' ? bucket.resetTime : null
+  const resetsAt = typeof bucket?.resetTime === 'string' ? bucket.resetTime : typeof bucket?.resetsAt === 'string' ? bucket.resetsAt : null
   const limitReached = bucket?.remainingFraction === 0
   return {
     window: w,
