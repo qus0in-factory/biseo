@@ -8,7 +8,7 @@ export function BlockedReasonBadge({ item }: { item: PaneSummary }) {
   const text = getBlockedReasonText(r, item.availability?.resetsAt)
   if (!text) return null
 
-  const Icon = r === 'usage_limited' ? ShieldAlert : r === 'awaiting_input' ? Clock : HelpCircle
+  const Icon = r === 'usage_limit' ? ShieldAlert : r === 'input_request' ? Clock : HelpCircle
 
   return (
     <span

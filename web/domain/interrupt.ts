@@ -5,7 +5,7 @@ export type InterruptKey = typeof INTERRUPT_KEY
 
 export function isLimitedPane(target?: PaneSummary): boolean {
   if (!target) return false
-  if (target.blockedReason === 'usage_limited') return true
+  if (target.blockedReason === 'usage_limit') return true
   return target.availability?.state === 'limited'
 }
 

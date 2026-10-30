@@ -15,7 +15,7 @@ test('blocked screens are distinguished without storing or returning raw lines',
     new Date('2026-10-29T10:00:00.000Z'),
     { classify: async () => raw.includes('5h limit') },
   )
-  assert.equal(s[0].blockedReason, 'suspected_limit')
+  assert.equal(s[0].blockedReason, 'usage_limit')
   assert.equal(s[0].disabledReason, 'agent_blocked')
   assert.equal(JSON.stringify(s).includes(raw), false)
 })

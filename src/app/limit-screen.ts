@@ -11,3 +11,6 @@ export function limitScreen(herdr: HerdrPort, markers: string[], lines = 8): Lim
     },
   }
 }
+
+export const inputScreen = limitScreen
+export const approvalScreen = limitScreen

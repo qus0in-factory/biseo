@@ -9,11 +9,12 @@ export function getBlockedReasonText(
   resetsAt?: string | null,
 ): string | null {
   if (!reason) return null
-  if (reason === 'usage_limited') {
+  if (reason === 'usage_limit') {
     const at = availabilityWhen(resetsAt ?? null, res.availabilityNoReset)
-    return res.blocked_usage_limited.replace('{at}', at)
+    const tpl = res.blocked_usage_limit
+    return tpl.replace('{at}', at)
   }
-  if (reason === 'awaiting_input') return res.blocked_awaiting_input
-  if (reason === 'suspected_limit') return res.blocked_suspected_limit
+  if (reason === 'input_request') return res.blocked_input_request
+  if (reason === 'unknown') return res.blocked_unknown
   return null
 }

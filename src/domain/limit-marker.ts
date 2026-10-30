@@ -6,3 +6,6 @@ export function isLimitMarker(lines: readonly string[], markers: readonly string
     return x !== '' && text.includes(x)
   })
 }
+
+export const isInputMarker = isLimitMarker
+export const isApprovalMarker = isLimitMarker

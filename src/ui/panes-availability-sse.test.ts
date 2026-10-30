@@ -18,7 +18,7 @@ test('SSE pane.updated carries the availability field', async () => {
     const text = await readEvent(r.body!, /"availability"/)
     assert.match(text, /"state":"limited"/)
     assert.match(text, /"disabledReason":"provider_rate_limited"/)
-    assert.match(text, /"blockedReason":"usage_limited"/)
+    assert.match(text, /"blockedReason":"usage_limit"/)
   } finally {
     await r.body?.cancel().catch(() => {})
   }

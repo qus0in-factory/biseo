@@ -4,9 +4,9 @@ import{demoteStale}from'../domain/availability-stale.js'
 import type{LimitScreen}from'./limit-screen.js'
 import type{AgentInfo,PaneInfo}from'../domain/herdr.js'
 import type{AvailabilityPort}from'./ports.js'
-export async function availabilitySummaries(panes:PaneInfo[],agents:AgentInfo[],locked:{has(k:string):boolean},av:AvailabilityPort|undefined,now=new Date(),limits?:LimitScreen){
+export async function availabilitySummaries(panes:PaneInfo[],agents:AgentInfo[],locked:{has(k:string):boolean},av:AvailabilityPort|undefined,now=new Date(),limits?:LimitScreen,inputs?:LimitScreen){
  return Promise.all(toSummaries(panes,agents,locked).map(async x=>{
-  const r=await availabilityOne(x,panes,agents,av,now,limits)
+  const r=await availabilityOne(x,panes,agents,av,now,limits,inputs)
   const a=demoteStale(r.availability,now,av?.ttlMs??0)
   return{...r,availability:a}
  }))

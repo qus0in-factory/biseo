@@ -126,5 +126,11 @@
   "usageUnitCredits": "credits",
   "usageUnitTokens": "tokens",
   "usageUnitRequests": "reqs",
-  "usageUsedSuffix": "used"
+  "usageUsedSuffix": "used",
+  "blockedUsageLimit": "제공자 사용량 한도로 차단되었습니다.",
+  "blockedInputRequest": "에이전트가 입력/승인을 기다리고 있습니다.",
+  "blockedUnknown": "차단 원인을 확인할 수 없습니다. 화면을 확인하세요.",
+  "blocked_usage_limit": "사용량 한도 도달(차단 해제 불가). 재개: {at}",
+  "blocked_input_request": "승인 또는 입력 대기 중",
+  "blocked_unknown": "차단 원인 미확인"
 }
