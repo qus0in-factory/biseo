@@ -29,6 +29,7 @@
   },
   "availabilityTtlMs": 900000,
   "ollamaIncludedUsd": 60,
+  "agyCliEnabled": true,
   "logLevel": "info",
   "inputMarkers": [
     "approval required",
