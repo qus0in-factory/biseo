@@ -13,5 +13,6 @@ export function missingConfigKeys(c:C):string[]{
  for(const k of['limitMarkers','inputMarkers']as const)
   if(badList(c[k]))miss.push(k)
  if(!validInterruptAllowlist(c.interruptAllowlist))miss.push('interruptAllowlist')
+ if(typeof c.agyCliEnabled!=='boolean')miss.push('agyCliEnabled')
  return miss
 }
