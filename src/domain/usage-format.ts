@@ -1,5 +1,7 @@
 import type{ProviderUsage,WindowUsage}from'./usage-types.js'
 import type{RateLimits}from'./availability.js'
+import{windowsToMetrics}from'./usage-metric-compat.js'
+import{unknownUsage}from'./usage-unknown.js'
 export function formatCodexWindows(r:RateLimits|null,now=new Date()):ProviderUsage{
  if(!r)return unknownUsage('codex')
  const pAct=r.primary&&Date.parse(r.primary)>now.getTime()
@@ -10,8 +12,5 @@ export function formatCodexWindows(r:RateLimits|null,now=new Date()):ProviderUsa
   {window:'secondary',usedPercent:r.secondaryUsedPercent,resetsAt:r.secondary,checkedAt:r.snapshotAt,limitReached:sLim,source:'codex'},
  ]
  const limited=(pLim&&pAct)||(sLim&&sAct)
- return{provider:'codex',state:r.reached?(limited?'limited':'unknown'):'available',windows:w}
-}
-export function unknownUsage(p:string):ProviderUsage{
- return{provider:p,state:'unknown',windows:[]}
+ return{provider:'codex',state:r.reached?(limited?'limited':'unknown'):'available',metrics:windowsToMetrics(w),windows:w}
 }

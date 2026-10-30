@@ -82,6 +82,7 @@
   "displayTimeZone": "Asia/Seoul",
   "displayTimeZoneLabel": "KST",
   "messageTo": "{name}에게 메시지",
+  "markdownToggleLabel": "응답 표시 형식",
   "jumpToNew": "새 메시지",
   "blocked_usage_limited": "사용량 한도 도달(차단 해제 불가). 재개: {at}",
   "blocked_awaiting_input": "승인 또는 입력 대기 중",
@@ -92,5 +93,16 @@
   "unblockConflict": "사용량 한도에 도달했거나 해제할 수 없는 상태입니다.",
   "unblockFailed": "차단 해제 요청에 실패했습니다.",
   "unblockLimited": "사용량 한도 도달로 차단 해제 불가",
-  "unblockOffline": "백엔드 연결이 끊겨 차단 해제를 전송할 수 없습니다."
+  "unblockOffline": "백엔드 연결이 끊겨 차단 해제를 전송할 수 없습니다.",
+  "close": "닫기",
+  "usageTab": "사용량",
+  "usageEmpty": "표시할 사용량 정보가 없습니다.",
+  "usageError": "사용량을 불러오지 못했습니다.",
+  "notifyTab": "알림",
+  "notifyTitle": "알림",
+  "notifyEmpty": "알림이 없습니다.",
+  "notifyReadAll": "모두 읽음",
+  "notifyUnread": "읽지 않음 {n}개",
+  "notifyUnreadLabel": "읽지 않은 알림 {n}개",
+  "notifyMarkRead": "알림 읽음으로 표시"
 }

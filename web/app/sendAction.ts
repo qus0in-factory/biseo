@@ -24,6 +24,10 @@ export async function executeSend(
     await submitTurn(p, input)
   } catch {
     set((m) => markFailed(m, input.requestId))
+    try {
+      const current = await p.getTurn(input.requestId)
+      set((m) => mergeTurn(m, current))
+    } catch {}
   } finally {
     setBusy(false)
   }

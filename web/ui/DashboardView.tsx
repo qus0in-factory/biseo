@@ -8,10 +8,10 @@ export function DashboardView(props: DashboardProps) {
   const { online = true, headerActions } = props
   const target = props.panes.find((p) => p.paneId === props.selectedId)
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <div className="flex min-h-0 min-w-0 w-full flex-1 flex-col gap-4">
       <DashboardHeader online={online} actions={headerActions} />
       <MobileDrawer {...props} />
-      <div className="flex min-w-0 gap-4">
+      <div className="flex min-h-0 min-w-0 flex-1 gap-4">
         <div className="hidden md:flex"><DesktopPaneDrawer {...props} /></div>
         <WorkspaceMain {...props} target={target} />
       </div>

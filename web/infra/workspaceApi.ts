@@ -1,8 +1,8 @@
 import ky from 'ky'
 import type { AppConfig, SendMessageInput, WorkspaceApiPort } from '../domain/ports'
 import type { PaneSummary, TimelineItem } from '../domain/timeline'
-
-const opts = { retry: 0, credentials: 'same-origin' as const }
+import { opts } from './apiOptions'
+import { getTimelinePage } from './timelineApi'
 
 export const workspaceApi: WorkspaceApiPort = {
   getConfig: () => ky.get('/api/config', opts).json<AppConfig>(),
@@ -14,12 +14,7 @@ export const workspaceApi: WorkspaceApiPort = {
     return res.panes || []
   },
 
-  getTimeline: async (ws: string) => {
-    const res = await ky
-      .get(`/api/timeline/messages?workspaceId=${encodeURIComponent(ws)}&limit=50`, opts)
-      .json<{ items: TimelineItem[] }>()
-    return res.items || []
-  },
+  getTimeline: getTimelinePage,
 
   sendMessage: (input: SendMessageInput) =>
     ky.post('/api/timeline/messages', { ...opts, json: input }).json(),
