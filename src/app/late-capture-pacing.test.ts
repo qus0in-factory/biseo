@@ -15,6 +15,6 @@ test('immediate null late reader is paced and bounded',async t=>{
   await new Promise(r=>setImmediate(r))
   assert.equal(n,2)
   assert.equal(s.store.get('r1')?.status,'timeout')
-  assert.equal(s.store.get('r1')?.errorCode,'turn_timeout')
+  assert.equal(s.store.get('r1')?.errorCode,'late_capture_expired')
  }finally{t.mock.timers.reset()}
 })
