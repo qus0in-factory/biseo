@@ -11,12 +11,12 @@ export function HeaderTabs({ value, onSelect }: P) {
   const unread = useNotificationStore((s) => unreadCount(s.items))
   return (
     <Tabs value={value ?? undefined} onValueChange={onSelect} className="mr-auto">
-      <TabsList>
-        <TabsTrigger value="usage">
+      <TabsList className="gap-2">
+        <TabsTrigger value="usage" className="gap-2">
           <Gauge size={16} />
           {r.usageTab}
         </TabsTrigger>
-        <TabsTrigger value="notify" aria-label={r.notifyUnreadLabel.replace('{n}', String(unread))}>
+        <TabsTrigger value="notify" className="gap-2" aria-label={r.notifyUnreadLabel.replace('{n}', String(unread))}>
           <Bell size={16} />
           {r.notifyTab}
           {unread > 0 && <Badge aria-hidden="true">{unread}</Badge>}
