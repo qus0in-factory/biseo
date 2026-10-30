@@ -10,9 +10,9 @@ export type { TimelineItem, TurnStatus } from './timeline-item'
 export type PaneStatus = 'idle' | 'working' | 'blocked' | 'done' | 'unknown'
 
 export type BlockedReason =
-  | 'usage_limited'
-  | 'awaiting_input'
-  | 'suspected_limit'
+  | 'usage_limit'
+  | 'input_request'
+  | 'unknown'
   | null
 
 export type DisabledReason =
@@ -36,6 +36,7 @@ export interface PaneSummary {
   sendable: boolean
   disabledReason: DisabledReason
   blockedReason?: BlockedReason
+  usageLimitSuspected?: boolean
   revision?: number
   availability?: Availability
 }

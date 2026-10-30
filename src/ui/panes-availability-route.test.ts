@@ -16,6 +16,6 @@ test('panes route exposes the availability axis and blocks the pane', async () =
   const b = (await r.json()) as PanesBody
   assert.equal(b.panes[0].sendable, false)
   assert.equal(b.panes[0].disabledReason, 'provider_rate_limited')
-  assert.equal(b.panes[0].blockedReason, 'usage_limited')
+  assert.equal(b.panes[0].blockedReason, 'usage_limit')
   assert.deepEqual(b.panes[0].availability, availability)
 })

@@ -5,10 +5,10 @@ import { getBlockedReasonText } from '../domain/blockedReason'
 export function BlockedReasonBadge({ item }: { item: PaneSummary }) {
   const r = item.blockedReason
   if (!r) return null
-  const text = getBlockedReasonText(r, item.availability?.resetsAt)
+  const text = getBlockedReasonText(r, item.availability?.resetsAt, item.usageLimitSuspected)
   if (!text) return null
 
-  const Icon = r === 'usage_limited' ? ShieldAlert : r === 'awaiting_input' ? Clock : HelpCircle
+  const Icon = r === 'usage_limit' ? ShieldAlert : r === 'input_request' ? Clock : HelpCircle
 
   return (
     <span

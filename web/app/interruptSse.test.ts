@@ -10,7 +10,7 @@ test('SSE update handles unblocked transition without optimistic mutation', () =
     status: 'blocked',
     sendable: false,
     disabledReason: 'agent_blocked',
-    blockedReason: 'awaiting_input',
+    blockedReason: 'input_request',
   }
   assert.equal(canInterrupt(current), true)
 

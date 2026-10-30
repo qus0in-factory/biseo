@@ -14,7 +14,7 @@ test('confirmed usage limits set usage_limited and keep the provider reason', as
     new Date('2026-10-29T10:00:00.000Z'),
     screen(false),
   )
-  assert.equal(s[0].blockedReason, 'usage_limited')
+  assert.equal(s[0].blockedReason, 'usage_limit')
   assert.equal(s[0].disabledReason, 'provider_rate_limited')
   assert.equal(s[0].sendable, false)
 })
