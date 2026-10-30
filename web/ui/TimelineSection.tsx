@@ -1,23 +1,9 @@
-import type { PaneSummary, TimelineItem } from '../domain/timeline'
-import type { AsyncState } from '../domain/asyncState'
+import type { TimelineSectionProps } from './dashboardTypes'
 import { TimelineView } from './TimelineView'
 import { MessageComposer } from './MessageComposer'
 import { TimelineHeader } from './TimelineHeader'
 
-type P = {
-  target?: PaneSummary
-  timeline: TimelineItem[]
-  state?: AsyncState<TimelineItem[]>
-  onRetry?: () => void
-  sending: boolean
-  onSend: (text: string) => void
-  onCancel?: (id: string) => void
-  online?: boolean
-  onLoadOlder?: () => void
-  olderLoaded?: number
-}
-
-export function TimelineSection({ target, timeline, state, onRetry, sending, onSend, onCancel, online, onLoadOlder, olderLoaded }: P) {
+export function TimelineSection({ target, timeline, state, onRetry, sending, onSend, onCancel, online, onLoadOlder, olderLoaded }: TimelineSectionProps) {
   return (
     <section className="flex min-h-0 flex-1 flex-col">
       <TimelineHeader />

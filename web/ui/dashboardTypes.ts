@@ -19,3 +19,16 @@ export interface DashboardProps {
   olderLoaded?: number
   headerActions?: ReactNode
 }
+
+export interface TimelineSectionProps {
+  target?: P
+  timeline: T[]
+  state?: AsyncState<T[]>
+  onRetry?: () => void
+  sending: boolean
+  onSend: (text: string) => void
+  onCancel?: (id: string) => void
+  online?: boolean
+  onLoadOlder?: () => void
+  olderLoaded?: number
+}
