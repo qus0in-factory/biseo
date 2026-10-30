@@ -1,5 +1,6 @@
 import type { ProviderUsage } from '../domain/usage-types.js'
 import { unknownUsage } from '../domain/usage-unknown.js'
+import { getUsageEndpoints as ep, getUsageTimeoutMs as to } from '../domain/usage-endpoints.js'
 import { readOpencodeDbCredential } from './opencode-db-token.js'
 import { parseGrokBilling } from './grok-billing-parse.js'
 
@@ -7,12 +8,15 @@ export async function fetchGrokUsage(now = new Date()): Promise<ProviderUsage> {
   try {
     const token = readOpencodeDbCredential('xai')
     if (!token) return unknownUsage('grok')
-    const res = await fetch('https://cli-chat-proxy.grok.com/v1/billing?format=credits', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'X-XAI-Token-Auth': 'xai-grok-cli',
+      'x-grok-client-version': '1.0.0',
+      Accept: 'application/json'
+    }
+    const res = await fetch(ep().grok, { headers, signal: AbortSignal.timeout(to()) })
     if (!res.ok) return unknownUsage('grok')
-    const data = await res.json()
-    return parseGrokBilling(data, now)
+    return parseGrokBilling(await res.json(), now)
   } catch {
     return unknownUsage('grok')
   }

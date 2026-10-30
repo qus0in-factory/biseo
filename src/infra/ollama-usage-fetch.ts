@@ -1,9 +1,10 @@
 import type { ProviderUsage, WindowUsage } from '../domain/usage-types.js'
 import { unknownUsage } from '../domain/usage-unknown.js'
+import { getUsageEndpoints as ep, getUsageTimeoutMs as to } from '../domain/usage-endpoints.js'
 
 export async function fetchOllamaUsage(now = new Date()): Promise<ProviderUsage> {
   try {
-    const res = await fetch('http://localhost:11434/api/tags', { signal: AbortSignal.timeout(2000) })
+    const res = await fetch(ep().ollama, { signal: AbortSignal.timeout(to()) })
     if (!res.ok) return unknownUsage('ollama')
     const chk = now.toISOString()
     const w: WindowUsage = {
@@ -14,11 +15,7 @@ export async function fetchOllamaUsage(now = new Date()): Promise<ProviderUsage>
       limitReached: false,
       source: 'ollama'
     }
-    return {
-      provider: 'ollama',
-      state: 'available',
-      windows: [w]
-    }
+    return { provider: 'ollama', state: 'available', windows: [w] }
   } catch {
     return unknownUsage('ollama')
   }
