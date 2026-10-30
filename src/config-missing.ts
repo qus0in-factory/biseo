@@ -6,7 +6,7 @@ export function missingConfigKeys(c:C):string[]{
  const miss:string[]=[]
  for(const k of['serviceIssuer','serviceAudience','servicePublicKeyPath']as const)
   if(!c[k])miss.push(k)
- for(const k of['turnTimeoutMs','promptAcceptanceMs','firstSessionMs','availabilityTtlMs']as const)
+ for(const k of['turnTimeoutMs','promptAcceptanceMs','firstSessionMs','availabilityTtlMs','ollamaIncludedUsd']as const)
   if(!(Number(c[k])>0))miss.push(k)
  for(const k of['lateCaptureMs','captureGraceMs','targetGraceMs']as const)
   if(!(Number(c[k])>=0))miss.push(k)
