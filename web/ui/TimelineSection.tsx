@@ -2,12 +2,12 @@ import type{PaneSummary,TimelineItem}from'../domain/timeline'
 import type{AsyncState}from'../domain/asyncState'
 import{TimelineView}from'./TimelineView'
 import{MessageComposer}from'./MessageComposer'
-import r from'../resources.json'
+import{TimelineHeader}from'./TimelineHeader'
 type P={target?:PaneSummary;timeline:TimelineItem[];state?:AsyncState<TimelineItem[]>;onRetry?:()=>void;sending:boolean;onSend:(text:string)=>void;onCancel?:(id:string)=>void;online?:boolean;onLoadOlder?:()=>void;olderLoaded?:number}
 export function TimelineSection({target,timeline,state,onRetry,sending,onSend,onCancel,online,onLoadOlder,olderLoaded}:P){
  return(
   <section className="flex min-h-0 flex-1 flex-col">
-   <h2>{r.timelineTitle}</h2>
+   <TimelineHeader/>
    <div className="flex min-h-0 flex-1 flex-col border-b border-border">
     <TimelineView items={timeline} state={state} onRetry={onRetry} onCancel={onCancel} onLoadOlder={onLoadOlder} olderLoaded={olderLoaded}/>
    </div>
