@@ -6,7 +6,7 @@ import{TimelineHeader}from'./TimelineHeader'
 type P={target?:PaneSummary;timeline:TimelineItem[];state?:AsyncState<TimelineItem[]>;onRetry?:()=>void;sending:boolean;onSend:(text:string)=>void;onCancel?:(id:string)=>void;online?:boolean;onLoadOlder?:()=>void;olderLoaded?:number}
 export function TimelineSection({target,timeline,state,onRetry,sending,onSend,onCancel,online,onLoadOlder,olderLoaded}:P){
  return(
-  <section className="flex min-h-0 flex-1 flex-col">
+  <section className="flex min-h-0 min-w-0 flex-1 flex-col">
    <TimelineHeader/>
    <div className="flex min-h-0 flex-1 flex-col border-b border-border">
     <TimelineView items={timeline} state={state} onRetry={onRetry} onCancel={onCancel} onLoadOlder={onLoadOlder} olderLoaded={olderLoaded}/>
