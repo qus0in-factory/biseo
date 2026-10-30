@@ -10,5 +10,7 @@ export interface DashboardProps {
   onSend: (text: string) => void
   onCancel?: (id: string) => void
   online?: boolean
+  onLoadOlder?: () => void
+  olderLoaded?: number
   headerActions?: ReactNode
 }

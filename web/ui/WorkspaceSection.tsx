@@ -9,7 +9,7 @@ import type { AppOutletContext } from './AppContent'
 export function WorkspaceSection({ on, headerActions }: { on: boolean; headerActions?: ReactNode }) {
   const ctx = useOutletContext<AppOutletContext | null>()
   const actions = headerActions ?? ctx?.headerActions
-  const { panes, sel, setSel, items, sending, send, online } =
+  const { panes, sel, setSel, items, sending, send, online, loadOlder, olderLoaded } =
     useWorkspaceController(api, st, on)
 
   return (
@@ -21,6 +21,8 @@ export function WorkspaceSection({ on, headerActions }: { on: boolean; headerAct
       sending={sending}
       onSend={send}
       online={online}
+      onLoadOlder={loadOlder}
+      olderLoaded={olderLoaded}
       headerActions={actions}
     />
   )

@@ -1,34 +1,14 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useCallback } from 'react'
 import type { TimelineItem } from '../domain/timeline'
-import { isNearBottom, scrollDown, itemsKey } from './scrollHelper'
+import { useAutoScroll } from './useAutoScroll'
+import { useLoadOlder } from './useLoadOlder'
 
-export function useTimelineScroll(items: TimelineItem[]) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [near, setNear] = useState(true)
-  const [jump, setJump] = useState(false)
-  const keyRef = useRef(itemsKey(items))
-
-  const toBottom = useCallback(() => {
-    if (ref.current) scrollDown(ref.current)
-    setJump(false)
-  }, [])
-
+export function useTimelineScroll(items: TimelineItem[], onLoadOlder?: () => void, olderLoaded = 0) {
+  const auto = useAutoScroll(items)
+  const load = useLoadOlder(auto.ref, onLoadOlder, olderLoaded)
   const onScroll = useCallback(() => {
-    if (!ref.current) return
-    const isNear = isNearBottom(ref.current)
-    setNear(isNear)
-    if (isNear) setJump(false)
-  }, [])
-
-  useEffect(() => {
-    const k = itemsKey(items)
-    if (near) {
-      toBottom()
-    } else if (k !== keyRef.current) {
-      setJump(true)
-    }
-    keyRef.current = k
-  }, [items, near, toBottom])
-
-  return { ref, showJump: jump, scrollToBottom: toBottom, onScroll }
+    auto.onScroll()
+    load()
+  }, [auto.onScroll, load])
+  return { ...auto, onScroll }
 }
