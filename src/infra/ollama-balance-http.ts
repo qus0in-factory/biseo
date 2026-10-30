@@ -1,18 +1,12 @@
+import type { UsageMetric } from '../domain/usage-types.js'
 import { getUsageEndpoints as ep, getUsageTimeoutMs as to } from '../domain/usage-endpoints.js'
+import { config } from '../config.js'
 import { parseOllamaBalance } from './ollama-balance-parse.js'
 
-export async function fetchOllamaBalanceMetrics(authorize: (c: string) => string, ts: number): Promise<any[]> {
-  const uri = `/api/balance?ts=${ts}`
-  const metrics: any[] = []
+export async function fetchOllamaBalanceMetrics(): Promise<UsageMetric[]> {
   try {
-    const res = await fetch(`${ep().ollamaCloudBalance.replace(/\/api\/balance$/, '')}${uri}`, {
-      headers: { Authorization: authorize(`GET,${uri}`), Accept: 'application/json' },
-      signal: AbortSignal.timeout(to())
-    })
-    if (res.ok) {
-      const data = await res.json()
-      metrics.push(...parseOllamaBalance(data))
-    }
-  } catch { /* ignore */ }
-  return metrics
+    const res = await fetch(ep().ollama, { signal: AbortSignal.timeout(to()) })
+    if (!res.ok) return []
+    return parseOllamaBalance(await res.json(), config.ollamaIncludedUsd)
+  } catch { return [] }
 }
