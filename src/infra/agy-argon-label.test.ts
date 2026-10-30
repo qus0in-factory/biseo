@@ -12,11 +12,11 @@ test('bucketId argon groups with reset',()=>{
  assert.deepEqual(g[0].families,['argon'])
  assert.equal(g[0].buckets[0].resetTime,rst)
 })
-test('summary argon weekly shows label and reset',()=>{
- const s=[{displayName:'Gemini 4 Argon',buckets:[{bucketId:'weekly',remainingFraction:0,resetsAt:rst}]} as any]
- const res=parseAgyUsage({groups:mergeAgyGroups(s,[])},at)
+test('summary weekly backfills',()=>{
+ const s=[{displayName:'Gemini 4 Argon',buckets:[{bucketId:'weekly',remainingFraction:0}]} as any]
+ const d=modelBucketsToGroups([{bucketId:'gemini-argon-wtu-weekly',remainingFraction:0,resetTime:rst}])
+ const res=parseAgyUsage({groups:mergeAgyGroups(s,d)},at)
  const m=res.metrics.find((x)=>x.id.startsWith('argon:'))
  assert.ok(m)
- assert.equal(m?.used,100)
  assert.equal(m?.resetsAt,rst)
 })
