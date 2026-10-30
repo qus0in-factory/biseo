@@ -1,65 +1,10 @@
-import test from 'node:test'
-import assert from 'node:assert/strict'
-import { createTurn } from './create-turn.js'
-import { cancelTurn } from './turn-queue-cancel.js'
-import { dispatchPane } from './turn-queue-dispatch.js'
-import { input, reader, agent, pane } from './turn-data-fixture.js'
-import { makeDeps } from './turn-fixture.js'
-import { until as wait } from '../test-wait.test-util.js'
-
-test('target_not_found waits for a transient pane loss', async () => {
-  const d = makeDeps(reader), w = { ...agent, agent_status: 'working' as const }
-  d.herdr.listAgents = async () => [w]
-  d.herdr.getAgent = async () => w
-  assert.ok((await createTurn(d, input)).ok)
-  d.targetGraceMs = 20
-  d.herdr.listAgents = async () => [agent]
-  d.herdr.getAgent = async () => agent
-  d.herdr.getPane = async () => undefined
-  let got = ''
-  d.herdr.prompt = async (_p, t) => { got = t }
-  setTimeout(() => { d.herdr.getPane = async () => pane }, 5)
-  await dispatchPane(d, 'w:p1')
-  await wait(() => got === 'hi')
-  assert.equal(got, 'hi')
-})
-
-test('cancel during target grace does not start the removed turn', async () => {
-  const d = makeDeps(reader), w = { ...agent, agent_status: 'working' as const }
-  const set = (s: typeof agent) => {
-    d.herdr.listAgents = async () => [s]
-    d.herdr.getAgent = async () => s
-  }
-  set(w)
-  for (const t of '12') await createTurn(d, { ...input, requestId: t, text: t })
-  d.locks.reserve('w:p1', 'h')
-  d.targetGraceMs = 10
-  set(agent)
-  d.herdr.getPane = async () => undefined
-  let got = ''
-  d.herdr.prompt = async (_p, t) => { got = t }
-  dispatchPane(d, 'w:p1')
-  await new Promise((r) => setTimeout(r, 5))
-  cancelTurn(d, '1')
-  d.herdr.getPane = async () => pane
-  d.locks.release('w:p1', 'h')
-  for (let i = 0; i < 100 && got !== '2'; i++) await new Promise((r) => setTimeout(r, 1))
-  assert.equal(got, '2')
-})
-
-test('still missing drops after the configured grace', async () => {
-  const d = makeDeps(reader), w = { ...agent, agent_status: 'working' as const }
-  d.herdr.listAgents = async () => [w]
-  d.herdr.getAgent = async () => w
-  assert.ok((await createTurn(d, input)).ok)
-  d.targetGraceMs = 10
-  d.herdr.getPane = async () => undefined
-  const t = Date.now()
-  await dispatchPane(d, 'w:p1')
-  for (let i = 0; i < 100 && d.store.get('r1')?.status !== 'failed'; i++) {
-    await new Promise((r) => setTimeout(r, 1))
-  }
-  assert.ok(Date.now() - t >= 8)
-  assert.equal(d.queue.has('w:p1'), false)
-  assert.equal(d.store.get('r1')?.errorCode, 'target_not_found')
-})
+import test from'node:test'
+import{transientLoss}from'./turn-queue-grace-transient.js'
+import{cancelDuringGrace}from'./turn-queue-grace-cancel-case.js'
+import{dropAfterGrace}from'./turn-queue-grace-drop-case.js'
+const cases=[
+ ['target_not_found waits for a transient pane loss',transientLoss],
+ ['cancel during target grace does not start the removed turn',cancelDuringGrace],
+ ['still missing drops after the configured grace',dropAfterGrace],
+]as const
+for(const[name,fn]of cases)test(name,fn)
