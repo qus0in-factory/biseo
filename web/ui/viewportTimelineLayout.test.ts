@@ -13,7 +13,7 @@ test('app shell uses the stable small viewport', () => {
 
 test('dashboard flexes to the footer and scrolls only its timeline', () => {
   const section = src('./TimelineSection.tsx')
-  assert.match(section, /className="flex min-h-0 flex-1 flex-col"/)
+  assert.match(section, /className="flex min-h-0 min-w-0 flex-1 flex-col"/)
   assert.match(section, /border-b border-border">\s*<TimelineView/)
   assert.match(section, /<\/div>\s*<MessageComposer/)
   assert.doesNotMatch(section, /12rem|visual-viewport/)

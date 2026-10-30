@@ -13,6 +13,10 @@ test('height-constrained vertical ancestors are shrinkable flex columns', () => 
   }
 })
 
+test('timeline section can shrink horizontally', () => {
+  assert.ok(classes('./TimelineSection.tsx').includes('min-w-0'))
+})
+
 test('dashboard row bounds its workspace child', () => {
   assert.match(src('./DashboardView.tsx'), /className="[^"]*min-h-0[^\"]*flex-1 gap-4"[\s\S]*<WorkspaceMain/)
   assert.match(src('./WorkspaceMain.tsx'), /className="[^"]*min-h-0[^\"]*flex-col"[\s\S]*<TimelineSection/)
