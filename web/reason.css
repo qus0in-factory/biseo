@@ -35,7 +35,7 @@
   left: 0;
   z-index: 10;
   overflow-wrap: anywhere;
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--secondary);
   padding: 0.25rem 0.5rem;
   border-radius: var(--r-sm);
