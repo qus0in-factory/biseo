@@ -9,7 +9,7 @@ export function collectAgyItems(groups: any[], chk: string) {
     const fams = Array.isArray(g?.families) ? (g.families as string[]) : []
     for (const b of (Array.isArray(g?.buckets) ? g.buckets : [])) metrics.push(makeAgyMetric(gn, b, fams))
   }
-  const f = groups[0]?.buckets ?? []
+  const f = groups.flatMap((g: any) => (Array.isArray(g?.buckets) ? g.buckets : []))
   const b5h = f.find((b: any) => b.window === '5h' || b.bucketId === '3p-5h')
   const bW = f.find((b: any) => b.window === 'weekly' || b.bucketId === '3p-weekly')
   if (b5h) windows.push(makeAgyWindow('primary', b5h, chk))

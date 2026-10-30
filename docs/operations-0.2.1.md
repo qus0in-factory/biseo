@@ -18,7 +18,8 @@ audience: user
    - 위험: Worker 먼저면 토큰을 붙인 요청을 backend가 거부해 health 중단. backend 먼저면 토큰 없는 기존 요청이 거부될 수 있음.
    - 완화: backend 검증을 단계 전환(토큰 없는 요청 임시 허용 후 Worker 반영 뒤 강제), 사이 구간 최소화.
 5. **재시작·검증** (비밀 미노출, 상태코드만)
-   - `pnpm pm2:restart` 후 `pm2 status`에서 `biseo` online 확인.
+   - 재배포는 `pnpm release`(clean 빌드→preflight→PM2 재시작)로 실행한다.
+   - `pm2 status`에서 `biseo` online 확인.
    - `curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:6543/health`
    - `curl -s -o /dev/null -w '%{http_code}\n' https://<device>.<tailnet>.ts.net/health`
    - Worker: `curl -s -o /dev/null -w '%{http_code}\n' <Worker URL>/api/health` (기대: 200, 토큰·쿠키 출력 금지).

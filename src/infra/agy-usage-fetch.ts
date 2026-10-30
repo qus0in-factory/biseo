@@ -1,16 +1,12 @@
 import type { ProviderUsage } from '../domain/usage-types.js'
 import { unknownUsage } from '../domain/usage-unknown.js'
-import { readAgyToken } from './agy-token.js'
 import { parseAgyUsage } from './agy-usage-parse.js'
-import { fetchAgySummary } from './agy-summary-fetch.js'
-import { fetchAgyModelGroups } from './agy-quota-fetch.js'
-import { mergeAgyGroups } from './agy-usage-merge.js'
+import { fetchAgyGroups } from './agy-usage-auth.js'
+import { loadAgyCliGroups } from './agy-cli-fallback.js'
 
 export async function fetchAgyUsage(now = new Date()): Promise<ProviderUsage> {
-  const token = await readAgyToken()
-  if (!token) return unknownUsage('agy')
-  const [summary, derived] = await Promise.all([fetchAgySummary(token), fetchAgyModelGroups(token)])
-  const groups = mergeAgyGroups(summary, derived)
+  const groups = await fetchAgyGroups(now) ?? await loadAgyCliGroups(now.getTime())
+  if (!groups) return unknownUsage('agy', 'agy_auth_expired')
   if (groups.length === 0) return unknownUsage('agy')
   return parseAgyUsage({ groups }, now)
 }

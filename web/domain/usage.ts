@@ -24,6 +24,8 @@ export interface UsageProvider {
   state: UsageProviderState
   windows: UsageWindow[]
   metrics?: UsageMetric[]
+  reason?: string | null
+  retryAt?: string | null
 }
 
 export interface UsageResponse {
@@ -35,7 +37,3 @@ export interface UsageResponse {
 export interface UsageApiPort {
   getUsage(): Promise<UsageResponse>
 }
-
-export const usagePercentText=(v:number|null,unk:string)=>v===null?unk:`${v}%`
-type L=Record<string,string>
-export const usageWindowName=(p:string,w:string,l:L)=>l[`usageWindow_${p}_${w}`]??l[`usageWindow_${w}`]??w

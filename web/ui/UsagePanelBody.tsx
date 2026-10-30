@@ -1,6 +1,7 @@
 import type { UsageProvider } from '../domain/usage'
 import { UsageMetricRow } from './UsageMetricRow'
 import { UsageWindowRow } from './UsageWindowRow'
+import { selectCardMetrics } from '../domain/usage-ollama'
 
 export function UsagePanelBody({
   provider,
@@ -11,9 +12,10 @@ export function UsagePanelBody({
 }) {
   const m = Array.isArray(provider.metrics) && provider.metrics.length > 0
   if (m) {
+    const rows = selectCardMetrics(provider.provider, provider.metrics!)
     return (
       <>
-        {provider.metrics!.map((x) => (
+        {rows.map((x) => (
           <UsageMetricRow
             key={x.id}
             provider={provider.provider}
