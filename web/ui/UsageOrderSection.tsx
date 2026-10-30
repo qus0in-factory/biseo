@@ -1,25 +1,34 @@
+import { useState } from 'react'
+import { UsageOrderEditList } from './UsageOrderEditList'
+import { UsageOrderEditActions } from './UsageOrderEditActions'
 import { resolveUsageIds } from '../domain/usageOrder'
-import type { UsageOrderState } from '../app/useUsageOrder'
-import type { UsageProvider } from '../domain/usage'
-import { UsageOrderItem } from './UsageOrderItem'
 import r from '../resources.json'
 
-type P = { providers: UsageProvider[]; orderState: UsageOrderState }
-
-export function UsageOrderSection({ providers, orderState }: P) {
+export function UsageOrderSection({ providers, orderState }: any) {
   const ids = resolveUsageIds(
     orderState.order,
-    providers.map((p) => p.provider),
+    providers.map((p: any) => p.provider)
   )
+  const [e, setE] = useState(false)
+  const [d, setD] = useState(ids)
+  const [g, setG] = useState<any>(null)
+  if (!e) {
+    return (
+      <button type="button" onClick={() => { setD(ids); setE(true) }}>
+        {r.usageEditOrder}
+      </button>
+    )
+  }
   return (
-    <details className="mb-2 text-xs">
-      <summary className="cursor-pointer text-muted-foreground">{r.usageEditOrder}</summary>
-      <ul className="mt-1 flex flex-col gap-1">
-        {ids.map((id) => (
-          <UsageOrderItem key={id} id={id} hidden={orderState.hidden.includes(id)}
-            onMove={(dir) => orderState.move(ids, id, dir)} onToggleHide={() => orderState.toggleHide(id)} />
-        ))}
-      </ul>
-    </details>
+    <div>
+      <UsageOrderEditList
+        d={d}
+        g={g}
+        setG={setG}
+        setD={setD}
+        orderState={orderState}
+      />
+      <UsageOrderEditActions d={d} orderState={orderState} setE={setE} />
+    </div>
   )
 }
