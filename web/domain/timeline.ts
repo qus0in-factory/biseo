@@ -36,6 +36,7 @@ export interface PaneSummary {
   sendable: boolean
   disabledReason: DisabledReason
   blockedReason?: BlockedReason
+  usageLimitSuspected?: boolean
   revision?: number
   availability?: Availability
 }

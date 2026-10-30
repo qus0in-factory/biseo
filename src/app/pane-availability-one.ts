@@ -9,6 +9,6 @@ export async function availabilityOne(x:any,panes:PaneInfo[],agents:AgentInfo[],
  const a=await lookupAvailability(av,session,now)
  const lr=await suspectedLimit(x,a,limits),ir=await suspectedInput(x,a,inputs)
  const br=paneBlocked(x,a,lr,ir)
- const base={...x,blockedReason:br,availability:a}
+ const base={...x,blockedReason:br,usageLimitSuspected:lr,availability:a}
  return a.state==='limited'?{...base,sendable:false,disabledReason:'provider_rate_limited'as const}:base
 }

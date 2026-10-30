@@ -18,5 +18,3 @@ export async function suspectedInput(
   if (summary.status !== 'blocked' || availability.state === 'limited' || !inputs) return false
   return inputs.classify(summary.paneId).catch(() => false)
 }
-
-export const suspectedApproval = suspectedInput

@@ -19,6 +19,7 @@ test('canInterrupt checks blocked, offline, inflight, limited', () => {
   assert.equal(canInterrupt(base, false), false)
   assert.equal(canInterrupt(base, true, true), false)
   assert.equal(canInterrupt({ ...base, blockedReason: 'usage_limit' }), false)
+  assert.equal(canInterrupt({ ...base, blockedReason: 'usage_limit', usageLimitSuspected: true }), true)
   assert.equal(canInterrupt({ ...base, blockedReason: 'unknown' }), true)
   assert.equal(canInterrupt({ ...base, blockedReason: 'input_request' }), true)
 })
