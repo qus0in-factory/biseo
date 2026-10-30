@@ -9,6 +9,7 @@ export const rowLimitReached = (
   remaining: number | null,
 ): boolean => {
   if (flag === true) return true
+  // Intentional OR: a fully used value or a spent remaining budget each mean the row is exhausted.
   if (unit === 'percent') return (used !== null && used >= 100) || (remaining !== null && remaining <= 0)
   // Other units are absolute amounts, so they need a limit of their own.
   const l = typeof limit === 'number' ? limit : null
