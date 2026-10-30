@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { toggleSegmentStyle } from './toggleSegmentStyle'
 
 export function MarkdownToggleTrack({
   on,
@@ -13,8 +14,8 @@ export function MarkdownToggleTrack({
 }) {
   return (
     <span aria-hidden="true" className={`flex h-7 ${className} items-stretch overflow-hidden rounded border border-border bg-surface`}>
-      <span className={`flex flex-1 items-center justify-center ${on ? 'bg-surface text-muted-foreground' : 'bg-card text-foreground'}`}>{left}</span>
-      <span className={`flex flex-1 items-center justify-center ${on ? 'bg-card text-foreground' : 'bg-surface text-muted-foreground'}`}>{right}</span>
+      <span className={`flex flex-1 items-center justify-center ${toggleSegmentStyle(!on)}`}>{left}</span>
+      <span className={`flex flex-1 items-center justify-center ${toggleSegmentStyle(on)}`}>{right}</span>
     </span>
   )
 }
