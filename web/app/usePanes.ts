@@ -1,35 +1,18 @@
-import { useState, useCallback } from 'react'
-import type { WorkspaceApiPort as Api } from '../domain/ports'
-import type { PaneSummary } from '../domain/timeline'
-import { markOffline } from '../domain/markOffline'
-
-export function usePanes(api: Api, wsId: string | null) {
-  const [panes, set] = useState<PaneSummary[]>([])
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
-  const reload = useCallback(async () => {
-    if (!wsId) return
-    setLoading(true)
-    setError(null)
-    try {
-      set(await api.getPanes(wsId))
-    } catch {
-      setError('connection_unavailable')
-    } finally {
-      setLoading(false)
-    }
-  }, [api, wsId])
-
-  const setSnapshot = useCallback((l: PaneSummary[]) => {
-    setError(null)
-    set(l)
-  }, [])
-
-  const markDisconnected = useCallback(() => {
-    setError('connection_unavailable')
-    set((prev) => markOffline(prev))
-  }, [])
-
-  return { panes, loading, error, reload, setSnapshot, markDisconnected }
+import{useState,useCallback}from'react'
+import type{WorkspaceApiPort as Api}from'../domain/ports'
+import type{PaneSummary}from'../domain/timeline'
+import{dataOf,loadingState}from'../domain/asyncState'
+import type{AsyncState}from'../domain/asyncState'
+import{paneListState,paneOfflineState}from'./paneAsyncState'
+export function usePanes(api:Api,wsId:string|null){
+ const[state,setState]=useState<AsyncState<PaneSummary[]>>(()=>loadingState())
+ const reload=useCallback(async()=>{
+  if(!wsId)return
+  setState(s=>loadingState(s))
+  try{setState(paneListState(await api.getPanes(wsId)))}
+  catch{setState(s=>paneOfflineState(s))}
+ },[api,wsId])
+ const setSnapshot=useCallback((l:PaneSummary[])=>setState(paneListState(l)),[])
+ const markDisconnected=useCallback(()=>setState(s=>paneOfflineState(s)),[])
+ return{panes:dataOf(state)??[],panesState:state,panesRetry:reload,loading:state.status==='loading',error:state.status==='error'?state.error:null,reload,setSnapshot,markDisconnected}
 }

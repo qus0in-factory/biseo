@@ -17,5 +17,5 @@ test('dashboard flexes to the footer and scrolls only its timeline', () => {
   assert.match(section, /border-b border-border">\s*<TimelineView/)
   assert.match(section, /<\/div>\s*<MessageComposer/)
   assert.doesNotMatch(section, /12rem|visual-viewport/)
-  assert.match(src('./TimelineView.tsx'), /overflow-y-auto/)
+  assert.match(src('./TimelineScrollBody.tsx'), /overflow-y-auto/)
 })
