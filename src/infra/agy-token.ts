@@ -1,14 +1,7 @@
-import { readFile } from 'node:fs/promises'
-import { join } from 'node:path'
-import { homedir } from 'node:os'
+import type { AgyResolved } from './agy-token-result.js'
+import { settleAgyToken } from './agy-token-settle.js'
+import { withAgyFlight, resetAgyTokenState } from './agy-token-memory.js'
 
-export async function readAgyToken(): Promise<string | null> {
-  try {
-    const p = process.env.BISEO_AGY_TOKEN_PATH ??
-      join(homedir(), '.gemini', 'antigravity-cli', 'antigravity-oauth-token')
-    const raw = await readFile(p, 'utf8')
-    return JSON.parse(raw)?.token?.access_token ?? null
-  } catch {
-    return null
-  }
-}
+export const clearAgyTokenCache = resetAgyTokenState
+
+export const resolveAgyToken = (now = new Date()) => withAgyFlight(() => settleAgyToken(now.getTime()))

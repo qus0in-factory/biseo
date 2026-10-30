@@ -3,7 +3,7 @@ import { to } from './agy-usage-to.js'
 import { AGY_USER_AGENT } from './agy-user-agent.js'
 import type { AgyGroup } from './agy-quota-types.js'
 
-export async function fetchAgySummary(token: string): Promise<AgyGroup[]> {
+export async function fetchAgySummary(token: string, probe?: { unauthorized: boolean }): Promise<AgyGroup[]> {
   try {
     const res = await fetch(getUsageEndpoints().agy, {
       method: 'POST',
@@ -15,6 +15,7 @@ export async function fetchAgySummary(token: string): Promise<AgyGroup[]> {
       body: '{}',
       signal: AbortSignal.timeout(to())
     })
+    if (res.status === 401 && probe) probe.unauthorized = true
     if (!res.ok) return []
     const data: { groups?: unknown } = await res.json()
     return Array.isArray(data.groups) ? data.groups : []
