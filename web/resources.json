@@ -61,6 +61,7 @@
   "herdr_error": "에이전트 서비스 통신 오류가 발생했습니다.",
   "response_capture_unavailable": "이 에이전트의 완료 응답 수집은 아직 지원하지 않습니다.",
   "recovery_pending": "완료 결과를 다시 확인 중입니다.",
+  "recovery_lost": "턴을 복구하지 못했습니다. 패널 상태를 확인해 주세요.",
   "provider_rate_limited": "제공자 사용량 한도에 도달해 전송할 수 없습니다.",
   "availabilityLimited": "제공자 사용량 한도에 도달했습니다. 재개: {at}",
   "availabilityUnknown": "제공자 사용량 한도를 확인할 수 없습니다.",
