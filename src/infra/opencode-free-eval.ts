@@ -8,7 +8,7 @@ export function evaluateFreeUsage(now = new Date()): ProviderUsage {
   if (!l) return freePendingUsage(now)
   const isPast = Boolean(l.isLocked && l.resetsAt && Date.parse(l.resetsAt) <= now.getTime())
   const lim = l.isLocked && !isPast
-  const src = isPast ? '해제 예상' : (lim ? '잠김' : '잠김 없음')
+  const src = isPast ? 'unlock_expected' : (lim ? 'locked' : 'unlocked')
   const w: WindowUsage = { window: 'primary', usedPercent: lim ? 100 : 0, resetsAt: l.resetsAt, checkedAt: l.checkedAt, limitReached: lim, source: src }
   return { provider: 'opencode-free', state: lim ? 'limited' : 'available', metrics: m([w]), windows: [w], source: src, checkedAt: l.checkedAt }
 }

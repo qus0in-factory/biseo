@@ -1,7 +1,6 @@
 import type { UsageMetric } from './usage'
 
 export function formatMetricValue(m: UsageMetric, unk = '알 수 없음'): string {
-  if (m.unit === 'status') return '판정 대기'
   if (m.unit === 'percent') return m.used !== null ? `${m.used}%` : unk
   if (m.unit === 'credits') return m.remaining !== null ? `${m.remaining} credits` : (m.used !== null ? `${m.used} used` : unk)
   if (m.unit === 'currency') return m.remaining !== null ? `$${m.remaining}` : (m.used !== null ? `$${m.used}` : unk)
