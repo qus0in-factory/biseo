@@ -1,6 +1,6 @@
-import {base}from'./config-file.js'
-import {ollamaConfig as o}from'./config-ollama.js'
-import {parseInterruptAllowlist,parseLimitMarkers}from'./config-parse.js'
+import{base}from'./config-file.js'
+import{o}from'./config-ollama.js'
+import{parseInterruptAllowlist,parseLimitMarkers}from'./config-parse.js'
 const e=process.env
 export const envConfig={
  allowedWorkspaceId:e.ALLOWED_WORKSPACE_ID??base.allowedWorkspaceId,
@@ -12,7 +12,5 @@ export const envConfig={
  targetGraceMs:Number(e.TARGET_GRACE_MS||base.targetGraceMs||1e3),
  limitMarkers:parseLimitMarkers(e.LIMIT_MARKERS)??base.limitMarkers??[],inputMarkers:parseLimitMarkers(e.INPUT_MARKERS)??base.inputMarkers??[],
  interruptAllowlist:parseInterruptAllowlist(e.INTERRUPT_ALLOWLIST)??base.interruptAllowlist??{default:['esc']},
- availabilityTtlMs:Number(e.AVAILABILITY_TTL_MS??base.availabilityTtlMs),
- logLevel:e.LOG_LEVEL??base.logLevel??'info',
  ...o
 }
