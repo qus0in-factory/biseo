@@ -18,6 +18,7 @@ export function makeOptimistic(
     promptText: text,
     status: 'queued',
     createdAt: new Date().toISOString(),
+    ownSend: true,
   }
   return { requestId, item }
 }
