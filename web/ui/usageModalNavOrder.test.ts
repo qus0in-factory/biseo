@@ -4,16 +4,16 @@ import { readFileSync } from 'node:fs'
 
 const src = (f: string) => readFileSync(new URL(`./${f}`, import.meta.url), 'utf8')
 
-describe('UsageModalNav order edit', () => {
-  it('exposes order edit and hide controls', () => {
+describe('UsageModalNav order removal', () => {
+  it('keeps hide controls and removes edit/drag', () => {
     assert.match(src('UsageOrderedTabs.tsx'), /UsageOrderSection/)
-    assert.match(src('UsageOrderSection.tsx'), /usageEditOrder/)
-    assert.match(src('UsageOrderSection.tsx'), /UsageOrderEditList/)
-    assert.match(src('UsageOrderEditList.tsx'), /draggable/)
     const item = src('UsageOrderItem.tsx')
     assert.match(item, /UsageOrderItemActions/)
     const actions = src('UsageOrderItemActions.tsx')
     assert.match(actions, /usageHideItem/)
     assert.match(actions, /usageShowItem/)
+    const section = src('UsageOrderSection.tsx')
+    assert.doesNotMatch(section, /usageEditOrder/)
+    assert.doesNotMatch(section, /draggable/)
   })
 })
