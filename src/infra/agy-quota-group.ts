@@ -3,7 +3,7 @@ import type { AgyBucket, AgyGroup } from './agy-quota-types.js'
 const hidden = /lite|image|thinking|^tab_/
 
 export function quotaGroup(name: string, all: AgyBucket[]): AgyGroup {
-  const vis = all.filter((b) => !hidden.test(b.modelId ?? ''))
+  const vis = all.filter((b) => !hidden.test((b.modelId ?? b.bucketId) ?? ''))
   const use = vis.length > 0 ? vis : all
   return {
     displayName: name,
