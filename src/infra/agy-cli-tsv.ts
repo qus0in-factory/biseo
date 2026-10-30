@@ -1,6 +1,7 @@
 import type { AgyGroup } from './agy-quota-types.js'
-import { modelFamily } from './agy-model-family.js'
-import { cliFraction, cliWindow, cliReset } from './agy-cli-fields.js'
+import { cliFraction, cliReset } from './agy-cli-fields.js'
+import { cliWindow } from './agy-cli-windows.js'
+import { cliPoolFamilies } from './agy-cli-pools.js'
 import { cliRows } from './agy-cli-rows.js'
 
 export function parseAgyCliTsv(out: string): AgyGroup[] | null {
@@ -9,13 +10,10 @@ export function parseAgyCliTsv(out: string): AgyGroup[] | null {
     const f = cliFraction(rem ?? '')
     if (!pool || !win || f === null) continue
     const w = cliWindow(win)
-    const fam = modelFamily(pool)
     let g = by.get(pool)
     if (!g) {
-      g = { displayName: pool, buckets: [], families: [fam] }
+      g = { displayName: pool, buckets: [], families: cliPoolFamilies(pool) ?? ['unknown'] }
       by.set(pool, g)
-    } else if (g.families?.[0] === 'unknown' && fam !== 'unknown') {
-      g.families = [fam]
     }
     const b = { bucketId: w, displayName: win.trim(), window: w, remainingFraction: f, resetTime: cliReset(rst ?? '') }
     g.buckets.push(b)
