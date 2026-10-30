@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
-import { isPinnedPane, toPinnedNotification } from './notifications.js'
+import { isPinnedPane, toPinnedNotification } from './pinnedNotification.js'
 import type { TimelineItem } from './timeline.js'
 const item=(s:TimelineItem['status'],p='p1'):TimelineItem=>({requestId:'r1',workspaceId:'w',paneId:p,targetName:'pane',agentKind:'claude',promptText:'hi',status:s,responseText:'txt',errorCode:null,createdAt:'2026-01-01T00:00:00Z',seq:1,completedAt:'2026-01-01T00:01:00Z'})
 describe('pinned filter',()=>{

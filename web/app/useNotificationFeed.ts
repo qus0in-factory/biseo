@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import type { PaneSummary, TimelineItem } from '../domain/timeline'
-import { toPinnedNotification } from '../domain/notifications'
+import { toPinnedNotification } from '../domain/pinnedNotification'
 import { useNotificationStore } from './notificationStore'
 
 export function useNotificationFeed(panes: PaneSummary[], pinned: string[]) {
