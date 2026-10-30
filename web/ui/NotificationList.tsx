@@ -1,19 +1,23 @@
 import { useNotificationStore } from '../app/notificationStore'
-import { NotificationRow } from './NotificationRow'
-import { NotificationToolbar } from './NotificationToolbar'
+import { listState } from '../domain/asyncListState'
+import type { NotificationItem } from '../domain/notifications'
+import { AsyncList } from './AsyncList'
+import { ListSkeleton } from './ListSkeleton'
+import { NotificationBody } from './NotificationBody'
 import r from '../resources.json'
 
-export function NotificationList() {
+export function NotificationList({ onOpen }: { onOpen: (item: NotificationItem) => void }) {
   const items = useNotificationStore((s) => s.items)
-  const read = useNotificationStore((s) => s.read)
   const readAll = useNotificationStore((s) => s.readAll)
-  if (items.length === 0) return <p className="text-sm text-muted-foreground">{r.notifyEmpty}</p>
+  const state = listState(items, false, null)
   return (
-    <div className="flex flex-col gap-2">
-      <NotificationToolbar items={items} onReadAll={readAll} />
-      <ul className="flex flex-col">
-        {items.map((item) => <NotificationRow key={item.id} item={item} onRead={() => read(item.id)} />)}
-      </ul>
-    </div>
+    <AsyncList
+      state={state}
+      skeleton={<ListSkeleton rows={3} />}
+      empty={<p className="text-sm text-muted-foreground">{r.notifyEmpty}</p>}
+      errorText={r.notifyError}
+    >
+      {(list) => <NotificationBody items={list} onOpen={onOpen} onReadAll={readAll} />}
+    </AsyncList>
   )
 }

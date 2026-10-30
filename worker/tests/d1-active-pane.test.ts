@@ -5,16 +5,16 @@ import { createTimelineTestEnv } from './timeline-helpers.js'
 import { post } from './d1-requests.js'
 import { body, queued } from './d1-fixtures.js'
 
-test('a second queued request for the same pane is rejected without a prompt', async () => {
+test('distinct active turns for a busy pane are both forwarded', async () => {
   const { env, cookie } = await createTimelineTestEnv()
   let calls = 0
   const orig = globalThis.fetch
   globalThis.fetch = (async () => { calls++; return Response.json(queued, { status: 202 }) }) as any
   try {
-    await app.fetch(post(body(), cookie), env)
-    const busy = await app.fetch(post(body('r2'), cookie), env)
-    assert.equal(busy.status, 409)
-    assert.deepEqual(await busy.json(), { error: 'target_not_ready', reason: 'agent_busy' })
-    assert.equal(calls, 1)
+    const first = await app.fetch(post(body(), cookie), env)
+    const second = await app.fetch(post(body('r2'), cookie), env)
+    assert.equal(first.status, 202)
+    assert.equal(second.status, 202)
+    assert.equal(calls, 2)
   } finally { globalThis.fetch = orig }
 })
