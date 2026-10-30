@@ -72,7 +72,7 @@
   "usage_available": "사용 가능",
   "usage_limited": "한도 도달",
   "usage_unknown": "확인 불가",
-  "cancelConflict": "이미 실행 중이어서 취소할 수 없습니다.",
+  "cancelConflict": "전송이 이미 시작되어 예약 취소할 수 없습니다. 중단하려면 인터럽트(Esc)를 사용하세요.",
   "cancelFailed": "취소 요청에 실패했습니다.",
   "pinnedStorageKey": "biseo:pinned-panes",
   "pinPane": "패널 상단 고정",
