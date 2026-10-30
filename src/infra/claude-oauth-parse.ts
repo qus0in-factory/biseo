@@ -1,17 +1,15 @@
 import type { ProviderUsage } from '../domain/usage-types.js'
 import { unknownUsage } from '../domain/usage-unknown.js'
-import { windowsToMetrics } from '../domain/usage-metric-compat.js'
-import { makeClaudeWindow } from './claude-oauth-window.js'
+import { collectClaudeItems } from './claude-oauth-items.js'
 
 export function parseClaudeUsage(data: any, now = new Date()): ProviderUsage {
-  if (!data?.five_hour) return unknownUsage('claude')
+  if (!data || typeof data !== 'object') return unknownUsage('claude')
   const chk = now.toISOString()
-  const p = makeClaudeWindow('primary', data.five_hour, chk)
-  const s = makeClaudeWindow('secondary', data.seven_day, chk)
-  const pAct = Boolean(p.resetsAt && Date.parse(p.resetsAt) > now.getTime())
-  const sAct = Boolean(s.resetsAt && Date.parse(s.resetsAt) > now.getTime())
-  const lim = Boolean((p.limitReached && pAct) || (s.limitReached && sAct))
-  const state = lim ? 'limited' : 'available'
-  const windows = [p, s]
-  return { provider: 'claude', state, metrics: windowsToMetrics(windows), windows }
+  const { windows, metrics } = collectClaudeItems(data, chk)
+  if (metrics.length === 0 && windows.length === 0) return unknownUsage('claude')
+  const isLim = metrics.some(m => {
+    if (m.used === null || m.used < 100) return false
+    return !m.resetsAt || Date.parse(m.resetsAt) > now.getTime()
+  })
+  return { provider: 'claude', state: isLim ? 'limited' : 'available', metrics, windows, source: 'claude', checkedAt: chk }
 }
