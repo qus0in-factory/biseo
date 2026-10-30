@@ -16,10 +16,13 @@ function itm(s: TimelineItem['status'], err: string | null = null): TimelineItem
   }
 }
 
-test('recovers delivery_uncertain to working or completed', () => {
+test('recovers uncertain delivery and clears its error', () => {
   const cur = [itm('failed', 'delivery_uncertain')]
+  assert.equal(mergeTurn(cur, itm('queued'))[0].status, 'queued')
   assert.equal(mergeTurn(cur, itm('working'))[0].status, 'working')
-  assert.equal(mergeTurn(cur, itm('completed'))[0].status, 'completed')
+  const done = mergeTurn(cur, itm('completed'))[0]
+  assert.equal(done.status, 'completed')
+  assert.equal(done.errorCode, null)
 
   const other = [itm('failed', 'network_error')]
   assert.equal(mergeTurn(other, itm('working'))[0].status, 'failed')

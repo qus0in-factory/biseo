@@ -7,7 +7,8 @@ export async function syncPending(
   onUpdate: (item: TimelineItem) => void,
 ) {
   const pending = items.filter(
-    (i) => i.status === 'queued' || i.status === 'working' || i.status === 'timeout',
+    (i) => i.status === 'queued' || i.status === 'working' || i.status === 'timeout' ||
+      (i.status === 'failed' && i.errorCode === 'delivery_uncertain'),
   )
   await Promise.all(
     pending.map(async (p) => {

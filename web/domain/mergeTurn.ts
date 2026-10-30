@@ -13,7 +13,7 @@ export function mergeTurn(prev: TimelineItem[], next: TimelineItem): TimelineIte
     ...next,
     responseText: next.responseText ?? cur.responseText,
     completedAt: next.completedAt ?? cur.completedAt,
-    errorCode: next.errorCode ?? cur.errorCode,
+    errorCode: next.errorCode ?? (cur.errorCode === 'delivery_uncertain' && next.status !== 'failed' ? null : cur.errorCode),
   }
   return res
 }
