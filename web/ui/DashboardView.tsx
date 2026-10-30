@@ -12,7 +12,7 @@ export function DashboardView(props: DashboardProps) {
       <DashboardHeader online={online} actions={headerActions} />
       <MobileDrawer {...props} />
       <div className="flex min-w-0 gap-4">
-        <div className="hidden md:block"><DesktopPaneDrawer {...props} /></div>
+        <div className="hidden md:flex"><DesktopPaneDrawer {...props} /></div>
         <WorkspaceMain {...props} target={target} />
       </div>
     </div>
