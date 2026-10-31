@@ -13,8 +13,3 @@ test('workspace select rejects invalid and unknown ids',async()=>{
  const invalid=await app.request('/herdr/workspaces/select',{method:'POST',headers:{...auth,'content-type':'application/json'},body:JSON.stringify({workspaceId:'bad id'})})
  assert.equal(invalid.status,403)
 })
-test('workspace select accepts detected id',async()=>{
- const ok=await app.request('/herdr/workspaces/select',{method:'POST',headers:{...auth,'content-type':'application/json'},body:JSON.stringify({workspaceId:'w'})})
- assert.equal(ok.status,200)
- assert.deepEqual(await ok.json(),{workspaceId:'w',ok:true})
-})

@@ -1,6 +1,5 @@
 import type{Hono}from'hono'
-import{workspaceConfig as wc}from'./workspace-config-route.js'
-import{workspacesRoute as wr,selectWorkspaceRoute as sw}from'./workspaces-route.js'
+import{registerWorkspaceRoutes as rws}from'./register-workspace-routes.js'
 import{deleteTurn as dt}from'./delete-turn-route.js'
 import{eventsRoute as er}from'./events-route.js'
 import{getTurn as gt}from'./get-turn-route.js'
@@ -16,9 +15,7 @@ export function registerRoutes(a:Hono,d:AppDeps){
  a.get('/health',c=>c.json({status:d.healthStatus}))
  a.use('/herdr/*',v)
  if(d.usageCollector)a.get('/herdr/usage',ur(d.usageCollector))
- a.get('/herdr/config',wc(d))
- a.get('/herdr/workspaces',wr(d))
- a.post('/herdr/workspaces/select',sw(d))
+ rws(a,d)
  a.get('/herdr/workspaces/:wsId/panes',pr(d))
  a.post('/herdr/panes/:paneId/interrupt',ir(d))
  a.post('/herdr/turns',pt(d))

@@ -1,6 +1,7 @@
 import type{AgentInfo,PaneInfo,WorkspaceInfo}from'../domain/herdr.js'
 import {call}from'./herdr-exec.js'
-import {getAgent,getPane,listAgents,listPanes,listWorkspaces}from'./herdr-panes.js'
+import {getAgent,getPane,listAgents,listPanes}from'./herdr-panes.js'
+import {listWorkspaces}from'./herdr-workspaces.js'
 import {readRecent}from'./herdr-read.js'
 import {sendKeys}from'./herdr-send.js'
 import {promptArgs}from'./herdr-prompt-args.js'

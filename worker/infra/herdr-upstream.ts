@@ -1,4 +1,5 @@
-import type{HerdrUpstreamPort as P,PanesPayload as Pp,WorkspacesPayload as Wp}from'../app/timeline-ports.js'
+import type{HerdrUpstreamPort as P,PanesPayload as Pp}from'../app/timeline-ports.js'
+import type{WorkspacesPayload as Wp}from'../app/workspaces-payload.js'
 import type{TimelineItem as T}from'../domain/timeline-types.js'
 import type{UpstreamEnv as E}from'./herdr-upstream-config.js'
 import{callUpstreamJson as j}from'./herdr-upstream-http.js'
