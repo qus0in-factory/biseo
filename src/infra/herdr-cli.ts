@@ -1,12 +1,13 @@
-import type{AgentInfo,PaneInfo}from'../domain/herdr.js'
+import type{AgentInfo,PaneInfo,WorkspaceInfo}from'../domain/herdr.js'
 import {call}from'./herdr-exec.js'
-import {getAgent,getPane,listAgents,listPanes}from'./herdr-panes.js'
+import {getAgent,getPane,listAgents,listPanes,listWorkspaces}from'./herdr-panes.js'
 import {readRecent}from'./herdr-read.js'
 import {sendKeys}from'./herdr-send.js'
 import {promptArgs}from'./herdr-prompt-args.js'
 export class HerdrCli{
  listPanes(ws:string):Promise<PaneInfo[]>{return listPanes(ws)}
  listAgents():Promise<AgentInfo[]>{return listAgents()}
+ listWorkspaces():Promise<WorkspaceInfo[]>{return listWorkspaces()}
  getPane(id:string){return getPane(id)}
  getAgent(id:string){return getAgent(id)}
  async prompt(id:string,text:string,timeoutMs:number,acceptanceMs?:number){
