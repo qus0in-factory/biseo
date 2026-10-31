@@ -2,6 +2,7 @@ import type { UsageProvider } from '../domain/usage'
 import { UsageCacheNote } from './UsageCacheNote'
 import { UsageReasonNote } from './UsageReasonNote'
 import { UsagePanelBody } from './UsagePanelBody'
+import { OllamaBalanceSource } from './OllamaBalanceSource'
 import r from '../resources.json'
 
 export function UsagePanelRow({
@@ -21,6 +22,7 @@ export function UsagePanelRow({
         </span>
       </div>
       <UsageCacheNote provider={provider} />
+      <OllamaBalanceSource provider={provider} />
       <UsageReasonNote reason={provider.reason} />
       <UsagePanelBody provider={provider} remaining={remaining} />
     </div>

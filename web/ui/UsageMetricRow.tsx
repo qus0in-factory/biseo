@@ -2,6 +2,7 @@ import type { UsageMetric } from '../domain/usage'
 import { usageMetricLabel } from '../domain/usage-metric-name'
 import { formatMetricValue } from '../domain/usage-metric-format'
 import { UsageMetricTime } from './UsageMetricTime'
+import { OllamaAllowance } from './OllamaAllowance'
 import r from '../resources.json'
 
 export function UsageMetricRow({
@@ -20,6 +21,7 @@ export function UsageMetricRow({
         <span className="text-xs text-muted-foreground">{label}</span>
         <span className="font-mono text-xs">{formatMetricValue(metric, '알 수 없음', remaining)}</span>
       </div>
+      <OllamaAllowance provider={provider} metric={metric} />
       <UsageMetricTime provider={provider} metric={metric} />
     </div>
   )
