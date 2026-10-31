@@ -1,3 +1,4 @@
+import { Button } from '../components/ui/button'
 import r from '../resources.json'
 
 export function LoginModeTabs({
@@ -8,23 +9,23 @@ export function LoginModeTabs({
   onChange: (pin: boolean) => void
 }) {
   return (
-    <div className="flex gap-3 text-sm">
-      <button
+    <div className="grid grid-cols-2 gap-2" role="group">
+      <Button
         type="button"
-        className={pinMode ? 'text-muted-foreground' : 'font-semibold'}
+        variant={!pinMode ? 'default' : 'outline'}
         aria-pressed={!pinMode}
         onClick={() => onChange(false)}
       >
         {r.passwordLogin}
-      </button>
-      <button
+      </Button>
+      <Button
         type="button"
-        className={pinMode ? 'font-semibold' : 'text-muted-foreground'}
+        variant={pinMode ? 'default' : 'outline'}
         aria-pressed={pinMode}
         onClick={() => onChange(true)}
       >
         {r.pinLogin}
-      </button>
+      </Button>
     </div>
   )
 }
