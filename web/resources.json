@@ -164,5 +164,12 @@
   "paneOpenSuccess": "패널을 열었습니다.",
   "paneCloseSuccess": "패널을 닫았습니다.",
   "paneRenameSuccess": "이름을 수정했습니다.",
-  "paneManageEmpty": "관리할 패널이 없습니다."
+  "paneManageEmpty": "관리할 패널이 없습니다.",
+  "delivery_uncertain": "전달 여부 불확실",
+  "target_unclear": "원래 대상 패널을 확인할 수 없습니다. 대상을 확인하거나 재지정하세요.",
+  "reservationDuplicateWarning": "실제 전달되었을 수 있습니다. 패널을 확인한 뒤 재시도하세요. 중복 실행될 수 있습니다.",
+  "reservationTarget": "대상 패널 ID (원래 워크스페이스)",
+  "reservationRetry": "새 예약으로 재시도 / 대상 재지정",
+  "reservationRetryAccepted": "새 예약이 생성되었습니다. 타임라인에서 진행 상태를 확인하세요.",
+  "reservationRetryFailed": "예약 결과를 확인할 수 없습니다. 타임라인을 확인한 뒤 다시 시도하세요."
 }
