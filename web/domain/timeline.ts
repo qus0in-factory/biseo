@@ -32,6 +32,7 @@ export interface PaneSummary {
   name: string
   agentKind?: string | null
   agentName?: string | null
+  modelId?: string | null
   status: PaneStatus
   sendable: boolean
   disabledReason: DisabledReason

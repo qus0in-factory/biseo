@@ -11,7 +11,7 @@ export function usePaneManageState(w?:string){
  const[confirmId,setConfirmId]=useState<string|null>(null)
  const[renameId,setRenameId]=useState<string|null>(null)
  const[renameName,setRenameName]=useState('')
- const load=async()=>{try{const c=await a.getConfig();setWs(c.workspaceId);const l=await a.getPanes(c.workspaceId);setPanes(l.map(x=>({paneId:x.paneId,name:x.name})))}catch{setMsg('connection_unavailable')}}
- useEffect(()=>{void load()},[])
+ const load=async()=>{const c=await a.getConfig();setWs(c.workspaceId);const l=await a.getPanes(c.workspaceId);setPanes(l.map(x=>({paneId:x.paneId,name:x.name})));return l}
+ useEffect(()=>{void load().catch(()=>setMsg('connection_unavailable'))},[])
  return{ws,panes,template,name,busy,msg,confirmId,renameId,renameName,setWs,setPanes,setTemplate,setName,setBusy,setMsg,setConfirmId,setRenameId,setRenameName,load}
 }

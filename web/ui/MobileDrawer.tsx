@@ -19,8 +19,7 @@ export function MobileDrawer({ panes, panesState, panesRetry, selectedId, onSele
   const { drawerOpen, setDrawerOpen } = useUiStore()
   return (
     <Sheet open={drawerOpen} onOpenChange={setDrawerOpen}>
-      <SheetContent title={r.panesTitle}>
-        <PaneListToggle />
+      <SheetContent title={r.panesTitle} headerActions={<PaneListToggle/>}>
         <PaneDrawerContent panes={panes} state={panesState} onRetry={panesRetry} selectedId={selectedId} onSelect={onSelect} />
       </SheetContent>
     </Sheet>

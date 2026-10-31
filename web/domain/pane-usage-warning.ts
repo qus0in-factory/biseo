@@ -5,6 +5,7 @@ import { findMatchingUsage } from './pane-usage-match'
 import type { PaneUsageWarningResult } from './pane-usage-warning-types'
 import { buildUnknownResult } from './pane-usage-warning-unknown'
 import { evalPaneWindows } from './pane-usage-warning-eval-win'
+import { paneUsageWindows } from './pane-usage-windows'
 
 export type { PaneUsageWarningResult }
 
@@ -16,5 +17,5 @@ export function evaluatePaneUsageWarning(
 ): PaneUsageWarningResult {
   const p = findMatchingUsage(pane, providers)
   if (!p || p.state === 'unknown') return buildUnknownResult(res)
-  return evalPaneWindows(p.windows, cfg, res)
+  return evalPaneWindows(paneUsageWindows(pane, p), cfg, res)
 }

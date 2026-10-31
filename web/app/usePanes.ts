@@ -1,10 +1,12 @@
-import{useEffect,useRef,useState,useCallback}from'react'
+import{useEffect,useRef,useCallback}from'react'
 import type{WorkspaceApiPort as Api}from'../domain/ports'
 import type{PaneSummary}from'../domain/timeline'
 import{dataOf,loadingState}from'../domain/asyncState'
 import{paneListState,paneOfflineState}from'./paneAsyncState'
+import { usePaneRefresh } from './usePaneRefresh'
+import { usePaneSnapshot } from './usePaneSnapshot'
 export function usePanes(api:Api,wsId:string|null){
- const[s,setS]=useState(()=>loadingState<PaneSummary[]>())
+ const {s,setS,snap,off}=usePaneSnapshot()
  const g=useRef(0)
  useEffect(()=>{g.current++;setS(loadingState())},[wsId])
  const reload=useCallback(async()=>{
@@ -14,7 +16,6 @@ export function usePanes(api:Api,wsId:string|null){
   try{const l=await api.getPanes(wsId);if(n!==g.current)return;setS(paneListState(l))}
   catch{if(n!==g.current)return;setS(x=>paneOfflineState(x))}
  },[api,wsId])
- const snap=useCallback((l:PaneSummary[])=>setS(paneListState(l)),[])
- const off=useCallback(()=>setS(x=>paneOfflineState(x)),[])
+ usePaneRefresh(reload)
  return{panes:dataOf(s)??[],panesState:s,panesRetry:reload,reload,setSnapshot:snap,markDisconnected:off}
 }

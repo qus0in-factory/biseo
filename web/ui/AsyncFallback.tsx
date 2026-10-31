@@ -1,4 +1,5 @@
-import { Button } from '../components/ui/button'
+import { SettingsAction } from './SettingsAction'
+import { RotateCw } from 'lucide-react'
 import r from '../resources.json'
 
 export function AsyncFallback({
@@ -13,7 +14,7 @@ export function AsyncFallback({
   return (
     <div className={inline ? 'flex items-center gap-2 text-xs text-error' : 'flex flex-col items-start gap-2 text-sm text-error'}>
       <span>{errorText}</span>
-      {onRetry && <Button type="button" variant="ghost" onClick={onRetry}>{r.retry}</Button>}
+      {onRetry && <SettingsAction icon={RotateCw} type="button" onClick={onRetry}>{r.retry}</SettingsAction>}
     </div>
   )
 }

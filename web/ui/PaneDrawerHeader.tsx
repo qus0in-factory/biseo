@@ -6,9 +6,11 @@ type Props = {
  onToggle: () => void
 }
 export function PaneDrawerHeader({open,onToggle}:Props){
- return <div className={`flex flex-wrap items-center gap-2 ${open?'justify-between':'justify-center'}`}>
+ return <div className={`flex items-center gap-2 ${open?'justify-between':'flex-col'}`}>
   {open&&<h2 className="text-base font-semibold">{r.panesTitle}</h2>}
-  <PaneDrawerToggle open={open} onToggle={onToggle}/>
-  <PaneListToggle/>
+  <div className={`flex gap-1 ${open?'':'flex-col'}`}>
+   <PaneDrawerToggle open={open} onToggle={onToggle}/>
+   <PaneListToggle/>
+  </div>
  </div>
 }

@@ -1,5 +1,6 @@
 import{useState}from'react'
-import{Button}from'../components/ui/button'
+import { SettingsAction } from './SettingsAction'
+import { Trash2 } from 'lucide-react'
 import{pinApi}from'../infra/pinApi'
 import r from'../resources.json'
 export function PinClearButton({onChange}:{onChange:()=>void}){
@@ -8,5 +9,5 @@ export function PinClearButton({onChange}:{onChange:()=>void}){
   setBusy(true)
   try{await pinApi.clearPin();onChange()}catch{}finally{setBusy(false)}
  }
- return<Button type="button" variant="ghost" onClick={()=>void clear()} disabled={busy}>{r.clearPin}</Button>
+ return<SettingsAction icon={Trash2} danger type="button" onClick={()=>void clear()} busy={busy}>{r.clearPin}</SettingsAction>
 }

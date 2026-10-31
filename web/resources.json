@@ -211,5 +211,9 @@
   "collapsedPanesCount": "3",
   "paneListExpandedStorageKey": "biseo:pane-list-expanded",
   "collapsePaneList": "패널 목록 접기",
-  "expandPaneList": "패널 목록 전체 펼치기"
+  "expandPaneList": "패널 목록 전체 펼치기",
+  "collapseDrawer": "왼쪽 패널 접기",
+  "expandDrawer": "왼쪽 패널 펼치기",
+  "paneRenameFailed": "이름 변경 또는 목록 확인에 실패했습니다. 다시 시도하세요.",
+  "panesChangedEvent": "biseo:panes-changed"
 }

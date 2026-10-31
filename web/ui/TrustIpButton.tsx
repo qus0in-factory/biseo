@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Button } from '../components/ui/button'
+import { SettingsAction } from './SettingsAction'
+import { ShieldCheck } from 'lucide-react'
 import { pinApi } from '../infra/pinApi'
 import r from '../resources.json'
 
@@ -15,8 +16,8 @@ export function TrustIpButton({ trusted, onChange }: { trusted: boolean; onChang
     }
   }
   return (
-    <Button type="button" variant="outline" onClick={() => void toggle()} disabled={busy}>
+    <SettingsAction icon={ShieldCheck} type="button" onClick={() => void toggle()} busy={busy}>
       {trusted ? r.untrustIp : r.trustIp}
-    </Button>
+    </SettingsAction>
   )
 }
