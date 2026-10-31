@@ -1,5 +1,5 @@
 import{type App,jsonNoStore}from'./timeline-guards.js'
-import{payloadMismatch,queuedRecord}from'../app/queued-turn.js'
+import{queuedRecord}from'../app/queued-turn.js'
 import{reserveTurn}from'../app/reserve-turn.js'
 import{toItem}from'../app/timeline-map.js'
 import{parseSubmit}from'./timeline-submit-parse.js'
@@ -12,8 +12,8 @@ export function registerSubmitRoute(app:App){
   const now=new Date().toISOString()
   const r=await reserveTurn(x.db,queuedRecord(p.input,x.owner,p.ws,now))
   if(r.kind==='busy')return jsonNoStore(c,{error:'target_not_ready',reason:'agent_busy'},409)
+  if(r.kind==='conflict')return jsonNoStore(c,{error:'conflict',reason:'request_id_payload_mismatch'},409)
   if(r.kind==='existing'){
-   if(payloadMismatch(r.rec,p.input))return jsonNoStore(c,{error:'conflict',reason:'request_id_payload_mismatch'},409)
    return jsonNoStore(c,toItem(r.rec),202)
   }
   return submitUpstream(c,x.db,p.input)
