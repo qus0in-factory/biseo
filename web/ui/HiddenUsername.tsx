@@ -9,6 +9,7 @@ export function HiddenUsername() {
       aria-hidden="true"
       readOnly
       defaultValue=""
+      style={{ display: 'none' }}
     />
   )
 }

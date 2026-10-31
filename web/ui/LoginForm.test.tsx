@@ -11,6 +11,7 @@ describe('LoginForm', () => {
     )
     assert.match(html, /auto[Cc]omplete="username"/)
     assert.match(html, /class="[^"]*hidden[^"]*"/)
+    assert.match(html, /display:\s*none/)
     assert.match(html, /auto[Cc]omplete="current-password"/)
   })
 
