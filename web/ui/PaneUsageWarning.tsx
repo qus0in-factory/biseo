@@ -19,11 +19,11 @@ export function PaneUsageWarning({
 }) {
   if (!providers?.length) return null
   const w = evaluatePaneUsageWarning(pane, providers, config, res)
-  if ((!w.hasWarning && !w.isUnknown) || !w.label) return null
+  if (!w.hasWarning || !w.label) return null
 
   return (
     <span
-      className={warningIconClass(w.isUnknown)}
+      className={warningIconClass()}
       title={w.label}
       aria-label={w.label}
       role="status"
