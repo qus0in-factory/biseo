@@ -203,5 +203,9 @@
   "statusSummaryUnknown": "알 수 없음",
   "collapsedPanesMin": "1",
   "collapsedPanesMax": "3",
-  "collapsedPanesDefault": "3"
+  "collapsedPanesDefault": "3",
+  "collapsedPanesStorageKey": "biseo:collapsed-panes-count",
+  "collapsedPanesAria": "접힌 패널 표시 개수",
+  "collapsedPanesDecrease": "접힌 패널 표시 개수 줄이기",
+  "collapsedPanesIncrease": "접힌 패널 표시 개수 늘리기"
 }
