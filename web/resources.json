@@ -101,7 +101,6 @@
   "usageWindow_ollama_primary": "m",
   "usageWindow_ollama_included_balance": "Included Balance",
   "usageWindow_ollama_purchased_balance": "Purchased Balance",
-  "usageWindow_opencode-free_primary": "primary",
   "usageWindow_status": "상태",
   "usageModelFamily_argon": "Argon",
   "usageModelFamily_claude": "Claude",
