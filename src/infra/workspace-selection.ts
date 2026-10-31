@@ -1,4 +1,4 @@
-import {existsSync,readFileSync,writeFileSync} from 'node:fs'
+import {readFileSync,writeFileSync} from 'node:fs'
 import {resolve} from 'node:path'
 const selectionPath=resolve(process.cwd(),'config/workspace-selection.json')
 const runtimePath=resolve(process.cwd(),'config/runtime.json')
@@ -23,5 +23,3 @@ export function currentWorkspace():string|undefined {
   return JSON.parse(readFileSync(runtimePath,'utf8')).allowedWorkspaceId
  } catch { return undefined }
 }
-// backward-compatible alias used by existing callers/tests
-export {readSelectedWorkspace as readWorkspaceSelection}

@@ -20,7 +20,7 @@ export function workspacesRoute(d: TurnDeps) {
 export function selectWorkspaceRoute(d: TurnDeps) {
  return async (c: Context) => {
   const body = await c.req.json().catch(() => null) as Record<string, unknown> | null
-  const id = body?.workspaceId ?? body?.workspace_id ?? body?.id ?? body?.workspace ?? body?.selectedWorkspaceId
+  const id = body?.workspaceId
   if (typeof id !== 'string' || !/^[A-Za-z0-9:_-]+$/.test(id)) {
    return c.json({error: 'workspace_not_allowed'}, 403, {'Cache-Control':'no-store'})
   }

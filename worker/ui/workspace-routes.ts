@@ -30,20 +30,14 @@ export function registerWorkspaceRoutes(app: App) {
     return jsonNoStore(c, r.body, r.status)
   })
 
-  const select = async (c: any) => {
+  app.post('/api/workspaces/select', async (c) => {
     const a = await requireOwner(c)
     if (!a.ok) return a.res
     let body: any = null
     try { body = await c.req.json() } catch { body = null }
-    const id = body?.workspaceId ?? body?.workspace_id ?? body?.id ?? body?.workspace ?? body?.selectedWorkspaceId
+    const id = body?.workspaceId
     const r = await callUpstreamJson<{workspaceId:string}>(c.env, '/herdr/workspaces/select', 'POST', { workspaceId: id }, crypto.randomUUID())
     if (!r.ok) return jsonNoStore(c, r.body, r.status)
     return jsonNoStore(c, { workspaceId: r.data?.workspaceId ?? id, ok: true }, 200)
-  }
-  app.post('/api/workspaces/select', select)
-  app.post('/api/workspaces', select)
-  app.put('/api/workspaces', select)
-  app.post('/api/config', select)
-  app.put('/api/config', select)
-  app.post('/api/workspace', select)
+  })
 }
