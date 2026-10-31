@@ -2,22 +2,14 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import app from '../index.js'
 import { pinEnv } from './pin-fixture.js'
-import { HOST, IP, passwordCookie, postPin } from './pin-request.js'
+import { IP, passwordCookie, postPin } from './pin-request.js'
 
-function putPin(cookie: string, pin: unknown) {
-  return new Request(`${HOST}/api/pin`, {
-    method: 'PUT',
-    headers: { Cookie: cookie, Origin: HOST, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ pin }),
-  })
-}
+import { seedTrusted } from './pin-seed.js'
+import { deletePin, putPin } from './pin-put-request.js'
 
 test('strong session validates PIN format and can replace or clear it', async () => {
   const { env, db, password } = await pinEnv()
-  await db
-    .prepare('INSERT INTO trusted_ips(ip,note,created_at,created_by) VALUES(?,?,?,?)')
-    .bind(IP, '', '2026-01-01', 'owner')
-    .run()
+  await seedTrusted(db, IP)
   const cookie = await passwordCookie(env, password)
 
   assert.equal((await app.fetch(putPin(cookie, '12345'), env)).status, 400)
@@ -25,10 +17,7 @@ test('strong session validates PIN format and can replace or clear it', async ()
   assert.equal((await app.fetch(putPin(cookie, '123456'), env)).status, 200)
   assert.equal((await postPin(env, '123456')).status, 200)
 
-  const del = await app.fetch(
-    new Request(`${HOST}/api/pin`, { method: 'DELETE', headers: { Cookie: cookie, Origin: HOST } }),
-    env,
-  )
+  const del = await app.fetch(deletePin(cookie), env)
   assert.equal(del.status, 200)
   assert.equal((await postPin(env, '123456')).status, 401)
 })

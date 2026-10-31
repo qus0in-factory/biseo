@@ -1,9 +1,10 @@
+import { checkRead } from './pin-manage-read.js'
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import app from '../index.js'
 import { adminReq } from './pin-admin-req.js'
 import { pinEnv } from './pin-fixture.js'
-import { HOST, IP, postPin } from './pin-request.js'
+import { IP, postPin } from './pin-request.js'
 import { seedPin, seedTrusted } from './pin-seed.js'
 
 test('PIN session can read status but cannot change trust or PIN', async () => {
@@ -13,13 +14,7 @@ test('PIN session can read status but cannot change trust or PIN', async () => {
   const res = await postPin(env, '123456')
   const cookie = res.headers.get('set-cookie')!.split(';')[0]
 
-  const get = await app.fetch(
-    new Request(`${HOST}/api/trusted-ip`, { headers: { Cookie: cookie } }),
-    env,
-  )
-  assert.equal(get.status, 200)
-  const body = (await get.json()) as { canManage: boolean }
-  assert.equal(body.canManage, false)
+  await checkRead(env, cookie)
 
   for (const [method, path] of [
     ['POST', '/api/trusted-ip'],

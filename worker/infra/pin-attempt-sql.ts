@@ -5,4 +5,4 @@ ON CONFLICT(scope) DO UPDATE SET
  window_started_at=CASE WHEN ?2-window_started_at>=?3 THEN ?2 ELSE window_started_at END,
  locked_until=CASE WHEN (CASE WHEN ?2-window_started_at>=?3 THEN 1 ELSE failures+1 END)>=?4
   THEN ?2+?5 ELSE 0 END
-RETURNING locked_until`
+RETURNING locked_until, failures`

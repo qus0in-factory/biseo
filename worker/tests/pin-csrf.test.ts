@@ -1,3 +1,4 @@
+import { checkLoginOrigin } from './pin-csrf-login.js'
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import app from '../index.js'
@@ -9,12 +10,7 @@ test('PIN login and trust changes require an allowed Origin', async () => {
   const { env, db, password } = await pinEnv()
   await seedTrusted(db, IP)
   await seedPin(db)
-  const noOrigin = new Request(`${HOST}/api/login/pin`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': IP },
-    body: JSON.stringify({ pin: '123456' }),
-  })
-  assert.equal((await app.fetch(noOrigin, env)).status, 403)
+  await checkLoginOrigin(env)
 
   const cookie = await passwordCookie(env, password)
   const mutate = new Request(`${HOST}/api/trusted-ip`, {

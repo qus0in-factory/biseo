@@ -21,6 +21,8 @@ export type PinAttemptLimits = {
 }
 
 export type PinAttemptStore = {
+  reserve(scope: string, limits: PinAttemptLimits, now: number): Promise<number>
+  release(scope: string): Promise<void>
   locked(scope: string, now: number): Promise<boolean>
   fail(scope: string, limits: PinAttemptLimits, now: number): Promise<boolean>
   clear(scope: string): Promise<void>
