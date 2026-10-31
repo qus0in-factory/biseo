@@ -11,7 +11,9 @@ test('zero-shot auth blocks missing cookie and mismatched service PASETO', async
     assert.equal((await openZeroShotSse(h.env)).status, 401)
     const wrong = await createTestFixture()
     const badEnv = { ...h.env, SERVICE_PASETO_SECRET: wrong.secretKeyStr }
-    assert.equal((await postZeroShot(badEnv, h.cookie)).status, 401)
+    const res=await postZeroShot(badEnv,h.cookie)
+    assert.equal(res.status,202)
+    assert.equal((await res.json() as any).errorCode,'target_unclear')
     assert.equal(h.getPromptCalls(), 0)
   } finally {
     await h.cleanup()
