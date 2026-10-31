@@ -9,6 +9,7 @@ import { registerStreamRoute } from './ui/timeline-stream.js'
 import type { SessionBindings } from './ui/types.js'
 import { registerUsageRoute } from './ui/usage-route.js'
 import { registerWorkspaceRoutes } from './ui/workspace-routes.js'
+import { registerPaneManageRoutes } from './ui/pane-manage-routes.js'
 
 const app = new Hono<{ Bindings: SessionBindings }>()
 
@@ -16,6 +17,7 @@ registerWorkspaceSource(app)
 registerAuthRoutes(app)
 registerHealthRoute(app)
 registerWorkspaceRoutes(app)
+registerPaneManageRoutes(app)
 registerTimelineRoutes(app)
 registerInterruptRoute(app)
 registerStreamRoute(app)

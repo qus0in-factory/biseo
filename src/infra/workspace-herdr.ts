@@ -14,4 +14,23 @@ export class WorkspaceHerdr extends HerdrCli {
   await this.check(id)
   return super.sendKeys(id,keys)
  }
+ override async closePane(id:string) {
+  await this.check(id)
+  return super.closePane(id)
+ }
+ override async renamePane(id:string,label:string) {
+  await this.check(id)
+  return super.renamePane(id,label)
+ }
+ override async renameTab(id:string,label:string) {
+  return super.renameTab(id,label)
+ }
+ override async renameAgent(target:string,name:string) {
+  await this.check(target)
+  return super.renameAgent(target,name)
+ }
+ override async startAgent(name:string,kind:string,paneId:string,args:string[]=[]){
+  await this.check(paneId)
+  return super.startAgent(name,kind,paneId,args)
+ }
 }
