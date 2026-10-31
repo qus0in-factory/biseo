@@ -14,6 +14,6 @@ const out=html('agy','gemini:Gemini Models:gemini-5h')
 assert.match(out,new RegExp(res.usageModelFamily_gemini))
 assert.match(out,/5h/)})
 test('a pool without a detected family shows unknown',()=>{
-assert.match(html('agy','unknown:Chat sessions:weekly'),new RegExp(res.usageModelFamily_unknown))})
+assert.match(html('agy','mystery:Pool:weekly'),new RegExp(res.usageModelFamily_unknown))})
 test('other providers keep the plain window label',()=>{
 assert.doesNotMatch(html('claude','five_hour'),new RegExp(res.usageModelFamily_gemini))})
