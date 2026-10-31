@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import type { UsageApiPort } from '../domain/usage'
 import { useUsage } from './useUsage'
 

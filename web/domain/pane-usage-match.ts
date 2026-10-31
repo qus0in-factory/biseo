@@ -6,8 +6,7 @@ export function findMatchingUsage(
   pane: PaneSummary,
   providers: UsageProvider[],
 ): UsageProvider | null {
-  const kind = pane.agentKind
-  if (!kind) return null
-  const target = matchProviderKey(kind)
+  const target = matchProviderKey(pane.agentKind, pane.agentName ?? pane.name)
+  if (!target) return null
   return providers.find((p) => p.provider === target) ?? null
 }

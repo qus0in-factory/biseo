@@ -3,6 +3,7 @@ import type { PaneSummary } from '../domain/timeline'
 import type { UsageProvider } from '../domain/usage'
 import { evaluatePaneUsageWarning } from '../domain/pane-usage-warning'
 import type { UsageWarningConfig } from '../domain/usage-warning'
+import { warningIconClass } from './paneUsageWarningClass'
 import r from '../resources.json'
 
 const res = r as Record<string, string>
@@ -16,15 +17,15 @@ export function PaneUsageWarning({
   providers?: UsageProvider[]
   config?: UsageWarningConfig
 }) {
-  if (!providers || providers.length === 0) return null
-  const warning = evaluatePaneUsageWarning(pane, providers, config, res)
-  if (!warning.hasWarning || !warning.label) return null
+  if (!providers?.length) return null
+  const w = evaluatePaneUsageWarning(pane, providers, config, res)
+  if ((!w.hasWarning && !w.isUnknown) || !w.label) return null
 
   return (
     <span
-      className="inline-flex shrink-0 items-center text-amber-500"
-      title={warning.label}
-      aria-label={warning.label}
+      className={warningIconClass(w.isUnknown)}
+      title={w.label}
+      aria-label={w.label}
       role="status"
     >
       <AlertTriangle size={13} aria-hidden="true" className="block shrink-0" />
