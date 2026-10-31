@@ -1,3 +1,6 @@
+import type { PinBindings } from './pin-types.js'
+import type { RefreshBindings } from './refresh-bindings.js'
+
 export type SessionBindings = {
   AUTH_PASSWORD_VERIFIER?: string
   USER_SESSION_PASETO_SECRET?: string
@@ -26,4 +29,4 @@ export type SessionBindings = {
   LOGIN_ATTEMPTS?: KVNamespace
   LOGIN_MAX_ATTEMPTS?: string
   LOGIN_ATTEMPT_TTL_SECONDS?: string
-}
+} & PinBindings & RefreshBindings

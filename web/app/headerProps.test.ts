@@ -17,7 +17,7 @@ test('header contract and assets exist', () => {
     fs.readFileSync(path.resolve(import.meta.dirname, f), 'utf8')
   const header = read('../ui/AppHeader.tsx')
   assert.ok(header.includes('flex-wrap'), 'header wraps on narrow viewports')
-  assert.ok(header.includes('shrink-0'), 'logout button never shrinks off-screen')
+  assert.ok(read('../ui/SessionActions.tsx').includes('shrink-0'), 'actions stay visible')
   const brand = read('../ui/HeaderBrand.tsx')
   assert.ok(brand.includes('text-ellipsis'), 'header title truncates with ellipsis')
   assert.ok(brand.includes('min-w-0'), 'header flex children may shrink')

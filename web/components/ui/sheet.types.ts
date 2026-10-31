@@ -7,6 +7,7 @@ export interface SheetProps {
 }
 
 export interface SheetContentProps {
+  headerActions?: ReactNode
   children: ReactNode
   className?: string
   title?: string

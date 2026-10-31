@@ -1,4 +1,4 @@
-import ky from 'ky'
+import ky from './sessionHttp'
 import type { TimelineItem } from '../domain/timeline'
 import type { TimelinePage, TimelineQuery } from '../domain/timelinePagingTypes'
 import { opts } from './apiOptions'

@@ -4,9 +4,9 @@ import app from '../index.js'
 import { createTimelineTestEnv } from './timeline-helpers.js'
 import { insertRow } from './d1-row.js'
 
-test('DELETE conflict leaves the D1 turn queued', async () => {
+test('DELETE conflict leaves the D1 turn working', async () => {
   const { env, cookie } = await createTimelineTestEnv()
-  await insertRow(env.BISEO_DB!, 'r1')
+  await insertRow(env.BISEO_DB!, 'r1','owner','w1T','working')
   const orig = globalThis.fetch
   globalThis.fetch = (async () => Response.json({ error: 'not_cancellable' }, { status: 409 })) as any
   try {
@@ -15,6 +15,6 @@ test('DELETE conflict leaves the D1 turn queued', async () => {
     }), env)
     assert.equal(res.status, 409)
     const row = await env.BISEO_DB!.prepare('SELECT status FROM timeline_turns WHERE request_id=?').bind('r1').first()
-    assert.equal((row as any).status, 'queued')
+    assert.equal((row as any).status, 'working')
   } finally { globalThis.fetch = orig }
 })

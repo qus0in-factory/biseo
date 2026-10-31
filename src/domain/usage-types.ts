@@ -6,6 +6,7 @@ export interface UsageMetric {
   limit: number | null
   remaining: number | null
   resetsAt: string | null
+  startsAt?: string | null
 }
 
 export interface WindowUsage {

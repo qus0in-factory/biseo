@@ -1,0 +1,1 @@
+ALTER TABLE timeline_turns ADD COLUMN queue_attempts INTEGER NOT NULL DEFAULT 0;

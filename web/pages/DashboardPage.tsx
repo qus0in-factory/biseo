@@ -3,5 +3,9 @@ import { WorkspaceSection } from '../ui/WorkspaceSection'
 
 export function DashboardPage() {
   usePageTitle('Biseo Workspace')
-  return <WorkspaceSection on={true} />
+  return (
+    <>
+      <WorkspaceSection on={true} />
+    </>
+  )
 }
