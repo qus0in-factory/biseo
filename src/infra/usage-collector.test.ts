@@ -3,11 +3,11 @@ import assert from 'node:assert/strict'
 import { UsageCollector } from './usage-collector.js'
 import { isolatedAgy } from './agy-isolate.test-util.js'
 
-test('UsageCollector aggregates 7 providers', async () => {
+test('UsageCollector aggregates 6 providers without OpenCode free', async () => {
   const rep = await isolatedAgy(() => new UsageCollector().getReport())
-  assert.equal(rep.providers.length, 7)
+  assert.equal(rep.providers.length, 6)
   const names = rep.providers.map(p => p.provider)
-  assert.deepEqual(names, ['codex', 'claude', 'opencode-go', 'opencode-free', 'grok', 'ollama', 'agy'])
+  assert.deepEqual(names, ['codex', 'claude', 'opencode-go', 'grok', 'ollama', 'agy'])
 })
 
 test('UsageCollector returns unknown on failure without disguise', async () => {
