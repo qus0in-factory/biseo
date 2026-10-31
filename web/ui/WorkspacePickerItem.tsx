@@ -1,5 +1,6 @@
 import { Button } from '../components/ui/button'
 import type { WorkspaceSummary } from '../domain/ports'
+import r from '../resources.json'
 export interface WorkspacePickerItemProps {
   workspace: WorkspaceSummary
   selected: boolean
@@ -12,11 +13,11 @@ export function WorkspacePickerItem({ workspace: w, selected, loading, onSelect 
     <li>
       <span>{w.label ?? id}</span>
       <span>{id}</span>
-      {w.focused ? <span>focused</span> : null}
-      {typeof w.paneCount === 'number' ? <span>{w.paneCount} panes</span> : null}
-      {selected ? <span>selected</span> : (
+      {w.focused ? <span>{r.workspaceFocused}</span> : null}
+      {typeof w.paneCount === 'number' ? <span>{r.panesTitle}: {w.paneCount}</span> : null}
+      {selected ? <span aria-current="true">{r.workspaceSelected}</span> : (
         <Button type="button" onClick={() => void onSelect(id)} disabled={loading}>
-          Select
+          {r.workspaceSelect}
         </Button>
       )}
     </li>

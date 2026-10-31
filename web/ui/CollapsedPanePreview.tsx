@@ -2,17 +2,19 @@ import type { PaneSummary } from '../domain/timeline'
 import { partitionPanes } from '../domain/pinnedPanes'
 import { selectCollapsedPanes } from '../domain/collapsedPanes'
 import { useUiStore } from '../app/uiStore'
+import { usePaneListStore } from '../app/paneListStore'
 
-type P = { panes: PaneSummary[]; count: number; selectedId: string | null; onSelect: (id: string) => void }
+type P = { panes: PaneSummary[]; selectedId: string | null; onSelect: (id: string) => void }
 
-export function CollapsedPanePreview({ panes, count, selectedId, onSelect }: P) {
+export function CollapsedPanePreview({ panes, selectedId, onSelect }: P) {
+  const expanded = usePaneListStore(state => state.expanded)
   const pinned = useUiStore((s) => s.pinned)
   const { pinned: pinnedPanes, rest } = partitionPanes(panes, pinned)
-  const shown = selectCollapsedPanes([...pinnedPanes, ...rest], count)
+  const shown = selectCollapsedPanes([...pinnedPanes, ...rest], expanded)
   return (
     <ul className="m-0 flex list-none flex-col gap-2 p-0">
       {shown.map((pane) => (
-        <li key={pane.paneId} className="text-xs text-muted-foreground">
+        <li key={pane.paneId}>
           <button type="button" className={pane.paneId === selectedId ? 'font-semibold' : ''} onClick={() => onSelect(pane.paneId)}>{pane.paneId}</button>
         </li>
       ))}

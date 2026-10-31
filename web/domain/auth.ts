@@ -1,4 +1,4 @@
-export type AuthCode = 'needPassword' | 'authFailed' | 'unknown' | null
+export type AuthCode = 'needPassword' | 'authFailed' | 'serverError' | 'unknown' | null
 export type Health = { status?: string; error?: string }
 
 export class ApiError extends Error {
@@ -24,7 +24,7 @@ export function canSubmit(pw: string): boolean {
 
 export function loginCode(status?: number): Exclude<AuthCode, null> {
   if (status === 401) return 'authFailed'
-  return 'unknown'
+  return status === undefined ? 'unknown' : 'serverError'
 }
 
 export function toAuthCode(e: unknown): Exclude<AuthCode, null> {

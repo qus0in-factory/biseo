@@ -15,7 +15,7 @@ export default function App(){
  return<AppFrame>
   <AppHeader authed={authed} busy={busy} onLogout={logout}/>
   <AppContent authed={authed} busy={busy} login={login} loginPin={loginPin} loading={loading} data={data} check={check}/>
-  {code&&<p className="text-error">{r[code]}</p>}
+  {code&&<p role="alert" className="mx-auto w-full max-w-[360px] text-error">{r[code]}</p>}
   {authed&&<AppFooter/>}
  </AppFrame>
 }

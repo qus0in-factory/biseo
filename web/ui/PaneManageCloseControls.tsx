@@ -6,7 +6,7 @@ export function PaneManageCloseControls(x:P){
   <>
    <span>{r.confirmClose}</span>
    <button type="button" onClick={()=>void x.onClose(p.paneId)} disabled={x.busy}>{r.confirm}</button>
-   <button type="button" onClick={()=>x.setConfirmId(null)} disabled={x.busy}>{r.cancel??'취소'}</button>
+   <button type="button" onClick={()=>x.setConfirmId(null)} disabled={x.busy}>{r.cancel}</button>
   </>
  )
  return <button type="button" onClick={()=>x.setConfirmId(p.paneId)} disabled={x.busy}>{r.closePane}</button>

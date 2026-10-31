@@ -13,7 +13,7 @@
   --secondary: var(--color-secondary);
   --muted: #e2e6e3;
   --muted-foreground: var(--color-secondary);
-  --border: var(--color-border);
+  --border: var(--color-secondary);
   --ring: var(--foreground);
   --radius: 0.5rem;
 }

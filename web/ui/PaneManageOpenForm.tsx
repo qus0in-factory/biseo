@@ -2,7 +2,7 @@ import r from'../resources.json'
 type P={template:string;name:string;busy:boolean;setTemplate:(v:string)=>void;setName:(v:string)=>void;onOpen:()=>void}
 export function PaneManageOpenForm(p:P){
  return(
-  <div>
+  <div className="grid min-w-0 gap-2">
    <label>{r.paneTemplateLabel}
     <select value={p.template} onChange={e=>p.setTemplate(e.target.value)} disabled={p.busy}>
      <option value="opencode">opencode</option>
