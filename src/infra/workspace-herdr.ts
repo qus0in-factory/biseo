@@ -23,6 +23,15 @@ export class WorkspaceHerdr extends HerdrCli {
   return super.renamePane(id,label)
  }
  override async renameTab(id:string,label:string) {
+  const ws=readWorkspace()
+  if(!ws)throw Object.assign(new Error('workspace_not_allowed'),{code:'workspace_not_allowed'})
+  if(typeof this.getTab==='function'){
+   const tab=await this.getTab(id).catch(()=>undefined)
+   if(tab?.workspace_id!==ws)throw Object.assign(new Error('workspace_not_allowed'),{code:'workspace_not_allowed'})
+  }else{
+   const panes=await this.listPanes(ws).catch(()=>[])
+   if(!panes.some(p=>p.tab_id===id))throw Object.assign(new Error('workspace_not_allowed'),{code:'workspace_not_allowed'})
+  }
   return super.renameTab(id,label)
  }
  override async renameAgent(target:string,name:string) {

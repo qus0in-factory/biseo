@@ -1,4 +1,4 @@
-import type{AgentInfo,AgentSession,PaneInfo,WorkspaceInfo}from'../domain/herdr.js'
+import type{AgentInfo,AgentSession,PaneInfo,TabInfo,WorkspaceInfo}from'../domain/herdr.js'
 import type{Availability}from'../domain/timeline.js'
 export interface AvailabilityPort{get(session:AgentSession|undefined,now?:Date):Promise<Availability>;ttlMs?:number}
 export interface HerdrPort{
@@ -6,6 +6,7 @@ export interface HerdrPort{
  listAgents():Promise<AgentInfo[]>
  listWorkspaces?():Promise<WorkspaceInfo[]>
  getPane(id:string):Promise<PaneInfo|undefined>
+ getTab?(id:string):Promise<TabInfo|undefined>
  getAgent(id:string):Promise<AgentInfo|undefined>
  prompt(id:string,text:string,timeoutMs:number,acceptanceMs?:number):Promise<void>
  sendKeys?(id:string,keys:string):Promise<void>

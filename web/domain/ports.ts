@@ -14,4 +14,7 @@ export interface WorkspaceApiPort {
   sendMessage(input: SendMessageInput): Promise<{ requestId: string }>
   getTurn(requestId: string): Promise<TimelineItem>
   cancelTurn(requestId: string): Promise<void>
+  openPane?(input: { templateId?: string; name?: string }): Promise<{ paneId: string }>
+  closePane?(paneId: string): Promise<void>
+  renamePane?(paneId: string, name: string): Promise<void>
 }
