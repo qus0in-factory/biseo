@@ -2,13 +2,14 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { modelBucketsToGroups } from './agy-quota-models.js'
 
-test('chat_* and tab_* become a chat sessions group, not Gemini 4 Argon', () => {
+test('chat_* and tab_* stay hidden, not Gemini 4 Argon', () => {
   const g = modelBucketsToGroups([
     { modelId: 'chat_20706', remainingFraction: 1 },
-    { modelId: 'tab_flash_lite_preview', remainingFraction: 1 }
+    { modelId: 'chat_23310', remainingFraction: 1 },
+    { modelId: 'tab_flash_lite_preview', remainingFraction: 1 },
+    { modelId: 'tab_jump_flash_lite_preview', remainingFraction: 1 }
   ])
-  assert.deepEqual(g.map(x => x.displayName), ['Chat sessions'])
-  assert.deepEqual(g[0].families, ['unknown'])
+  assert.deepEqual(g, [])
 })
 
 test('explicit gemini-argon ids stay out of generic Gemini Models', () => {

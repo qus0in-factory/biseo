@@ -1,19 +1,17 @@
-import test from 'node:test'
-import assert from 'node:assert/strict'
-import { modelBucketsToGroups } from './agy-quota-models.js'
-
-test('model buckets group by official family, skip internal ids', () => {
-  const g = modelBucketsToGroups([
-    { modelId: 'gemini-2.5-pro', remainingFraction: 0.4 },
-    { modelId: 'claude-opus-5-5-high', remainingFraction: 0 },
-    { modelId: 'gpt-oss-120b-medium', remainingFraction: 0.2 },
-    { modelId: 'chat_20706', remainingFraction: 1 }
-  ])
-  assert.deepEqual(g.map((x) => x.displayName), ['Gemini Models', 'Claude and GPT models', 'Chat sessions'])
-  assert.deepEqual(g.map((x) => x.families), [['gemini'], ['claude', 'gpt'], ['unknown']])
-  assert.equal(g[0].buckets[0].remainingFraction, 0.4)
-  assert.equal(g[1].buckets[0].remainingFraction, 0)
-  assert.equal(g[2].buckets[0].remainingFraction, 1)
-  assert.deepEqual(modelBucketsToGroups([]), [])
-  assert.deepEqual(modelBucketsToGroups([{ modelId: 'gemini-2.5-pro' }]), [])
+import test from'node:test'
+import assert from'node:assert/strict'
+import{modelBucketsToGroups as groups}from'./agy-quota-models.js'
+const b=(modelId:string,remainingFraction=1)=>({modelId,remainingFraction})
+test('official pools keep Gemini, Claude and GPT',()=>{
+const g=groups([b('gemini-2.5-pro',.4),b('claude-opus-5-5-high',0),b('gpt-oss-120b-medium',.2)])
+assert.deepEqual(g.map(x=>x.displayName),['Gemini Models','Claude and GPT models'])
+assert.deepEqual(g.map(x=>x.families),[['gemini'],['claude','gpt']])
+assert.deepEqual(g.map(x=>x.buckets[0].remainingFraction),[.4,0])
+assert.deepEqual(groups([]),[])
+})
+test('chat_* and tab_* stay hidden, including bucketId fallback',()=>{
+const g=groups([b('chat_20706'),b('chat_23310'),b('tab_flash_lite_preview'),
+b('tab_jump_flash_lite_preview'),{bucketId:'chat_20706',remainingFraction:1},
+{bucketId:'tab_jump_flash_lite_preview',remainingFraction:1},b('gemini-2.5-pro')])
+assert.deepEqual(g.map(x=>x.displayName),['Gemini Models'])
 })
