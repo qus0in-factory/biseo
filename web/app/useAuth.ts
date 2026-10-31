@@ -1,5 +1,6 @@
 import{useState,useCallback}from'react'
 import{useAuthSession}from'./useAuthSession'
+import{useSessionMaintenance}from'./useSessionMaintenance'
 import{canSubmit as ok,toAuthCode as tc,type AuthCode,type AuthPort}from'../domain/auth'
 export function useAuth(p:AuthPort){ const[a,setA]=useState(false)
  const[b,setB]=useState(false)
@@ -17,6 +18,7 @@ export function useAuth(p:AuthPort){ const[a,setA]=useState(false)
   setB(true)
   try{await p.logout();setA(false);setC(null)}catch(e){setC(tc(e))}finally{setB(false)}
  }
- const expire=useCallback(()=>{setA(false);setC(null)},[])
+ const expire=useCallback(()=>setA(false),[])
+ useSessionMaintenance(a,expire)
  return{authed:a,busy:b,ready:r,code:c,login,loginPin,logout,expire}
 }

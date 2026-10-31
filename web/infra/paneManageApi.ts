@@ -1,4 +1,4 @@
-import ky from'ky'
+import ky from'./sessionHttp'
 import{opts}from'./apiOptions'
 export const paneManageApi={
  openPane:async(input:{templateId?:string;name?:string})=>{

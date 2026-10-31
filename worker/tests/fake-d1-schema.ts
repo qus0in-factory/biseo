@@ -4,4 +4,4 @@ const read = (f: string) => readFileSync(fileURLToPath(new URL(`../migrations/${
 export const SCHEMA = ['0001_timeline.sql','0002_usage.sql','0003_sync.sql',
  '0004_usage_metrics.sql','0005_remove_active_pane_guard.sql',
  '0006_usage_reason.sql','0007_queue_lease.sql','0008_queue_retry.sql',
- '0009_pin_auth.sql','0010_usage_period.sql'].map(read).join('\n')
+ '0009_pin_auth.sql','0010_usage_period.sql','0011_refresh_sessions.sql'].map(read).join('\n')

@@ -1,4 +1,4 @@
-import ky from 'ky'
+import ky from './sessionHttp'
 import type { PinStatus } from '../domain/pin'
 
 const opts = { retry: 0, credentials: 'same-origin' as const }

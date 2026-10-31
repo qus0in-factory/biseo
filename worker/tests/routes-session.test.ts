@@ -14,5 +14,8 @@ test('GET /api/session succeeds with cookie and fails without', async () => {
   })
   const authRes = await app.fetch(authReq, env)
   assert.equal(authRes.status, 200)
-  assert.deepEqual(await authRes.json(), { ok: true, subject: 'owner' })
+  const { expiresAt, ...body } = await authRes.json() as any
+  assert.deepEqual(body, { ok: true, subject: 'owner' })
+  assert.ok(Date.parse(expiresAt) > Date.now())
+  assert.equal(authRes.headers.get('cache-control'), 'no-store')
 })
