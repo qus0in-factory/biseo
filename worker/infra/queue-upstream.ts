@@ -10,8 +10,8 @@ export function queueUpstream(env:UpstreamEnv):QueuePort{
    if(r.status===404)return null
    throw new Error('target_unavailable')
   },
-  execute:async r=>(await call(env,'/herdr/queue/execute','POST',{
-   requestId:r.requestId,workspaceId:r.workspaceId,paneId:r.paneId,text:r.promptText,terminalId:r.terminalId,
+  execute:async(r,token)=>(await call(env,'/herdr/queue/execute','POST',{
+   requestId:r.requestId,workspaceId:r.workspaceId,paneId:r.paneId,text:r.promptText,terminalId:r.terminalId,queueToken:token,
   },id)).ok,
  }
 }

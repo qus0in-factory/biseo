@@ -3,6 +3,8 @@ import {type App,jsonNoStore,requireOwner} from './timeline-guards.js'
 export function registerWorkspaceSource(app:App) {
  app.use('/api/*',async(c,next)=>{
   if(c.env.WORKSPACE_CONFIG_SOURCE!=='server'||
+   c.req.path==='/api/queue/completed'||
+   /^\/api\/turns\/[^/]+\/retry$/.test(c.req.path)||
    /^\/api\/(?:auth(?:\/|$)|login$|logout$|session$|health$)/.test(c.req.path))return next()
   const a=await requireOwner(c)
   if(!a.ok)return a.res

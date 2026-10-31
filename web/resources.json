@@ -152,5 +152,12 @@
   "blocked_input_request": "승인 또는 입력 대기 중",
   "blocked_unknown": "차단 원인 미확인",
   "blockedUsageLimitSuspected": "사용량 한도 의심(차단 해제 가능). 화면을 확인하세요.",
-  "blocked_usage_limit_suspected": "사용량 한도 의심(차단 해제 가능). 재개: {at}"
+  "blocked_usage_limit_suspected": "사용량 한도 의심(차단 해제 가능). 재개: {at}",
+  "delivery_uncertain": "전달 여부 불확실",
+  "target_unclear": "원래 대상 패널을 확인할 수 없습니다. 대상을 확인하거나 재지정하세요.",
+  "reservationDuplicateWarning": "실제 전달되었을 수 있습니다. 패널을 확인한 뒤 재시도하세요. 중복 실행될 수 있습니다.",
+  "reservationTarget": "대상 패널 ID (원래 워크스페이스)",
+  "reservationRetry": "새 예약으로 재시도 / 대상 재지정",
+  "reservationRetryAccepted": "새 예약이 생성되었습니다. 타임라인에서 진행 상태를 확인하세요.",
+  "reservationRetryFailed": "예약 결과를 확인할 수 없습니다. 타임라인을 확인한 뒤 다시 시도하세요."
 }
