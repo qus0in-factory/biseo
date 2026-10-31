@@ -31,6 +31,12 @@
     "SERVICE_TOKEN_SUBJECT": "biseo-worker",
     "LOGIN_MAX_ATTEMPTS": "5",
     "LOGIN_ATTEMPT_TTL_SECONDS": "60",
+    "PIN_ALLOWED_HOSTS": "biseo.qus0in.dev",
+    "PIN_MAX_ATTEMPTS": "5",
+    "PIN_ATTEMPT_WINDOW_SECONDS": "900",
+    "PIN_LOCK_SECONDS": "900",
+    "PIN_GLOBAL_MAX_ATTEMPTS": "20",
+    "PIN_SESSION_TTL_SECONDS": "900",
     "WORKSPACE_CONFIG_SOURCE": "server",
     "UPSTREAM_TIMEOUT_MS": "10000",
     "ALLOWED_ORIGINS": "https://biseo.qus0in.workers.dev,https://biseo.qus0in.dev"
