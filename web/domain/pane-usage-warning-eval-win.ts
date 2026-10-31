@@ -3,10 +3,10 @@ import { evaluateUsageWindows } from './usage-warning-eval'
 import { buildWarningResult } from './pane-usage-warning-res'
 import { buildUnknownResult } from './pane-usage-warning-unknown'
 import type { UsageWarningConfig } from './usage-warning'
-import type { WindowUsage } from './usage'
+import type { UsageWindow } from './usage'
 
 export function evalPaneWindows(
-  windows: WindowUsage[] | undefined,
+  windows: UsageWindow[] | undefined,
   cfg: UsageWarningConfig,
   res?: Record<string, string>,
 ): PaneUsageWarningResult {
