@@ -1,4 +1,4 @@
-import ky from 'ky'
+import ky from './sessionHttp'
 import type { AppConfig, WorkspaceSummary } from '../domain/ports'
 import { opts } from './apiOptions'
 import type { PaneSummary } from '../domain/timeline'

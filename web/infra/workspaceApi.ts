@@ -1,4 +1,4 @@
-import ky from 'ky'
+import ky from './sessionHttp'
 import type { AppConfig, SendMessageInput, WorkspaceApiPort } from '../domain/ports'
 import type { TimelineItem } from '../domain/timeline'
 import { opts } from './apiOptions'

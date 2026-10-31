@@ -1,10 +1,10 @@
 import type{Context}from'hono'
 import{pinLogin}from'../app/pin-login.js'
-import{setSessionCookie}from'./login-deps.js'
 import{createPinDeps}from'./pin-deps.js'
 import{resolvePinRequest}from'./pin-request.js'
 import{checkCsrf,jsonNoStore}from'./timeline-guards.js'
 import type{SessionBindings}from'./types.js'
+import{completeLogin}from'./complete-login.js'
 export async function handlePinLogin(c:Context<{Bindings:SessionBindings}>){
  const csrf=checkCsrf(c)
  if(csrf)return csrf
@@ -15,6 +15,5 @@ export async function handlePinLogin(c:Context<{Bindings:SessionBindings}>){
  const body=await c.req.json().catch(()=>null) as{pin?:unknown}
  const res=await pinLogin({...deps,limits:req},body?.pin)
  if(!res.ok)return jsonNoStore(c,{error:res.status===429?'rate_limit_exceeded':'unauthorized'},res.status)
- setSessionCookie(c,res.token,req.sessionTtl)
- return jsonNoStore(c,{ok:true},200)
+ return completeLogin(c,'pin',res.token,req.sessionTtl)
 }
