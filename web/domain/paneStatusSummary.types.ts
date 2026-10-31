@@ -6,7 +6,3 @@ export interface PaneStatusSummary {
   unknown: number
   total: number
 }
-export type PaneStatusCounts = PaneStatusSummary
-export type StatusSummary = PaneStatusSummary
-export type PaneStatusCount = PaneStatusSummary
-export type StatusCounts = PaneStatusSummary
