@@ -5,7 +5,7 @@ export function registerWorkspaceSource(app:App) {
   if(c.env.WORKSPACE_CONFIG_SOURCE!=='server'||
    c.req.path==='/api/queue/completed'||
    /^\/api\/turns\/[^/]+\/retry$/.test(c.req.path)||
-   /^\/api\/(?:auth(?:\/|$)|login$|logout$|session$|health$)/.test(c.req.path))return next()
+   /^\/api\/(?:auth(?:\/|$)|login(?:\/|$)|logout$|session$|health$)/.test(c.req.path))return next()
   const a=await requireOwner(c)
   if(!a.ok)return a.res
   const r=await callUpstreamJson<{workspaceId:string}>(c.env,'/herdr/config','GET',undefined,crypto.randomUUID())

@@ -1,14 +1,10 @@
 import type{Hono}from'hono'
 import{registerWorkspaceRoutes as rws}from'./register-workspace-routes.js'
-import{deleteTurn as dt}from'./delete-turn-route.js'
 import{eventsRoute as er}from'./events-route.js'
-import{getTurn as gt}from'./get-turn-route.js'
 import{interruptRoute as ir}from'./interrupt-route.js'
 import{panesRoute as pr}from'./panes-route.js'
-import{openPaneRoute as opr}from'./panes-open-route.js'
-import{closePaneRoute as cpr}from'./panes-close-route.js'
-import{renamePaneRoute as rpr}from'./panes-rename-route.js'
-import{postTurn as pt}from'./post-turn-route.js'
+import{registerPaneManage}from'./pane-manage-routes.js'
+import{registerTurnRoutes}from'./turn-routes.js'
 import{serviceAuth as sa}from'./service-auth.js'
 import type{AppDeps}from'./app-deps.js'
 import{registerExecutorRoutes}from'./executor-routes.js'
@@ -21,10 +17,6 @@ export function registerRoutes(a:Hono,d:AppDeps){
  registerExecutorRoutes(a,d)
  a.get('/herdr/workspaces/:wsId/panes',pr(d))
  a.post('/herdr/panes/:paneId/interrupt',ir(d))
- a.post('/herdr/panes',opr(d))
- a.delete('/herdr/panes/:paneId',cpr(d))
- a.post('/herdr/panes/:paneId/rename',rpr(d))
- a.post('/herdr/turns',pt(d))
- a.get('/herdr/turns/:requestId',gt(d))
- a.delete('/herdr/turns/:requestId',dt(d))
+ registerPaneManage(a,d)
+ registerTurnRoutes(a,d)
  a.get('/herdr/events',er(d))}

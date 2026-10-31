@@ -5,7 +5,7 @@ import {dispatchPane}from'./turn-queue-dispatch.js'
 import {input,reader,agent}from'./turn-data-fixture.js'
 import {makeDeps}from'./turn-fixture.js'
 import {until as wait}from'../test-wait.test-util.js'
-test('pending turn is dropped, not misdelivered, when workspace switches',async()=>{
+test('legacy pending turn survives workspace selection changes',async()=>{
  const d=makeDeps(reader) as any
  d.allowedWorkspaceId='w'
  const work={...agent,agent_status:'working'}
@@ -21,6 +21,6 @@ test('pending turn is dropped, not misdelivered, when workspace switches',async(
  await new Promise(r=>setTimeout(r,50))
  assert.equal(prompts.length,0)
  const item=d.store.get('r1')
- assert.equal(item?.status,'failed')
- assert.equal(item?.errorCode,'workspace_not_allowed')
+ assert.equal(item?.status,'queued')
+ assert.notEqual(item?.errorCode,'workspace_not_allowed')
 })

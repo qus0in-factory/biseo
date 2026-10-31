@@ -1,5 +1,6 @@
 import { callUpstreamJson } from '../infra/herdr-upstream-http.js'
 import { type App, jsonNoStore, requireOwner } from './timeline-guards.js'
+import { panePending } from '../infra/d1-pane-pending.js'
 export function registerPaneCloseRoute(app: App) {
   app.delete('/api/panes/:paneId', async (c) => {
     const a = await requireOwner(c)
@@ -7,7 +8,7 @@ export function registerPaneCloseRoute(app: App) {
     const paneId = c.req.param('paneId')
     const db = c.env.BISEO_DB
     if (db) {
-      const row = await db.prepare(`SELECT 1 FROM timeline_turns WHERE pane_id=? AND owner_subject=? AND status IN ('queued','working','blocked','timeout') AND NOT (status='timeout' AND IFNULL(error_code,'')='late_capture_expired') LIMIT 1`).bind(paneId, a.claims.sub).first()
+      const row = await panePending(db, paneId)
       if (row) return jsonNoStore(c, { error: 'pending_reservations' }, 409)
     }
     const id = crypto.randomUUID()
