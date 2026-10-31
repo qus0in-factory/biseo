@@ -12,7 +12,6 @@ export function getCookieOptions(env: SessionBindings, maxAge?: number) {
     httpOnly: true,
     sameSite,
     maxAge: age,
-    ...(env.COOKIE_DOMAIN ? { domain: env.COOKIE_DOMAIN } : {}),
   }
 }
 

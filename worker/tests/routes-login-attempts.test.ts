@@ -5,6 +5,7 @@ import { createTestFixture } from './helpers.js'
 import { createMockKv } from './kv-helpers.js'
 import { postLogin } from './login-req-helper.js'
 import { hashIp } from '../infra/ip-hash.js'
+import { createFakeD1 } from './fake-d1.js'
 
 // KV eventual consistency allows minor overage
 test('increments on fail, clears on success', async () => {
@@ -16,6 +17,7 @@ test('increments on fail, clears on success', async () => {
     AUTH_PASSWORD_VERIFIER: stored,
     USER_SESSION_PASETO_SECRET: secretKeyStr,
     LOGIN_ATTEMPTS: mockKv,
+    BISEO_DB: createFakeD1(),
   }
   assert.equal((await app.fetch(postLogin(env, ip, 'bad'), env)).status, 401)
   assert.equal(mockKv.map.get(key), '1')

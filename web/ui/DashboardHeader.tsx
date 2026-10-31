@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { ConnectionStatusBadge } from './ConnectionStatusBadge'
 import { HeaderTabs } from './HeaderTabs'
 import { UsageModal } from './UsageModal'
-import { NotificationModal } from './NotificationModal'
 
 export function DashboardHeader({ online, actions }: { online: boolean; actions?: ReactNode }) {
   const [tab, setTab] = useState<string | null>(null)
@@ -15,7 +14,6 @@ export function DashboardHeader({ online, actions }: { online: boolean; actions?
         {actions}
       </div>
       <UsageModal open={tab === 'usage'} onClose={() => setTab(null)} enabled={online} />
-      <NotificationModal open={tab === 'notify'} onClose={() => setTab(null)} />
     </>
   )
 }

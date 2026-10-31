@@ -5,6 +5,8 @@ export const turnStatusLabel = (
   errorCode: string | null | undefined,
   res: Record<string, string>,
 ) =>
-  status === 'timeout' && errorCode === 'late_capture_expired'
+  status === 'failed' && (errorCode === 'delivery_uncertain' || errorCode === 'target_unclear')
+    ? res[errorCode]
+    : status === 'timeout' && errorCode === 'late_capture_expired'
     ? (res.lateCaptureClosed ?? status)
     : (res[`turn_${status}`] ?? status)

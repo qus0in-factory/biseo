@@ -7,6 +7,7 @@ export type Claims = {
   purpose: Purpose
   iat: string
   exp: string
+  auth?: 'pin'
 }
 
 export type ClaimPolicy = {

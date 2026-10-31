@@ -1,4 +1,4 @@
-import ky from 'ky'
+import ky from './sessionHttp'
 import { INTERRUPT_KEY, type InterruptKey } from '../domain/interrupt'
 
 export type InterruptResult =
