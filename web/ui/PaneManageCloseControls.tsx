@@ -11,5 +11,5 @@ export function PaneManageCloseControls(x:P){
    <SettingsAction icon={X} onClick={()=>x.setConfirmId(null)} disabled={x.busy}>{r.cancel}</SettingsAction>
   </>
  )
- return <SettingsAction icon={Trash2} danger onClick={()=>x.setConfirmId(p.paneId)} disabled={x.busy}>{r.closePane}</SettingsAction>
+ return <SettingsAction icon={Trash2} iconOnly danger onClick={()=>x.setConfirmId(p.paneId)} disabled={x.busy}>{r.closePane}</SettingsAction>
 }

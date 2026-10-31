@@ -11,5 +11,5 @@ export function PaneManageRenameControls(x:P){
    <SettingsAction icon={X} onClick={()=>x.setRenameId(null)} disabled={x.busy}>{r.cancel}</SettingsAction>
   </>
  )
- return <SettingsAction icon={Pencil} onClick={()=>{x.setRenameId(p.paneId);x.setRenameName(p.name)}} disabled={x.busy}>{r.renamePane}</SettingsAction>
+ return <SettingsAction icon={Pencil} iconOnly onClick={()=>{x.setRenameId(p.paneId);x.setRenameName(p.name)}} disabled={x.busy}>{r.renamePane}</SettingsAction>
 }
