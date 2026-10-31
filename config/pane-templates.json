@@ -1,0 +1,5 @@
+[
+  {"id":"opencode","kind":"opencode","label":"worker","args":[]},
+  {"id":"claude","kind":"claude","label":"worker","args":[]},
+  {"id":"codex","kind":"codex","label":"worker","args":[]}
+]

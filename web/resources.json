@@ -152,5 +152,17 @@
   "blocked_input_request": "승인 또는 입력 대기 중",
   "blocked_unknown": "차단 원인 미확인",
   "blockedUsageLimitSuspected": "사용량 한도 의심(차단 해제 가능). 화면을 확인하세요.",
-  "blocked_usage_limit_suspected": "사용량 한도 의심(차단 해제 가능). 재개: {at}"
+  "blocked_usage_limit_suspected": "사용량 한도 의심(차단 해제 가능). 재개: {at}",
+  "paneManageTitle": "패널 관리",
+  "openPane": "패널 열기",
+  "closePane": "패널 닫기",
+  "renamePane": "이름 수정",
+  "paneTemplateLabel": "템플릿",
+  "paneNameLabel": "이름",
+  "confirmClose": "정말 닫으시겠습니까?",
+  "confirm": "확인",
+  "paneOpenSuccess": "패널을 열었습니다.",
+  "paneCloseSuccess": "패널을 닫았습니다.",
+  "paneRenameSuccess": "이름을 수정했습니다.",
+  "paneManageEmpty": "관리할 패널이 없습니다."
 }
