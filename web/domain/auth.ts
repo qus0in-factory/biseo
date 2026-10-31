@@ -9,6 +9,7 @@ export class ApiError extends Error {
 
 export interface AuthPort {
   login(pw: string): Promise<void>
+  loginPin(pin: string): Promise<void>
   logout(): Promise<void>
   session(): Promise<void>
 }
