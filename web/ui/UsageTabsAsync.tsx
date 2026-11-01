@@ -1,7 +1,6 @@
 import type { AsyncState } from '../domain/asyncState'
 import type { UsageProvider } from '../domain/usage'
 import { AsyncList } from './AsyncList'
-import { ListSkeleton } from './ListSkeleton'
 import { UsageOrderedTabs } from './UsageOrderedTabs'
 import r from '../resources.json'
 
@@ -19,7 +18,7 @@ export function UsageTabsAsync({ state, retry, ...tabs }: P) {
   return (
     <AsyncList
       state={state}
-      skeleton={<ListSkeleton rows={2} />}
+      rows={2}
       empty={<p className="text-sm text-muted-foreground">{r.usageEmpty}</p>}
       errorText={r.usageError}
       onRetry={retry}
