@@ -11,12 +11,12 @@ interface Props {
 export function WorkspacePickerItem({ workspace: w, selected, loading, onSelect }: Props) {
   const id = w.workspaceId ?? w.id ?? ''
   return (
-    <li className={selected ? 'bg-muted' : undefined}>
+    <li className={selected ? 'bg-muted' : undefined} aria-current={selected ? 'true' : undefined}>
       <span>{w.label ?? id}</span>
       <span>{id}</span>
       {w.focused ? <span>{r.workspaceFocused}</span> : null}
       {typeof w.paneCount === 'number' ? <span>{r.panesTitle}: {w.paneCount}</span> : null}
-      {selected ? <span aria-current="true">{r.workspaceSelected}</span> : (
+      {selected ? null : (
         <SettingsAction icon={Check} type="button" onClick={() => void onSelect(id)} busy={loading}>
           {r.workspaceSelect}
         </SettingsAction>
