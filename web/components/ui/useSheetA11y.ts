@@ -18,6 +18,8 @@ export function useSheetA11y(open: boolean, onClose: () => void) {
     list()?.[0]?.focus()
 
     const onKey = (e: KeyboardEvent) => {
+      const dialogs = document.querySelectorAll('[aria-modal="true"]')
+      if (dialogs.length && el?.closest('[aria-modal="true"]') !== dialogs[dialogs.length - 1]) return
       if (e.key === 'Escape') {
         e.preventDefault()
         onCloseRef.current()
