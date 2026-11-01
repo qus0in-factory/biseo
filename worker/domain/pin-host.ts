@@ -6,3 +6,13 @@ export function isPinHostAllowed(url: string, allowed: string[]): boolean {
     return false
   }
 }
+
+export const PIN_CUSTOM_HOST = 'biseo.qus0in.dev'
+
+export function isPinCustomHost(url: string): boolean {
+  try {
+    return new URL(url).hostname.toLowerCase() === PIN_CUSTOM_HOST
+  } catch {
+    return false
+  }
+}

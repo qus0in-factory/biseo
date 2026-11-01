@@ -1,14 +1,12 @@
 import { useState } from 'react'
-import { restoreLoginMode, saveLoginMode } from '../domain/loginMode'
+import { saveLoginMode } from '../domain/loginMode'
 import r from '../resources.json'
 
-export function useLoginMode() {
-  const [pinMode, setPinMode] = useState(() => {
-    const s = typeof window === 'undefined' ? null : window.localStorage
-    return restoreLoginMode(s, r.loginModeStorageKey) === 'pin'
-  })
+export function useLoginMode(preferred: boolean | null = null) {
+  const [manual, setManual] = useState<boolean | null>(null)
+  const pinMode = manual ?? preferred === true
   const setMode = (pin: boolean) => {
-    setPinMode(pin)
+    setManual(pin)
     const s = typeof window === 'undefined' ? null : window.localStorage
     saveLoginMode(s, r.loginModeStorageKey, pin ? 'pin' : 'password')
   }
