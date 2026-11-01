@@ -6,7 +6,7 @@ import r from '../resources.json'
 
 test('header contract and assets exist', () => {
   assert.equal(typeof r.title,"string")
-  assert.equal(r.title, 'Biseo Workspace')
+  assert.equal(r.title, 'Biseo')
   assert.equal(typeof r.logout, 'string')
   assert.equal(r.logout, '로그아웃')
 
