@@ -28,6 +28,13 @@ audience: user
 - **Result**: Worker `d470a93a-af14-4180-a213-a4d641c1587a`, curl 루트 200·미인증 health/session/usage/workspaces/usage/history 401·6개 CSP 확인. Worker 롤백은 `a715bcdf-85cf-40ff-9d58-5047008c86dd`. 화면 0.4.4와 서버 0.4.3 차이는 의도된 서버 유지 결과다.
 - 병합된 깨끗한 작업 worktree 6개(043-app, 043-platform, 161, 162, 164, 165)를 제거했다. release-044 전환이 없으므로 release-042·043 보존. 인증 API·운영 큐·타 계열 리뷰 미실시(인증 미확보/재분배 금지). 관측 누적 전 비율 자료 부족은 정상이다. PM2 변경·main 병합·태그 없음.
 
+### v0.4.4 릴리스 완료 — 2026-11-02
+
+- **Situation / Task**: `fix/loading-state`, `fix/usage-align`, `fix/171-compact-align`을 dev에 병합하고 0.4.4 최종 릴리스를 진행했다. PR #166 CI 통과 후 main 승격과 태그 발행이 필요했다.
+- **Action**: 테스트 866개 실패 0·typecheck·build 통과. `web/resources.json` 양쪽 키를 보존한 병합 충돌 없음. release-043 `547127f` 대비 `src/` 변경은 테스트 전용(`first-session-db-fixture.ts` 등)이므로 서버 전환을 생략했다. preflight 통과 후 Worker `c8ee6550-ec5b-4036-9886-1991bcaa4e4d`를 배포했다. curl 루트 200, 미인증 `/api/health`·`/api/session`·`/api/usage`·`/api/workspaces`·`/api/usage/history` 401, 모든 응답 CSP 확인. PR #166을 main에 병합하고 `v0.4.4` 릴리스를 발행했다.
+- **Result**: main `ded12e0`, 릴리스 https://github.com/qus0in-factory/biseo/releases/tag/v0.4.4. Worker 롤백 대상은 `d470a93a-af14-4180-a213-a4d641c1587a`, 서버 롤백 대상은 release-043 `547127f`. runtime 로컬 변경은 `tmp/runtime.json.beam-backup`에 보존하고 스테이징하지 않았다. PM2·D1 변경 없음.
+- **한계**: 인증 API·운영 큐·타 계열 리뷰는 미실시(인증 미확보/재분배 금지). 관측 누적 전 비율 자료 부족은 정상이다.
+
 ### v0.4.3 — 2026-11-02
 
 - **Situation / Task**: 승인된 #45 보안 변경과 #161 타임라인 이름·로그인 변경을 dev에 통합하고 서버·Worker를 함께 전환했다. main 병합·태그·재분배는 금지했다.
