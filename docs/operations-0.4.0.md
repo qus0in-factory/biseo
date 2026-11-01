@@ -20,6 +20,7 @@ audience: user
 
 ## 핫픽스 및 배포 이력
 
+- #156 (2026-11-01): 패널 펼침 목록 높이 수정을 dev `9b93a58`에서 Worker `ab2293f5-f118-4b9e-bbbd-7f10647796b1`로 배포했다(직전 `ccdfb53a-b38b-42b2-8f53-2a73286451d1`). release-042 `fd1132c` 대비 `src/` 변경 없음, 테스트 788개·typecheck·build·preflight 통과, curl `/` 200 및 미인증 `/api/health`·`/api/session`·`/api/usage`·`/api/workspaces` 401 확인; PM2·D1 변경 없음.
 - #146: Worker `35d31395-4cf6-4717-8ab0-91b7aacc88f9`. 사용량 미확인 아이콘을 제거하고 인증·워크스페이스 설정 레이아웃을 정정했다. `src/` 서버 변경은 없었다.
 - #147: Worker `65a50df5-92cb-498e-9509-eb2fa68ae893`. 드로어 제어와 설정 작업을 정렬하고 접힌 패널 수 조절 UI와 `config/pane-templates.json`(opencode, agy) 동기화를 반영했다. `src/` 서버 변경은 없었다.
 - #149–#151: Worker `20e6603a`. 설정 탭과 패널 추가 모달 분리(#149), 사용량 한도 행 빨간색 강조(#150), 로그인 전환 버튼·선택 기억 및 헤더 제목 Biseo 축소, 모바일 가로 넘침 방지(#151)를 배포했다. `src/` 서버 변경은 없었다.
