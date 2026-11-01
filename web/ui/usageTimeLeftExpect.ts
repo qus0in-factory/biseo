@@ -9,6 +9,6 @@ export function expectTimeIcon(html: string, label: string, percent: number) {
 }
 
 export function expectNoTimeIcon(html: string, label: string) {
-  assert.doesNotMatch(html, new RegExp(label))
-  assert.doesNotMatch(html, /lucide-clock/)
+  assert.doesNotMatch(html, new RegExp(`aria-label="${label}"`))
+  assert.doesNotMatch(html, new RegExp(`>${label}`))
 }

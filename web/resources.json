@@ -59,6 +59,7 @@
   "prompt_not_accepted": "전달되지 않음(상태·사용량 화면이 열려 있을 수 있음)",
   "cancel": "취소",
   "reserveSend": "전송 예약",
+  "connecting": "연결 시도 중",
   "connected": "연결됨",
   "disconnected": "연결 끊김",
   "reasonLabel": "사유",
