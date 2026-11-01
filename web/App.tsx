@@ -6,12 +6,13 @@ import{AppHeader}from'./ui/AppHeader'
 import{AppContent}from'./ui/AppContent'
 import{AppFooter}from'./ui/AppFooter'
 import{AppFrame}from'./ui/AppFrame'
+import{LoadingState}from'./ui/LoadingState'
 import r from'./resources.json'
 import'./index.css'
 export default function App(){
  const{authed,busy,ready,code,login,loginPin,logout,expire}=useAuth(authApi)
  const{data,loading,check}=useHealth(healthApi,authed,expire)
- if(!ready)return<AppFrame><AppHeader/><p>{r.loading}</p></AppFrame>
+ if(!ready)return<AppFrame><AppHeader/><LoadingState rows={2}/></AppFrame>
  return<AppFrame>
   <AppHeader authed={authed} busy={busy} onLogout={logout}/>
   <AppContent authed={authed} busy={busy} login={login} loginPin={loginPin} loading={loading} data={data} check={check}/>

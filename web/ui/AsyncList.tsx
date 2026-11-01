@@ -2,19 +2,19 @@ import type { ReactNode } from 'react'
 import type { AsyncState } from '../domain/asyncState'
 import { AsyncFallback } from './AsyncFallback'
 import { AsyncRefreshing } from './AsyncRefreshing'
-import r from '../resources.json'
+import { LoadingState } from './LoadingState'
 
 type P<T> = {
   state: AsyncState<T[]>
-  skeleton: ReactNode
+  rows?: number
   empty: ReactNode
   errorText: string
   onRetry?: () => void
   children: (items: T[]) => ReactNode
 }
 
-export function AsyncList<T>({ state, skeleton, empty, errorText, onRetry, children }: P<T>) {
-  if (state.status === 'loading' && !state.data) return <>{skeleton}</>
+export function AsyncList<T>({ state, rows = 3, empty, errorText, onRetry, children }: P<T>) {
+  if (state.status === 'loading' && !state.data) return <LoadingState rows={rows} />
   if (state.status === 'error' && !state.data) return <AsyncFallback errorText={errorText} onRetry={onRetry} />
   if (state.status === 'empty') return <div className="mt-4">{empty}</div>
   return (

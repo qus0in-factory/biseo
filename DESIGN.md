@@ -565,6 +565,7 @@ components:
 
 All views handling asynchronous data (e.g., pane lists, usage stats, settings, timeline events) strictly enforce deterministic state separation:
 - **Initial Loading (Before First Response / 첫 응답 전 스켈레톤)**: Render a skeleton placeholder matching the layout footprint (`Skeleton` component). Never render empty state cards or zero-count indicators prior to the resolution of the first network response.
+- **Shared Loading Composition (로딩 문구·스켈레톤 공통 컴포넌트)**: Initial loading renders exclusively through the shared `LoadingState` component (`web/ui/LoadingState.tsx`), which owns both the skeleton and the loading message. Screens never compose a skeleton and loading text directly. The message sits below the skeleton with a fixed `spacing.sm` (8px) gap; list loading keeps `spacing.md` (16px) above the block. Login uses `variant="login"`, text-only loading uses `variant="text"`, and refresh loading uses `variant="inline"`.
 - **Empty State (성공 응답이 비었을 때만)**: Render empty state messaging (e.g., "패널이 없습니다", "사용량 기록이 없습니다") **strictly when a successful response genuinely contains zero items** (`isSuccess && data.length === 0`).
 - **Error State Separation (오류 분리)**: Isolate and distinctly separate error states from loading and empty states. Display dedicated error feedback (`Alert` / retry affordance) with error details or offline guidance.
 - **Strict Prohibition on Misleading Counts (오류·로딩을 0개로 표시 금지)**: Never display loading or error states as "0 items" or empty collections.
@@ -628,6 +629,7 @@ All animations honor user accessibility preferences via `@media (prefers-reduced
 - **Do** provide `prefers-reduced-motion` fallbacks for all CSS animations, carousel slides, and tab transitions (setting `behavior: 'auto'` on auto-scroll).
 - **Do** keep D1 persistence search and log pagination isolated to milestone 0.3.2 (#24).
 - **Do** render a layout skeleton before the first asynchronous response resolves (`isPending` / before first response).
+- **Do** render loading skeletons and messages only through the shared `LoadingState` component, keeping the message `spacing.sm` (8px) below the skeleton.
 - **Do** display empty state UI strictly when a network request succeeds and returns an empty collection (`isSuccess && data.length === 0`).
 - **Do** cleanly isolate error states with distinct error feedback and recovery affordances, keeping them separate from loading and empty states.
 - **Do** express selection and active states (cards, tabs, toggles) through background and text color changes rather than heavy borders, announcing the state to assistive tools via semantic ARIA (`aria-selected`, `aria-pressed`).
