@@ -13,7 +13,7 @@ export function useTimelinePages(p:P,w:string|null,paneId:string|null){
  useEffect(()=>{
   gen.current++
   reset()
-  phase.resetPhase(!!paneId)
+  phase.resetPhase(true)
   void reload()
  },[paneId,reset,reload,phase.resetPhase])
  return{items:paging.items,timelineState:listState(paging.items,phase.loading,phase.error),hasMore:paging.hasMore,update,setItems,reload,...older}

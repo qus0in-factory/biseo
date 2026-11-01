@@ -20,7 +20,7 @@ export function agyCliConfig(): AgyCliConfig {
     enabled: flag === '1' ? true : flag === '0' ? false : base.agyCliEnabled ?? true,
     path: e.BISEO_AGY_CLI_PATH ?? 'agy',
     args: (e.BISEO_AGY_CLI_ARGS ?? '-p /usage').split(/\s+/).filter(Boolean),
-    timeoutMs: ms(e.BISEO_AGY_CLI_TIMEOUT_MS, 15000),
+    timeoutMs: ms(e.BISEO_AGY_CLI_TIMEOUT_MS, base.agyCliTimeoutMs ?? 15000),
     cacheMs: ms(e.BISEO_AGY_CLI_CACHE_MS, 300000)
   }
 }

@@ -11,7 +11,7 @@ interface Props {
 export function WorkspacePickerItem({ workspace: w, selected, loading, onSelect }: Props) {
   const id = w.workspaceId ?? w.id ?? ''
   return (
-    <li className={selected ? 'bg-muted ring-2 ring-ring' : undefined}>
+    <li className={selected ? 'bg-muted' : undefined}>
       <span>{w.label ?? id}</span>
       <span>{id}</span>
       {w.focused ? <span>{r.workspaceFocused}</span> : null}
