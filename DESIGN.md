@@ -561,6 +561,15 @@ components:
     backgroundColor: "{colors.border-subtle}"
 ```
 
+### 9. Asynchronous State UX & Data Fetching Conventions (비동기 상태 규약)
+
+All views handling asynchronous data (e.g., pane lists, usage stats, settings, timeline events) strictly enforce deterministic state separation:
+- **Initial Loading (Before First Response / 첫 응답 전 스켈레톤)**: Render a skeleton placeholder matching the layout footprint (`Skeleton` component). Never render empty state cards or zero-count indicators prior to the resolution of the first network response.
+- **Empty State (성공 응답이 비었을 때만)**: Render empty state messaging (e.g., "패널이 없습니다", "사용량 기록이 없습니다") **strictly when a successful response genuinely contains zero items** (`isSuccess && data.length === 0`).
+- **Error State Separation (오류 분리)**: Isolate and distinctly separate error states from loading and empty states. Display dedicated error feedback (`Alert` / retry affordance) with error details or offline guidance.
+- **Strict Prohibition on Misleading Counts (오류·로딩을 0개로 표시 금지)**: Never display loading or error states as "0 items" or empty collections.
+- **Strict Prohibition on Empty Array Fallbacks Before Resolution (빈 배열 초기값으로 렌더링 금지)**: Never initialize UI state with an empty array fallback (`data ?? []`) to render an empty state before the first response arrives.
+
 ## Motion & Transitions
 
 ### Motion Architecture
@@ -611,6 +620,9 @@ All animations honor user accessibility preferences via `@media (prefers-reduced
 - **Do** maintain fixed navigation on desktop (`>= md`) and a drawer on mobile (`< md`).
 - **Do** provide `prefers-reduced-motion` fallbacks for all CSS animations, carousel slides, and tab transitions (setting `behavior: 'auto'` on auto-scroll).
 - **Do** keep D1 persistence search and log pagination isolated to milestone 0.3.2 (#24).
+- **Do** render a layout skeleton before the first asynchronous response resolves (`isPending` / before first response).
+- **Do** display empty state UI strictly when a network request succeeds and returns an empty collection (`isSuccess && data.length === 0`).
+- **Do** cleanly isolate error states with distinct error feedback and recovery affordances, keeping them separate from loading and empty states.
 
 ### Don'ts
 - **Don't** re-dispatch prompts on `delivery_uncertain`, `agent_prompt_stalled`, or `timeout`; require manual user evaluation.
@@ -626,3 +638,5 @@ All animations honor user accessibility preferences via `@media (prefers-reduced
 - **Don't** render non-agent terminal panes or raw command-line executions in the workspace panel list.
 - **Don't** claim universal contrast pass across all possible arbitrary element combinations; verify and validate explicit token-pair contrasts.
 - **Don't** introduce multi-workspace pickers or auxiliary management views outside the designated Herdr workspace scope.
+- **Don't** display loading or error states as "0 items" or empty collections (오류·로딩을 0개로 표시 금지).
+- **Don't** initialize UI rendering with an empty array fallback (`data ?? []`) that prematurely flashes an empty state before the initial response arrives (빈 배열 초기값으로 렌더링 금지).
