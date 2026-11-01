@@ -18,7 +18,7 @@ export function SheetContent({ children, className, title, headerActions }: Prop
     <SheetBackdrop onClick={close}>
       <div ref={ref} className={cn(sheetPanelClass, className)}>
         <SheetHeader title={title} onClose={close} actions={headerActions}/>
-        <div className="flex-1 overflow-y-auto py-2">{children}</div>
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto py-2">{children}</div>
       </div>
     </SheetBackdrop>
   )
