@@ -1,8 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { rmSync } from 'node:fs'
 import { fetchAgyUsage } from './agy-usage-fetch.js'
-import { putAgyTokenFile, agyTestEnv, agyQuotaBody } from './agy-test-support.test-util.js'
+import { putAgyTokenFile, agyTestEnv, agyQuotaBody, removeAgyTokenFile } from './agy-test-support.test-util.js'
 
 test('a 401 refreshes once and retries the quota endpoints', async () => {
   const p = putAgyTokenFile('agy129-retry', '2030-01-01')
@@ -21,5 +20,5 @@ test('a 401 refreshes once and retries the quota endpoints', async () => {
     assert.equal(res.state, 'available')
     assert.ok(res.metrics.length)
     assert.equal(grants, 1)
-  } finally { globalThis.fetch = orig; rmSync(p) }
+  } finally { globalThis.fetch = orig; removeAgyTokenFile(p) }
 })

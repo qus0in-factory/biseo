@@ -1,8 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { rmSync } from 'node:fs'
 import { fetchAgyUsage } from './agy-usage-fetch.js'
-import { putAgyTokenFile, agyTestEnv, agyQuotaBody } from './agy-test-support.test-util.js'
+import { putAgyTokenFile, agyTestEnv, agyQuotaBody, removeAgyTokenFile } from './agy-test-support.test-util.js'
 
 test('concurrent callers share a single grant', async () => {
   const p = putAgyTokenFile('agy129-fl', '2020-01-01T00:00:00.000Z')
@@ -18,5 +17,5 @@ test('concurrent callers share a single grant', async () => {
     const [a, b] = await Promise.all([fetchAgyUsage(at), fetchAgyUsage(at)])
     assert.deepEqual([a.state, b.state], ['available', 'available'])
     assert.equal(grants, 1)
-  } finally { globalThis.fetch = orig; rmSync(p) }
+  } finally { globalThis.fetch = orig; removeAgyTokenFile(p) }
 })

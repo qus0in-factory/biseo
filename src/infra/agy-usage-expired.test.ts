@@ -1,8 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { rmSync } from 'node:fs'
 import { fetchAgyUsage } from './agy-usage-fetch.js'
-import { putAgyTokenFile, agyTestEnv } from './agy-test-support.test-util.js'
+import { putAgyTokenFile, agyTestEnv, removeAgyTokenFile } from './agy-test-support.test-util.js'
 
 test('a rejected refresh yields unknown agy_auth_expired with no default metric', async () => {
   const p = putAgyTokenFile('agy129-expired', '2020-01-01T00:00:00.000Z')
@@ -14,5 +13,5 @@ test('a rejected refresh yields unknown agy_auth_expired with no default metric'
     assert.equal(res.state, 'unknown')
     assert.equal(res.reason, 'agy_auth_expired')
     assert.deepEqual(res.metrics, [])
-  } finally { globalThis.fetch = orig; rmSync(p) }
+  } finally { globalThis.fetch = orig; removeAgyTokenFile(p) }
 })
