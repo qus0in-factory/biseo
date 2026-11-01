@@ -5,7 +5,7 @@ import { insertRow } from './d1-row.js'
 import { recoveryFetch as rf } from './d1-recovery-fetch.js'
 import { scheduled } from '../scheduled.js'
 
-test('404 keeps timeout pending', async () => {
+test('timeout is terminal even when executor record is missing', async () => {
   const { env } = await createTimelineTestEnv()
   await insertRow(env.BISEO_DB!, 'r1', 'owner', 'w1T', 'timeout')
   let calls = 0
@@ -13,11 +13,11 @@ test('404 keeps timeout pending', async () => {
   globalThis.fetch = rf(() => { calls++ }) as any
   try {
     await scheduled({} as any, env as any, {} as any)
-    const r: any = await env.BISEO_DB!.prepare('SELECT status,error_code,next_check_at FROM timeline_turns WHERE request_id=?').bind('r1').first()
-    assert.equal(r.status, 'timeout')
-    assert.equal(r.error_code, 'recovery_pending')
-    assert.ok(Date.parse(r.next_check_at) > Date.now())
+    const r: any = await env.BISEO_DB!.prepare('SELECT * FROM timeline_turns WHERE request_id=?').bind('r1').first()
+    assert.equal(r.status, 'failed')
+    assert.equal(r.error_code, 'delivery_uncertain')
+    assert.equal(r.next_check_at,null)
     await scheduled({} as any, env as any, {} as any)
-    assert.equal(calls, 1)
+    assert.equal(calls, 0)
   } finally { globalThis.fetch = orig }
 })

@@ -16,7 +16,7 @@ export async function createLoginDeps(env: SessionBindings) {
   }
 }
 
-export function setSessionCookie(c: Context<{ Bindings: SessionBindings }>, token: string) {
+export function setSessionCookie(c: Context<{ Bindings: SessionBindings }>, token: string, maxAge?: number) {
   const name = c.env.COOKIE_NAME || DEFAULT_COOKIE_NAME
-  setCookie(c, name, token, getCookieOptions(c.env))
+  setCookie(c, name, token, getCookieOptions(c.env, maxAge))
 }

@@ -1,8 +1,6 @@
-import { LogOut } from 'lucide-react'
-import { Button } from '../components/ui/button'
 import { HeaderBrand } from './HeaderBrand'
 import { HeaderMenuButton } from './HeaderMenuButton'
-import r from '../resources.json'
+import { SessionActions } from './SessionActions'
 
 export interface AppHeaderProps {
   authed?: boolean
@@ -17,19 +15,7 @@ export function AppHeader({ authed, busy, onLogout }: AppHeaderProps) {
         {authed && <HeaderMenuButton />}
         <HeaderBrand />
       </div>
-      {authed && onLogout && (
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          className="ml-auto shrink-0"
-          onClick={onLogout}
-          disabled={busy}
-          aria-label={r.logout}
-        >
-          <LogOut size={20} aria-hidden="true" />
-        </Button>
-      )}
+      {authed && <SessionActions busy={busy} onLogout={onLogout} />}
     </header>
   )
 }

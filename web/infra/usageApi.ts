@@ -1,4 +1,4 @@
-import ky from 'ky'
+import ky from './sessionHttp'
 import type { UsageApiPort } from '../domain/usage'
 
 export const usageApi: UsageApiPort = {

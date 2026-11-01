@@ -1,0 +1,4 @@
+{
+  "checkIntervalMs": 60000,
+  "refreshAheadSeconds": 60
+}

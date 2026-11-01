@@ -6,7 +6,8 @@ export type UsageMetric={
  used:number|null
  limit:number|null
  remaining:number|null
- resetsAt:string|null
+  resetsAt:string|null
+  startsAt?:string|null
 }
 export type UsageSnapshot={
  provider:string
@@ -25,7 +26,8 @@ export type UsageSnapshot={
  limitValue?:number|null
  remaining?:number|null
  reason?:string|null
- retryAt?:string|null
+  retryAt?:string|null
+  startsAt?:string|null
 }
 export type UsageWindow=Omit<UsageSnapshot,'provider'|'state'|'updatedAt'>
 export type ProviderUsage={

@@ -18,8 +18,8 @@ export function parseSubmitMessageInput(body: unknown): SubmitMessageInput | nul
   const requestId = typeof b.requestId === 'string' ? b.requestId.trim() : ''
   const workspaceId = typeof b.workspaceId === 'string' ? b.workspaceId.trim() : ''
   const paneId = typeof b.paneId === 'string' ? b.paneId.trim() : ''
-  const text = b.text.trim()
+  const text = b.text
   if (!isSafeId(requestId) || !isSafeId(workspaceId) || !isSafeId(paneId)) return null
-  if (!text || text.length > 16384) return null
+  if (!text.trim() || text.length > 16384) return null
   return { requestId, workspaceId, paneId, text }
 }

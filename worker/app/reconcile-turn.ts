@@ -4,8 +4,11 @@ import type{TurnRecord}from'../domain/timeline-record.js'
 import{isPending}from'../domain/timeline-record.js'
 import{applyUpstreamTurn}from'./apply-upstream-turn.js'
 import{reconcileMissing}from'./reconcile-missing.js'
-export async function reconcileTurn(db:D1Database,up:HerdrUpstreamPort,r:TurnRecord):Promise<TurnRecord>{
+import{reconcileQueue}from'./reconcile-queue.js'
+import type{QueuePort}from'./queue-port.js'
+export async function reconcileTurn(db:D1Database,up:HerdrUpstreamPort,r:TurnRecord,q?:QueuePort):Promise<TurnRecord>{
  if(!isPending(r.status))return r
+ if(r.terminalId)return r.status==='queued'?r:reconcileQueue(db,up,r,q)
  const x=await up.getTurn(r.requestId)
  if(x.ok){
   if(x.data.workspaceId&&x.data.workspaceId!==r.workspaceId)return r

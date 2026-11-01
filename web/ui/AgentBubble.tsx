@@ -3,6 +3,7 @@ import { AgentHeader } from './AgentHeader'
 import { AgentResult } from './AgentResult'
 import { TurnErrorDetails } from './TurnErrorDetails'
 import { Card } from '../components/ui/card'
+import { ReservationRecovery } from './ReservationRecovery'
 
 export function AgentBubble({
   item,
@@ -17,6 +18,7 @@ export function AgentBubble({
       <AgentHeader item={item} onCancel={onCancel} />
       <AgentResult status={status} responseText={responseText} errorCode={errorCode} />
       <TurnErrorDetails code={errorCode} />
+      <ReservationRecovery item={item} />
       {cancelError && <span className="text-error">({cancelError})</span>}
     </Card>
   )

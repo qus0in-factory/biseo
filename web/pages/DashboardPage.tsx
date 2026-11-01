@@ -1,7 +1,12 @@
 import { usePageTitle } from '../lib/usePageTitle'
 import { WorkspaceSection } from '../ui/WorkspaceSection'
+import r from '../resources.json'
 
 export function DashboardPage() {
-  usePageTitle('Biseo Workspace')
-  return <WorkspaceSection on={true} />
+  usePageTitle(r.title)
+  return (
+    <>
+      <WorkspaceSection on={true} />
+    </>
+  )
 }

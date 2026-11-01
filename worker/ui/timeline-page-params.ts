@@ -7,3 +7,6 @@ export const pageBefore=(v:string|undefined)=>{
  const n=Number(v)
  return Number.isInteger(n)&&n>0?n:null
 }
+export const pageOptions=(q:Record<string,string|undefined>)=>({
+ limit:pageLimit(q.limit),paneId:q.paneId||null,before:pageBefore(q.before),
+})

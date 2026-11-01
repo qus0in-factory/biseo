@@ -12,7 +12,7 @@ async function run(name:string,ena:string){
 test('an auth failure falls back to one cli call',async()=>{
  const{res,calls}=await run('agy-cli-fb-on','1')
  assert.equal(res.state,'available')
- assert.deepEqual(res.metrics.map((m)=>m.used),[20])
+ assert.deepEqual(res.metrics.map((m)=>m.used),[20,null])
  assert.equal(calls.length,1)
 })
 test('a disabled cli keeps agy_auth_expired',async()=>{

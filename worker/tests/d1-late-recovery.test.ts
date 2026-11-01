@@ -5,7 +5,7 @@ import { insertRow } from './d1-row.js'
 import { cronFetch } from './d1-cron-fetch.js'
 import { scheduled } from '../scheduled.js'
 
-test('D1 recovers a completed result after timeout/late-expiry when the server still has it', async () => {
+test('timeout terminates uncertain rather than accepting a late result', async () => {
   const { env } = await createTimelineTestEnv()
   await insertRow(env.BISEO_DB!, 'r1', 'owner', 'w1T', 'timeout')
   const orig = globalThis.fetch
@@ -13,7 +13,7 @@ test('D1 recovers a completed result after timeout/late-expiry when the server s
   try {
     await scheduled({} as any, env as any, {} as any)
     const row: any = await env.BISEO_DB!.prepare('SELECT status,response_text FROM timeline_turns WHERE request_id=?').bind('r1').first()
-    assert.equal(row.status, 'completed')
-    assert.equal(row.response_text, 'done')
+    assert.equal(row.status, 'failed')
+    assert.equal(row.response_text, null)
   } finally { globalThis.fetch = orig }
 })

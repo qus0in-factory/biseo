@@ -10,10 +10,8 @@ export async function runQueue(d:TurnDeps,p:string,go:()=>void){
  for(;;){
   if(!q.has(p)||d.locks.has(p))return
   const i=q.peek(p)!
-  if(i.workspaceId!==d.allowedWorkspaceId){drop(d,i,'workspace_not_allowed');continue}
   const s=await stateWithGrace(d,p,d.targetGraceMs??0).catch(()=>null)
   if(q.peek(p)?.requestId!==i.requestId)continue
-  if(i.workspaceId!==d.allowedWorkspaceId){drop(d,i,'workspace_not_allowed');continue}
   if(!s||'wait'in s){retrySoon(p,go,ms);return}
   if('reason' in s){drop(d,i,s.reason);continue}
   if('limited' in s){retryAt(p,s.limited,go);return}

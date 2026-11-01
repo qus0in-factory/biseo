@@ -20,6 +20,7 @@ export function UsagePanelBody({
             key={x.id}
             provider={provider.provider}
             metric={x}
+            limitReached={provider.windows.some((w) => w.window === x.id && w.limitReached)}
             remaining={remaining}
           />
         ))}

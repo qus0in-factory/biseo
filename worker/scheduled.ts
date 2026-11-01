@@ -4,10 +4,12 @@ import{scheduledWorkspace}from'./scheduled-workspace.js'
 import{acquireLease,releaseLease}from'./infra/d1-lease.js'
 import{nextReadyAt,recordResult}from'./infra/d1-backoff.js'
 import type{CronEnv}from'./scheduled-env.js'
+import{queueTick}from'./queue-tick.js'
 const KEY='cron:sync'
 export async function scheduled(_e:ScheduledController,env:CronEnv,_ctx:ExecutionContext){
  const db=env.BISEO_DB
  if(!db)return
+ await queueTick(db,env)
  const workspaceId=await scheduledWorkspace(env)
  if(!workspaceId)return
  const holder=crypto.randomUUID()

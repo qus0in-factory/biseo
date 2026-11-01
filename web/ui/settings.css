@@ -1,0 +1,9 @@
+.settings-content { display: grid; gap: 1rem; min-width: 0; }
+.settings-content section { min-width: 0; }
+.settings-content h2 { font-weight: 600; margin-bottom: .5rem; }
+.settings-content ul { display: grid; gap: .5rem; padding: 0; list-style: none; }
+.settings-content li { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; border: 1px solid var(--border); border-radius: var(--radius); padding: .75rem; overflow-wrap: anywhere; }
+.settings-content label { display: grid; gap: .25rem; min-width: 0; }
+.settings-content input, .settings-content select { min-width: 0; max-width: 100%; border: 1px solid var(--border); border-radius: var(--radius); padding: .5rem; }
+.settings-content button { min-height: 44px; padding: .5rem; }
+.settings-content li > span:first-child { font-weight: 600; }

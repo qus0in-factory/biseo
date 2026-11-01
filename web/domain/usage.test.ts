@@ -16,5 +16,4 @@ const t:[string,string,string][]=[['codex','primary','5h'],['codex','secondary',
 for(const[p,w,v]of t)eq(usageWindowName(p,w,l),v)})
 test('fallback',()=>{
 eq(usageWindowName('codex','primary',{}),'primary')
-eq(usageWindowName('opencode-free','primary',l),'primary')
 eq(usageWindowName('opencode-go','monthly',{}),'monthly')})

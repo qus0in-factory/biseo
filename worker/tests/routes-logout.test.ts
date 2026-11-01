@@ -2,12 +2,14 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { createAuthedEnv } from './auth-helpers.js'
 import { parseCookieAttrs, postJson } from './cookie-helpers.js'
+import app from '../index.js'
+import { refreshRequest, origin } from './refresh-fixture.js'
 
-test('POST /api/logout clears cookie with symmetric attributes', async () => {
+test('logout clears cookies symmetrically', async () => {
   const { env, password } = await createAuthedEnv()
-  const cEnv = { ...env, COOKIE_DOMAIN: 'example.com', COOKIE_SAME_SITE: 'Strict' as const }
+  const cEnv = { ...env, ALLOWED_ORIGINS: origin, COOKIE_SAME_SITE: 'Strict' as const }
   const inRes = await postJson('/api/login', { password }, cEnv)
-  const outRes = await postJson('/api/logout', undefined, cEnv)
+  const outRes = await app.fetch(refreshRequest('', '/api/logout'), cEnv)
   assert.equal(outRes.status, 200)
 
   const cIn = parseCookieAttrs(inRes.headers.get('set-cookie') || '')

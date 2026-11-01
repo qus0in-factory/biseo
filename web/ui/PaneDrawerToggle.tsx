@@ -1,17 +1,18 @@
 import { PanelLeft } from 'lucide-react'
+import { Button } from '../components/ui/button'
+import r from '../resources.json'
 
 export function PaneDrawerToggle({ open, onToggle }: { open: boolean; onToggle: () => void }) {
-  const label = open ? '왼쪽 패널 접기' : '왼쪽 패널 펼치기'
+  const label = open ? r.collapseDrawer : r.expandDrawer
   return (
-    <button
+    <Button variant="outline" size="icon"
       type="button"
       aria-label={label}
       aria-expanded={open}
       title={label}
       onClick={onToggle}
-      className="inline-flex min-h-9 min-w-9 items-center justify-center rounded-md border border-border text-muted-foreground hover:text-foreground"
     >
       <PanelLeft size={17} aria-hidden="true" />
-    </button>
+    </Button>
   )
 }

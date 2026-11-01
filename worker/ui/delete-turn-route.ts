@@ -1,6 +1,4 @@
-import { cancelTimelineMessage } from '../app/cancel-turn.js'
-import { applyResult } from '../app/timeline-apply.js'
-import { createHerdrUpstream } from '../infra/herdr-upstream.js'
+import { deleteReservation } from './delete-reservation.js'
 import { type App, checkCsrf, jsonNoStore, requireOwner } from './timeline-guards.js'
 import { requireDb } from './storage-guard.js'
 
@@ -13,12 +11,7 @@ export function registerDeleteTurn(app: App) {
     const d = requireDb(c)
     if (!d.ok) return d.res
     const id = c.req.param('requestId')
-    const r = await cancelTimelineMessage(
-      createHerdrUpstream(c.env, c),
-      c.env.ALLOWED_WORKSPACE_ID,
-      id,
-    )
-    if (r.status === 200 && r.body.status === 'cancelled') await applyResult(d.db, id, r.body)
+    const r = await deleteReservation(c,d.db,id,a.claims.sub)
     return jsonNoStore(c, r.body, r.status)
   })
 }

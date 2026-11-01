@@ -8,5 +8,5 @@ export const usageRow=(r:Record<string,unknown>):UsageSnapshot=>({
  source:text(r.source),updatedAt:String(r.updated_at),
  metricId:text(r.metric_id),label:text(r.label),
  unit:text(r.unit),used:num(r.used),limitValue:num(r.limit_value),remaining:num(r.remaining),
- reason:text(r.reason),retryAt:text(r.retry_at)
+ reason:text(r.reason),retryAt:text(r.retry_at),startsAt:text(r.starts_at)
 })

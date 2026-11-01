@@ -9,7 +9,7 @@ export function windowSnapshot(provider:string,state:UsageState,p:Record<string,
  return{
   provider,window:str(w.window)??metricId??'status',state,
   usedPercent:pct(w.usedPercent)??(unit==='percent'?used:null),
-  resetsAt:str(w.resetsAt)??str(p.resetsAt),
+  resetsAt:str(w.resetsAt)??str(p.resetsAt),startsAt:str(w.startsAt),
   checkedAt:str(w.checkedAt)??str(p.checkedAt),
   limitReached:rowLimitReached(w.limitReached,unit,used,w.limit,remaining),
   source:str(w.source)??str(p.source),

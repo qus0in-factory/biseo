@@ -1,6 +1,8 @@
 import type { UsageMetric } from '../domain/usage'
 import { showMetricReset } from '../domain/usage-ollama'
 import { UsageWindowTime } from './UsageWindowTime'
+import { formatZoned } from '../domain/formatZoned'
+import r from '../resources.json'
 
 export function UsageMetricTime({
   provider,
@@ -18,5 +20,8 @@ export function UsageMetricTime({
     limitReached: metric.unit === 'percent' && metric.used !== null && metric.used >= 100,
     source: null,
   }
-  return <UsageWindowTime value={d} />
+  return <>
+    {metric.startsAt && <span className="text-xs text-muted-foreground">{r.usagePeriodStart}: {formatZoned(metric.startsAt, 'Asia/Seoul')}</span>}
+    <UsageWindowTime value={d} />
+  </>
 }

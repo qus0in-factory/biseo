@@ -1,6 +1,7 @@
 import type { PaneSummary } from '../domain/timeline'
 import type { AsyncState } from '../domain/asyncState'
 import { PanesView } from './PanesView'
+import { PaneStatusSummary } from './PaneStatusSummary'
 
 type P = {
   panes: PaneSummary[]
@@ -13,6 +14,7 @@ type P = {
 export function PaneDrawerContent({ panes, state, onRetry, selectedId, onSelect }: P) {
   return (
     <div className="flex flex-col gap-2">
+      <PaneStatusSummary panes={panes} state={state} />
       <PanesView panes={panes} state={state} onRetry={onRetry} selectedId={selectedId} onSelect={onSelect} />
     </div>
   )

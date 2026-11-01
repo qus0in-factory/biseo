@@ -9,6 +9,7 @@ test('fetchOllamaUsage reports unknown when the balance endpoint fails', async (
     const res = await fetchOllamaUsage()
     assert.equal(res.provider, 'ollama')
     assert.equal(res.state, 'unknown')
+    assert.equal(res.reason, 'unsupported')
     assert.deepEqual(res.metrics, [])
   } finally {
     globalThis.fetch = origFetch

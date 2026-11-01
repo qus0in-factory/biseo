@@ -1,0 +1,1 @@
+export type WorkspacesPayload={workspaces:Array<Record<string,unknown>>}

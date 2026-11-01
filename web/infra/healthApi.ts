@@ -1,4 +1,5 @@
-import ky, { HTTPError } from 'ky'
+import { HTTPError } from 'ky'
+import ky from './sessionHttp'
 import { ApiError, loginCode, type Health, type HealthPort } from '../domain/auth'
 
 export const healthApi: HealthPort = {

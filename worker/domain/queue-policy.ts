@@ -1,0 +1,4 @@
+export const QUEUE_LEASE_MS=120000
+export const QUEUE_RETRY_MS=60000
+export const QUEUE_MAX_ATTEMPTS=20
+export const QUEUE_MAX_WAIT_MS=86400000

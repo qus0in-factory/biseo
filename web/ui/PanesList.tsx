@@ -1,5 +1,7 @@
 import type { PaneSummary } from '../domain/timeline'
 import { PanesViewLayout } from './PanesViewLayout'
+import { usePaneListStore } from '../app/paneListStore'
+import { selectCollapsedPanes } from '../domain/collapsedPanes'
 
 type V = {
   pinnedPanes: PaneSummary[]
@@ -18,10 +20,12 @@ export function PanesList({
   selectedId: string | null
   onSelect: (id: string) => void
 }) {
+  const expanded = usePaneListStore(state => state.expanded)
+  const shown = selectCollapsedPanes([...view.pinnedPanes, ...view.rest], expanded)
   return (
     <PanesViewLayout
-      a={view.pinnedPanes}
-      b={view.rest}
+      a={shown.slice(0, view.pinnedPanes.length)}
+      b={shown.slice(view.pinnedPanes.length)}
       s={selectedId}
       p={view.pinned}
       t={view.toggle}
