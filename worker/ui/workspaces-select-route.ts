@@ -1,7 +1,9 @@
 import { callUpstreamJson } from '../infra/herdr-upstream-http.js'
-import { type App, jsonNoStore, requireOwner } from './timeline-guards.js'
+import { type App, checkCsrf, jsonNoStore, requireOwner } from './timeline-guards.js'
 export function registerWorkspacesSelectRoute(app: App) {
   app.post('/api/workspaces/select', async (c) => {
+    const denied = checkCsrf(c)
+    if (denied) return denied
     const a = await requireOwner(c)
     if (!a.ok) return a.res
     let body: any = null
