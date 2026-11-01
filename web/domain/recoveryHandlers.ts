@@ -17,6 +17,7 @@ export function createRecoveryHandlers(
   setOnline: (ok: boolean) => void,
   onDisconnect: () => void,
   reloadTimeline?: () => void,
+  onStreamOpen?: () => void,
 ): SyncHandlers {
   return {
     onOpen: () => {
@@ -24,6 +25,7 @@ export function createRecoveryHandlers(
       reload()
       reloadTimeline?.()
       syncPending(api, getItems(), getUpdate())
+      onStreamOpen?.()
     },
     onPanes: (s) => {
       setOnline(true)

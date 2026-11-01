@@ -1,8 +1,10 @@
 import { mkdtempSync as mk, rmSync as rm } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { DatabaseSync } from 'node:sqlite'
 
 export const withSessionDb = async (run: () => Promise<void>) => {
-  const dir = mk('/tmp/f-')
+  const dir = mk(join(tmpdir(), 'f-'))
   const p = dir + '/d'
   const db = new DatabaseSync(p)
   db.exec('CREATE TABLE session_message(session_id,type,seq,data)')

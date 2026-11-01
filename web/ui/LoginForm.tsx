@@ -4,11 +4,11 @@ import{PinField}from'./PinField'
 import{LoginModeLink}from'./LoginModeLink'
 import{HiddenUsername}from'./HiddenUsername'
 import{useLoginForm,type LoginFormProps}from'./useLoginForm'
-import{LoginSkeleton}from'./LoginSkeleton'
+import{LoginLoading}from'./LoadingState'
 import r from'../resources.json'
 export function LoginForm({busy,onLogin,onPinLogin:pin,pinPreferred:pref}:LoginFormProps){
  const f=useLoginForm(onLogin,pin,pref)
- return f.waiting?<LoginSkeleton/>:(
+ return f.waiting?<LoginLoading/>:(
   <form className="mx-auto flex w-full max-w-sm flex-col gap-3" onSubmit={f.submit}>
    <HiddenUsername/>
    {f.usePin?<PinField value={f.pin} onChange={f.setPin} disabled={busy}/>:<PasswordField value={f.pw} onChange={f.setPw} disabled={busy}/>}

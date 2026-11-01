@@ -1,10 +1,9 @@
 import test from'node:test'
 import assert from'node:assert/strict'
-import {mkdtempSync as mk,rmSync as rm}from'node:fs'
-import {DatabaseSync}from'node:sqlite'
-import {beginOpencode}from'./opencode-capture.js'
-test('opencode capture reads WAL after begin seq',async()=>{
- const dir=mk('/tmp/o-'),p=dir+'/d',d=new DatabaseSync(p)
+import{mkdtempSync as mk,rmSync as rm}from'node:fs'
+import{tmpdir}from'node:os';import{DatabaseSync}from'node:sqlite';import{beginOpencode}from'./opencode-capture.js'
+test('opencode WAL read',async()=>{
+ const dir=mk(tmpdir()+'/o-'),p=dir+'/d',d=new DatabaseSync(p)
  d.exec('PRAGMA journal_mode=WAL;CREATE TABLE session_message(session_id,type,seq,data)')
  const q=d.prepare('INSERT INTO session_message VALUES(?,?,?,?)')
  const w=(t:string,n:number,v:unknown,s='ses_1')=>q.run(s,t,n,JSON.stringify(v))

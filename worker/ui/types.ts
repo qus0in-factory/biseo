@@ -1,5 +1,6 @@
 import type { PinBindings } from './pin-types.js'
 import type { RefreshBindings } from './refresh-bindings.js'
+import type { UsageHistoryConfig } from '../app/usage-history-config.js'
 
 export type SessionBindings = {
   AUTH_PASSWORD_VERIFIER?: string
@@ -29,4 +30,4 @@ export type SessionBindings = {
   LOGIN_ATTEMPTS?: KVNamespace
   LOGIN_MAX_ATTEMPTS?: string
   LOGIN_ATTEMPT_TTL_SECONDS?: string
-} & PinBindings & RefreshBindings
+} & PinBindings & RefreshBindings & UsageHistoryConfig

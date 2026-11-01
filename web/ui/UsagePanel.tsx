@@ -1,5 +1,4 @@
 import { AsyncList } from './AsyncList'
-import { ListSkeleton } from './ListSkeleton'
 import { UsageCard } from './UsageCard'
 import { useUsage } from '../app/useUsage'
 import { usageApi } from '../infra/usageApi'
@@ -10,7 +9,7 @@ export function UsagePanel({ enabled = true }: { enabled?: boolean }) {
   return (
     <AsyncList
       state={state}
-      skeleton={<ListSkeleton rows={2} />}
+      rows={2}
       empty={<p className="text-sm text-muted-foreground">{r.usageEmpty}</p>}
       errorText={r.usageError}
       onRetry={retry}

@@ -1,7 +1,6 @@
-import { rmSync } from 'node:fs'
 import { fetchAgyUsage } from './agy-usage-fetch.js'
 import { clearAgyTokenCache } from './agy-token.js'
-import { putAgyTokenFile, agyTestEnv } from './agy-test-support.test-util.js'
+import { putAgyTokenFile, agyTestEnv, removeAgyTokenFile } from './agy-test-support.test-util.js'
 import type { ProviderUsage } from '../domain/usage-types.js'
 
 export async function checkAgyScenario(name: string, exp: string, at: string, route: (u: string, init: RequestInit | undefined, grants: string[]) => unknown, check: (res: ProviderUsage, grants: string[]) => unknown) {
@@ -19,6 +18,6 @@ export async function checkAgyScenario(name: string, exp: string, at: string, ro
     await check(await fetchAgyUsage(new Date(at)), grants)
   } finally {
     globalThis.fetch = orig
-    rmSync(p)
+    removeAgyTokenFile(p)
   }
 }
