@@ -20,6 +20,7 @@ audience: user
 
 ## 핫픽스 및 배포 이력
 
+- #158 (2026-11-01): 승인된 사용량·패널 표시 수정을 dev `5802387`에서 Worker `b000733c-b77e-4ef8-8f57-1cfcb4da1c6b`로 배포했다(직전·롤백 대상 `69a51c4e-53af-47d3-b9b8-480ff3e31004`). release-042 `fd1132c` 대비 `src/` 변경 없음, 테스트 813개 실패 0·typecheck·build·preflight 통과, curl `/` 200 및 미인증 `/api/health`·`/api/session`·`/api/usage`·`/api/workspaces` 401 확인; PM2·D1·태그·Python·worktree 삭제·재분배 없음.
 - #156 (2026-11-01): 패널 펼침 목록 높이 수정을 dev `9b93a58`에서 Worker `ab2293f5-f118-4b9e-bbbd-7f10647796b1`로 배포했다(직전 `ccdfb53a-b38b-42b2-8f53-2a73286451d1`). release-042 `fd1132c` 대비 `src/` 변경 없음, 테스트 788개·typecheck·build·preflight 통과, curl `/` 200 및 미인증 `/api/health`·`/api/session`·`/api/usage`·`/api/workspaces` 401 확인; PM2·D1 변경 없음.
 - #146: Worker `35d31395-4cf6-4717-8ab0-91b7aacc88f9`. 사용량 미확인 아이콘을 제거하고 인증·워크스페이스 설정 레이아웃을 정정했다. `src/` 서버 변경은 없었다.
 - #147: Worker `65a50df5-92cb-498e-9509-eb2fa68ae893`. 드로어 제어와 설정 작업을 정렬하고 접힌 패널 수 조절 UI와 `config/pane-templates.json`(opencode, agy) 동기화를 반영했다. `src/` 서버 변경은 없었다.
