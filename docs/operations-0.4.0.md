@@ -33,7 +33,16 @@ audience: user
 
 ## 0.4.1 범위
 
-0.4.0 릴리스 이후 다음 마일스톤인 0.4.1은 아래 백로그를 대상으로 한다:
+### 0.4.1 릴리스 — 2026-11-01
+
+- **Situation / Task**: 큐·사용량/PIN·비동기 목록 UI 변경을 통합해 dev에서 배포했다. main 승격은 [PR #155](https://github.com/qus0in-factory/biseo/pull/155)로 요청했으며 병합·태그는 하지 않았다.
+- **Action**: 서버 `biseo-release-042`, 코드 `fd1132c`, 버전 0.4.1. 기존 release-041의 운영 설정과 `service-public.key`를 복사하고 build·preflight 후 biseo만 PM2 delete/start했다. Worker는 `ccdfb53a-b38b-42b2-8f53-2a73286451d1`로 배포했다.
+- **Result**: 통합 테스트 787개·typecheck·build, 375·1024 화면/상태 34개 검증 통과. 서버 15초 뒤 cwd/script/version/online, 재시작 0, 오류 로그 0바이트, 로컬 `/health` 401 확인 후 save했다. curl로 `/` 200, `/api/health`, `/api/session`, `/api/usage`, `/api/workspaces` 401 확인.
+- D1 미적용 마이그레이션 없음: 백업·스키마 변경은 실행하지 않았다. 전환 전 D1 queued/working 0건, Herdr에서 sol 외 작업 중 에이전트 없음과 최근 서버 로그에 턴 POST 없음 확인. 이는 인증된 메모리 턴 전체 조회나 인증 health 성공을 대신하는 증거는 아니다. 해당 인증 검증은 수행하지 않았다.
+- 복구 대상: 서버 `biseo-release-041`, Worker `4cab6e28-d15c-4261-a373-5cce18e4ec75`. release-040·release-041·dev-040 및 보류 worktree는 보존했다.
+- 사용량 전용 upstream timeout 30초·retry 0과 agy CLI timeout 설정을 반영했다. 빈 목록/오류/로딩 상태를 분리하고 선택 강조는 배경색·ARIA로 유지했다. 렌더링 검증의 오래된 선택자를 `li[aria-current="true"]`로 고친 뒤 재검증했으며 제품 오류로 판정하지 않았다.
+
+0.4.1 계획 당시의 백로그(아래 항목 전체의 완료를 뜻하지 않는다):
 - 큐 안정성 및 스톨 방지: D1 큐 working/queued 상태 동기화 및 스톨 조사 (#103, #115, fix/041-queue).
 - 사용량 및 PIN 개선: 사용량 풀 추가 연동 및 PIN 편의성 보강 (feat/041-usage-pin).
 - 아바타 및 UI 정밀화: 패널 아바타 표시 (#95) 및 툴팁 자동 닫기 잔여 건.
