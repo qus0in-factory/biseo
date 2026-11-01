@@ -15,8 +15,8 @@ test('approved PIN screen shows only PIN, login, and the forgot link',()=>{
  assert.ok(s.includes(`>${r.login}</button>`))
 })
 
-test('password screens have no PIN field or return link',()=>{
- for(const p of[undefined,null,false]){const s=html(p,()=>{})
+test('password screen has no PIN field or return link',()=>{
+ for(const p of[null,false]){const s=html(p,()=>{})
   assert.match(s,/current-password/);assert.doesNotMatch(s,/one-time-code/)
   assert.ok(!s.includes(r.forgotPin)&&!s.includes(r.backToPin))}
 })

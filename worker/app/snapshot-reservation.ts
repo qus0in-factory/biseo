@@ -4,7 +4,7 @@ import{queuedRecord}from'./queued-turn.js'
 export async function snapshotReservation(q:QueuePort,i:SubmitMessageInput,owner:string){
  const at=new Date().toISOString()
  const t=await q.target(i.workspaceId,i.paneId).catch(()=>null)
- const r=queuedRecord(i,owner,i.workspaceId,at,t?.terminalId??null)
+ const r=queuedRecord(i,owner,i.workspaceId,at,t?.terminalId??null,t?.name??i.paneId)
  if(!t){r.status='failed';r.errorCode='target_unclear';r.completedAt=at}
  return r
 }
