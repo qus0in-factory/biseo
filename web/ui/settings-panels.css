@@ -1,6 +1,10 @@
 .settings-content section > ul { margin-top: 1rem; }
 .settings-content .pane-manage-list > li { padding-block: .5rem; }
+.settings-content .pane-manage-list > li { display: block; }
 .settings-content li > span:first-child { flex: 1; min-width: 0; }
+.pane-manage-head { display: flex; align-items: center; gap: .5rem; }
+.pane-manage-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.pane-manage-summary { display: block; margin-top: .125rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .6875rem; line-height: 1.4; color: var(--muted-foreground); }
 .pane-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: .5rem; margin-left: auto; }
 .pane-actions button { min-width: 44px; }
 .pane-actions input { width: 8rem; }
