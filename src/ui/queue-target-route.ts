@@ -5,7 +5,7 @@ export function queueTargetRoute(d:TurnDeps){
  return async(c:Context)=>{
   try{
    const t=await queueTarget(d.herdr,c.req.param('wsId')??'',c.req.param('paneId')??'')
-   return t?c.json({terminalId:t.terminalId,ready:t.ready}):c.json({error:'target_not_found'},404)
+   return t?c.json({terminalId:t.terminalId,ready:t.ready,name:t.name}):c.json({error:'target_not_found'},404)
   }catch{return c.json({error:'herdr_unavailable'},502)}
  }
 }

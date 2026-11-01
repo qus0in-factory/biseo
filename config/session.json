@@ -1,4 +1,5 @@
 {
   "checkIntervalMs": 60000,
-  "refreshAheadSeconds": 60
+  "refreshAheadSeconds": 60,
+  "pinPreferredTimeoutMs": 1500
 }

@@ -20,6 +20,14 @@ audience: user
 
 ## 핫픽스 및 배포 이력
 
+### v0.4.3 — 2026-11-02
+
+- **Situation / Task**: 승인된 #45 보안 변경과 #161 타임라인 이름·로그인 변경을 dev에 통합하고 서버·Worker를 함께 전환했다. main 병합·태그·재분배는 금지했다.
+- **Action**: 코드 `547127f`, 테스트 839개 실패 0·typecheck·build 통과. 375/1024에서 34개 화면·상태와 헤더 새로고침 버튼 표시를 확인했다. D1 미적용 마이그레이션 없음(백업·적용 없음), queued/working 0건, sol 외 작업 중 에이전트 없음, 최근 서버 로그 턴 POST 없음을 확인했다.
+- **Action**: release-042 config 전체와 공개키를 release-043으로 복사하고 build·preflight 통과 후 biseo만 PM2 delete/start했다. 복사본은 기존 운영값을 보존하며 새 선택 설정은 코드 기본값을 사용한다. dev의 runtime 로컬 변경은 스테이징하지 않았다.
+- **Result**: release-043의 서버 0.4.3, 15초 후 online·정확한 cwd/script·재시작 0·오류 로그 0바이트·로컬 health 401 확인 및 PM2 save. Worker `a715bcdf-85cf-40ff-9d58-5047008c86dd` 배포 후 curl `/` 200, 미인증 health/session/usage/workspaces 401, 5개 응답 모두 CSP 존재 확인. 서버 롤백은 release-042, Worker 롤백은 `886aa75f-48bc-4e29-acb2-9a2fa6d342a3`다.
+- release-041은 로컬 config를 제한된 임시 디렉터리에 보존한 뒤 제거했다. 인증 health·메모리 턴 전체 조회·실제 운영 큐 전달·타 계열 리뷰는 미실시(인증 수단 미확보/재분배 금지). 첫 안정성 검증 스크립트의 모듈 형식 오류에도 셸이 save/배포를 계속한 절차 결함이 있었고, 즉시 수정한 검증과 공개 응답 검증이 통과한 뒤 save를 다시 실행했다. 제품 실패는 관측하지 않았다.
+
 ### v0.4.2 — 2026-11-01
 
 - **Situation / Task**: #158·#159 변경을 포함한 dev `0900b57`의 package 버전을 0.4.2로 올리고 Worker 화면 버전을 맞췄다.
