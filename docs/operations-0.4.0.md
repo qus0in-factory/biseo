@@ -20,6 +20,13 @@ audience: user
 
 ## 핫픽스 및 배포 이력
 
+### v0.4.2 — 2026-11-01
+
+- **Situation / Task**: #158·#159 변경을 포함한 dev `0900b57`의 package 버전을 0.4.2로 올리고 Worker 화면 버전을 맞췄다.
+- **Action**: 테스트 817개 실패 0·typecheck·build·preflight 통과 후 깨끗한 커밋 트리에서 Worker `886aa75f-48bc-4e29-acb2-9a2fa6d342a3`를 배포했다. 직전·롤백 Worker는 `784cd9eb-72ea-4dad-bd33-c2a7bb96e69b`다.
+- **Result**: curl `/` 200, 미인증 `/api/health`·`/api/session`·`/api/usage`·`/api/workspaces` 401. 클라이언트 번들 버전 0.4.2 확인. **서버는 release-042 `fd1132c`의 0.4.1 그대로이므로 화면 0.4.2와 표시 버전이 다르다.** PM2·D1 변경 없음. runtime 로컬 변경은 백업·복원했고 커밋에서 제외했다. 인증 API·브라우저 검증과 타 계열 리뷰는 수행하지 않았다(재분배 금지).
+- main 승격과 태그 릴리스는 dev→main PR의 CI 통과 후 진행한다.
+
 - #159 (2026-11-01): dev `f7817a2`에서 Worker `784cd9eb-72ea-4dad-bd33-c2a7bb96e69b` 배포(직전·롤백 `b000733c-b77e-4ef8-8f57-1cfcb4da1c6b`); release-042 `fd1132c` 대비 `src/` 변경 없음, 테스트 817개 실패 0·typecheck·build·preflight 통과, curl `/` 200 및 미인증 `/api/health`·`/api/session`·`/api/usage`·`/api/workspaces` 401 확인; PM2·D1·태그·PR·Python·재분배 없음.
 
 - #158 (2026-11-01): 승인된 사용량·패널 표시 수정을 dev `5802387`에서 Worker `b000733c-b77e-4ef8-8f57-1cfcb4da1c6b`로 배포했다(직전·롤백 대상 `69a51c4e-53af-47d3-b9b8-480ff3e31004`). release-042 `fd1132c` 대비 `src/` 변경 없음, 테스트 813개 실패 0·typecheck·build·preflight 통과, curl `/` 200 및 미인증 `/api/health`·`/api/session`·`/api/usage`·`/api/workspaces` 401 확인; PM2·D1·태그·Python·worktree 삭제·재분배 없음.
