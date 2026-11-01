@@ -1,24 +1,22 @@
-import assert from 'node:assert/strict'
-import test from 'node:test'
-import { createElement } from 'react'
-import { renderToStaticMarkup } from 'react-dom/server'
-import { LoginForm } from './LoginForm.js'
+import assert from'node:assert/strict'
+import test from'node:test'
+import{createElement}from'react'
+import{renderToStaticMarkup}from'react-dom/server'
+import{LoginForm}from'./LoginForm.js'
+import r from'../resources.json'
 
-const html = (pinPreferred?: boolean | null) =>
-  renderToStaticMarkup(createElement(LoginForm, { busy: false, onLogin: () => {}, onPinLogin: () => {}, pinPreferred }))
+const html=(p?:boolean|null,onPinLogin?:(pin:string)=>void)=>renderToStaticMarkup(
+ createElement(LoginForm,{busy:false,onLogin:()=>{},onPinLogin,pinPreferred:p}))
 
-test('PIN first only when the server preference is true', () => {
-  const out = html(true)
-  assert.match(out, /role="group"/)
-  assert.match(out, /6자리 PIN/)
-  assert.doesNotMatch(out, /current-password/)
+test('approved PIN screen shows only PIN, login, and the forgot link',()=>{
+ const s=html(true,()=>{})
+ assert.match(s,/one-time-code/);assert.doesNotMatch(s,/current-password/)
+ assert.ok(s.includes(r.forgotPin)&&!s.includes(r.backToPin))
+ assert.ok(s.includes(`>${r.login}</button>`))
 })
 
-test('loading, false, and failed checks show password only', () => {
-  for (const value of [undefined, null, false]) {
-    const out = html(value)
-    assert.doesNotMatch(out, /role="group"/)
-    assert.doesNotMatch(out, /6자리 PIN/)
-    assert.match(out, /current-password/)
-  }
+test('password screens have no PIN field or return link',()=>{
+ for(const p of[undefined,null,false]){const s=html(p,()=>{})
+  assert.match(s,/current-password/);assert.doesNotMatch(s,/one-time-code/)
+  assert.ok(!s.includes(r.forgotPin)&&!s.includes(r.backToPin))}
 })

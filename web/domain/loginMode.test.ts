@@ -1,24 +1,10 @@
-import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
-import { parseLoginMode, restoreLoginMode, saveLoginMode } from './loginMode'
+import test from 'node:test'
+import { resolveLoginMode } from './loginMode.js'
 
-describe('loginMode domain', () => {
-  it('parses modes and falls back for damaged values', () => {
-    assert.equal(parseLoginMode('pin'), 'pin')
-    assert.equal(parseLoginMode('password'), 'password')
-    for (const v of [null, undefined, '', 'bad', 1, {}]) {
-      assert.equal(parseLoginMode(v), 'password')
-    }
-  })
-
-  it('restores or saves mode with fallback', () => {
-    const s = { d: { k: 'pin' } as Record<string, string>,
-      getItem: (k: string) => s.d[k] ?? null,
-      setItem: (k: string, v: string) => { s.d[k] = v } }
-    assert.equal(restoreLoginMode(s, 'k'), 'pin')
-    assert.equal(restoreLoginMode(null, 'k'), 'password')
-    assert.equal(restoreLoginMode({ getItem() { throw 0 } }, 'k'), 'password')
-    saveLoginMode(s, 'k', 'password')
-    assert.equal(s.d.k, 'password')
-  })
+test('an available PIN starts first and the forgot link switches this screen', () => {
+  assert.equal(resolveLoginMode(true, false), 'pin')
+  assert.equal(resolveLoginMode(true, true), 'password')
+  assert.equal(resolveLoginMode(false, false), 'password')
+  assert.equal(resolveLoginMode(false, true), 'password')
 })
