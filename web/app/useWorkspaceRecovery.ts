@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import type { WorkspaceApiPort as Api } from '../domain/ports'
 import { createRecoveryHandlers } from '../domain/recoveryHandlers'
+import { notifyStreamOpen } from '../infra/streamOpenEvent'
 
 export function useWorkspaceRecovery(
   a: Api,
@@ -13,7 +14,7 @@ export function useWorkspaceRecovery(
   reloadTimeline?: () => void,
 ) {
   return useMemo(
-    () => createRecoveryHandlers(a, reload, getItems, getUpdate, setSnapshot, setOnline, markDisconnected, reloadTimeline),
+    () => createRecoveryHandlers(a, reload, getItems, getUpdate, setSnapshot, setOnline, markDisconnected, reloadTimeline, notifyStreamOpen),
     [a, reload, getItems, getUpdate, setSnapshot, setOnline, markDisconnected, reloadTimeline],
   )
 }

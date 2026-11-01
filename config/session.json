@@ -1,5 +1,6 @@
 {
   "checkIntervalMs": 60000,
   "refreshAheadSeconds": 60,
-  "pinPreferredTimeoutMs": 1500
+  "pinPreferredTimeoutMs": 1500,
+  "healthRetryDelaysMs": [250, 750]
 }

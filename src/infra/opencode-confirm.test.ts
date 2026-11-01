@@ -1,10 +1,12 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import {mkdtempSync as mk,rmSync as rm}from'node:fs'
+import {tmpdir}from'node:os'
+import {join}from'node:path'
 import {DatabaseSync}from'node:sqlite'
 import {beginOpencode}from'./opencode-capture.js'
 test('opencode confirm sees the user row after begin',async()=>{
- const dir=mk('/tmp/o-'),p=dir+'/d',d=new DatabaseSync(p)
+ const dir=mk(join(tmpdir(),'o-')),p=dir+'/d',d=new DatabaseSync(p)
  d.exec('PRAGMA journal_mode=WAL;CREATE TABLE session_message(session_id,type,seq,data)')
  const q=d.prepare('INSERT INTO session_message VALUES(?,?,?,?)')
  q.run('ses_1','user',0,JSON.stringify({text:'old'}))

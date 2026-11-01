@@ -15,7 +15,7 @@ export interface AuthPort {
 }
 
 export interface HealthPort {
-  getHealth(): Promise<Health>
+  getHealth(signal?: AbortSignal): Promise<Health>
 }
 
 export function canSubmit(pw: string): boolean {
