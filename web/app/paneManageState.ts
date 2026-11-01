@@ -1,9 +1,7 @@
-import{useEffect,useState}from'react'
-import{workspaceApi as a}from'../infra/workspaceApi'
-type P={paneId:string;name:string}
+import{useState}from'react'
+import { usePaneManageList } from './usePaneManageList'
 export function usePaneManageState(w?:string){
- const[ws,setWs]=useState(w??'')
- const[panes,setPanes]=useState<P[]>([])
+ const list = usePaneManageList(w)
  const[template,setTemplate]=useState('opencode')
  const[name,setName]=useState('')
  const[busy,setBusy]=useState(false)
@@ -11,7 +9,5 @@ export function usePaneManageState(w?:string){
  const[confirmId,setConfirmId]=useState<string|null>(null)
  const[renameId,setRenameId]=useState<string|null>(null)
  const[renameName,setRenameName]=useState('')
- const load=async()=>{const c=await a.getConfig();setWs(c.workspaceId);const l=await a.getPanes(c.workspaceId);setPanes(l.map(x=>({paneId:x.paneId,name:x.name})));return l}
- useEffect(()=>{void load().catch(()=>setMsg('connection_unavailable'))},[])
- return{ws,panes,template,name,busy,msg,confirmId,renameId,renameName,setWs,setPanes,setTemplate,setName,setBusy,setMsg,setConfirmId,setRenameId,setRenameName,load}
+ return{...list,template,name,busy,msg,confirmId,renameId,renameName,setTemplate,setName,setBusy,setMsg,setConfirmId,setRenameId,setRenameName}
 }

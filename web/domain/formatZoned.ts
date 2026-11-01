@@ -9,3 +9,8 @@ export function formatZoned(iso: string, timeZone: string): string {
   const p = (t: string) => parts.find((x) => x.type === t)?.value ?? ''
   return `${p('year')}-${p('month')}-${p('day')} ${p('hour')}:${p('minute')}:${p('second')}`
 }
+
+// 같은 시각을 두 자리 연도(yy-MM-dd HH:mm:ss)로 줄인다.
+export function formatZonedShort(iso: string, timeZone: string): string {
+  return formatZoned(iso, timeZone).slice(2)
+}

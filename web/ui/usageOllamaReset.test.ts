@@ -7,7 +7,7 @@ const inc = metric('included_balance', 'currency', { used: 60, limit: 60, remain
 const pur = metric('purchased_balance', 'currency', { used: null, remaining: 7.01 })
 
 test('the ollama card keeps the included reset', () => {
-  assert.match(html('ollama', [inc, pur]), /2026-11-01 14:40:03/)
+  assert.match(html('ollama', [inc, pur]), /26-11-01 14:40:03/)
 })
 
 test('the ollama purchased balance drops its reset line', () => {

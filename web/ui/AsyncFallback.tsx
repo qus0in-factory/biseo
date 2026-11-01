@@ -12,7 +12,7 @@ export function AsyncFallback({
   inline?: boolean
 }) {
   return (
-    <div className={inline ? 'flex items-center gap-2 text-xs text-error' : 'flex flex-col items-start gap-2 text-sm text-error'}>
+    <div className={inline ? 'mt-2 flex items-center gap-2 text-xs text-error' : 'mt-4 flex flex-col items-start gap-2 text-sm text-error'}>
       <span>{errorText}</span>
       {onRetry && <SettingsAction icon={RotateCw} type="button" onClick={onRetry}>{r.retry}</SettingsAction>}
     </div>

@@ -13,7 +13,7 @@ type P = {
 
 export function PaneDrawerContent({ panes, state, onRetry, selectedId, onSelect }: P) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex min-h-0 flex-1 flex-col gap-2">
       <PaneStatusSummary panes={panes} state={state} />
       <PanesView panes={panes} state={state} onRetry={onRetry} selectedId={selectedId} onSelect={onSelect} />
     </div>

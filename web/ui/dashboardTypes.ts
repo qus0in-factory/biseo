@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import type { PaneSummary as P, TimelineItem as T } from '../domain/timeline'
 import type { AsyncState } from '../domain/asyncState'
+import type { ConnectionStatus } from '../domain/connectionStatus'
 
 export interface DashboardProps {
   panes: P[]
@@ -15,6 +16,7 @@ export interface DashboardProps {
   onSend: (text: string) => void
   onCancel?: (id: string) => void
   online?: boolean
+  connection?: ConnectionStatus
   onLoadOlder?: () => void
   olderLoaded?: number
   headerActions?: ReactNode

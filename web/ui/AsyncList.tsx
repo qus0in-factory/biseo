@@ -16,7 +16,7 @@ type P<T> = {
 export function AsyncList<T>({ state, skeleton, empty, errorText, onRetry, children }: P<T>) {
   if (state.status === 'loading' && !state.data) return <>{skeleton}</>
   if (state.status === 'error' && !state.data) return <AsyncFallback errorText={errorText} onRetry={onRetry} />
-  if (state.status === 'empty') return <>{empty}</>
+  if (state.status === 'empty') return <div className="mt-4">{empty}</div>
   return (
     <>
       {children(state.data ?? [])}

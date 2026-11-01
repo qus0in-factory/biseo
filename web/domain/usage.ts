@@ -15,6 +15,7 @@ export interface UsageWindow {
   window: string
   usedPercent: number | null
   resetsAt: string | null
+  startsAt?: string | null
   checkedAt: string | null
   limitReached: boolean
   source: string | null

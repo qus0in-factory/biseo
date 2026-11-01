@@ -15,6 +15,6 @@ export function WorkspacePicker({ api, onSelected }: WorkspacePickerProps) {
     } catch { s.setErr('connection_unavailable') }
     finally { s.setLd(false) }
   }
-  return <WorkspacePickerView workspaces={s.ws} current={s.cur} loading={s.ld} error={s.err} notice={s.note} onSelect={select} />
+  return <WorkspacePickerView state={s.state} current={s.cur} loading={s.ld} notice={s.note} onSelect={select} onRetry={s.load} />
 }
 export default WorkspacePicker

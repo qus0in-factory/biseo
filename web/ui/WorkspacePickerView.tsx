@@ -1,28 +1,23 @@
 import type { WorkspaceSummary } from '../domain/ports'
-import { WorkspacePickerItem } from './WorkspacePickerItem'
+import type { AsyncState } from '../domain/asyncState'
+import { WorkspacePickerList } from './WorkspacePickerList'
+import { AsyncList } from './AsyncList'
+import { ListSkeleton } from './ListSkeleton'
 import r from '../resources.json'
 export interface WorkspacePickerViewProps {
-  workspaces: WorkspaceSummary[]
-  current: string | null
-  loading: boolean
-  error: string | null
-  notice: string | null
-  onSelect: (id: string) => void
+ state: AsyncState<WorkspaceSummary[]>
+ current: string | null
+ loading: boolean
+ notice: string | null
+ onSelect: (id: string) => void
+ onRetry: () => void
 }
 export function WorkspacePickerView(p: WorkspacePickerViewProps) {
-  return (
-    <section aria-label={r.workspacesTitle}>
-      <h2>{r.workspacesTitle}</h2>
-      {p.loading && <p>{r.loading}</p>}
-      {p.error && <p>{p.error}</p>}
-      {p.notice && <p role="alert">{p.notice}</p>}
-      <ul>
-        {p.workspaces.map((w) => {
-          const id = w.workspaceId ?? w.id ?? ''
-          return <WorkspacePickerItem key={id} workspace={w} selected={id === p.current} loading={p.loading} onSelect={p.onSelect} />
-        })}
-      </ul>
-      {p.workspaces.length === 0 && !p.loading && <p>{r.workspacesEmpty}</p>}
-    </section>
-  )
+ return <section aria-label={r.workspacesTitle}>
+  <h2>{r.workspacesTitle}</h2>
+  {p.notice && <p role="alert">{p.notice}</p>}
+  <AsyncList state={p.state} skeleton={<ListSkeleton/>} empty={<p>{r.workspacesEmpty}</p>} errorText={r.workspacesError} onRetry={p.onRetry}>
+   {items=><WorkspacePickerList {...p} items={items}/>}
+  </AsyncList>
+ </section>
 }
