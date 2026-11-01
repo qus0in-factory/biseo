@@ -15,7 +15,7 @@ export function PaneManageSection({workspaceId,onAdd}:P){
    <h2>{r.paneManageTitle}</h2>
    <SettingsAction icon={Plus} onClick={onAdd}>{r.addPane}</SettingsAction>
    <p role="status">{s.msg}</p>
-   <AsyncList state={s.state} skeleton={<ListSkeleton/>} empty={<p>{r.paneManageEmpty}</p>}
+   <AsyncList state={s.state} skeleton={<div className="pane-manage-skeleton"><ListSkeleton/></div>} empty={<p>{r.paneManageEmpty}</p>}
     errorText={r.panesError} onRetry={()=>void s.load().catch(()=>{})}>
     {()=> <PaneManageList s={s} a={a}/>}
    </AsyncList>

@@ -1,4 +1,6 @@
 .settings-content section > ul { margin-top: 1rem; }
+.settings-content .pane-manage-list > li { padding-block: .5rem; }
+.pane-manage-skeleton { margin-top: 1rem; }
 .settings-content li > span:first-child { flex: 1; min-width: 0; }
 .pane-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: .5rem; margin-left: auto; }
 .pane-actions button { min-width: 44px; }

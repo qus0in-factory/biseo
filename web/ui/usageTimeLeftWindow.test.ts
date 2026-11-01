@@ -1,8 +1,8 @@
-import assert from 'node:assert/strict'
 import test from 'node:test'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { UsageWindowRow } from './UsageWindowRow.js'
+import { expectNoTimeIcon, expectTimeIcon } from './usageTimeLeftExpect.js'
 import r from '../resources.json'
 
 const DAY = 86_400_000
@@ -19,12 +19,12 @@ const value = {
 
 test('window rows use the displayed w label', () => {
   const html = renderToStaticMarkup(createElement(UsageWindowRow, { provider: 'codex', value }))
-  assert.match(html, new RegExp(`${label} 50%`))
+  expectTimeIcon(html, label, 50)
 })
 
 test('unknown resets do not show a remaining time', () => {
   const html = renderToStaticMarkup(
     createElement(UsageWindowRow, { provider: 'codex', value: { ...value, resetsAt: null } }),
   )
-  assert.doesNotMatch(html, new RegExp(label))
+  expectNoTimeIcon(html, label)
 })

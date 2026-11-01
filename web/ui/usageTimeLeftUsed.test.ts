@@ -3,6 +3,7 @@ import test from 'node:test'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { UsageMetricRow } from './UsageMetricRow.js'
+import { expectTimeIcon } from './usageTimeLeftExpect.js'
 import r from '../resources.json'
 
 const DAY = 86_400_000
@@ -15,5 +16,5 @@ test('the used view keeps the remaining time next to the used share', () => {
     createElement(UsageMetricRow, { provider: 'claude', metric, remaining: false }),
   )
   assert.match(html, /70%/)
-  assert.match(html, new RegExp(`${label} 50%`))
+  expectTimeIcon(html, label, 50)
 })
