@@ -3,7 +3,7 @@ import type { UsageProvider, UsageWindow } from './usage'
 export function paneUsageWindows(pane: PaneSummary, p: UsageProvider): UsageWindow[] {
  if (p.provider !== 'agy') return p.windows
  const model = pane.modelId ?? ''
- const family = model.startsWith('gemini-argon-') ? 'argon' :
+ const family = model.includes('argon') ? 'argon' :
   /^(gemini|claude|gpt)-/.exec(model)?.[1]
  if (!family) return []
  return (p.metrics ?? []).filter(m => m.id.split(':')[0].split('-').includes(family))
