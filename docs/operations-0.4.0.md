@@ -36,6 +36,9 @@ audience: user
 
 ### 0.4.1 릴리스 — 2026-11-01
 
+- **최종 통합 (Situation / Task)**: 승인에 따라 #157 UI 수정과 usage timeout 테스트 동기화 수정(`7abd79b`)을 dev `9c32727`에 통합했다.
+- **Action / Result**: 테스트 796개 실패 0·typecheck·build·preflight 통과, release-042 `fd1132c` 대비 `src/` 변경 없음 확인 후 Worker만 `69a51c4e-53af-47d3-b9b8-480ff3e31004`로 배포했다. curl `/` 200, 미인증 `/api/health`·`/api/session`·`/api/usage`·`/api/workspaces` 401. 직전 Worker(롤백 대상)는 `ab2293f5-f118-4b9e-bbbd-7f10647796b1`; 서버 release-042 유지. PM2·D1·Python·worktree 삭제·재분배 없음. PR #155 CI 확인 후 main 병합 및 v0.4.1 릴리스 발행은 후속 게이트다.
+
 - **Situation / Task**: 큐·사용량/PIN·비동기 목록 UI 변경을 통합해 dev에서 배포했다. main 승격은 [PR #155](https://github.com/qus0in-factory/biseo/pull/155)로 요청했으며 병합·태그는 하지 않았다.
 - **Action**: 서버 `biseo-release-042`, 코드 `fd1132c`, 버전 0.4.1. 기존 release-041의 운영 설정과 `service-public.key`를 복사하고 build·preflight 후 biseo만 PM2 delete/start했다. Worker는 `ccdfb53a-b38b-42b2-8f53-2a73286451d1`로 배포했다.
 - **Result**: 통합 테스트 787개·typecheck·build, 375·1024 화면/상태 34개 검증 통과. 서버 15초 뒤 cwd/script/version/online, 재시작 0, 오류 로그 0바이트, 로컬 `/health` 401 확인 후 save했다. curl로 `/` 200, `/api/health`, `/api/session`, `/api/usage`, `/api/workspaces` 401 확인.
