@@ -2,9 +2,11 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import app from '../index.js'
 import { createTimelineTestEnv } from './timeline-helpers.js'
+import { insertRow } from './d1-row.js'
 
 test('DELETE /api/turns/:id checks Origin and forwards', async () => {
   const {env,cookie}=await createTimelineTestEnv()
+  await insertRow(env.BISEO_DB, 'r1', 'owner', 'w1T', 'working')
   const u = 'http://localhost/api/turns/r1'
   const bad = await app.fetch(new Request(u, { method: 'DELETE', headers: { Cookie: cookie, Origin: 'https://evil.test' } }), env)
   assert.equal(bad.status, 403)

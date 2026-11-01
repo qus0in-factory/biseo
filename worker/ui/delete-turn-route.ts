@@ -1,6 +1,7 @@
 import { deleteReservation } from './delete-reservation.js'
 import { type App, checkCsrf, jsonNoStore, requireOwner } from './timeline-guards.js'
 import { requireDb } from './storage-guard.js'
+import { cancelScope } from './cancel-scope.js'
 
 export function registerDeleteTurn(app: App) {
   app.delete('/api/turns/:requestId', async (c) => {
@@ -11,6 +12,8 @@ export function registerDeleteTurn(app: App) {
     const d = requireDb(c)
     if (!d.ok) return d.res
     const id = c.req.param('requestId')
+    const denied = await cancelScope(d.db, c.env.ALLOWED_WORKSPACE_ID, a.claims.sub, id)
+    if (denied) return jsonNoStore(c, denied.body, denied.status)
     const r = await deleteReservation(c,d.db,id,a.claims.sub)
     return jsonNoStore(c, r.body, r.status)
   })
