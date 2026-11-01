@@ -1,9 +1,10 @@
+import type { UsageMetric } from '../domain/usage.js'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { UsagePanelBody } from './UsagePanelBody.js'
-import type { UsageMetric, UsageProvider } from '../domain/usage.js'
+import type { UsageProvider } from '../domain/usage.js'
 
-export const html = (provider: string, metrics: UsageMetric[]): string => {
+export const html = (provider: string, metrics: UsageMetric[], remaining = true): string => {
   const p: UsageProvider = { provider, state: 'available', windows: [], metrics }
-  return renderToStaticMarkup(createElement(UsagePanelBody, { provider: p }))
+  return renderToStaticMarkup(createElement(UsagePanelBody, { provider: p, remaining }))
 }
