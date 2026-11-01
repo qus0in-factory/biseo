@@ -9,7 +9,7 @@ export interface HerdrPort extends PaneManagePort{
  getAgent(id:string):Promise<AgentInfo|undefined>
  prompt(id:string,text:string,timeoutMs:number,acceptanceMs?:number):Promise<void>
  sendKeys?(id:string,keys:string):Promise<void>
- readRecent?(id:string,lines:number):Promise<string[]>
+ readRecent?(id:string,lines:number,source?:string):Promise<string[]>
 }
 export type CaptureReader={read(graceMs:number):Promise<string|null>;confirm?():Promise<boolean>;close?():void}
 export interface CapturePort{begin(session:AgentSession|undefined,cwd:string|undefined,prompt:string):Promise<CaptureReader|null>}

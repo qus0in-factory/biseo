@@ -14,5 +14,5 @@ export class HerdrCli extends HerdrManagement{
   await call(promptArgs(id,text,acceptanceMs),Math.min(timeoutMs+(acceptanceMs??0),60000))
  }
  sendKeys(id:string,keys:string){return sendKeys(id,keys)}
- readRecent(id:string,lines:number){return readRecent(id,lines)}
+ readRecent(id:string,lines:number,source?:string){return readRecent(id,lines,source)}
 }
