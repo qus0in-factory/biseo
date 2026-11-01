@@ -20,6 +20,14 @@ audience: user
 
 ## 핫픽스 및 배포 이력
 
+### v0.4.4 — 2026-11-02
+
+- **Situation / Task**: #162·#164·#165를 dev `688c7ef`에 통합하고 7403 차단에서 재개했다. 일시 Cloudflare API 오류는 최대 3회 재시도한다. 이번 재조회는 첫 시도에 성공했다.
+- **Action**: 기존 862 테스트 실패 0·typecheck·build·375/1024의 8개 화면 검증을 재사용했다. 권한 600의 비어 있지 않은 D1 백업 후 유일한 미적용 `0012_usage_history.sql`을 적용하고 테이블 6열·복합 기본키·observed 인덱스·적용 이력을 확인했다.
+- **Action**: release-043 대비 src 차이는 테스트 전용이므로 서버 전환을 생략했다. 서버는 release-043 `547127f`의 0.4.3 online·재시작 0 확인. runtime 로컬 변경은 보호 백업 후 배포 중 HEAD 값으로 복원해 깨끗한 커밋 트리에서 배포하고 원본과 일치하게 되돌렸다.
+- **Result**: Worker `d470a93a-af14-4180-a213-a4d641c1587a`, curl 루트 200·미인증 health/session/usage/workspaces/usage/history 401·6개 CSP 확인. Worker 롤백은 `a715bcdf-85cf-40ff-9d58-5047008c86dd`. 화면 0.4.4와 서버 0.4.3 차이는 의도된 서버 유지 결과다.
+- 병합된 깨끗한 작업 worktree 6개(043-app, 043-platform, 161, 162, 164, 165)를 제거했다. release-044 전환이 없으므로 release-042·043 보존. 인증 API·운영 큐·타 계열 리뷰 미실시(인증 미확보/재분배 금지). 관측 누적 전 비율 자료 부족은 정상이다. PM2 변경·main 병합·태그 없음.
+
 ### v0.4.3 — 2026-11-02
 
 - **Situation / Task**: 승인된 #45 보안 변경과 #161 타임라인 이름·로그인 변경을 dev에 통합하고 서버·Worker를 함께 전환했다. main 병합·태그·재분배는 금지했다.
@@ -83,6 +91,7 @@ audience: user
 | 0009 | 신뢰 IP, PIN 및 시도 제한 |
 | 0010 | 사용량 기간 시작 시각 |
 | 0011 | refresh 세션과 토큰 계열 |
+| 0012 | 사용량 관측 이력과 observed 인덱스 |
 
 ## 서버 worktree 전환
 
