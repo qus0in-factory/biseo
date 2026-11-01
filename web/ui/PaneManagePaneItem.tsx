@@ -5,8 +5,10 @@ export function PaneManagePaneItem(x:P){
  return(
   <li key={x.p.paneId}>
    <span>{x.p.name}</span>
+   <div className="pane-actions">
    <PaneManageRenameControls p={x.p} busy={x.busy} renameId={x.renameId} renameName={x.renameName} setRenameId={x.setRenameId} setRenameName={x.setRenameName} onRename={x.onRename}/>
    <PaneManageCloseControls p={x.p} busy={x.busy} confirmId={x.confirmId} setConfirmId={x.setConfirmId} onClose={x.onClose}/>
+   </div>
   </li>
  )
 }
