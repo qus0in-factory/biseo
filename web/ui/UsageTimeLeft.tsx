@@ -17,11 +17,11 @@ export function UsageTimeLeft({
   if (percent === null) return null
   const title = remaining ? r.usageTimeLeft : r.usageTimeElapsed
   return (
-    <span className="text-muted-foreground">
-      {' · '}
+    <span className="inline-flex items-center gap-1 text-muted-foreground">
+      <span aria-hidden="true">·</span>
       <span className="inline-flex items-center gap-1" title={title}>
-        <Clock size={12} aria-label={title} role="img" />
-        {percent}%
+        <Clock size={12} className="shrink-0" aria-label={title} role="img" />
+        <span className="text-xs leading-none">{percent}%</span>
       </span>
     </span>
   )

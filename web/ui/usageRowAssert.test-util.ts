@@ -7,5 +7,7 @@ export const assertFixedValueColumns=(out:string)=>{
  assert.match(out,/min-w-16/)
  assert.match(out,/w-16 shrink-0/)
  assert.match(out,/items-baseline/)
+ assert.match(out,/flex shrink-0 items-center gap-1 font-mono text-xs leading-none/)
+ assert.match(out,/flex w-16 shrink-0 items-center justify-end/)
  assert.equal((out.match(/class="[^"]*text-right[^"]*"/g)??[]).length,2)
 }
