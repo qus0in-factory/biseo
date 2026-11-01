@@ -21,7 +21,7 @@ export function UsageWindowValue({
     <UsageValueLine
       label={name}
       value={usagePercentText(shown, res.usageUnknownPercent)}
-      timeLeft={<UsageTimeLeft label={name} startsAt={value.startsAt} resetsAt={value.resetsAt} />}
+      timeLeft={<UsageTimeLeft label={name} startsAt={value.startsAt} resetsAt={value.resetsAt} remaining={remaining} />}
     />
   )
 }

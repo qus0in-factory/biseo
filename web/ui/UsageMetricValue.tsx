@@ -10,5 +10,5 @@ export function UsageMetricValue({provider,metric,remaining}:{provider:string;me
  const window=usageMetricName(provider,metric.id,metric.label,res)
  const timeLeft=metric.unit==='percent'?window:provider==='ollama'&&metric.id==='included_balance'?'monthly':null
  return <UsageValueLine label={label} value={formatMetricValue(metric,res.usageUnknownPercent,remaining)}
-  timeLeft={timeLeft?<UsageTimeLeft label={timeLeft} startsAt={metric.startsAt} resetsAt={metric.resetsAt}/>:null}/>
+  timeLeft={timeLeft?<UsageTimeLeft label={timeLeft} startsAt={metric.startsAt} resetsAt={metric.resetsAt} remaining={remaining}/>:null}/>
 }
