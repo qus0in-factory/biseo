@@ -1,23 +1,25 @@
 import{useEffect,useState}from'react'
 import type{WorkspaceApiPort,WorkspaceSummary}from'../domain/ports'
+import { listState } from '../domain/asyncListState'
+import r from '../resources.json'
 export function useWorkspacePicker(api:WorkspaceApiPort){
  const [ws,setWs]=useState<WorkspaceSummary[]>([])
  const [cur,setCur]=useState<string|null>(null)
- const [ld,setLd]=useState(false)
+ const [ld,setLd]=useState(true)
  const [err,setErr]=useState<string|null>(null)
  const [note,setNote]=useState<string|null>(null)
  const load=async()=>{
-  if(!api.listWorkspaces)return
   setLd(true);setErr(null)
   try{
+   if(!api.listWorkspaces)throw new Error()
    const list=await api.listWorkspaces()
    setWs(list)
    const cfg=await api.getConfig()
    setCur(cfg.workspaceId)
-   setNote(cfg.workspaceId&&!list.some(w=>(w.workspaceId??w.id)===cfg.workspaceId)?'selected workspace is no longer available; please select another':null)
+   setNote(cfg.workspaceId&&!list.some(w=>(w.workspaceId??w.id)===cfg.workspaceId)?r.workspaceUnavailable:null)
   }catch{setErr('connection_unavailable')}
   finally{setLd(false)}
  }
  useEffect(()=>{void load()},[api])
- return{ws,cur,ld,err,note,setCur,setLd,setErr,setNote,load}
+ return{ws,cur,ld,err,note,state:listState(ws,ld,err),setCur,setLd,setErr,setNote,load}
 }
