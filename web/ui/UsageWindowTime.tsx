@@ -12,7 +12,7 @@ export function UsageWindowTime({ value }: { value: UsageWindow }) {
       <span className="inline-flex items-center gap-1 text-xs text-muted-foreground" title={res.usageReset}>
         <Clock size={12} aria-label={res.usageReset} role="img" />
         {value.resetsAt
-          ? `${formatZonedShort(value.resetsAt, TZ)} (${res.displayTimeZoneLabel})`
+          ? formatZonedShort(value.resetsAt, TZ)
           : res.usageNoReset}
       </span>
       {value.checkedAt && (

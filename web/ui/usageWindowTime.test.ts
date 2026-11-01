@@ -19,6 +19,7 @@ test('usage reset time uses a clock and short KST timestamp', () => {
   assert.match(html, /lucide-clock/)
   assert.match(html, new RegExp(`aria-label="${r.usageReset}"`))
   assert.match(html, new RegExp(`title="${r.usageReset}"`))
-  assert.match(html, /26-11-01 14:40:03 \(KST\)/)
+  assert.match(html, /26-11-01 14:40:03/)
+  assert.doesNotMatch(html, /\(KST\)/)
   assert.doesNotMatch(html, new RegExp(`>${r.usageReset}:`))
 })
