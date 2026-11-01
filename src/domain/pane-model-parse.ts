@@ -1,12 +1,15 @@
 export type PaneModel={modelId:string;provider:string}
 const providers:[RegExp,string][]=[
- [/ollama( cloud)?$/i,'ollama'],
+ [/ollama cloud$/i,'ollama'],
+ [/ollama$/i,'ollama'],
  [/openai$/i,'codex'],
  [/codex$/i,'codex'],
+ [/claude agent$/i,'claude'],
  [/anthropic$/i,'claude'],
- [/claude( agent)?$/i,'claude'],
+ [/claude$/i,'claude'],
+ [/free\s+(?:default\s*\/\s*)?(?:opencode(?:\s+go)?|zen)$/i,'opencode'],
  [/opencode go$/i,'opencode-go'],
- [/(opencode|zen)$/i,'opencode'],
+ [/(?:default\s*\/\s*)?(?:opencode|zen)$/i,'opencode'],
  [/grok$/i,'grok'],
 ]
 const id=(s:string)=>s.toLowerCase().replace(/[^a-z0-9.]+/g,'-').replace(/^-+|-+$/g,'')
