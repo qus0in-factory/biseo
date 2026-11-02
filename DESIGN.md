@@ -314,7 +314,8 @@ Provides top-level situational awareness and view switching:
 
 ### 2. Panel Horizontal Carousel & Overview Card (`panel-carousel`, `panel-card`)
 Renders agent pane status while eliminating excessive vertical scrolling and visual clutter:
-- **Card Hierarchy**: The primary card title is strictly bound to `name` (`item.name`). `agentName` (e.g., `opus`, `sol`) serves as an optional secondary sub-caption, while `agentKind` (e.g., `claude`, `codex`, `agy`) renders in an isolated secondary pill tag.
+- **Card Hierarchy**: The primary card title is strictly bound to `name` (`item.name`). `agentName` (e.g., `opus`, `sol`) serves as an optional secondary sub-caption. The model line shows `modelId` with a family SVG icon (Claude/GPT/Gemini/DeepSeek) and a neutral icon when the family is unknown; runtime tool names such as `opencode` or `agy` are not the primary card label.
+- **Model Icons**: Use the MIT-licensed `@lobehub/icons` package as monochrome `currentColor` SVGs. Bundle only the Claude, OpenAI, Gemini, and DeepSeek icons, never call an external CDN, and keep the icon decorative with the model name carrying the accessible text. License inventory: `docs/licenses-icons.md`.
 - **Horizontal Carousel (`shadcn Carousel` backed by Embla)**: Reuses shadcn `Carousel` (`CarouselContent`, `CarouselItem`, `CarouselPrevious`, `CarouselNext`). In mobile viewports (`< md`), panel cards are arranged exclusively in a horizontal swipeable track governed by Embla Carousel APIs. **Stacking panel cards vertically down the page is strictly prohibited**.
 - **Touch Gesture & Keyboard Support**: Supports natural touch swipe gestures with momentum scrolling, drag threshold resistance, and Left/Right arrow key navigation for keyboard accessibility.
 - **Filtered Scope (Security Policy #27)**: Non-agent terminal panes and raw shell commands are strictly excluded; panes without agent runtimes are never rendered as cards.
@@ -578,6 +579,10 @@ When elements (such as workspace cards, panel cards, toggle buttons, or tabs) en
 - **No Redundant Text Clutter (불필요한 문구 강조 지양)**: Avoid appending intrusive text badges like "선택됨" merely to indicate selection when visual fill and contrast clearly convey it.
 - **ARIA Accessibility (접근성은 ARIA로 보장)**: Selection state must always be announced to assistive technologies via semantic ARIA attributes (`aria-selected="true"`, `aria-pressed="true"`, `aria-current="page"` depending on role).
 
+### 11. Long-press Drag Ordering (panel list, usage provider tabs)
+
+Panel cards and usage provider tabs share one sortable module (`web/ui/sortable/SortableList.tsx`, `SortableItem.tsx`). A pointer or touch press activates after a 350ms delay with an 8px movement tolerance so ordinary taps still select and scrolling still wins before activation. Dragging reorders live, saves the ID order to local storage, and appends newly discovered panes/providers at the end. The keyboard path uses Space/Enter to pick up, arrow keys to move, Space/Enter to drop, and Escape to cancel, with Korean announcements from `web/resources.json`. No separate edit mode, sort screen, arrow controls, or drag handle is shown.
+
 ## Motion & Transitions
 
 ### Motion Architecture
@@ -612,7 +617,7 @@ All animations honor user accessibility preferences via `@media (prefers-reduced
 - **Do** render all turn lifecycle states (including failed, timeout, and capture-unavailable turns) on the timeline with clear semantic badges and error callouts.
 - **Do** allow retry actions **strictly for pre-send failures**; forbid re-dispatch on indeterminate failures (`delivery_uncertain`, `agent_prompt_stalled`, `timeout`).
 - **Do** sanitize all agent markdown responses prior to timeline rendering to prevent XSS.
-- **Do** toggle panel pins with a star button (`aria-pressed`, localized `aria-label`, 44px touch target); persist pinned pane IDs in local storage and prune IDs absent from non-empty pane snapshots. Keep up to 2 pinned panels above the scrollable remainder (max 5 visible cards).
+- **Do** remove panel star/pin controls; reorder panels by long-pressing (350ms) then dragging, with short taps selecting the panel and Space/Arrow keys as the keyboard alternative. Persist the order in local storage, append new panes at the end, and show the first 3 saved panes when the list is collapsed.
 - **Do** use `ring-ring` (`= foreground`) for all interactive element focus rings to ensure WCAG non-text contrast compliance.
 - **Do** maintain a minimum 3:1 non-text contrast ratio for all container borders, dividers, and dark badge boundaries across both light and dark themes.
 - **Do** hydrate client state atomically from full SSE `pane.updated` snapshots and single `turn.updated` events without polling.

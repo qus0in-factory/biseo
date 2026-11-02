@@ -4,11 +4,9 @@ import { usePaneListStore } from '../app/paneListStore'
 import { selectCollapsedPanes } from '../domain/collapsedPanes'
 
 type V = {
-  pinnedPanes: PaneSummary[]
-  rest: PaneSummary[]
-  pinned: string[]
-  toggle: (paneId: string) => void
+  panes: PaneSummary[]
   register: (paneId: string) => (el: HTMLLIElement | null) => void
+  move: (from: number, to: number) => void
 }
 
 export function PanesList({
@@ -20,17 +18,20 @@ export function PanesList({
   selectedId: string | null
   onSelect: (id: string) => void
 }) {
-  const expanded = usePaneListStore(state => state.expanded)
-  const shown = selectCollapsedPanes([...view.pinnedPanes, ...view.rest], expanded)
+  const expanded = usePaneListStore((state) => state.expanded)
+  const shown = selectCollapsedPanes(view.panes, expanded)
+  const move = (from: number, to: number) => {
+    const a = view.panes.findIndex((pane) => pane.paneId === shown[from]?.paneId)
+    const b = view.panes.findIndex((pane) => pane.paneId === shown[to]?.paneId)
+    if (a >= 0 && b >= 0) view.move(a, b)
+  }
   return (
     <PanesViewLayout
-      a={shown.slice(0, view.pinnedPanes.length)}
-      b={shown.slice(view.pinnedPanes.length)}
-      s={selectedId}
-      p={view.pinned}
-      t={view.toggle}
-      c={onSelect}
-      r={view.register}
+      panes={shown}
+      selectedId={selectedId}
+      onSelect={onSelect}
+      register={view.register}
+      onMove={move}
     />
   )
 }
