@@ -2,12 +2,11 @@ import type { PaneSummary } from '../domain/timeline'
 import type { AsyncState } from '../domain/asyncState'
 import { summarizePaneStatuses } from '../domain/paneStatusSummary'
 import { PaneStatusSummaryItem } from './PaneStatusSummaryItem'
-import { LoadingState } from './LoadingState'
 import r from '../resources.json'
 type P = { panes: PaneSummary[]; state?: AsyncState<PaneSummary[]> }
 const known = ['idle', 'working', 'done', 'blocked'] as const
 export function PaneStatusSummary({ panes, state }: P) {
-  if (!state || state.status === 'loading') return <LoadingState variant="text" />
+  if (!state || state.status === 'loading') return null
   if (state.status === 'error') return <p role="alert">{r.panesError}</p>
   const x = summarizePaneStatuses(panes)
   return (
