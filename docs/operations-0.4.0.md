@@ -20,6 +20,14 @@ audience: user
 
 ## 핫픽스 및 배포 이력
 
+### v0.4.5 — 2026-11-02
+
+- **Situation / Task**: 사용자 승인으로 #169·#170 통합 dev에 cron fake-timer 동기화 수정 `2c74646`을 병합하고 0.4.5를 배포했다. main 병합·태그·재분배는 금지했다.
+- **Action**: 코드 `1b39e9b`, 테스트 869개 실패 0·typecheck·build 통과 후 dev push. D1 미적용 마이그레이션 없음, queued/working 0건. Cloudflare 7403은 2번째 시도 성공. 잘못된 테이블명 조회는 읽기 전용 실패 후 `timeline_turns`로 정정했다.
+- **Action**: release-043 config 전체·공개키를 release-045로 복사하고 build·preflight 통과. sol 외 작업 중 에이전트 없음·최근 턴 POST 없음 확인 후 biseo만 PM2 delete/start. 15초 뒤 정확한 cwd/script·버전 0.4.5·online·재시작 0·오류 로그 0바이트·로컬 health 401 확인 후 save했다.
+- **Result**: Worker `51ebfc88-33ff-4902-a82a-0571190387b7`, 루트 200 및 미인증 health/session/usage/workspaces/usage/history 401, 6개 응답 CSP 확인. 서버 복구 대상 release-043, Worker 복구 대상 `c8ee6550-ec5b-4036-9886-1991bcaa4e4d`. 백업·검증 증거는 보호된 `.backups/0.4.5/`에 보존하며 runtime 사용자 변경은 복원·스테이징 제외했다.
+- **한계**: 인증 health·메모리 턴 전체 조회·운영 큐 전달은 인증 수단 미확보로 미검증이며, 타 계열 리뷰는 재분배 금지로 미실시. PM2 버전 경고는 데몬 갱신 없이 유지했다. PM2 JSON 앞 경고 문자열을 분리해 검증했으며 원본은 보호 경로에만 보관한다.
+
 ### v0.4.4 — 2026-11-02
 
 - **Situation / Task**: #162·#164·#165를 dev `688c7ef`에 통합하고 7403 차단에서 재개했다. 일시 Cloudflare API 오류는 최대 3회 재시도한다. 이번 재조회는 첫 시도에 성공했다.
