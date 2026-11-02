@@ -8,11 +8,13 @@ import{registerTurnRoutes}from'./turn-routes.js'
 import{serviceAuth as sa}from'./service-auth.js'
 import type{AppDeps}from'./app-deps.js'
 import{registerExecutorRoutes}from'./executor-routes.js'
+import{registerRecentRoute}from'./recent-route.js'
 export function registerRoutes(a:Hono,d:AppDeps){
  const v=sa(d.verify)
  a.use('/health',v)
  a.get('/health',c=>c.json({status:d.healthStatus}))
  a.use('/herdr/*',v)
+ registerRecentRoute(a,d)
  rws(a,d)
  registerExecutorRoutes(a,d)
  a.get('/herdr/workspaces/:wsId/panes',pr(d))

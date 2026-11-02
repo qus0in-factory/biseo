@@ -1,4 +1,10 @@
 {
+  "recentPull": "최근 응답 가져오기",
+  "recentLoading": "세션 기록을 확인하고 있습니다.",
+  "recentError": "응답을 가져오지 못했습니다. 다시 시도해 주세요.",
+  "recent_imported": "최근 응답을 가져왔습니다.",
+  "recent_duplicate": "이미 타임라인에 있는 응답입니다.",
+  "recent_empty": "가져올 완료 응답이나 저장된 세션 기록이 없습니다.",
   "title": "Biseo",
   "refresh": "새로고침",
   "loading": "불러오는 중...",
