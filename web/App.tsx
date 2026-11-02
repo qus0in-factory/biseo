@@ -10,13 +10,13 @@ import{LoadingState}from'./ui/LoadingState'
 import r from'./resources.json'
 import'./index.css'
 export default function App(){
- const{authed,busy,ready,code,login,loginPin,logout,expire}=useAuth(authApi)
- const{data,loading,check}=useHealth(healthApi,authed,expire)
- if(!ready)return<AppFrame><AppHeader/><LoadingState rows={2}/></AppFrame>
+ const a=useAuth(authApi)
+ const h=useHealth(healthApi,a.authed,a.expire)
+ if(!a.ready)return<AppFrame><AppHeader/><LoadingState rows={2}/></AppFrame>
  return<AppFrame>
-  <AppHeader authed={authed} busy={busy} onLogout={logout}/>
-  <AppContent authed={authed} busy={busy} login={login} loginPin={loginPin} loading={loading} data={data} check={check}/>
-  {code&&<p role="alert" className="mx-auto w-full max-w-[360px] text-error">{r[code]}</p>}
-  {authed&&<AppFooter/>}
+  <AppHeader authed={a.authed} busy={a.busy} onLogout={a.logout} loading={h.loading} error={h.data?.error} onCheck={h.check}/>
+  <AppContent {...a} {...h}/>
+  {a.code&&<p role="alert" className="mx-auto w-full max-w-[360px] text-error">{r[a.code]}</p>}
+  {a.authed&&<AppFooter/>}
  </AppFrame>
 }
