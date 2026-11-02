@@ -20,6 +20,13 @@ audience: user
 
 ## 핫픽스 및 배포 이력
 
+### v0.4.6 최종 릴리스 — 2026-11-02
+
+- **Situation / Task**: 사용자 승인으로 RecentPull 상태 문구 간격을 정리하고 [PR #179](https://github.com/qus0in-factory/biseo/pull/179)의 CI 확인·main 승격·[v0.4.6 릴리스](https://github.com/qus0in-factory/biseo/releases/tag/v0.4.6)를 진행한다.
+- **Action**: web `3d4982c`에서 공통 `gap-4`와 상태 문구의 추가 margin 제거로 성공·중복·빈 응답·오류·로딩 모두 버튼과 16px 간격을 적용했다. 320·1024px 상태별 스크린샷과 DOM 실측 10건, 가로 넘침·페이지 오류 없음 확인. 테스트 902개 실패/취소/skip/todo 0, typecheck·build·preflight 통과 후 dev push. 수정 모듈 최대 20줄·921자.
+- **Result**: 운영 서버 `b77b716` 대비 `src/` 변경 없음으로 PM2는 release-046b 그대로 유지했다. Worker `c377cc60-9394-4826-96c3-2c5d787d7957` 배포 후 curl `/` 200, 미인증 health/session/usage/workspaces/usage/history 401 및 응답 6개 CSP 확인. Worker 롤백 대상은 `0c61f56d-fb90-48ae-a8a6-2a5118fb3e23`. D1·서버 설정 변경 없음. 사용자 runtime 변경은 보존·미스테이징.
+- **정리 / 한계**: biseo-pull은 이미 제거된 상태이며 biseo-181은 현재 sol 세션의 실제 경로이므로 보존했다. pane list와 모든 패널 하단을 다시 확인했다. 인증 API·실제 운영 전달 및 타 계열 독립 리뷰는 미실시(인증 미확보·재분배 금지). 스크린샷은 실제 Vite 앱과 mock API 기반이며 운영 인증 성공의 근거는 아니다. 증빙은 `/tmp/i046h/`와 `/tmp/herdr-report-sol-046h.md`에 둔다.
+
 ### v0.4.6 재배포 — 2026-11-02
 
 - **Situation / Task**: 승인된 #180–#182 통합을 dev에 병합하고 버전 0.4.6을 유지해 재배포했다. PR #179 머지·태그·재분배 없음.
