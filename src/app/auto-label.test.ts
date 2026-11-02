@@ -24,4 +24,5 @@ test('real samples map to aliases',async()=>{
  const r=JSON.parse(readFileSync(new URL('../../config/model-aliases.json',import.meta.url),'utf8'))
  const s:[string,string,string][]=[['opus-5.5','claude','opus'],['gemini-3.8-flash','agy','gf'],['gemini-4-argon','agy','ga'],['gpt-6.1-sol','codex','sol'],['gpt-6.1-terra','codex','terra'],['claude-sonnet-5.5','agy','son'],['deepseek-v4.1-flash','ollama','ds-o'],['deepseek-v4.1-flash','opencode','ds-f'],['beam','opencode','beam']]
  for(const[modelId,provider,a]of s)assert.equal(pickAlias(r,{modelId,provider}),a)
+ assert.equal(pickAlias(r,{modelId:'1-task-s',provider:'agy'}),null)
 })

@@ -8,6 +8,16 @@ const fake=()=>{
  const h={readRecent:async(id:string)=>{calls++;return id==='p1'?[calls>2?'Build auto · Opus 5.5 Claude Agent · low':'Build auto · GPT-6.1 Sol OpenAI · low']:['accept-edits · Gemini 3.8 Flash · medium']}} as unknown as HerdrPort
  return{h,calls:()=>calls}
 }
+test('keeps the last valid model when the footer loses its model',async()=>{
+ let now=0,lines=['? for shortcuts  accept-edits · Gemini 3.8 Flash · medium · 1 task(s) · /tasks']
+ const h={readRecent:async()=>lines} as unknown as HerdrPort
+ const o=createPaneModelCache(1000,()=>now),panes=[{paneId:'p1',agentKind:'agy'}]
+ const a=await o(h,panes)
+ assert.deepEqual(a.p1,{modelId:'gemini-3.8-flash',provider:'agy'})
+ lines=['>','1-task-s']
+ now=1000
+ assert.deepEqual((await o(h,panes)).p1,a.p1)
+})
 test('cache limits reads and refreshes after ttl',async()=>{
  let now=0
  const f=fake(),o=createPaneModelCache(1000,()=>now),a=await o(f.h,panes)
