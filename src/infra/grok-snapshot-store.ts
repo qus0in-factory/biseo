@@ -1,18 +1,9 @@
 import type { ProviderUsage } from '../domain/usage-types.js'
+import { getProviderSnapshot, setProviderSnapshot, makeStaleUsage } from './provider-snapshot-store.js'
 
-let lastGrokSnapshot: ProviderUsage | null = null
+export const getLastGrokSnapshot = () => getProviderSnapshot('grok')
+export const setLastGrokSnapshot = (s: ProviderUsage | null) => { setProviderSnapshot('grok', s) }
 
-export const getLastGrokSnapshot = () => lastGrokSnapshot
-export const setLastGrokSnapshot = (s: ProviderUsage | null) => { lastGrokSnapshot = s }
-
-export function makeStaleGrokUsage(last: ProviderUsage | null): ProviderUsage {
-  if (!last) return { provider: 'grok', state: 'unknown', metrics: [], windows: [] }
-  return {
-    ...last,
-    metrics: (last.metrics ?? []).map(m => ({ ...m })),
-    windows: (last.windows ?? []).map(w => ({
-      ...w,
-      source: 'grok-stale'
-    }))
-  }
+export function makeStaleGrokUsage(last: ProviderUsage | null, reason = 'auth_required'): ProviderUsage {
+  return makeStaleUsage('grok', last, reason)
 }

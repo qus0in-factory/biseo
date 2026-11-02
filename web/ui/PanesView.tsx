@@ -5,7 +5,7 @@ import{usePanesView}from'./usePanesView'
 import{PanesList}from'./PanesList'
 import{AsyncList}from'./AsyncList'
 import r from'../resources.json'
-type P={panes:PaneSummary[];selectedId:string|null;onSelect:(id:string)=>void;storageKey?:string;state?:AsyncState<PaneSummary[]>;onRetry?:()=>void}
+type P={panes:PaneSummary[];selectedId:string|null;onSelect:(id:string)=>void;state?:AsyncState<PaneSummary[]>;onRetry?:()=>void}
 export function PanesView(p:P){
  const view=usePanesView(p)
  const state=p.state??listState(p.panes,false,null)

@@ -20,6 +20,30 @@ audience: user
 
 ## 핫픽스 및 배포 이력
 
+### v0.4.6 최종 릴리스 — 2026-11-02
+
+- **Situation / Task**: 사용자 승인으로 RecentPull 상태 문구 간격을 정리하고 [PR #179](https://github.com/qus0in-factory/biseo/pull/179)의 CI 확인·main 승격·[v0.4.6 릴리스](https://github.com/qus0in-factory/biseo/releases/tag/v0.4.6)를 진행한다.
+- **Action**: web `3d4982c`에서 공통 `gap-4`와 상태 문구의 추가 margin 제거로 성공·중복·빈 응답·오류·로딩 모두 버튼과 16px 간격을 적용했다. 320·1024px 상태별 스크린샷과 DOM 실측 10건, 가로 넘침·페이지 오류 없음 확인. 테스트 902개 실패/취소/skip/todo 0, typecheck·build·preflight 통과 후 dev push. 수정 모듈 최대 20줄·921자.
+- **Result**: 운영 서버 `b77b716` 대비 `src/` 변경 없음으로 PM2는 release-046b 그대로 유지했다. Worker `c377cc60-9394-4826-96c3-2c5d787d7957` 배포 후 curl `/` 200, 미인증 health/session/usage/workspaces/usage/history 401 및 응답 6개 CSP 확인. Worker 롤백 대상은 `0c61f56d-fb90-48ae-a8a6-2a5118fb3e23`. D1·서버 설정 변경 없음. 사용자 runtime 변경은 보존·미스테이징.
+- **정리 / 한계**: biseo-pull은 이미 제거된 상태이며 biseo-181은 현재 sol 세션의 실제 경로이므로 보존했다. pane list와 모든 패널 하단을 다시 확인했다. 인증 API·실제 운영 전달 및 타 계열 독립 리뷰는 미실시(인증 미확보·재분배 금지). 스크린샷은 실제 Vite 앱과 mock API 기반이며 운영 인증 성공의 근거는 아니다. 증빙은 `/tmp/i046h/`와 `/tmp/herdr-report-sol-046h.md`에 둔다.
+
+### v0.4.6 재배포 — 2026-11-02
+
+- **Situation / Task**: 승인된 #180–#182 통합을 dev에 병합하고 버전 0.4.6을 유지해 재배포했다. PR #179 머지·태그·재분배 없음.
+- **Action**: dev `b77b716`, 테스트 901개 실패 0·typecheck·build 통과 후 push. runtime 사용자 변경 미스테이징. 미적용 마이그레이션·queued/working 없음, 최근 서버 로그 300행의 턴/큐 POST 0건·sol 외 에이전트 idle 확인. release-046 config 전체·공개키를 release-046b로 복사하고 build·preflight 후 biseo만 PM2 delete/start했다.
+- **Result**: 15초 뒤 release-046b cwd/script·0.4.6·online·재시작 0·오류 로그 0바이트·미인증 health 401 확인 후 save. Worker `0c61f56d-fb90-48ae-a8a6-2a5118fb3e23`, 공개 `/` 200·미인증 API 5개 401·모두 CSP 확인. 롤백은 서버 release-046과 Worker `a2ac3594-a679-474b-b1b9-36fba5c6be1c`다.
+- **한계**: 서비스 서명키 부재로 인증 health·메모리 턴 전체 조회·운영 큐 실제 전달 미검증. 독립 배포 리뷰는 재분배 금지로 미실시. 최초 D1 테이블명·PM2 JSON 전처리·zsh 예약 변수 오류는 수정 후 검증 완료.
+- **정리**: pane list·각 패널 하단 경로 확인 후 release-045(변경 설정 보호 백업)·biseo-180·182·046b·pull 제거. 현재 sol 세션 biseo-181과 운영 release-046b·롤백 release-046 보존.
+
+### v0.4.6 — 2026-11-02
+
+- **Situation / Task**: 사용자 승인으로 `integrate/0.4.6`을 dev에 병합하고 0.4.6을 배포했다. main 병합·태그·재분배는 금지했다.
+- **Action**: `integrate/0.4.6` `22fd435`를 dev `dae80c8`에 병합하고 `2d61dae`로 버전을 0.4.6으로 올렸다. 테스트 888개 실패 0·typecheck·build 통과 후 dev에 push했다. D1 미적용 마이그레이션은 없었고 queued/working 턴은 0건이었다. Cloudflare 7403은 2번째 시도에 성공했다.
+- **Action**: `release-045` config 전체와 `service-public.key`를 `release-046`에 복사하고 build·preflight를 통과했다. biseo만 PM2 delete/start했고, 15초 뒤 정확한 cwd/script·버전 0.4.6·online·재시작 0·오류 로그 0바이트·로컬 `/health` 401을 확인한 뒤 save했다. `config/runtime.json` 사용자 변경은 스테이징하지 않았다.
+- **Result**: Worker `a2ac3594-a679-474b-b1b9-36fba5c6be1c`, 공개 루트 200 및 미인증 health/session/usage/workspaces/usage/history/grok 401, 6개 응답 CSP 확인. 서버 복구 대상은 release-045 `1b39e9b`, Worker 복구 대상은 `51ebfc88-33ff-4902-a82a-0571190387b7`이다. main 승격은 [PR #179](https://github.com/qus0in-factory/biseo/pull/179)로 요청했고 병합·태그는 하지 않았다.
+- **Result**: release-043과 병합 완료 작업 worktree 5개(biseo-pull, biseo-pane-card, biseo-header, biseo-auth-stale, biseo-046)를 제거하고 release-045는 롤백용으로 보존했다. release-043 config는 보호 경로에 백업한 뒤 제거했다.
+- **한계**: 인증 health·메모리 턴 전체 조회·운영 큐 전달은 인증 수단 미확보로 미검증이며, 타 계열 리뷰는 재분배 금지로 미실시했다. PM2 버전 경고는 데몬 갱신 없이 유지했다.
+
 ### v0.4.5 — 2026-11-02
 
 - **Situation / Task**: 사용자 승인으로 #169·#170 통합 dev에 cron fake-timer 동기화 수정 `2c74646`을 병합하고 0.4.5를 배포했다. main 병합·태그·재분배는 금지했다.

@@ -1,14 +1,16 @@
 import type{D1Database}from'@cloudflare/workers-types'
 import type{UsageSnapshot}from'./d1-usage-types.js'
+import{listUsage}from'./d1-usage-read.js'
+import{mergeUsageStale}from'../app/usage-merge-stale.js'
+import{usageParams}from'./d1-usage-params.js'
 const SQL=`INSERT INTO usage_snapshots
  (provider,window,state,used_percent,resets_at,checked_at,limit_reached,source,updated_at,metric_id,label,unit,used,limit_value,remaining,reason,retry_at,starts_at)
  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
 export async function upsertUsage(db:D1Database,rows:UsageSnapshot[]){
+ const existing=await listUsage(db)
+ const merged=mergeUsageStale(rows,existing)
  const stmts=[db.prepare('DELETE FROM usage_snapshots')]
- for(const r of rows)stmts.push(db.prepare(SQL).bind(
-  r.provider,r.window,r.state,r.usedPercent,r.resetsAt,r.checkedAt,r.limitReached?1:0,r.source,r.updatedAt,
-  r.metricId??r.window,r.label??r.metricId??r.window,r.unit??'percent',r.used??r.usedPercent,r.limitValue??(r.unit==='percent'?100:null),
-  r.remaining??(r.unit==='percent'&&r.usedPercent!==null?Math.max(0,100-r.usedPercent):null),r.reason??null,r.retryAt??null,r.startsAt??null
- ))
+ for(const r of merged)stmts.push(db.prepare(SQL).bind(...usageParams(r)))
  await db.batch(stmts)
+ return merged
 }

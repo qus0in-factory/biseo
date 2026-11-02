@@ -12,18 +12,15 @@ const base: Availability = {
   window: 'primary',
 }
 
-test('available panes show no availability note', () => {
+test('available and unknown panes show no availability note', () => {
   assert.equal(availabilityNote(undefined), null)
   assert.equal(availabilityNote({ ...base, state: 'available' }), null)
+  assert.equal(availabilityNote({ ...base, state: 'unknown', resetsAt: null }), null)
 })
 
-test('limited and unknown panes expose a tooltip note', () => {
+test('limited panes expose a note with resetsAt', () => {
   assert.deepEqual(availabilityNote(base), {
     state: 'limited',
     resetsAt: base.resetsAt,
-  })
-  assert.deepEqual(availabilityNote({ ...base, state: 'unknown', resetsAt: null }), {
-    state: 'unknown',
-    resetsAt: null,
   })
 })

@@ -6,6 +6,7 @@ import type { PaneUsageWarningResult } from './pane-usage-warning-types'
 import { buildUnknownResult } from './pane-usage-warning-unknown'
 import { evalPaneWindows } from './pane-usage-warning-eval-win'
 import { paneUsageWindows } from './pane-usage-windows'
+import { isStaleProvider } from './usage-auth-state.js'
 
 export type { PaneUsageWarningResult }
 
@@ -16,6 +17,6 @@ export function evaluatePaneUsageWarning(
   res?: Record<string, string>,
 ): PaneUsageWarningResult {
   const p = findMatchingUsage(pane, providers)
-  if (!p || p.state === 'unknown') return buildUnknownResult(res)
+  if (!p || p.state === 'unknown' || isStaleProvider(p)) return buildUnknownResult(res)
   return evalPaneWindows(paneUsageWindows(pane, p), cfg, res)
 }

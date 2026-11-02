@@ -7,8 +7,8 @@ import r from '../resources.json'
 export function SettingsButton() {
   const [open, setOpen] = useState(false)
   return <>
-    <Button variant="ghost" size="icon" aria-label={r.settings} onClick={() => setOpen(true)}>
-      <Settings size={20} aria-hidden="true" />
+    <Button type="button" variant="outline" size="icon" aria-label={r.settings} title={r.settings} onClick={() => setOpen(true)}>
+      <Settings size={16} aria-hidden="true" />
     </Button>
     <SettingsModal open={open} onClose={() => setOpen(false)} />
   </>

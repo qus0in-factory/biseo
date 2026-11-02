@@ -1,19 +1,21 @@
 import { Menu } from 'lucide-react'
 import { Button } from '../components/ui/button'
 import { useUiStore } from '../app/uiStore'
+import r from '../resources.json'
 
 export function HeaderMenuButton() {
   const toggleDrawer = useUiStore((s) => s.toggleDrawer)
   return (
     <Button
       type="button"
-      variant="ghost"
+      variant="outline"
       size="icon"
       className="md:hidden shrink-0"
       onClick={toggleDrawer}
-      aria-label="메뉴 열기"
+      aria-label={r.openMenu}
+      title={r.openMenu}
     >
-      <Menu size={20} aria-hidden="true" />
+      <Menu size={16} aria-hidden="true" />
     </Button>
   )
 }
