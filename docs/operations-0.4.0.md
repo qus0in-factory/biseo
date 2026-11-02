@@ -25,7 +25,8 @@ audience: user
 - **Situation / Task**: 사용자 승인으로 `integrate/0.4.6`을 dev에 병합하고 0.4.6을 배포했다. main 병합·태그·재분배는 금지했다.
 - **Action**: `integrate/0.4.6` `22fd435`를 dev `dae80c8`에 병합하고 `2d61dae`로 버전을 0.4.6으로 올렸다. 테스트 888개 실패 0·typecheck·build 통과 후 dev에 push했다. D1 미적용 마이그레이션은 없었고 queued/working 턴은 0건이었다. Cloudflare 7403은 2번째 시도에 성공했다.
 - **Action**: `release-045` config 전체와 `service-public.key`를 `release-046`에 복사하고 build·preflight를 통과했다. biseo만 PM2 delete/start했고, 15초 뒤 정확한 cwd/script·버전 0.4.6·online·재시작 0·오류 로그 0바이트·로컬 `/health` 401을 확인한 뒤 save했다. `config/runtime.json` 사용자 변경은 스테이징하지 않았다.
-- **Result**: Worker `a2ac3594-a679-474b-b1b9-36fba5c6be1c`, 공개 루트 200 및 미인증 health/session/usage/workspaces/usage/history/grok 401, 6개 응답 CSP 확인. 서버 복구 대상은 release-045 `1b39e9b`, Worker 복구 대상은 `51ebfc88-33ff-4902-a82a-0571190387b7`이다. main 승격은 PR로만 요청하고 병합·태그는 하지 않는다.
+- **Result**: Worker `a2ac3594-a679-474b-b1b9-36fba5c6be1c`, 공개 루트 200 및 미인증 health/session/usage/workspaces/usage/history/grok 401, 6개 응답 CSP 확인. 서버 복구 대상은 release-045 `1b39e9b`, Worker 복구 대상은 `51ebfc88-33ff-4902-a82a-0571190387b7`이다. main 승격은 [PR #179](https://github.com/qus0in-factory/biseo/pull/179)로 요청했고 병합·태그는 하지 않았다.
+- **Result**: release-043과 병합 완료 작업 worktree 5개(biseo-pull, biseo-pane-card, biseo-header, biseo-auth-stale, biseo-046)를 제거하고 release-045는 롤백용으로 보존했다. release-043 config는 보호 경로에 백업한 뒤 제거했다.
 - **한계**: 인증 health·메모리 턴 전체 조회·운영 큐 전달은 인증 수단 미확보로 미검증이며, 타 계열 리뷰는 재분배 금지로 미실시했다. PM2 버전 경고는 데몬 갱신 없이 유지했다.
 
 ### v0.4.5 — 2026-11-02
