@@ -4,6 +4,7 @@ import type { SessionBindings } from './types.js'
 import { registerPaneOpenRoute } from './panes-open-route.js'
 import { registerPaneCloseRoute } from './panes-close-route.js'
 import { registerPaneRenameRoute } from './panes-rename-route.js'
+import { registerRecentRoute } from './recent-route.js'
 export function registerPaneManageRoutes(app: App) {
   const csrf: MiddlewareHandler<{ Bindings: SessionBindings }> = async (c, next) => {
     if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(c.req.method)) {
@@ -17,4 +18,5 @@ export function registerPaneManageRoutes(app: App) {
   registerPaneOpenRoute(app)
   registerPaneCloseRoute(app)
   registerPaneRenameRoute(app)
+  registerRecentRoute(app)
 }
