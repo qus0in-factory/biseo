@@ -20,6 +20,12 @@ audience: user
 
 ## 핫픽스 및 배포 이력
 
+### v0.4.7 재배포 3단계 (release-047c) — 2026-11-02
+
+- **Situation / Task**: 0.4.7 재배포의 문서 정리 단계다. 코드·배포·PM2·D1·PR 머지·태그는 수행하지 않으며 `config/runtime.json` 사용자 변경은 스테이징하지 않는다.
+- **Action**: 메인 트리 `biseo` dev의 `docs/operations-0.4.0.md`에 현재 운영 기준을 사실대로 갱신한다. 서버는 `biseo-release-047c`(dev `78c6e3d`), Worker Version(s): (100%) `a76ddd5c-9cd2-4210-bf53-67a3d9d1465b`. 반영된 변경: #188 agy 모델 파서 수정. 위키 `biseo.wiki`의 Development-Log도 갱신·push한다.
+- **Result / 한계**: 문서 커밋 후 dev push. 서버·Worker 값은 제공된 기준 기록이며 실시간 보증이 아니다. 인증 health·실제 운영 전달·타 계열 리뷰는 본 단계에서 미실시(재분배 금지).
+
 ### v0.4.7 재배포 3단계 — 2026-11-02
 
 - **Situation / Task**: 0.4.7 재배포의 문서 정리 단계다. 코드·배포·PM2·D1·PR 머지·태그는 수행하지 않으며 `config/runtime.json` 사용자 변경은 스테이징하지 않는다.
