@@ -1,18 +1,19 @@
-import type{ReactNode}from'react'
-import{DndContext,closestCenter,type DragEndEvent}from'@dnd-kit/core'
-import{SortableContext,horizontalListSortingStrategy,verticalListSortingStrategy}from'@dnd-kit/sortable'
-import{sortableA11y}from'./sortableA11y'
-import{useSortableSensors}from'./sortableSensors'
-export function SortableList({ids,axis='vertical',onReorder,children}:{ids:string[];axis?:'vertical'|'horizontal';onReorder:(from:number,to:number)=>void;children:ReactNode}){
- const sensors=useSortableSensors()
- const end=({active,over}:DragEndEvent)=>{
-  if(!over||active.id===over.id)return
-  const from=ids.indexOf(String(active.id)),to=ids.indexOf(String(over.id))
-  if(from>=0&&to>=0)onReorder(from,to)
- }
- return <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={end} accessibility={sortableA11y}>
-  <SortableContext items={ids} strategy={axis==='vertical'?verticalListSortingStrategy:horizontalListSortingStrategy}>
-   {children}
-  </SortableContext>
- </DndContext>
+import type { ReactNode } from 'react'
+import { DndContext, closestCenter } from '@dnd-kit/core'
+import { SortableContext } from '@dnd-kit/sortable'
+import { sortableA11y } from './sortableA11y'
+import { useSortableSensors } from './sortableSensors'
+import { getSortableStrategy } from './sortableStrategy'
+import { useSortableList } from './useSortableList'
+
+type P = { ids: string[]; axis?: 'vertical' | 'horizontal'; onReorder: (f: number, t: number) => void; children: ReactNode }
+
+export function SortableList({ ids, axis = 'vertical', onReorder, children }: P) {
+  const sensors = useSortableSensors()
+  const { items, start, stop, end } = useSortableList(ids, onReorder)
+  return (
+    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={start} onDragEnd={end} onDragCancel={stop} accessibility={sortableA11y}>
+      <SortableContext items={items} strategy={getSortableStrategy(axis)}>{children}</SortableContext>
+    </DndContext>
+  )
 }
