@@ -20,6 +20,13 @@ audience: user
 
 ## 핫픽스 및 배포 이력
 
+### v0.4.7 배포 — 2026-11-02
+
+- **Situation / Task**: 승인된 #183 초기 모델/사용량 연결 수정을 dev에 통합하고 0.4.7을 배포했다. main 병합·태그·재분배는 하지 않는다.
+- **Action**: 코드 `076f7ed`, 테스트 907개 실패/취소/skip/todo 0·typecheck·build 통과 후 dev push. 사용자 runtime은 미스테이징. D1 미적용 마이그레이션·queued/working 없음, sol 외 에이전트 idle 및 직전 120초 턴/큐 POST 없음 확인. release-046b config 전체·공개키를 release-047로 복사하고 build·preflight 후 biseo만 PM2 delete/start했다.
+- **Result**: release-047 서버 0.4.7, 15초 뒤 정확한 cwd/script·online·재시작 0·오류 로그 0바이트·미인증 health 401 확인 후 save. Worker `c2000bd3-306b-4720-830b-12ac334a5d58`, curl `/` 200·미인증 health/session/usage/workspaces/usage/history 401·모두 CSP 확인. 롤백은 서버 release-046b `b77b716`, Worker `c377cc60-9394-4826-96c3-2c5d787d7957`이다. Cloudflare 명령은 최대 3회 시도 정책이며 모두 첫 시도에 성공했다.
+- **정리 / 한계**: 패널별 cwd·하단과 현재 세션의 메인 트리 이동을 확인한 뒤 미사용 release-046·biseo-181·biseo-usage-link 제거, biseo-pull은 이미 없음. release-046 변경 설정은 보호 백업 후 제거했다. 인증 health·메모리 턴 전체 조회·실제 운영 전달·타 계열 리뷰는 인증 미확보/재분배 금지로 미검증. 증빙 `/tmp/i047/`, 보고 `/tmp/herdr-report-sol-047.md`.
+
 ### v0.4.6 최종 릴리스 — 2026-11-02
 
 - **Situation / Task**: 사용자 승인으로 RecentPull 상태 문구 간격을 정리하고 [PR #179](https://github.com/qus0in-factory/biseo/pull/179)의 CI 전체 통과 후 main `926621d`로 병합했다. `gh release create v0.4.6 --target main --generate-notes`로 [v0.4.6 릴리스](https://github.com/qus0in-factory/biseo/releases/tag/v0.4.6)를 발행했다.
