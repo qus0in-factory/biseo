@@ -10,6 +10,6 @@ export function claudeHttpUsage(status: number, headers: Headers, data: unknown,
     const retryAt = sec === null ? undefined : new Date(now.getTime() + sec * 1000).toISOString()
     return unknownUsage('claude', 'rate_limited', retryAt)
   }
-  if (status === 401 || status === 403) return unknownUsage('claude', 'auth_failed')
+  if (status === 401 || status === 403) return unknownUsage('claude', 'auth_required')
   return unknownUsage('claude', 'upstream_error')
 }
