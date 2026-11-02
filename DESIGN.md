@@ -581,7 +581,7 @@ When elements (such as workspace cards, panel cards, toggle buttons, or tabs) en
 
 ### 11. Long-press Drag Ordering (panel list, usage provider tabs)
 
-Panel cards and usage provider tabs share one sortable module (`web/ui/sortable/SortableList.tsx`, `SortableItem.tsx`). A pointer or touch press activates after a 350ms delay with an 8px movement tolerance so ordinary taps still select and scrolling still wins before activation. Dragging reorders live, saves the ID order to local storage, and appends newly discovered panes/providers at the end. The keyboard path uses Space/Enter to pick up, arrow keys to move, Space/Enter to drop, and Escape to cancel, with Korean announcements from `web/resources.json`. No separate edit mode, sort screen, arrow controls, or drag handle is shown.
+Panel cards and usage provider tabs share one sortable module (`web/ui/sortable/SortableList.tsx`, `SortableItem.tsx`). Mouse drag activates after 8px movement without delay, while touch press activates after a 250ms delay with a 10px movement tolerance so ordinary taps still select and scrolling still wins before activation. Dragging reorders live, saves the ID order to local storage, and appends newly discovered panes/providers at the end. The keyboard path uses Space/Enter to pick up, arrow keys to move, Space/Enter to drop, and Escape to cancel, with Korean announcements from `web/resources.json`. No separate edit mode, sort screen, arrow controls, or drag handle is shown.
 
 ## Motion & Transitions
 
