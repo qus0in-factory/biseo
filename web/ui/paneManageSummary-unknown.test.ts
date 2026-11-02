@@ -1,12 +1,12 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import{renderPaneItem}from'./paneManageItem.test-util'
-test('unknown model and usage parts are omitted',()=>{
+test('initial unknown model and usage show matching progress',()=>{
  const out=renderPaneItem({agentKind:'opencode',agentName:'ds-o'})
  assert.match(out,/pane-manage-summary/)
- assert.match(out,/>opencode</)
+  assert.match(out,/>opencode · 확인 중</)
  assert.doesNotMatch(out,/deepseek|ollama/)
 })
-test('a card without any known metadata has no summary line',()=>{
- assert.doesNotMatch(renderPaneItem({name:'bare'}),/pane-manage-summary/)
+test('a card without metadata still shows matching progress',()=>{
+  assert.match(renderPaneItem({name:'bare'}),/>확인 중</)
 })

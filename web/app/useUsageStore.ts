@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import type { UsageProvider } from '../domain/usage'
 
 interface UsageStoreState {
+  status: 'loading' | 'ready' | 'empty' | 'error'
   providers: UsageProvider[]
   stale: boolean
   lastSuccessAt: string | null
@@ -9,9 +10,10 @@ interface UsageStoreState {
 }
 
 export const useUsageStore = create<UsageStoreState>((set) => ({
+  status: 'loading',
   providers: [],
   stale: false,
   lastSuccessAt: null,
   setUsageData: (providers, stale = false, lastSuccessAt = null) =>
-    set({ providers, stale, lastSuccessAt }),
+    set({ providers, stale, lastSuccessAt, status: providers.length ? 'ready' : 'empty' }),
 }))
