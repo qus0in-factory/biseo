@@ -1,3 +1,5 @@
+# @lobehub/icons declares @lobehub/ui only for its Avatar/Combine variants; this app imports Mono only.
+autoInstallPeers: false
 allowBuilds:
   esbuild: true
   workerd: true
