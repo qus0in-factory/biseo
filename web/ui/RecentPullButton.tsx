@@ -7,7 +7,7 @@ import resources from '../resources.json'
 export function RecentPullButton({ pane, onImported }: { pane: string; onImported?: () => void }) {
   const pull = useRecentPull(pane, onImported)
   return (
-    <div className="mb-2 text-sm">
+    <div className="mb-2 flex flex-col items-start gap-4 text-sm [&>p]:mt-0">
       <Button variant="outline" disabled={pull.isPending} onClick={() => pull.mutate()}>
         <Download size={16} aria-hidden="true" />
         {resources.recentPull}
