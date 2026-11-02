@@ -13,7 +13,7 @@ export function Modal({open,title,onClose,children,small}:P){
      <h2 className="text-base font-semibold">{title}</h2>
      <ModalCloseButton onClose={onClose}/>
     </div>
-    <div className="overflow-y-auto">{children}</div>
+    <div className="min-w-0 overflow-y-auto overflow-x-hidden">{children}</div>
    </div>
   </ModalBackdrop>
  )
