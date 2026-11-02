@@ -20,6 +20,13 @@ audience: user
 
 ## 핫픽스 및 배포 이력
 
+### v0.4.6 재배포 — 2026-11-02
+
+- **Situation / Task**: 승인된 #180–#182 통합을 dev에 병합하고 버전 0.4.6을 유지해 재배포했다. PR #179 머지·태그·재분배 없음.
+- **Action**: dev `b77b716`, 테스트 901개 실패 0·typecheck·build 통과 후 push. runtime 사용자 변경 미스테이징. 미적용 마이그레이션·queued/working 없음, 최근 서버 로그 300행의 턴/큐 POST 0건·sol 외 에이전트 idle 확인. release-046 config 전체·공개키를 release-046b로 복사하고 build·preflight 후 biseo만 PM2 delete/start했다.
+- **Result**: 15초 뒤 release-046b cwd/script·0.4.6·online·재시작 0·오류 로그 0바이트·미인증 health 401 확인 후 save. Worker `0c61f56d-fb90-48ae-a8a6-2a5118fb3e23`, 공개 `/` 200·미인증 API 5개 401·모두 CSP 확인. 롤백은 서버 release-046과 Worker `a2ac3594-a679-474b-b1b9-36fba5c6be1c`다.
+- **한계**: 서비스 서명키 부재로 인증 health·메모리 턴 전체 조회·운영 큐 실제 전달 미검증. 독립 배포 리뷰는 재분배 금지로 미실시. 최초 D1 테이블명·PM2 JSON 전처리·zsh 예약 변수 오류는 수정 후 검증 완료.
+
 ### v0.4.6 — 2026-11-02
 
 - **Situation / Task**: 사용자 승인으로 `integrate/0.4.6`을 dev에 병합하고 0.4.6을 배포했다. main 병합·태그·재분배는 금지했다.
