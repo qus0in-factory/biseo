@@ -5,6 +5,7 @@ import { PaneAddModal } from './PaneAddModal'
 import r from '../resources.json'
 import './settings.css'
 import './settings-panels.css'
+import './workspace-picker.css'
 export function SettingsModal({open, onClose}: {open: boolean; onClose: () => void}) {
  const [adding, setAdding] = useState(false)
  const [tab, setTab] = useState('security')

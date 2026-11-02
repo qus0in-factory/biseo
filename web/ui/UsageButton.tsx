@@ -11,13 +11,13 @@ export function UsageButton({ enabled = true }: { enabled?: boolean }) {
       <Button
         type="button"
         variant="outline"
-        className="shrink-0 px-2 text-xs sm:px-3 sm:text-sm"
+        className="min-w-11 shrink-0 px-0 text-xs sm:px-3 sm:text-sm"
         aria-label={r.usageTab}
         title={r.usageTab}
         onClick={() => setOpen(true)}
       >
         <Gauge size={16} aria-hidden="true" />
-        <span>{r.usageTab}</span>
+        <span className="hidden sm:inline">{r.usageTab}</span>
       </Button>
       <UsageModal open={open} onClose={() => setOpen(false)} enabled={enabled} />
     </>

@@ -1,0 +1,4 @@
+.settings-content li.workspace-item { display: grid; gap: .5rem; }
+.workspace-head { display: flex; align-items: center; gap: .5rem; min-width: 0; }
+.workspace-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.workspace-meta { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; min-width: 0; }
