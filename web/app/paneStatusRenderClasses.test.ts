@@ -10,7 +10,7 @@ const states: PaneStatus[] = ['idle', 'working', 'done', 'blocked', 'unknown']
 test('status badge classes are distinct per state', () => {
   const classes = states.map((s) => {
     const h = renderToStaticMarkup(React.createElement(PaneStatusBadge, { status: s }))
-    const m = h.match(/class="([^"]*)"/)
+    const m = h.match(/class="([^"]*status-[^"]*)"/)
     assert.ok(m, `${s} should render a class attribute`)
     return m![1]
   })

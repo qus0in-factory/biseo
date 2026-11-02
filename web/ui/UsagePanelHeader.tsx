@@ -2,6 +2,7 @@ import { AlertTriangle, CircleCheck, HelpCircle } from 'lucide-react'
 import type { UsageProvider } from '../domain/usage'
 import { usageHeaderStatus } from '../domain/usage-header-status.js'
 import { UsageHistoryButton } from './UsageHistoryButton'
+import { HintPopover } from './HintPopover'
 import r from '../resources.json'
 
 const icons = { alert: AlertTriangle, check: CircleCheck, help: HelpCircle }
@@ -13,9 +14,9 @@ export function UsagePanelHeader({ provider }: { provider: UsageProvider }) {
     <div className="flex items-center justify-between gap-3">
       <span className="font-medium">{provider.provider}</span>
       <div className="flex items-center">
-        <span className={`inline-flex shrink-0 items-center ${cls}`} title={title} aria-label={title} role="img">
+        <HintPopover label={title} className={cls}>
           <Icon size={14} aria-hidden="true" />
-        </span>
+        </HintPopover>
         <UsageHistoryButton provider={provider.provider} />
       </div>
     </div>

@@ -8,9 +8,9 @@ type P = { label: string; text?: string; className?: string; children: ReactNode
 
 export function HintPopover(p: P) {
   const [o, s] = useState(false)
-  const d = useRef<boolean | null>(null), r = useRef<HTMLButtonElement>(null)
+  const r = useRef<HTMLButtonElement>(null)
   usePopoverDismiss(o, r, () => s(false))
-  const c = hintTriggerClass(p.className), e = hintTriggerEvents(o, d, s)
+  const c = hintTriggerClass(p.className), e = hintTriggerEvents(o, s)
   return (
     <Tooltip open={o}>
       <TooltipTrigger asChild>
