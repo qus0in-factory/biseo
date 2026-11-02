@@ -12,10 +12,10 @@ test('resources define reservation, cancellation, and prompt reject', () => {
   assert.match(s.prompt_not_accepted, /전달되지 않음/)
 })
 
-test('canInputTarget permits busy/blocked panel reservation', () => {
+test('canInputTarget permits busy reservation and blocks blocked panel', () => {
   const f = (r: any) => ({ paneId: 'p', name: 'P', status: 'idle' as const, sendable: false, disabledReason: r })
   assert.equal(canInputTarget(f('agent_busy')), true)
   assert.equal(isQueuedTarget(f('agent_busy')), true)
-  assert.equal(canInputTarget(f('agent_blocked')), true)
+  assert.equal(canInputTarget(f('agent_blocked')), false)
   assert.equal(canInputTarget(f('response_capture_unavailable')), false)
 })
