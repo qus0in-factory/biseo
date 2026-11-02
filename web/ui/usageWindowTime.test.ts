@@ -18,7 +18,7 @@ test('usage reset time uses a clock and short KST timestamp', () => {
   const html = renderToStaticMarkup(createElement(UsageWindowTime, { value }))
   assert.match(html, /lucide-clock/)
   assert.match(html, new RegExp(`aria-label="${r.usageReset}"`))
-  assert.match(html, new RegExp(`title="${r.usageReset}"`))
+  assert.match(html, /<button[^>]*aria-expanded="false"/)
   assert.match(html, /26-11-01 14:40:03/)
   assert.doesNotMatch(html, /\(KST\)/)
   assert.doesNotMatch(html, new RegExp(`>${r.usageReset}:`))

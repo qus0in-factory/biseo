@@ -3,7 +3,7 @@ import test from 'node:test'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { WorkspacePickerItem } from './WorkspacePickerItem'
-import { paneSelectClass } from './paneSelectClass'
+import { paneSelectClass, paneSelectTarget } from './paneSelectClass'
 
 test('selection changes fill, not ring or border; workspace aria is kept', () => {
  const html = renderToStaticMarkup(createElement(WorkspacePickerItem, {
@@ -15,5 +15,5 @@ test('selection changes fill, not ring or border; workspace aria is kept', () =>
  assert.match(paneSelectClass(true), /bg-primary\/15/)
  const borders = (active: boolean) => paneSelectClass(active).split(' ').filter(c => c.startsWith('border'))
  assert.deepEqual(borders(true), borders(false))
- assert.match(paneSelectClass(true), /focus-visible:outline-2/)
+ assert.match(paneSelectTarget, /focus-visible:outline-2/)
 })

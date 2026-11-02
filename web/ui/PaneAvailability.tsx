@@ -1,29 +1,21 @@
-import { AlertTriangle, HelpCircle } from 'lucide-react'
+import { AlertTriangle } from 'lucide-react'
 import type { Availability } from '../domain/timeline'
 import { availabilityNote, availabilityWhen } from '../domain/availability'
+import { HintPopover } from './HintPopover'
 import r from '../resources.json'
-
-const res = r as Record<string, string>
 
 export function PaneAvailability({ availability }: { availability?: Availability }) {
   const note = availabilityNote(availability)
   if (!note) return null
-  const limited = note.state === 'limited'
-  const label = limited
-    ? res.availabilityLimited.replace(
-        '{at}',
-        availabilityWhen(note.resetsAt, res.availabilityNoReset),
-      )
-    : res.availabilityUnknown
-  const Icon = limited ? AlertTriangle : HelpCircle
+  const label = r.availabilityLimited.replace(
+    '{at}',
+    availabilityWhen(note.resetsAt, r.availabilityNoReset),
+  )
   return (
-    <span
-      className="inline-flex shrink-0 items-center text-muted-foreground"
-      title={label}
-      aria-label={label}
-      role="img"
-    >
-      <Icon size={13} aria-hidden="true" className="block shrink-0" />
-    </span>
+    <HintPopover label={label} className="text-muted-foreground hover:text-foreground">
+      <span role="status" className="inline-flex shrink-0 items-center">
+        <AlertTriangle size={13} aria-hidden="true" className="block shrink-0" />
+      </span>
+    </HintPopover>
   )
 }

@@ -1,6 +1,7 @@
 import { Clock } from 'lucide-react'
 import { usageTimePercent } from '../domain/usage-time-percent'
 import r from '../resources.json'
+import { HintPopover } from './HintPopover'
 
 export function UsageTimeLeft({
   label,
@@ -19,10 +20,10 @@ export function UsageTimeLeft({
   return (
     <span className="inline-flex items-center gap-1 text-muted-foreground">
       <span aria-hidden="true">·</span>
-      <span className="inline-flex items-center gap-1" title={title}>
+      <HintPopover label={title} className="gap-1">
         <Clock size={12} className="shrink-0" aria-label={title} role="img" />
         <span className="text-xs leading-none">{percent}%</span>
-      </span>
+      </HintPopover>
     </span>
   )
 }
