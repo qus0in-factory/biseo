@@ -7,7 +7,8 @@ export function HealthView({ loading, error, onCheck }: Props) {
     <>
       {!loading && error && <span className="text-xs text-error">{r.errorPrefix}{error}</span>}
       <Button
-        variant="ghost"
+        type="button"
+        variant="outline"
         size="icon"
         onClick={onCheck}
         disabled={loading}
