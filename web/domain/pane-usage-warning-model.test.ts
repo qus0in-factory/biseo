@@ -1,16 +1,18 @@
 import assert from'node:assert/strict'
 import test from'node:test'
-import{evaluatePaneUsageWarning as e}from'./pane-usage-warning'
-import{makeTestPane as p}from'./pane-usage-test-helper'
-import{agyWarningFixture as agy}from'./agy-warning-fixture'
-const win=(u:number)=>({window:'monthly',usedPercent:u,resetsAt:null,checkedAt:null,limitReached:false,source:null})
-test('OpenCode observed provider connects the warning',()=>{
- const pane={...p('opencode','ds-o'),modelProvider:'ollama'}
- assert.equal(e(pane,[{provider:'ollama',state:'limited',windows:[win(99)]}]).hasWarning,true)
- assert.equal(e(pane,[{provider:'ollama',state:'limited',windows:[win(97.9)]}]).hasWarning,false)
+import{evaluatePaneUsageWarning}from'./pane-usage-warning'
+import{makeTestPane}from'./pane-usage-test-helper'
+import{agyWarningFixture}from'./agy-warning-fixture'
+import{prov,win}from'./paneUsageSummaryFixture.test-util'
+const ollama=(used:number)=>({
+ ...prov('ollama',[win('included_balance',null)]),
+ metrics:[{id:'included_balance',label:'i',unit:'currency',used,limit:100,remaining:100-used,resetsAt:null}],
 })
-test('agy argon warns only from the argon pool',()=>{
- const pane={...p('agy','ga'),modelId:'gemini-4-argon'}
- assert.equal(e(pane,[agy(10)]).hasWarning,true)
- assert.equal(e({...pane,modelId:'gemini-3.8-flash'},[agy(10)]).hasWarning,false)
+test('observed provider connects warning',()=>{
+ const ds={...makeTestPane('opencode','ds-o'),modelProvider:'ollama'}
+ assert.equal(evaluatePaneUsageWarning(ds,[ollama(98)]).hasWarning,true)
+ assert.equal(evaluatePaneUsageWarning(ds,[ollama(97)]).hasWarning,false)
+ const ga={...makeTestPane('agy','ga'),modelId:'gemini-4-argon'},pool=[agyWarningFixture(10)]
+ assert.equal(evaluatePaneUsageWarning(ga,pool).hasWarning,true)
+ assert.equal(evaluatePaneUsageWarning({...ga,modelId:'gemini-3.8-flash'},pool).hasWarning,false)
 })

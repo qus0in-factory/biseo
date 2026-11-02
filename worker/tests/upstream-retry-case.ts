@@ -4,6 +4,12 @@ import{run}from'./upstream-retry-helpers.js'
 import{drive}from'./upstream-retry-drive.js'
 export const retryCase=async(t:TestContext,fn:(n:number)=>Response)=>{
  const{env}=await createTimelineTestEnv()
+ let start!:()=>void
+ const started=new Promise<void>(resolve=>{start=resolve})
  t.mock.timers.enable({apis:['setTimeout']})
- try{return await drive(t,run(env,'GET',fn))}finally{t.mock.timers.reset()}
+ try{
+  const pending=run(env,'GET',n=>{start();return fn(n)})
+  await started
+  return await drive(t,pending)
+ }finally{t.mock.timers.reset()}
 }

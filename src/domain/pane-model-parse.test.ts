@@ -1,15 +1,17 @@
 import assert from'node:assert/strict'
 import test from'node:test'
-import{parseModelDisplay as p}from'./pane-model-parse.js'
+import{parseModelDisplay}from'./pane-model-parse.js'
+const cases:[string,string,string][]=[
+ ['DeepSeek V4.1 Flash Ollama Cloud','deepseek-v4.1-flash','ollama'],
+ ['GPT-6.1 Sol OpenAI','gpt-6.1-sol','codex'],
+ ['Opus 5.5 Claude Agent','opus-5.5','claude'],
+ ['Beam Free OpenCode Go','beam','opencode'],
+ ['GLM-5.3-Flash Free Default / OpenCode','glm-5.3-flash','opencode'],
+ ['GLM OpenCode Go','glm','opencode-go'],
+]
 test('opencode maps observed provider and model',()=>{
- assert.deepEqual(p('DeepSeek V4.1 Flash Ollama Cloud','opencode'),{modelId:'deepseek-v4.1-flash',provider:'ollama'})
- assert.deepEqual(p('GPT-6.1 Sol OpenAI','opencode'),{modelId:'gpt-6.1-sol',provider:'codex'})
- assert.deepEqual(p('Opus 5.5 Claude Agent','opencode'),{modelId:'opus-5.5',provider:'claude'})
- assert.deepEqual(p('GLM-5.3-Flash Free Default / OpenCode','opencode'),{modelId:'glm-5.3-flash-free-default',provider:'opencode'})
- assert.deepEqual(p('GLM OpenCode Go','opencode'),{modelId:'glm',provider:'opencode-go'})
+ for(const[s,modelId,provider]of cases)assert.deepEqual(parseModelDisplay(s,'opencode'),{modelId,provider})
 })
 test('unknown provider or model is not invented',()=>{
- assert.equal(p('Gemini 3.8 Flash','opencode'),null)
- assert.equal(p('Mystery Model','opencode'),null)
- assert.equal(p('  ','opencode'),null)
+ for(const s of['Gemini 3.8 Flash','Mystery Model','  '])assert.equal(parseModelDisplay(s,'opencode'),null)
 })
