@@ -1,6 +1,8 @@
 [
-  {"provider":"codex","model":"gpt","alias":"sol"},
-  {"provider":"claude","model":"sonnet","alias":"son"},
+  {"model":"sol","alias":"sol"},
+  {"model":"terra","alias":"terra"},
+  {"model":"sonnet","alias":"son"},
+  {"model":"opus","alias":"opus"},
   {"provider":"agy","model":"flash","alias":"gf"},
   {"provider":"agy","model":"argon","alias":"ga"},
   {"model":"beam","alias":"beam"},

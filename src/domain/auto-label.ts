@@ -1,5 +1,6 @@
 export type AliasRule={provider?:string;model:string;alias:string}
-export function pickAlias(rules:AliasRule[],m:{modelId:string;provider:string}|undefined){
+export type Obs={modelId:string;provider:string}
+export function pickAlias(rules:AliasRule[],m?:Obs){
  if(!m)return null
  const r=rules.find(r=>(!r.provider||r.provider===m.provider)&&m.modelId.includes(r.model))
  return r?.alias??null

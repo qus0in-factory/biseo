@@ -18,3 +18,10 @@ test('keeps user names and unknown models',async()=>{
  await f(h,[p('a','mine'),p('b')],{a:m.a})
  assert.deepEqual(calls,[])
 })
+test('real samples map to aliases',async()=>{
+ const{readFileSync}=await import('node:fs')
+ const{pickAlias}=await import('../domain/auto-label.js')
+ const r=JSON.parse(readFileSync(new URL('../../config/model-aliases.json',import.meta.url),'utf8'))
+ const s:[string,string,string][]=[['opus-5.5','claude','opus'],['gemini-3.8-flash','agy','gf'],['gemini-4-argon','agy','ga'],['gpt-6.1-sol','codex','sol'],['gpt-6.1-terra','codex','terra'],['claude-sonnet-5.5','agy','son'],['deepseek-v4.1-flash','ollama','ds-o'],['deepseek-v4.1-flash','opencode','ds-f'],['beam','opencode','beam']]
+ for(const[modelId,provider,a]of s)assert.equal(pickAlias(r,{modelId,provider}),a)
+})
