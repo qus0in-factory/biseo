@@ -1,22 +1,23 @@
-import type { PaneSummary, DisabledReason } from './timeline'
+import type { PaneSummary as P, DisabledReason as D } from './timeline.js'
 
-export function isBusyReason(r: DisabledReason): boolean {
-  return r === 'agent_busy' || r === 'agent_blocked'
+const blk = (t?: P) => t?.status === 'blocked' || t?.disabledReason === 'agent_blocked'
+const unk = (t?: P) => t?.status === 'unknown' || t?.disabledReason === 'agent_unknown'
+const dis = (d?: D) => !!d && d !== 'agent_busy'
+
+export const isBusyReason = (r: D) => r === 'agent_busy'
+
+export function getPaneState(t?: P) {
+  if (!t) return { ok: false, reason: 'target_not_found' as const }
+  if (blk(t)) return { ok: false, reason: 'agent_blocked' as const }
+  if (unk(t)) return { ok: false, reason: 'agent_unknown' as const }
+  if (dis(t.disabledReason)) return { ok: false, reason: t.disabledReason }
+  return { ok: true, reason: null }
 }
 
-export function getPaneState(target?: PaneSummary) {
-  if (!target) return { ok: false, reason: 'target_not_found' as const }
-  if (target.sendable) return { ok: true, reason: null }
-  return { ok: false, reason: target.disabledReason ?? 'agent_busy' }
+export function canInputTarget(t?: P): boolean {
+  return Boolean(t && !blk(t) && !unk(t) && !dis(t.disabledReason))
 }
 
-export function canInputTarget(target?: PaneSummary): boolean {
-  if (!target) return false
-  if (target.sendable) return true
-  return isBusyReason(target.disabledReason ?? null)
-}
-
-export function isQueuedTarget(target?: PaneSummary): boolean {
-  if (!target || target.sendable) return false
-  return isBusyReason(target.disabledReason ?? null)
+export function isQueuedTarget(t?: P): boolean {
+  return Boolean(t && !blk(t) && (t.status === 'working' || t.disabledReason === 'agent_busy'))
 }
