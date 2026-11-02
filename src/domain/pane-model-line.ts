@@ -1,3 +1,4 @@
+import{agyModel}from'./pane-model-agy.js'
 const SEP=' · ',TAIL=6,OPENCODE=/^[┃│|]?\s*build\b/i
 const middle=(s:string)=>{
  const p=s.split(SEP)
@@ -12,7 +13,14 @@ export function modelDisplay(lines:string[],kind:string|null):string|null{
  }
  if(kind==='agy'){
   const last=tail[tail.length-1]
-  return last?middle(last):null
+  if(!last)return null
+  const parts=last.split(SEP)
+  if(parts.length<3)return null
+  for(const part of parts){
+   const model=agyModel(part)
+   if(model)return model
+  }
+  return null
  }
  return null
 }

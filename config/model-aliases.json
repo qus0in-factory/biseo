@@ -1,0 +1,11 @@
+[
+  {"model":"sol","alias":"sol"},
+  {"model":"terra","alias":"terra"},
+  {"model":"sonnet","alias":"son"},
+  {"model":"opus","alias":"opus"},
+  {"provider":"agy","model":"flash","alias":"gf"},
+  {"provider":"agy","model":"argon","alias":"ga"},
+  {"model":"beam","alias":"beam"},
+  {"provider":"ollama","model":"deepseek","alias":"ds-o"},
+  {"provider":"opencode","model":"deepseek","alias":"ds-f"}
+]

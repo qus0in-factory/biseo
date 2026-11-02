@@ -3,9 +3,18 @@ import r from '../resources.json'
 
 export function UsageBookmarkStar({ marked, onToggle }: { marked: boolean; onToggle: () => void }) {
   return (
-    <button type="button" aria-label={r.usageBookmarkAria} aria-pressed={marked}
-      onClick={(e) => { e.stopPropagation(); onToggle() }}>
+    <span
+      role="button"
+      tabIndex={-1}
+      aria-label={r.usageBookmarkAria}
+      aria-pressed={marked}
+      onClick={(e) => {
+        e.stopPropagation()
+        onToggle()
+      }}
+      className="inline-flex items-center justify-center p-0.5"
+    >
       <Star size={14} className={marked ? 'fill-current' : ''} />
-    </button>
+    </span>
   )
 }

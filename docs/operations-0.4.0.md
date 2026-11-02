@@ -7,7 +7,7 @@ audience: user
 
 2026-11-01 v0.4.0 릴리스 기준 운영 서버는 `biseo-release-041`의 0.4.0, 운영 Worker는 `4cab6e28-d15c-4261-a373-5cce18e4ec75`다. 직전 Worker는 `20e6603a-afa7-45ad-9687-cc25b6976232`, 직전 서버(복구 대상)는 `biseo-release-040`이다. 이는 릴리스 완료 시점의 기록이지 현재 상태의 실시간 보증이 아니다. 이전 운영 문서는 해당 버전의 기록이며 이 절차보다 우선하지 않는다.
 
-- 인증된 대시보드에서 Herdr workspace 선택 및 패널 열기·닫기·이름 변경을 지원한다. 작업 중인 패널, 예약과 조율자 보호를 확인한다 (#113, #136).
+- 인증된 대시보드에서 Herdr workspace 선택 및 패널 열기·닫기·이름 변경을 지원한다. 작업 중인 패널과 예약을 확인한다 (#113, #136).
 - D1 예약은 패널별 FIFO·lease·재시도로 복구한다. 전달 결과가 불확실한 경우 중복 가능성을 확인하며 정확히 한 번 전달을 보장한다고 단정하지 않는다 (#138).
 - 신뢰 IP와 6자리 PIN, 세션 refresh 회전·재사용 탐지를 지원한다. PIN은 IP 단독 인증이 아니며 신뢰 IP 철회 후 PIN 갱신을 차단한다 (#118, #143).
 - 패널 상태 집계, 사용량 경고(5h 90%, 주·월 98%, 미확인은 별도), 접힌 패널 수 1~3 조절, Argon 주간 사용량을 제공한다. 상단 알림과 OpenCode Free 사용량은 제거했다 (#137, #139–#142, #144).
@@ -20,9 +20,28 @@ audience: user
 
 ## 핫픽스 및 배포 이력
 
+### v0.4.7 재배포 3단계 (release-047c) — 2026-11-02
+
+- **Situation / Task**: 0.4.7 재배포의 문서 정리 단계다. 코드·배포·PM2·D1·PR 머지·태그는 수행하지 않으며 `config/runtime.json` 사용자 변경은 스테이징하지 않는다.
+- **Action**: 메인 트리 `biseo` dev의 `docs/operations-0.4.0.md`에 현재 운영 기준을 사실대로 갱신한다. 서버는 `biseo-release-047c`(dev `78c6e3d`), Worker Version(s): (100%) `a76ddd5c-9cd2-4210-bf53-67a3d9d1465b`. 반영된 변경: #188 agy 모델 파서 수정. 위키 `biseo.wiki`의 Development-Log도 갱신·push한다.
+- **Result / 한계**: 문서 커밋 후 dev push. 서버·Worker 값은 제공된 기준 기록이며 실시간 보증이 아니다. 인증 health·실제 운영 전달·타 계열 리뷰는 본 단계에서 미실시(재분배 금지).
+
+### v0.4.7 재배포 3단계 — 2026-11-02
+
+- **Situation / Task**: 0.4.7 재배포의 문서 정리 단계다. 코드·배포·PM2·D1·PR 머지·태그는 수행하지 않으며 `config/runtime.json` 사용자 변경은 스테이징하지 않는다.
+- **Action**: 메인 트리 `biseo` dev의 `docs/operations-0.4.0.md`에 현재 운영 기준을 사실대로 갱신한다. 서버는 `biseo-release-047b`(dev `a884303`), Worker Version(s): (100%) `c59c681a-cac4-4156-89db-eb2181e66c76`. 반영된 변경: #185 조율자 보호 제거, #186 라벨 자동 인식, #187 드래그, 사용량 모달 수명 주기 수정. 위키 `biseo.wiki`의 Development-Log도 갱신·push한다.
+- **Result / 한계**: 문서 커밋 후 dev push. 서버·Worker 값은 제공된 기준 기록이며 실시간 보증이 아니다. 인증 health·실제 운영 전달·타 계열 리뷰는 본 단계에서 미실시(재분배 금지).
+
+### v0.4.7 배포 — 2026-11-02
+
+- **Situation / Task**: 승인된 #183 초기 모델/사용량 연결 수정을 dev에 통합하고 0.4.7을 배포했다. main 병합·태그·재분배는 하지 않는다.
+- **Action**: 코드 `076f7ed`, 테스트 907개 실패/취소/skip/todo 0·typecheck·build 통과 후 dev push. 사용자 runtime은 미스테이징. D1 미적용 마이그레이션·queued/working 없음, sol 외 에이전트 idle 및 직전 120초 턴/큐 POST 없음 확인. release-046b config 전체·공개키를 release-047로 복사하고 build·preflight 후 biseo만 PM2 delete/start했다.
+- **Result**: release-047 서버 0.4.7, 15초 뒤 정확한 cwd/script·online·재시작 0·오류 로그 0바이트·미인증 health 401 확인 후 save. Worker `c2000bd3-306b-4720-830b-12ac334a5d58`, curl `/` 200·미인증 health/session/usage/workspaces/usage/history 401·모두 CSP 확인. 롤백은 서버 release-046b `b77b716`, Worker `c377cc60-9394-4826-96c3-2c5d787d7957`이다. Cloudflare 명령은 최대 3회 시도 정책이며 모두 첫 시도에 성공했다.
+- **정리 / 한계**: 패널별 cwd·하단과 현재 세션의 메인 트리 이동을 확인한 뒤 미사용 release-046·biseo-181·biseo-usage-link 제거, biseo-pull은 이미 없음. release-046 변경 설정은 보호 백업 후 제거했다. 인증 health·메모리 턴 전체 조회·실제 운영 전달·타 계열 리뷰는 인증 미확보/재분배 금지로 미검증. 증빙 `/tmp/i047/`, 보고 `/tmp/herdr-report-sol-047.md`.
+
 ### v0.4.6 최종 릴리스 — 2026-11-02
 
-- **Situation / Task**: 사용자 승인으로 RecentPull 상태 문구 간격을 정리하고 [PR #179](https://github.com/qus0in-factory/biseo/pull/179)의 CI 확인·main 승격·[v0.4.6 릴리스](https://github.com/qus0in-factory/biseo/releases/tag/v0.4.6)를 진행한다.
+- **Situation / Task**: 사용자 승인으로 RecentPull 상태 문구 간격을 정리하고 [PR #179](https://github.com/qus0in-factory/biseo/pull/179)의 CI 전체 통과 후 main `926621d`로 병합했다. `gh release create v0.4.6 --target main --generate-notes`로 [v0.4.6 릴리스](https://github.com/qus0in-factory/biseo/releases/tag/v0.4.6)를 발행했다.
 - **Action**: web `3d4982c`에서 공통 `gap-4`와 상태 문구의 추가 margin 제거로 성공·중복·빈 응답·오류·로딩 모두 버튼과 16px 간격을 적용했다. 320·1024px 상태별 스크린샷과 DOM 실측 10건, 가로 넘침·페이지 오류 없음 확인. 테스트 902개 실패/취소/skip/todo 0, typecheck·build·preflight 통과 후 dev push. 수정 모듈 최대 20줄·921자.
 - **Result**: 운영 서버 `b77b716` 대비 `src/` 변경 없음으로 PM2는 release-046b 그대로 유지했다. Worker `c377cc60-9394-4826-96c3-2c5d787d7957` 배포 후 curl `/` 200, 미인증 health/session/usage/workspaces/usage/history 401 및 응답 6개 CSP 확인. Worker 롤백 대상은 `0c61f56d-fb90-48ae-a8a6-2a5118fb3e23`. D1·서버 설정 변경 없음. 사용자 runtime 변경은 보존·미스테이징.
 - **정리 / 한계**: biseo-pull은 이미 제거된 상태이며 biseo-181은 현재 sol 세션의 실제 경로이므로 보존했다. pane list와 모든 패널 하단을 다시 확인했다. 인증 API·실제 운영 전달 및 타 계열 독립 리뷰는 미실시(인증 미확보·재분배 금지). 스크린샷은 실제 Vite 앱과 mock API 기반이며 운영 인증 성공의 근거는 아니다. 증빙은 `/tmp/i046h/`와 `/tmp/herdr-report-sol-046h.md`에 둔다.
@@ -119,7 +138,7 @@ audience: user
 
 ## 설정과 D1
 
-서버 기본값은 `config/runtime.json`, 패널 템플릿과 조율자 보호는 `config/pane-templates.json`, `config/coordinator-panels.json`, 화면 임계값은 `web/resources.json`을 확인한다. 서버의 workspace, callback, 서비스 토큰 issuer/audience 및 공개키 경로는 실제 환경에 맞춘다. Worker의 세션·PIN·refresh TTL, 허용 호스트·origin, cron 및 D1 바인딩은 `wrangler.jsonc`를 확인한다. 비밀번호·서명 개인키 등 비밀은 보호된 secret 경로에서 관리하고 문서나 로그에 남기지 않는다. 설정 파일의 기본값을 운영값으로 가정하지 않는다.
+서버 기본값은 `config/runtime.json`, 패널 템플릿은 `config/pane-templates.json`, 화면 임계값은 `web/resources.json`을 확인한다. 서버의 workspace, callback, 서비스 토큰 issuer/audience 및 공개키 경로는 실제 환경에 맞춘다. Worker의 세션·PIN·refresh TTL, 허용 호스트·origin, cron 및 D1 바인딩은 `wrangler.jsonc`를 확인한다. 비밀번호·서명 개인키 등 비밀은 보호된 secret 경로에서 관리하고 문서나 로그에 남기지 않는다. 설정 파일의 기본값을 운영값으로 가정하지 않는다.
 
 운영 마이그레이션 전 인증과 복구 방식을 확인하고, 권한을 제한한 비어 있지 않은 D1 백업을 확보한다. 적용 이력을 조회해 누락분만 순서대로 적용한다. 0.4.0 릴리스 보고에서는 0007–0011 적용 및 스키마 확인을 마쳤다.
 

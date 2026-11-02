@@ -19,7 +19,7 @@ export function UsageButton({ enabled = true }: { enabled?: boolean }) {
         <Gauge size={16} aria-hidden="true" />
         <span className="hidden sm:inline">{r.usageTab}</span>
       </Button>
-      <UsageModal open={open} onClose={() => setOpen(false)} enabled={enabled} />
+      <UsageModal open={open} onClose={() => setOpen(false)} enabled={open} />
     </>
   )
 }
