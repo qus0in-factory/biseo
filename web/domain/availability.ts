@@ -3,24 +3,24 @@ export type AvailabilityWindow = 'primary' | 'secondary'
 export interface Availability {
   state: AvailabilityState
   source: string | null
-  checkedAt: string
+  checkedAt: string | null
   resetsAt: string | null
   reason: string | null
   window: AvailabilityWindow | null
 }
 
 export interface AvailabilityNote {
-  state: 'limited' | 'unknown'
+  state: 'limited'
   resetsAt: string | null
 }
 
 export function availabilityNote(
   availability?: Availability,
 ): AvailabilityNote | null {
-  if (!availability || availability.state === 'available') return null
+  if (!availability || availability.state !== 'limited') return null
   return {
-    state: availability.state,
-    resetsAt: availability.state === 'limited' ? availability.resetsAt : null,
+    state: 'limited',
+    resetsAt: availability.resetsAt,
   }
 }
 
