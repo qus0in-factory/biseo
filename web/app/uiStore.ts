@@ -1,31 +1,22 @@
 import { create } from 'zustand'
-import { parsePinnedPanes } from '../domain/pinnedPanes'
-import r from '../resources.json'
-
-const initialPinned = (() => {
-  try {
-    return typeof window === 'undefined' ? [] : parsePinnedPanes(window.localStorage.getItem(r.pinnedStorageKey))
-  } catch {
-    return []
-  }
-})()
+import { connectionStatus, type ConnectionStatus } from '../domain/connectionStatus'
 
 export interface UiState {
   drawerOpen: boolean
   selectedPaneId: string | null
-  pinned: string[]
+  connection: ConnectionStatus
   setDrawerOpen: (open: boolean) => void
   toggleDrawer: () => void
   setSelectedPaneId: (id: string | null) => void
-  setPinned: (ids: string[]) => void
+  setOnline: (ok: boolean) => void
 }
 
 export const useUiStore = create<UiState>((set) => ({
   drawerOpen: false,
   selectedPaneId: null,
-  pinned: initialPinned,
+  connection: 'connecting',
   setDrawerOpen: (open) => set({ drawerOpen: open }),
   toggleDrawer: () => set((s) => ({ drawerOpen: !s.drawerOpen })),
   setSelectedPaneId: (id) => set({ selectedPaneId: id }),
-  setPinned: (pinned) => set({ pinned }),
+  setOnline: (ok) => set((s) => ({ connection: connectionStatus(ok, s.connection === 'connected') })),
 }))

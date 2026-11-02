@@ -14,6 +14,7 @@ export function windowSnapshot(provider:string,state:UsageState,p:Record<string,
   limitReached:rowLimitReached(w.limitReached,unit,used,w.limit,remaining),
   source:str(w.source)??str(p.source),
   updatedAt,
-  metricId,label,unit,used,limitValue,remaining
+  metricId,label,unit,used,limitValue,remaining,
+  reason:str(w.reason)??str(p.reason),retryAt:str(w.retryAt)??str(p.retryAt)
  }
 }

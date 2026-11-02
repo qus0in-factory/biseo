@@ -1,23 +1,20 @@
 import type { UsageProvider } from '../domain/usage'
 import { UsageCacheNote } from './UsageCacheNote'
-import { UsageReasonNote } from './UsageReasonNote'
 import { UsagePanelBody } from './UsagePanelBody'
-import { OllamaBalanceSource } from './OllamaBalanceSource'
 import { UsagePanelHeader } from './UsagePanelHeader'
+import { UsageAuthNotice } from './UsageAuthNotice'
+import { UsageDetailNotes } from './UsageDetailNotes'
+import { isAuth, usageRowAria, usageStaleCls } from './usageRowAria.js'
 
-export function UsagePanelRow({
-  provider,
-  remaining = true,
-}: {
-  provider: UsageProvider
-  remaining?: boolean
-}) {
+export function UsagePanelRow({ provider, remaining = true }: { provider: UsageProvider; remaining?: boolean }) {
+  const st = isAuth(provider)
   return (
-    <div className="flex min-w-44 flex-col gap-1 rounded border px-2 py-2 text-xs">
+    <div className={`flex min-w-44 flex-col gap-1 rounded border p-2 text-xs ${usageStaleCls(provider)}`} role={st ? 'region' : undefined} aria-label={usageRowAria(provider)}>
       <UsagePanelHeader provider={provider} />
-      <UsageCacheNote provider={provider} />
-      <OllamaBalanceSource provider={provider} />
-      <UsageReasonNote reason={provider.reason} />
+      {st ? <UsageAuthNotice provider={provider} /> : <>
+        <UsageCacheNote provider={provider} />
+        <UsageDetailNotes provider={provider} />
+      </>}
       <UsagePanelBody provider={provider} remaining={remaining} />
     </div>
   )

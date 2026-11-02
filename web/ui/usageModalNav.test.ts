@@ -5,13 +5,14 @@ import { readFileSync } from 'node:fs'
 const src = (f: string) => readFileSync(new URL(`./${f}`, import.meta.url), 'utf8')
 
 describe('UsageModalNav', () => {
-  it('keeps bookmark tab in a single-line strip with prev/next', () => {
+  it('keeps provider tabs in a single-line sortable strip without arrows', () => {
     const list = src('UsageTabList.tsx')
     assert.match(list, /value="bookmarked"/)
     assert.match(list, /flex-nowrap/)
     assert.match(list, /overflow-x-auto/)
+    assert.match(list, /SortableList/)
+    assert.doesNotMatch(list, /usageTabPrev|usageTabNext/)
     const strip = src('UsageTabStrip.tsx')
-    assert.match(strip, /usageTabPrev/)
-    assert.match(strip, /usageTabNext/)
+    assert.doesNotMatch(strip, /usageTabPrev|usageTabNext|step/)
   })
 })
