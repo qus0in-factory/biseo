@@ -20,7 +20,7 @@ export function ComposerControls({ target, busy, can, online, pull }: P) {
       ? (res.reserveSend ?? res.send)
       : res.send
   return (
-    <div className="flex shrink-0 items-end gap-1.5 self-end">
+    <div className="flex shrink-0 items-center gap-1.5 self-end">
       <InterruptButton key={target?.paneId ?? 'none'} target={target} online={online} />
       {err && <ReasonTip text={err} />}
       {pull && <RecentPullButton pull={pull} />}

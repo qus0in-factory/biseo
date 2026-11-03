@@ -7,9 +7,9 @@ export function RecentPullButton({ pull }: { pull: RecentPull }) {
   return (
     <Button
       type="button"
-      variant="outline"
+      variant="ghost"
       size="icon"
-      className="h-11 w-11 shrink-0 rounded-full"
+      className="h-11 w-11 shrink-0 rounded-full text-muted-foreground hover:bg-muted/60 hover:text-foreground"
       disabled={pull.isPending}
       onClick={() => pull.mutate()}
       aria-label={resources.recentPull}

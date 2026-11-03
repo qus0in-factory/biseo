@@ -12,12 +12,12 @@ export function AgentHeader({ item: i, onCancel }: P) {
   const targetName = useTargetName(i)
 
   return (
-    <div className="mb-1 flex flex-wrap items-center gap-2">
-      <strong>{targetName}</strong>
-      {i.agentKind && <small>({i.agentKind})</small>}
+    <div className="mb-1.5 flex flex-wrap items-center gap-2 text-sm">
+      <strong className="font-semibold text-foreground">{targetName}</strong>
+      {i.agentKind && <span className="font-mono text-xs text-muted-foreground">({i.agentKind})</span>}
       <TurnStatusBadge status={i.status} errorCode={i.errorCode} />
       {isQ && onCancel && <CancelTurnButton requestId={i.requestId} onCancel={onCancel} />}
-      {t && <time className="text-xs text-muted-foreground">{t}</time>}
+      {t && <time className="ml-auto text-xs text-muted-foreground tabular-nums">{t}</time>}
     </div>
   )
 }
