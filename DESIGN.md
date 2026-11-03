@@ -594,6 +594,27 @@ When elements (such as workspace cards, panel cards, toggle buttons, or tabs) en
 
 Panel cards and usage provider tabs share one sortable module (`web/ui/sortable/SortableList.tsx`, `SortableItem.tsx`). Mouse drag activates after 8px movement without delay, while touch press activates after a 250ms delay with a 10px movement tolerance so ordinary taps still select and scrolling still wins before activation. Dragging reorders live, saves the ID order to local storage, and appends newly discovered panes/providers at the end. The keyboard path uses Space/Enter to pick up, arrow keys to move, Space/Enter to drop, and Escape to cancel, with Korean announcements from `web/resources.json`. No separate edit mode, sort screen, arrow controls, or drag handle is shown.
 
+### 12. 0.5.x Flat Surface & Usage Pace Addendum (A안, #192 · #197)
+
+0.5.0 사용량 모달에서 확정한 A안 원칙을 전체 화면과 0.5.2 사용량 현황판에 적용한다. 기존 컴포넌트 구조와 토큰 이름을 유지하고, 아래 규칙만 추가한다.
+
+- **테두리 최소화**: 카드·섹션은 컨테이너 1겹만 두고 행마다 `border-t`를 반복하지 않는다. 영역 구분은 그리드 트랙·패딩·배경 톤으로 한다. 모달 헤더의 `border-b`도 원칙적으로 두지 않는다.
+- **밑줄 탭**: 워크스페이스·설정 탭은 pill/outline 대신 텍스트와 2px 밑줄(`background: var(--foreground)`)로 현재 항목을 표시한다. `aria-current` 또는 `aria-selected`를 함께 제공하고, 밑줄만으로 의미를 전달하지 않는다.
+- **고스트 버튼**: 헤더·닫기·설정 보조 액션은 `variant="ghost"`를 기본으로 하고 44px 터치 타깃과 `focus-visible` 링을 유지한다.
+- **위험 동작만 danger**: 삭제·중단·차단 해제처럼 되돌리기 어렵거나 즉시 영향을 주는 동작에만 `text-error`/`bg-danger`를 쓴다. 일반 보조 액션은 `muted-foreground`/`foreground`를 쓴다.
+- **warning 토큰 사용처**: 한도 임박, 입력 필요, 주의 안내에 `--color-warning`을 쓰고 아이콘+텍스트를 병기한다. 한도 도달·차단·실패는 danger다. 색만으로 상태를 전달하지 않는다.
+- **행 잘림 없음**: 사용량 행의 라벨·값·시각·리셋은 320/375px에서도 잘리지 않아야 한다. 값 열은 `tabular-nums`와 공유 열(`minmax`)을 쓰고, 긴 라벨은 줄바꿈 또는 보조 줄로 처리한다.
+- **아이콘+텍스트 병기**: 상태 배지·카운트·눈금 안내는 아이콘과 한국어 라벨(또는 `aria-label`/`title`)을 함께 제공한다.
+- **적정 위치 눈금 토큰**: 게이지 눈금은 `bg-foreground` 2px 세로선으로 표시하고, 같은 행의 `⏱N%`와 동일한 시간 퍼센트를 쓴다. 5h와 시간 미확인 창은 표시하지 않으며, `aria-valuetext`에 `적정 위치 N%`를 포함한다.
+
+```yaml
+usage-pace-tick:
+  color: "{colors.primary}" # foreground
+  width: "2px"
+  height: "4px"
+  hiddenFor: ["5h", "unknown"]
+```
+
 ## Motion & Transitions
 
 ### Motion Architecture
