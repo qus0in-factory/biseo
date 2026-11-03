@@ -9,7 +9,7 @@ export function UsageAuthNotice({ provider }: { provider: UsageProvider }) {
   const checkedAt = getLastCheckedAt(provider)
   return (
     <>
-      <p className="text-xs font-medium text-error">{getReauthPrompt(provider.provider, res)}</p>
+      <p className="text-xs font-medium text-danger">{getReauthPrompt(provider.provider, res)}</p>
       {checkedAt && (
         <p className="text-xs text-muted-foreground">
           {res.usageLastSuccess} {formatZoned(checkedAt, 'Asia/Seoul')}
