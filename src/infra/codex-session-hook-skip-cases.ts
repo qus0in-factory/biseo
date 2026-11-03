@@ -1,5 +1,5 @@
 import assert from'node:assert/strict'
-import{base,recordCount,spawn}from'./codex-session-hook-fixture.js'
+import{base,recordCount,spawn}from'./test-util/codex-session-hook-fixture.js'
 const rows=[
  {
   name:'skips when the workspace is missing',

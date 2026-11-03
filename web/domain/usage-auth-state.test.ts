@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { isAuthRequired, isResetPassed, getReauthPrompt } from './usage-auth-state.js'
+import { isAuthRequired } from './usage-auth-state.js'
+import { isResetPassed } from './usage-auth-state.js'
+import { getReauthPrompt } from './usage-auth-state.js'
 import r from '../resources.json'
 
 const res = r as Record<string, string>

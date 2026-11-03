@@ -1,6 +1,6 @@
 import assert from'node:assert/strict'
-import{base,recordCount}from'./codex-session-hook-fixture.js'
-import{run}from'./codex-session-hook-run-fixture.js'
+import{base,recordCount}from'./test-util/codex-session-hook-fixture.js'
+import{run}from'./test-util/codex-session-hook-run-fixture.js'
 export const ignoreCase={
  name:'silently ignores missing pane or invalid input',
  run:()=>{

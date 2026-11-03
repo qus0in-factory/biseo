@@ -12,3 +12,8 @@ test('uiStore manages local UI states', () => {
   store.setSelectedPaneId('w1T:p1')
   assert.equal(useUiStore.getState().selectedPaneId, 'w1T:p1')
 })
+test('uiStore tracks selected pane', () => {
+  const s = useUiStore.getState()
+  s.setSelectedPaneId('w1T:p1')
+  assert.equal(useUiStore.getState().selectedPaneId, 'w1T:p1')
+})

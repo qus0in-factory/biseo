@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { syncPending } from './syncPending.js'
-import { makeMockApi } from './syncPending.fixture.js'
+import { makeMockApi } from '../test-util/syncPending-fixture'
 import { dummyItems } from './syncPending.data.js'
 import type { TimelineItem } from './timeline.js'
 

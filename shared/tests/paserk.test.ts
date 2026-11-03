@@ -4,7 +4,7 @@ import { issueClaims } from '../domain/issue.js'
 import { generateExtractableKeys } from '../infra/keys.js'
 import { exportKeys, importSigningKey, importVerificationKey } from '../infra/paserk.js'
 import { PasetoV4PublicSigner, PasetoV4PublicVerifier } from '../infra/paseto-v4-public.js'
-import { policy } from './fixture.js'
+import { policy } from './support/fixture.js'
 
 test('round-trips PASERK keys', async () => {
   const paserk = await exportKeys(await generateExtractableKeys())

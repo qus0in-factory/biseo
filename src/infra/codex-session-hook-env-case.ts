@@ -1,7 +1,7 @@
 import assert from'node:assert/strict'
 import{readFileSync}from'node:fs'
-import{base,spawn}from'./codex-session-hook-fixture.js'
-import{file}from'./codex-session-hook-run-fixture.js'
+import{base,spawn}from'./test-util/codex-session-hook-fixture.js'
+import{file}from'./test-util/codex-session-hook-run-fixture.js'
 export const envCase={
  name:'keeps the env pane when herdr confirms it',
  run:()=>base(dir=>{

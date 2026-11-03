@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import http from './sessionHttp'
-import { sessionTestEnv } from './sessionTestEnv'
+import { sessionTestEnv } from '../test-util/sessionTestEnv'
 
 test('request retries once, retains body, and never loops on repeated 401', async () => {
  const env = sessionTestEnv()

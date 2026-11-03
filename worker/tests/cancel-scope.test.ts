@@ -1,9 +1,11 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import app from '../index.js'
-import { createTimelineTestEnv } from './timeline-helpers.js'
-import { insertRow } from './d1-row.js'
-import { delTurn } from './d1-requests.js'
+import { createTimelineTestEnv } from '../test-util/timeline-helpers.js'
+import { insertRow } from '../test-util/d1-row.js'
+import { delTurn } from '../test-util/d1-requests.js'
+import { cancelScope } from '../ui/cancel-scope.js'
+import { queueFixture } from '../test-util/queue-fixture.js'
 
 test('cancellation isolates owners and workspaces before upstream access', async () => {
   const { env, cookie } = await createTimelineTestEnv()
@@ -19,4 +21,14 @@ test('cancellation isolates owners and workspaces before upstream access', async
     }
     assert.equal((await app.fetch(delTurn('missing', cookie), env)).status, 404)
   } finally { globalThis.fetch = original }
+})
+
+test('cancel scope fails closed on configuration, invalid IDs and storage failure', async () => {
+  const { db, put } = await queueFixture()
+  await put('a')
+  assert.equal(await cancelScope(db, 'w', 'o', 'a'), null)
+  assert.equal((await cancelScope(db, undefined, 'o', 'a'))?.status, 500)
+  assert.equal((await cancelScope(db, 'w', 'o', '../a'))?.status, 400)
+  db.prepare = () => { throw new Error('storage unavailable') }
+  await assert.rejects(cancelScope(db, 'w', 'o', 'a'), /storage unavailable/)
 })

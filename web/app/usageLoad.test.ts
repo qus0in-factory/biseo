@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { dataOf, readyState } from '../domain/asyncState'
+import { dataOf } from '../domain/asyncState'
+import { readyState } from '../domain/asyncState'
 import { loadUsage } from './usageLoad.js'
 
 test('a failed refetch keeps the previously loaded providers', async () => {

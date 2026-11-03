@@ -1,6 +1,7 @@
-import{test}from'node:test'
-import{strict as a}from'node:assert'
-import{retryInput}from'./retryReservation'
+import { test } from 'node:test'
+import { strict as a } from 'node:assert'
+import { retryInput } from './retryReservation'
+
 test('manual retries use fresh request IDs and original workspace with selected pane',()=>{
   const item={requestId:'old',workspaceId:'original'} as any
   const bodies=[retryInput(item,'p2'),retryInput(item,'p3')]

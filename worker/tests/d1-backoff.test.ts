@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { createFakeD1 } from './fake-d1.js'
+import { createFakeD1 } from '../test-util/fake-d1.js'
 import { nextReadyAt, recordResult } from '../infra/d1-backoff.js'
 
 test('cron backoff grows on failure and resets on success', async () => {

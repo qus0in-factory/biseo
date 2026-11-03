@@ -1,5 +1,5 @@
 import assert from'node:assert/strict'
-import{createTurn,cancelTurn,dispatchPane,input,reader,agent,pane,makeDeps}from'./turn-queue-grace-fixture.js'
+import{createTurn,cancelTurn,dispatchPane,input,reader,agent,pane,makeDeps}from'./test-util/turn-queue-grace-fixture.js'
 export const cancelDuringGrace=async()=>{
  const d=makeDeps(reader),w={...agent,agent_status:'working'as const}
  const set=(s:typeof agent)=>{d.herdr.listAgents=async()=>[s];d.herdr.getAgent=async()=>s}

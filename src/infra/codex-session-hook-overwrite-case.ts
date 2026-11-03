@@ -1,8 +1,8 @@
 import assert from'node:assert/strict'
 import{readFileSync,readdirSync}from'node:fs'
 import{join}from'node:path'
-import{base}from'./codex-session-hook-fixture.js'
-import{run,file}from'./codex-session-hook-run-fixture.js'
+import{base}from'./test-util/codex-session-hook-fixture.js'
+import{run,file}from'./test-util/codex-session-hook-run-fixture.js'
 export const overwriteCase={
  name:'overwrites without leaving temp files',
  run:()=>base(dir=>{

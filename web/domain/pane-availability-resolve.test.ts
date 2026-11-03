@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { resolvePaneAvailability } from './pane-availability-resolve.js'
-import { makeTestPane } from './pane-usage-test-helper.js'
+import { makeTestPane } from '../test-util/pane-usage-test-helper'
 import type { Availability } from './timeline.js'
 
 const u: Availability = {

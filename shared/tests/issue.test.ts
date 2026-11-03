@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { issueClaims } from '../domain/issue.js'
-import { policy } from './fixture.js'
+import { policy } from './support/fixture.js'
 
 test('separates audiences and purposes', () => {
   const now = new Date('2026-01-01T00:00:00Z')

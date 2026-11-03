@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { UsageCollector } from './usage-collector.js'
-import { isolatedAgy } from './agy-isolate.test-util.js'
+import { isolatedAgy } from './test-util/agy-isolate.test-util.js'
 
 test('UsageCollector aggregates 6 providers without OpenCode free', async () => {
   const rep = await isolatedAgy(() => new UsageCollector().getReport())
