@@ -16,14 +16,11 @@ export function WorkspaceTabsList({ items, current, busy, target, onSelect }: P)
    const id = workspace.workspaceId ?? workspace.id ?? ''
    const selected = id === current
    const pending = busy && target === id
-   const meta = pending ? r.workspaceSwitchPending
-    : [selected ? r.workspaceSelected : null, workspace.focused ? r.workspaceFocused : null]
-     .filter(Boolean).join(' · ')
    return <button key={id} type="button" className={`workspace-tab${selected ? ' workspace-tab-current' : ''}`}
     aria-current={selected ? 'true' : undefined} aria-busy={pending || undefined} disabled={busy}
     onClick={() => onSelect(id)}>
     <span className="workspace-tab-name">{workspace.label ?? id}</span>
-    {meta && <span className="workspace-tab-meta">{meta}</span>}
+    {pending && <span className="workspace-tab-meta">{r.workspaceSwitchPending}</span>}
    </button>
   })}
  </div>

@@ -5,8 +5,8 @@ type P={value:string|null;onSelect:(v:string|null)=>void}
 export function HeaderTabs({value,onSelect}:P){
  return(
   <Tabs value={value??undefined} onValueChange={onSelect} className="min-w-0">
-   <TabsList className="max-w-full gap-2">
-    <TabsTrigger value="usage" className="shrink-0 gap-2"><Gauge size={16}/>{r.usageTab}</TabsTrigger>
+   <TabsList className="max-w-full gap-1 bg-transparent p-0">
+    <TabsTrigger value="usage" className="shrink-0 gap-2 rounded-md hover:bg-muted"><Gauge size={16}/>{r.usageTab}</TabsTrigger>
    </TabsList>
   </Tabs>
  )

@@ -15,9 +15,7 @@ type P = {
 }
 
 export function WorkspaceTabs({ state, current, notice, busy, target, onSelect, onRetry }: P) {
- const label = current ? r.workspaceCurrent.replace('{id}', current) : r.workspaceCurrentUnknown
- return <section className="workspace-switcher" aria-busy={busy}>
-  <span className="workspace-switcher-label" title={label}>{label}</span>
+ return <section className="workspace-switcher" aria-label={r.workspacesTitle} aria-busy={busy}>
   {notice && <p role="alert" className="workspace-switcher-notice">{notice}</p>}
   <AsyncList state={state} rows={1} refreshing={false} empty={<p>{r.workspacesEmpty}</p>}
    errorText={r.workspacesError} onRetry={onRetry}>

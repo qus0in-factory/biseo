@@ -12,9 +12,9 @@ const states = {
 export function ConnectionStatusBadge({ status }: { status: ConnectionStatus }) {
   const { Icon, label, color } = states[status]
   return (
-    <Badge variant="outline" aria-label={label} role="status" className={`min-h-11 rounded-md px-1.5 text-xs font-medium sm:px-3 sm:text-sm ${color}`}>
+    <Badge variant="subtle" aria-label={label} role="status" className={`min-h-11 gap-1.5 rounded-md bg-transparent px-1.5 text-xs font-medium sm:px-3 sm:text-sm ${color}`}>
       <Icon size={16} aria-hidden="true" className={status === 'connecting' ? 'motion-safe:animate-spin' : undefined} />
-      <span className="hidden sm:inline">{label}</span>
+      <span>{label}</span>
     </Badge>
   )
 }

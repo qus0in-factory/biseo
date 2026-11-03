@@ -8,8 +8,9 @@ export function HealthView({ loading, error, onCheck }: Props) {
       {!loading && error && <span className="text-xs text-error">{r.errorPrefix}{error}</span>}
       <Button
         type="button"
-        variant="outline"
+        variant="ghost"
         size="icon"
+        className="hover:bg-muted"
         onClick={onCheck}
         disabled={loading}
         aria-busy={loading}
