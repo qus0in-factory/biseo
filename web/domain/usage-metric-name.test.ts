@@ -16,4 +16,6 @@ eq(g('G:weekly'),'w')
 eq(g('G:gemini-argon-wtu-weekly'),'w')})
 test('fallback keeps source label',()=>{
 eq(g('G:gemini-daily'),'L')
+eq(usageMetricName('codex','5h','5h',l),'5h')
+eq(usageMetricName('codex','w','w',l),'w')
 eq(usageMetricName('codex','primary','primary',{}),'primary')})
