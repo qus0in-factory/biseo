@@ -37,5 +37,4 @@ export interface TimelineSectionProps {
   online?: boolean
   onLoadOlder?: () => void
   olderLoaded?: number
-  onReachBottom?: () => void
 }

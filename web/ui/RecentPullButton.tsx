@@ -1,21 +1,21 @@
 import { Download } from 'lucide-react'
-import type { useRecentPull } from './useRecentPull'
-import { LoadingState } from './LoadingState'
+import type { RecentPull } from './useRecentPull'
 import { Button } from '../components/ui/button'
 import resources from '../resources.json'
 
-type Pull = ReturnType<typeof useRecentPull>
-
-export function RecentPullButton({ pull }: { pull: Pull }) {
+export function RecentPullButton({ pull }: { pull: RecentPull }) {
   return (
-    <div className="mb-2 flex flex-col items-start gap-4 text-sm [&>p]:mt-0">
-      <Button variant="outline" disabled={pull.isPending} onClick={() => pull.mutate()}>
-        <Download size={16} aria-hidden="true" />
-        {resources.recentPull}
-      </Button>
-      {pull.isPending ? <LoadingState variant="inline" label={resources.recentLoading} />
-        : pull.isError ? <p role="alert">{resources.recentError}</p>
-        : pull.isSuccess ? <p role="status">{resources[`recent_${pull.data.state}`]}</p> : null}
-    </div>
+    <Button
+      type="button"
+      variant="outline"
+      size="icon"
+      className="h-11 w-11 shrink-0 rounded-full"
+      disabled={pull.isPending}
+      onClick={() => pull.mutate()}
+      aria-label={resources.recentPull}
+      title={resources.recentPull}
+    >
+      <Download size={18} aria-hidden="true" />
+    </Button>
   )
 }

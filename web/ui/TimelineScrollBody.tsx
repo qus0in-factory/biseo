@@ -8,23 +8,16 @@ export function TimelineScrollBody({
   onCancel,
   onLoadOlder,
   olderLoaded,
-  onReachBottom,
 }: {
   items: TimelineItem[]
   onCancel?: (id: string) => void
   onLoadOlder?: () => void
   olderLoaded?: number
-  onReachBottom?: () => void
 }) {
-  const { ref, showJump, scrollToBottom, onScroll, onUserScroll } = useTimelineScroll(
-    items,
-    onLoadOlder,
-    olderLoaded,
-    onReachBottom,
-  )
+  const { ref, showJump, scrollToBottom, onScroll } = useTimelineScroll(items, onLoadOlder, olderLoaded)
   return (
     <div className="relative flex min-h-0 flex-1 flex-col">
-      <div ref={ref} className="flex flex-1 flex-col gap-3 overflow-y-auto overscroll-contain pb-4" onScroll={onScroll} {...onUserScroll}>
+      <div ref={ref} className="flex flex-1 flex-col gap-3 overflow-y-auto overscroll-contain pb-4" onScroll={onScroll}>
         {items.map((i) => <TimelineItemView key={i.requestId} item={i} onCancel={onCancel} />)}
       </div>
       {showJump && <JumpToBottomButton onClick={scrollToBottom} />}
