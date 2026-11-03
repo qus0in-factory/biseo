@@ -1,4 +1,4 @@
-import type { PaneStatus } from '../domain/timeline'
+import type { DisplayStatus as PaneStatus } from '../domain/inputStatus'
 import r from '../resources.json'
 import { statusAccentColor } from './paneStatusBadgeStyle'
 
@@ -6,7 +6,8 @@ export function PaneStatusSummaryItem({ status, count }: { status: PaneStatus; c
   const key = status === 'unknown' ? 'statusSummaryUnknown' : `status_${status}`
   const label = (r as Record<string, string>)[key] ?? status
   return (
-    <span className="font-semibold" style={{ color: statusAccentColor(status) }}>
+    <span className={status === 'input_required' ? 'font-semibold text-warning' : 'font-semibold'}
+      style={status === 'input_required' ? undefined : { color: statusAccentColor(status) }}>
       {label} {count}
     </span>
   )

@@ -4,11 +4,14 @@ import { turnStatusLabel } from './turnStatusLabel'
 import { turnStatusTone } from './turnStatusTone'
 import { StatusBadge } from './StatusBadge'
 import r from '../resources.json'
+import { PaneStatusBadge } from './PaneStatusBadge'
 
 const res = r as Record<string, string>
 const icons: Record<TurnStatus, typeof Clock> = { queued: Clock, working: Loader2, completed: CheckCircle2, capture_unavailable: Info, blocked: AlertTriangle, failed: XCircle, timeout: Timer, cancelled: Ban }
 
 export function TurnStatusBadge({ status, errorCode }: { status: TurnStatus; errorCode?: string | null }) {
+  if (status === 'blocked' && errorCode === 'input_request')
+    return <PaneStatusBadge status="blocked" blockedReason="input_request" />
   const Icon = icons[status] ?? Info
   const label = turnStatusLabel(status, errorCode, res)
   return (

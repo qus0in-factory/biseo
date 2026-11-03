@@ -4,7 +4,7 @@ import { summarizePaneStatuses } from '../domain/paneStatusSummary'
 import { PaneStatusSummaryItem } from './PaneStatusSummaryItem'
 import r from '../resources.json'
 type P = { panes: PaneSummary[]; state?: AsyncState<PaneSummary[]> }
-const known = ['idle', 'working', 'done', 'blocked'] as const
+const known = ['idle', 'working', 'done', 'input_required', 'blocked'] as const
 export function PaneStatusSummary({ panes, state }: P) {
   if (!state || state.status === 'loading') return null
   if (state.status === 'error') return <p role="alert">{r.panesError}</p>

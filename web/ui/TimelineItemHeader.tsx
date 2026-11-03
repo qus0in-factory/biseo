@@ -16,7 +16,7 @@ export function TimelineItemHeader({
   return (
     <div className="flex flex-wrap items-center gap-2">
       <strong>{targetName}</strong>{' '}
-      <TurnStatusBadge status={item.status} />
+      <TurnStatusBadge status={item.status} errorCode={item.errorCode} />
       {isQueued && onCancel && (
         <CancelTurnButton requestId={item.requestId} title={`${r.cancel} (${item.requestId})`} onCancel={onCancel} />
       )}
