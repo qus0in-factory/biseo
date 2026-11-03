@@ -1,0 +1,5 @@
+.settings-content .settings-tabs { justify-content: flex-start; gap: .125rem; background: transparent; padding: 0; border-radius: 0; }
+.settings-tabs .workspace-tab { background: transparent; box-shadow: none; }
+.settings-tabs .workspace-tab:hover { background: var(--muted); }
+.settings-tabs [aria-selected=true] { color: var(--foreground); font-weight: 600; }
+.settings-tabs [aria-selected=true]::after { content: ""; position: absolute; right: .75rem; bottom: 0; left: .75rem; height: 2px; background: var(--foreground); }
