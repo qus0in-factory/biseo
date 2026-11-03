@@ -20,7 +20,7 @@ export const loadOlderPage=async(r:Refs):Promise<TimelinePage|null>=>{
   r.setPaging(x=>addOlder(x,page))
   return page
  }catch{
-  r.requested.current=null
+  if(g===r.gen.current)r.requested.current=null
   return null
- }finally{r.loading.current=false}
+ }finally{if(g===r.gen.current)r.loading.current=false}
 }

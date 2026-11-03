@@ -18,7 +18,7 @@ export async function executeCancel(p: P, id: string, set: SetItems) {
     if (statusOf(err) === 409) {
       try {
         const current = await p.getTurn(id)
-        set((m) => mergeTurn(m, { ...current, cancelError }))
+        set((m) => m.some((t) => t.requestId === id) ? (mergeTurn(m, { ...current, cancelError })) : m)
         return
       } catch {}
     }
