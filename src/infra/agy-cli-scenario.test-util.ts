@@ -15,4 +15,4 @@ export function setupCli(name:string,exp:string,ena:string,out:string|null,calls
  globalThis.fetch=(async(u:string)=>route(String(u)))as typeof fetch
  return{p,o}
 }
-export function doneCli(p:string,o:typeof fetch):void{globalThis.fetch=o;resetAgyCliRun();removeAgyTokenFile(p)}
+export function doneCli(p:string,o:typeof fetch):void{globalThis.fetch=o;resetAgyCliRun();clearAgyTokenCache();removeAgyTokenFile(p)}
