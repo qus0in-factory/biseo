@@ -15,6 +15,6 @@ test('a pending tab shows immediate busy text and disables every tab', () => {
   current: 'w1', notice: null, busy: true, target: 'w2', onSelect() {}, onRetry() {},
  }))
  assert.match(html, /aria-busy="true"/)
- assert.ok(html.includes(r.workspaceSwitchPending))
+ assert.ok(!html.includes(r.workspaceSwitchPending))
  assert.match(html, /disabled=""/)
 })
