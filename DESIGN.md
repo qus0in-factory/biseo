@@ -91,10 +91,16 @@ Contrast is verified for typography and non-text UI components (WCAG 2.1 SC 1.4.
   - Secondary label text on card surface (`#A7A2A9` on `#222823`): **6.01:1** (Exceeds WCAG AA 4.5:1)
   - Non-text border / Divider (`#A7A2A9` on `#222823`): **6.01:1** (Exceeds WCAG Non-text 3.0:1)
   - Focus Ring (`--ring` / `#F4F7F5` on `#222823`): **13.95:1** (Maximum focus visibility)
+  - Warning amber, light value (`#B45309` on `#222823`): **2.996:1** (Non-text fail; text fail — not allowed on dark card surface)
+  - Warning amber, light value (`#B45309` on `#08090A`): **3.968:1** (Non-text pass; text fail — non-text only)
+  - Warning amber, dark value (`#D97706` on `#222823`): **4.723:1** (Text and non-text pass)
+  - Warning amber, dark value (`#D97706` on `#08090A`): **6.255:1** (Text and non-text pass)
+  - Warning amber, dark value (`#D97706` on `#F4F7F5`): **2.954:1** (Fail — dark mode only)
 - **Dark Mode Badge Contrast Assurance (3:1 Non-Text Boundary)**:
   - On dark surfaces (`#222823`), raw `#575A5E` achieves only **2.17:1** contrast (fails 3:1 threshold). Therefore, dark badges unify on `#A7A2A9` for outlines, text, and spinners, achieving **6.01:1** (exceeding 3:1).
   - Dark badge fills (`status-done`, `status-blocked` using `#222823`) are explicitly framed with a 1px `#A7A2A9` border (**6.01:1**) and `#F4F7F5` text (**13.95:1**), guaranteeing unambiguous visual separation.
   - The `timeout` status outline uses `#A7A2A9` (**6.01:1**) instead of dark fills to resolve 1:1 invisible outlines.
+  - **Warning usage rules**: Light-mode value `#B45309` is valid as text (≥4.5:1) and non-text (≥3:1) on light surfaces only. On dark surfaces use dark-mode value `#D97706`: non-text (gauge, icon, badge border) ≥3:1 and body text ≥4.5:1 on both `#222823` (**4.723:1**) and `#08090A` (**6.255:1**). The light value is restricted to non-text on `#08090A` only (**3.968:1**) and must not be used on `#222823` (**2.996:1** < 3:1) or as body text on either dark surface. No UI literal colors or CSS `.dark` block are added; the dark value is a design token documented here.
 
 ```yaml
 colors:
@@ -108,6 +114,7 @@ colors:
   border: "#575A5E"
   border-subtle: "#A7A2A9"
   warning: "#B45309"
+  warning-dark: "#D97706"
   status-idle: "#575A5E"
   status-done: "#15803D"
   status-working: "#575A5E"
@@ -374,7 +381,7 @@ Compact indicators pairing explicit labels, `aria-label`, and `lucide-react` ico
 - `badge-status-blocked`: Danger red fill (`#B91C1C`) with `AlertTriangle` icon and "Blocked" label (`#F4F7F5` text, **6.00:1**); deep slate fill with 1px `#A7A2A9` border in dark mode.
 - `badge-status-unknown`: Silver Gray / Slate Gray border with `HelpCircle` icon and "Unknown" label.
 - **Connection Status Badge**: `Wifi` icon ("연결됨", green `#15803d`) and `WifiOff` icon ("연결 끊김", red `#b91c1c`) displayed in dashboard header.
-- **Warning (주의)**: Amber fill (`#B45309`) with Off White text (`#F4F7F5`, **4.66:1**) for usage-threshold warnings; always paired with icon and label (color alone is never sufficient).
+- **Warning (주의)**: Light-mode amber fill (`#B45309`) with Off White text (`#F4F7F5`, **4.66:1**) for usage-threshold warnings on light surfaces; on dark surfaces use dark-mode amber (`#D97706`) — `#222823` **4.723:1**, `#08090A` **6.255:1** (non-text ≥3:1 and text ≥4.5:1). The light value `#B45309` is non-text only on `#08090A` (**3.968:1**) and must not be used on `#222823` (**2.996:1** < 3:1) or as body text on either dark surface. Always paired with icon and label (color alone is never sufficient).
 
 ### 7. SSE Event Streaming & Exponential Backoff Reconnection (Zero-Polling)
 Real-time reactivity strictly follows the server SSE contract, banning periodic client-side polling:
