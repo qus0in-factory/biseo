@@ -5,7 +5,7 @@ import { createTimelineTestEnv } from '../test-util/timeline-helpers.js'
 import { drive } from '../test-util/upstream-retry-drive.js'
 import { writeHistory } from '../infra/d1-usage-history-write.js'
 import { readHistory } from '../infra/d1-usage-history-read.js'
-import { historyPoint } from '../../shared/usage-history-fixture.js'
+import { historyPoint } from '../../shared/tests/support/usage-history-fixture.js'
 
 test('scheduled usage timeout skips upsert and does not retry', async t => {
  const { env } = await createTimelineTestEnv()

@@ -19,3 +19,32 @@ test('fetchOllamaUsage returns only balances from the balance endpoint', async (
     globalThis.fetch = origFetch
   }
 })
+
+test('fetchOllamaUsage reports unknown when the balance endpoint fails', async () => {
+  const origFetch = globalThis.fetch
+  globalThis.fetch = (async () => new Response('', { status: 404 })) as typeof fetch
+  try {
+    const res = await fetchOllamaUsage()
+    assert.equal(res.provider, 'ollama')
+    assert.equal(res.state, 'unknown')
+    assert.equal(res.reason, 'unsupported')
+    assert.deepEqual(res.metrics, [])
+  } finally {
+    globalThis.fetch = origFetch
+  }
+})
+
+test('auth, temporary failures and empty data have distinct reasons', async () => {
+  const origFetch = globalThis.fetch
+  const cases = [
+    [new Response('', { status: 401 }), 'auth_required'],
+    [new Response('', { status: 503 }), 'temporarily_unavailable'],
+    [Response.json({}), 'balance_unavailable']
+  ] as const
+  try {
+    for (const [response, reason] of cases) {
+      globalThis.fetch = (async () => response) as typeof fetch
+      assert.equal((await fetchOllamaUsage()).reason, reason)
+    }
+  } finally { globalThis.fetch = origFetch }
+})

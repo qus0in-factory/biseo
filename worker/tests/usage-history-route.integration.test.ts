@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import app from '../index.js';
 import { createTimelineTestEnv } from '../test-util/timeline-helpers.js';
 import { writeHistory } from '../infra/d1-usage-history-write.js';
-import { historyPoint } from '../../shared/usage-history-fixture.js';
+import { historyPoint } from '../../shared/tests/support/usage-history-fixture.js';
 
 test('history API rejects unauthenticated requests', async () => {
   const { env } = await createTimelineTestEnv()
