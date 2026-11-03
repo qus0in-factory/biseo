@@ -15,9 +15,9 @@ export function WorkspaceSwitchingOverlay() {
   return createPortal(
     <ModalBackdrop onClose={() => {}}>
       <div ref={ref} role="dialog" aria-modal="true" aria-label={r.workspaceSwitching}
-        className="flex items-center gap-2 rounded-lg bg-card p-4 text-sm shadow-lg">
+        className="flex items-center gap-2 rounded-lg bg-card p-4 text-sm shadow-lg focus-within:ring-2 focus-within:ring-ring">
         <div role="status" aria-busy="true" aria-live="polite" tabIndex={0}
-          className="flex items-center gap-2">
+          className="flex items-center gap-2 outline-none">
           <Loader2 size={18} className="motion-safe:animate-spin" aria-hidden="true" />
           <span>{r.workspaceSwitching}</span>
         </div>
