@@ -2,7 +2,7 @@ import r from '../resources.json'
 
 export function HeaderBrand() {
   return (
-    <h1 className="flex min-w-0 flex-1 items-center gap-2 text-2xl leading-[1.25]">
+    <h1 className="flex min-w-0 flex-1 items-center gap-2 text-xl font-semibold leading-[1.25] tracking-tight">
       <img
         src="/favicon.svg"
         alt=""

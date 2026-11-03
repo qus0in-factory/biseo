@@ -8,9 +8,9 @@ export function HeaderMenuButton() {
   return (
     <Button
       type="button"
-      variant="outline"
+      variant="ghost"
       size="icon"
-      className="md:hidden shrink-0"
+      className="shrink-0 hover:bg-muted md:hidden"
       onClick={toggleDrawer}
       aria-label={r.openMenu}
       title={r.openMenu}

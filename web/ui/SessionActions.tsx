@@ -21,7 +21,7 @@ export function SessionActions({connection='connecting',actions,busy,onLogout}:S
    <UsageButton enabled={connection==='connected'}/>
    {actions}
    <SettingsButton/>
-   {onLogout&&<Button type="button" variant="outline" size="icon"
+   {onLogout&&<Button type="button" variant="ghost" size="icon" className="hover:bg-muted"
     onClick={onLogout} disabled={busy} aria-label={r.logout} title={r.logout}>
     <LogOut size={16} aria-hidden="true"/>
    </Button>}
