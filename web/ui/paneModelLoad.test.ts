@@ -5,11 +5,12 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { PaneModel, paneModelLabel } from './PaneModel'
 import { observedPanes } from '../domain/usage-panel-fixture.test-util'
 
-test('missing model distinguishes matching in progress from completed unknown', () => {
+test('missing model omits the repeated placeholder and decorative icon', () => {
   const render = () => renderToStaticMarkup(createElement(PaneModel, {
     item: { ...observedPanes[0], modelId: null },
   }))
-  assert.match(render(), /확인 중/)
-  assert.doesNotMatch(render(), /모델 미확인/)
-  assert.equal(paneModelLabel({ ...observedPanes[0], modelId: null }, false), '모델 미확인')
+  assert.equal(render(), '')
+  assert.equal(paneModelLabel({ ...observedPanes[0], modelId: null }), null)
+  assert.equal(paneModelLabel({ ...observedPanes[0], modelId: '  ' }), null)
+  assert.equal(paneModelLabel({ ...observedPanes[0], modelId: ' gpt-5 ' }), 'gpt-5')
 })
