@@ -1,44 +1,17 @@
-import { useEffect } from 'react'
-import { Loader2 } from 'lucide-react'
-import { workspaceApi } from '../infra/workspaceApi'
 import { WorkspaceTabs } from './WorkspaceTabs'
-import { ModalBackdrop } from './ModalBackdrop'
-import { useUiStore } from '../app/uiStore'
-import { useWorkspacePicker } from './useWorkspacePicker'
-import { useWorkspaceSelectionPending } from './useWorkspaceSelectionPending'
-import { useWorkspaceTabChoice } from './useWorkspaceTabChoice'
-import { missingWorkspaceNotice } from './workspacePickerNotice'
-import r from '../resources.json'
+import { WorkspaceSwitchingOverlay } from './WorkspaceSwitchingOverlay'
+import { useWorkspaceSwitcherState } from './useWorkspaceSwitcherState'
 import type { WorkspaceSelector } from './workspaceSelectionLink'
 
 type P = { current: string | null; select?: WorkspaceSelector | null; switching?: boolean }
 
 export function WorkspaceSwitcher({ current, select, switching }: P) {
- const s = useWorkspacePicker(workspaceApi)
- const setWorkspaceLabel = useUiStore((x) => x.setWorkspaceLabel)
- useEffect(() => {
-  if (!current) { setWorkspaceLabel(null); return }
-  setWorkspaceLabel(null)
-  const found = s.ws.find((w) => (w.workspaceId ?? w.id ?? '') === current)
-  setWorkspaceLabel(found?.label ?? null)
- }, [current, s.ws, setWorkspaceLabel])
- const pending = useWorkspaceSelectionPending()
- const { target, error, choose } = useWorkspaceTabChoice(workspaceApi, select, current, s)
- const notice = error ?? missingWorkspaceNotice(current, s.ws, s.ld, s.err)
- const busy = !!switching || pending
+ const { s, busy, target, choose, notice } = useWorkspaceSwitcherState(current, select, switching)
  return (
   <>
    <WorkspaceTabs state={s.state} current={current} notice={notice}
     busy={busy} target={target} onSelect={choose} onRetry={() => void s.load()}/>
-   {busy && (
-    <ModalBackdrop onClose={() => {}}>
-     <div role="status" aria-busy="true" aria-live="polite"
-      className="flex items-center gap-2 rounded-lg bg-card p-4 text-sm shadow-lg">
-      <Loader2 size={18} className="motion-safe:animate-spin" aria-hidden="true" />
-      <span>{r.workspaceSwitching}</span>
-     </div>
-    </ModalBackdrop>
-   )}
+   {busy && <WorkspaceSwitchingOverlay />}
   </>
  )
 }

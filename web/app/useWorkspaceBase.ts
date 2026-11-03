@@ -1,6 +1,6 @@
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 import type { WorkspaceApiPort as Api } from '../domain/ports'
-import { useUiStore } from './uiStore'
+import { useWorkspaceIdSync } from './useWorkspaceIdSync'
 import { gateTarget } from '../domain/gateTarget'
 import { useConfig } from './useConfig'
 import { useWorkspaceSelection } from './useWorkspaceSelection'
@@ -17,11 +17,8 @@ export function useWorkspaceBase(
   setSel: (id: string | null) => void,
 ) {
   useUsageBackground(usageApi, on)
-  const setWorkspaceId = useUiStore((s) => s.setWorkspaceId)
   const { wsId, applyWsId } = useConfig(a, on)
-  useEffect(() => {
-    setWorkspaceId(wsId)
-  }, [wsId, setWorkspaceId])
+  useWorkspaceIdSync(wsId)
   const apply = useCallback((id: string) => {
     setSel(null)
     applyWsId(id)
