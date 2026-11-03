@@ -8,5 +8,5 @@ export function usageWindowDisplay(provider: string, value: UsageWindow, remaini
   const shown = remaining && value.usedPercent !== null ? Math.max(0, 100 - value.usedPercent) : value.usedPercent
   const stale = isResetPassed(value.resetsAt)
   const text = stale ? r.usageUnconfirmed : usagePercentText(shown, r.usageUnknownPercent)
-  return { name, text, stale }
+  return { name, text, shown, stale }
 }

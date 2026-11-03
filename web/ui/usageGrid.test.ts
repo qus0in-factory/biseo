@@ -4,30 +4,22 @@ import { readFileSync } from 'node:fs'
 
 const src = (f: string): string => readFileSync(new URL(f, import.meta.url), 'utf8')
 
-test('usage grid is 1/2/3 columns and top aligned', () => {
+test('usage grid is one column on mobile and at most two on desktop', () => {
   const grid = src('./UsageGrid.tsx')
   assert.match(grid, /grid-cols-1/)
   assert.match(grid, /md:grid-cols-2/)
-  assert.match(grid, /lg:grid-cols-3/)
+  assert.doesNotMatch(grid, /grid-cols-3|lg:grid-cols/)
   assert.match(grid, /items-start/)
   assert.match(grid, /min-w-0/)
 })
 
-test('bookmark grid replaces flex wrap and summarizes rows', () => {
-  const tabs = src('./UsageTabContent.tsx')
-  assert.match(tabs, /<UsageGrid>/)
-  assert.doesNotMatch(tabs, /flex flex-wrap/)
-  assert.match(tabs, /summary/)
+test('dashboard renders every window without the three-row summary cap', () => {
+  const dash = src('./UsageDashboardContent.tsx')
+  assert.match(dash, /<UsageGrid>/)
+  assert.match(dash, /providers\.map/)
+  assert.doesNotMatch(dash, /summary/)
   const body = src('./UsagePanelBody.tsx')
-  assert.match(body, /SUMMARY_ROWS = 3/)
-  assert.match(body, /slice\(0, SUMMARY_ROWS\)/)
-})
-
-test('usage cards keep one outer border and no fixed minimum width', () => {
-  const row = src('./UsagePanelRow.tsx')
-  assert.match(row, /<Card/)
-  assert.match(row, /self-start/)
-  assert.match(row, /min-w-0/)
-  assert.doesNotMatch(row, /min-w-44/)
-  assert.doesNotMatch(row, /h-full/)
+  assert.doesNotMatch(body, /SUMMARY_ROWS|slice\(0/)
+  assert.match(body, /provider\.windows\.map/)
+  assert.match(body, /rows\.map/)
 })

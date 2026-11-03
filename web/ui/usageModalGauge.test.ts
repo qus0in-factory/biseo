@@ -5,12 +5,15 @@ import { renderToStaticMarkup as render } from 'react-dom/server'
 import { UsageModalDisplay } from './UsageModalDisplay'
 import { UsageWindowRow } from './UsageWindowRow'
 import { percentValue } from './usageRowAssert.test-util'
+import r from '../resources.json'
 
-test('modal adds gauge while preserving warning text, icon and nonmodal display', () => {
+test('modal gauge follows the displayed remaining number while warning stays used-based', () => {
   const value = { ...percentValue('2099-01-01T00:00:00Z'), window: '5h', usedPercent: 95 }
   const row = h(UsageWindowRow, { provider: 'claude', value })
   const html = render(h(UsageModalDisplay, { value: true }, row))
-  assert.match(html, /aria-valuenow="95"/)
+  assert.match(html, /aria-valuenow="5"/)
+  assert.match(html, new RegExp(`aria-label="${r.usageRemaining}"`))
+  assert.match(html, /width:5%/)
   assert.match(html, /bg-warning/)
   assert.match(html, /lucide-triangle-alert/)
   assert.match(html, /sr-only/)
