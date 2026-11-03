@@ -20,6 +20,14 @@ audience: user
 
 ## 핫픽스 및 배포 이력
 
+### v0.5.1 배포 — 2026-11-03
+
+- **Situation / Task**: 사용자 지시로 로컬 dev `0320cd5` + 버전 커밋 `9575827`만 배포했다. 모바일 입력창 폭·모델명 잘림 수정은 포함하며, 타임라인 하단 고정 `a21dc14`와 워크스페이스 이름 표시 WIP `42b3a91`은 0.5.2로 이관하고 병합·수정하지 않았다. main 병합·태그·D1 쓰기는 하지 않았다.
+- **Action**: release-051의 릴리즈 후보 코드 트리에서 테스트 1028개(28 suites, 실패/취소/skip/todo 0)·typecheck·서버/클라이언트 build 통과 후 package.json 버전만 `0.5.1`로 커밋하고 dev push/SHA 일치를 확인했다. 기존 client 500kB 초과 chunk 경고만 남았다. detached `biseo-release-051`을 `9575827`로 맞추고 release-050의 운영 config 전체·공개키를 비교·복사해 바이트 일치·키 0600 및 preflight 통과를 확인했다. 선택 설정 agyCliTimeoutMs는 기존 운영값을 보존하고 코드 기본값을 사용한다.
+- **Action**: 미적용 D1 마이그레이션 없음, 전환 직전 queued/working 0건(쓰기 0), 최근 60초 서버 로그 28행의 중계 표식 0건·오류 로그 0바이트를 확인했다. 독립 Herdr pane 작업은 중단 조건에서 제외했다. biseo만 PM2 delete/start 후 27초 이상 경과 시 정확한 release-051 cwd/script·0.5.1·online·재시작 0·오류 로그 0바이트·해당 PID error-level out 로그 0·로컬 미인증 `/health` 401을 확인하고 save했다. 다른 앱 PID/상태/재시작 수는 동일했다.
+- **Result**: 서버 `9575827` 0.5.1, Worker 직전 `42c9c156-2740-4ff2-b34a-7b4d15d3c984`를 재확인한 뒤 `0b9a0c17-0e89-4b6b-a3a2-844e235044ee`를 배포하고 100% readback했다. curl `/` 200, 미인증 health/session/usage/workspaces API 401, 응답 5개 모두 CSP 확인. 실제 롤백 없음. 서버 복구 대상은 `biseo-release-050` (`8196d41`, 0.5.0), Worker 복구 대상은 위 `42c9c156`이다.
+- **PR / 한계**: 새 dev→main PR 생성은 기존 동일 head/base [PR #198](https://github.com/qus0in-factory/biseo/pull/198) 때문에 GitHub가 거부했다. #198의 제목·본문·마일스톤·상태는 변경하지 않았다(dev push는 자동 반영). 갱신된 0.5.1 PR 본문은 `/tmp/biseo-051-release-pr-body.md`에 보존하며 새 PR/0.5.1 마일스톤 지정은 미완료다. 공유 runtime 변경 SHA256 유지·미스테이징. 인증 health·메모리 턴 전체 조회·실제 운영 전달·브라우저/e2e 및 독립 배포 리뷰는 미실시(인증 미확보·배정 작업자 재분배 금지). PM2 데몬 버전 경고는 그대로 유지했다. 보고 `/tmp/herdr-report-sol-a-rel051.md`, 검증 증거는 OpenCode 임시 경로의 `rel051/`에 보존한다.
+
 ### v0.5.0 배포 — 2026-11-03
 
 - **Situation / Task**: 사용자 승인 및 조율자의 활성 작업 범위 정정에 따라 dev `8196d41`을 배포했다. 중단 대상은 biseo 중계 턴이며 독립 Herdr 에이전트 작업은 제외했다. main 병합·태그·D1 쓰기는 하지 않았다.
