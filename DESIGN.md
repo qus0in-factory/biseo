@@ -82,6 +82,7 @@ Contrast is verified for typography and non-text UI components (WCAG 2.1 SC 1.4.
   - Secondary text (`#575A5E` on `#F4F7F5`): **6.43:1** (Exceeds WCAG AA 4.5:1)
   - Non-text border / Divider (`#575A5E` on `#F4F7F5`): **6.43:1** (Exceeds WCAG Non-text 3.0:1)
   - Dark container / Badge (`#222823` on `#F4F7F5`): **13.95:1** (Exceeds WCAG AAA 7.0:1)
+  - Warning amber (`#B45309` on `#F4F7F5`): **4.66:1** (Exceeds WCAG AA 4.5:1 text; exceeds non-text 3:1)
   - Focus Ring (`--ring` / `#08090A` on `#F4F7F5`): **18.48:1** (Maximum focus visibility)
 - **Dark Mode (`canvas-dark` / `#08090A` & `surface-dark` / `#222823`)**:
   - High-contrast text (`#F4F7F5` on `#08090A`): **18.48:1** (Exceeds WCAG AAA 7.0:1)
@@ -106,6 +107,7 @@ colors:
   canvas-dark: "#08090A"
   border: "#575A5E"
   border-subtle: "#A7A2A9"
+  warning: "#B45309"
   status-idle: "#575A5E"
   status-done: "#15803D"
   status-working: "#575A5E"
@@ -372,6 +374,7 @@ Compact indicators pairing explicit labels, `aria-label`, and `lucide-react` ico
 - `badge-status-blocked`: Danger red fill (`#B91C1C`) with `AlertTriangle` icon and "Blocked" label (`#F4F7F5` text, **6.00:1**); deep slate fill with 1px `#A7A2A9` border in dark mode.
 - `badge-status-unknown`: Silver Gray / Slate Gray border with `HelpCircle` icon and "Unknown" label.
 - **Connection Status Badge**: `Wifi` icon ("연결됨", green `#15803d`) and `WifiOff` icon ("연결 끊김", red `#b91c1c`) displayed in dashboard header.
+- **Warning (주의)**: Amber fill (`#B45309`) with Off White text (`#F4F7F5`, **4.66:1**) for usage-threshold warnings; always paired with icon and label (color alone is never sufficient).
 
 ### 7. SSE Event Streaming & Exponential Backoff Reconnection (Zero-Polling)
 Real-time reactivity strictly follows the server SSE contract, banning periodic client-side polling:
