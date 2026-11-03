@@ -1,21 +1,18 @@
-import{useState}from'react'
-import{RefreshCw}from'lucide-react'
-import{SettingsAction}from'./SettingsAction'
-import{WorkspacePickerDialog}from'./WorkspacePickerDialog'
-import{useWorkspaceSelectionPending}from'./useWorkspaceSelectionPending'
-import type{WorkspaceSelector}from'./workspaceSelectionLink'
-import r from'../resources.json'
+import { workspaceApi } from '../infra/workspaceApi'
+import { WorkspaceTabs } from './WorkspaceTabs'
+import { useWorkspacePicker } from './useWorkspacePicker'
+import { useWorkspaceSelectionPending } from './useWorkspaceSelectionPending'
+import { useWorkspaceTabChoice } from './useWorkspaceTabChoice'
+import { missingWorkspaceNotice } from './workspacePickerNotice'
+import type { WorkspaceSelector } from './workspaceSelectionLink'
 
-export function WorkspaceSwitcher({current,select,switching}:{current:string|null;select?:WorkspaceSelector|null;switching?:boolean}){
- const[open,setOpen]=useState(false)
- const pending=useWorkspaceSelectionPending()
- const label=current?r.workspaceCurrent.replace('{id}',current):r.workspaceCurrentUnknown
- return<>
-  <div className="workspace-switcher">
-   <span className="workspace-switcher-label" title={label}>{label}</span>
-   <SettingsAction icon={RefreshCw} type="button" busy={switching||pending} aria-haspopup="dialog"
-    onClick={()=>setOpen(true)}>{r.workspaceSwitch}</SettingsAction>
-  </div>
-  <WorkspacePickerDialog open={open} onClose={()=>setOpen(false)} current={current} select={select}/>
- </>
+type P = { current: string | null; select?: WorkspaceSelector | null; switching?: boolean }
+
+export function WorkspaceSwitcher({ current, select, switching }: P) {
+ const s = useWorkspacePicker(workspaceApi)
+ const pending = useWorkspaceSelectionPending()
+ const { target, error, choose } = useWorkspaceTabChoice(workspaceApi, select, current, s)
+ const notice = error ?? missingWorkspaceNotice(current, s.ws, s.ld, s.err)
+ return <WorkspaceTabs state={s.state} current={current} notice={notice}
+  busy={!!switching || pending} target={target} onSelect={choose} onRetry={() => void s.load()}/>
 }
