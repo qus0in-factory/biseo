@@ -20,6 +20,13 @@ audience: user
 
 ## 핫픽스 및 배포 이력
 
+### v0.5.0 배포 — 2026-11-03
+
+- **Situation / Task**: 사용자 승인 및 조율자의 활성 작업 범위 정정에 따라 dev `8196d41`을 배포했다. 중단 대상은 biseo 중계 턴이며 독립 Herdr 에이전트 작업은 제외했다. main 병합·태그·D1 쓰기는 하지 않았다.
+- **Action**: 사전 릴리스 검증 974개 테스트 실패/취소/skip/todo 0·typecheck·build 통과를 재사용했다. detached `biseo-release-050`에 의존성을 설치하고 release-047c의 운영 config 전체·공개키(0600)를 새 스키마와 비교·복사하여 바이트 일치를 확인했다. 선택 설정 누락은 기본값을 사용하며 build·preflight 통과. 미적용 마이그레이션 없음, 전환 직전 D1 queued/working 0건·최근 60초 서버 로그 전달 흔적 0건·오류 로그 0바이트 확인 후 biseo만 PM2 delete/start했다.
+- **Result**: 15초 뒤 release-050의 정확한 cwd 및 `dist/server/src/index.js`·0.5.0·online·재시작 0·오류 로그 0바이트·로컬 미인증 `/health` 401을 확인하고 save했다. 다른 PM2 앱의 PID·상태·재시작 수는 동일했다. Worker 직전 버전을 재확인한 뒤 `42c9c156-2740-4ff2-b34a-7b4d15d3c984`로 배포했다. curl `/` 200, 미인증 `/api/health`·`/api/session`·`/api/usage`·`/api/workspaces` 401 및 5개 응답 모두 CSP 확인.
+- **롤백 / 한계**: 서버 복구 대상은 `biseo-release-047c`(`78c6e3d`, 0.4.7), Worker는 `a76ddd5c-9cd2-4210-bf53-67a3d9d1465b`이며 실제 롤백은 없었다. 공유 dev의 사용자 runtime 변경과 기존 release worktree 모두 보존했다. 인증 health·인증된 메모리 턴 전체 조회·실제 운영 전달·독립 타 계열 배포 리뷰는 미실시(인증 수단 미확보·배정 작업자 재분배 금지). 활성 작업 판단은 사용자 지정 D1 및 최근 로그 기준이다. PM2 데몬 버전 경고는 업데이트 없이 유지했다. 보고 `/tmp/herdr-report-sol-a-deploy050b.md`.
+
 ### v0.4.7 재배포 3단계 (release-047c) — 2026-11-02
 
 - **Situation / Task**: 0.4.7 재배포의 문서 정리 단계다. 코드·배포·PM2·D1·PR 머지·태그는 수행하지 않으며 `config/runtime.json` 사용자 변경은 스테이징하지 않는다.
