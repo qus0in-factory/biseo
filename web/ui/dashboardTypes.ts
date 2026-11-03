@@ -14,7 +14,7 @@ export interface DashboardProps {
   retryTimeline?: () => void
   sending: boolean
   onSend: (text: string) => void
-  onCancel?: (id: string) => void
+  onCancel?: (id: string) => void | Promise<void>
   online?: boolean
   connection?: ConnectionStatus
   onLoadOlder?: () => void
@@ -29,8 +29,9 @@ export interface TimelineSectionProps {
   onRetry?: () => void
   sending: boolean
   onSend: (text: string) => void
-  onCancel?: (id: string) => void
+  onCancel?: (id: string) => void | Promise<void>
   online?: boolean
   onLoadOlder?: () => void
   olderLoaded?: number
+  onReachBottom?: () => void
 }
