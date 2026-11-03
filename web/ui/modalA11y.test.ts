@@ -16,6 +16,6 @@ describe('Modal a11y', () => {
     const button = ModalCloseButton({onClose: () => {closed = true}})
     button.props.onClick()
     assert.equal(closed, true)
-    assert.equal(button.props.variant, 'outline')
+    assert.equal(button.props.variant, 'ghost')
   })
 })

@@ -1,4 +1,5 @@
 import { TabsContent } from '../components/ui/tabs'
+import { UsageGrid } from './UsageGrid'
 import { UsagePanelRow } from './UsagePanelRow'
 import type { UsageProvider } from '../domain/usage'
 import r from '../resources.json'
@@ -19,9 +20,9 @@ export function UsageTabContent({
         {bookmarked.length === 0 ? (
           <p className="text-sm text-muted-foreground">{r.usageBookmarkEmpty}</p>
         ) : (
-          <div className="flex flex-wrap gap-2">
-            {bookmarked.map((p) => <UsagePanelRow key={p.provider} provider={p} remaining={remaining} />)}
-          </div>
+          <UsageGrid>
+            {bookmarked.map((p) => <UsagePanelRow key={p.provider} provider={p} remaining={remaining} summary />)}
+          </UsageGrid>
         )}
       </TabsContent>
       {providers.map((p) => (
