@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { createFakeD1 } from '../test-util/fake-d1.js'
 import { writeHistory } from '../infra/d1-usage-history-write.js'
 import { readHistory } from '../infra/d1-usage-history-read.js'
-import { historyPoint } from '../../shared/usage-history-fixture.js'
+import { historyPoint } from '../../shared/tests/support/usage-history-fixture.js'
 
 test('history appends idempotently and prunes only expired observations', async () => {
   const db = createFakeD1()
