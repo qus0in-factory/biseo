@@ -3,24 +3,21 @@ import { UsageMetricRow } from './UsageMetricRow'
 import { UsageWindowRow } from './UsageWindowRow'
 import { selectCardMetrics } from '../domain/usage-ollama'
 
-const SUMMARY_ROWS = 3
-
 export function UsagePanelBody({
   provider,
   remaining = true,
-  summary = false,
+  showChecked = true,
 }: {
   provider: UsageProvider
   remaining?: boolean
-  summary?: boolean
+  showChecked?: boolean
 }) {
   const m = Array.isArray(provider.metrics) && provider.metrics.length > 0
   if (m) {
     const rows = selectCardMetrics(provider.provider, provider.metrics!)
-    const shown = summary ? rows.slice(0, SUMMARY_ROWS) : rows
     return (
       <>
-        {shown.map((x) => (
+        {rows.map((x) => (
           <UsageMetricRow
             key={x.id}
             provider={provider.provider}
@@ -32,15 +29,15 @@ export function UsagePanelBody({
       </>
     )
   }
-  const windows = summary ? provider.windows.slice(0, SUMMARY_ROWS) : provider.windows
   return (
     <>
-      {windows.map((w) => (
+      {provider.windows.map((w) => (
         <UsageWindowRow
           key={w.window}
           provider={provider.provider}
           value={w}
           remaining={remaining}
+          showChecked={showChecked}
         />
       ))}
     </>

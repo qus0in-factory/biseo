@@ -1,20 +1,18 @@
 import type { AsyncState } from '../domain/asyncState'
 import type { UsageProvider } from '../domain/usage'
 import { AsyncList } from './AsyncList'
-import { UsageOrderedTabs } from './UsageOrderedTabs'
+import { UsageDashboard } from './UsageDashboard'
 import r from '../resources.json'
 
 type P = {
   state: AsyncState<UsageProvider[]>
   retry: () => void
-  bookmarks: string[]
-  onToggleBookmark: (id: string) => void
   remaining: boolean
-  tab: string
-  onTabChange: (v: string) => void
+  settingsOpen: boolean
+  onSettingsOpenChange: (open: boolean) => void
 }
 
-export function UsageTabsAsync({ state, retry, ...tabs }: P) {
+export function UsageDashboardAsync({ state, retry, ...props }: P) {
   return (
     <AsyncList
       state={state}
@@ -23,7 +21,7 @@ export function UsageTabsAsync({ state, retry, ...tabs }: P) {
       errorText={r.usageError}
       onRetry={retry}
     >
-      {(providers) => <UsageOrderedTabs providers={providers} {...tabs} />}
+      {(providers) => <UsageDashboard providers={providers} {...props} />}
     </AsyncList>
   )
 }

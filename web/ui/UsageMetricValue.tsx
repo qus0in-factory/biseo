@@ -9,6 +9,6 @@ import r from'../resources.json'
 export function UsageMetricValue({provider,metric,remaining,limited}:{provider:string;metric:UsageMetric;remaining:boolean;limited?:boolean}){
  const {id,unit}=metric
  const label=usageMetricLabel(provider,id,metric.label,r)
- return <UsageValueLine label={label} gauge={<UsageMetricGauge metric={metric} limited={limited}/>} value={<UsageValueStatus text={formatMetricValue(metric,r.usageUnknownPercent,remaining)} used={unit==='percent'?metric.used:null} window={id} limited={limited}/>}
+ return <UsageValueLine label={label} gauge={<UsageMetricGauge metric={metric} limited={limited} remaining={remaining}/>} value={<UsageValueStatus text={formatMetricValue(metric,r.usageUnknownPercent,remaining)} used={unit==='percent'?metric.used:null} window={id} limited={limited}/>}
   timeLeft={<UsageMetricTimeLeft provider={provider} metric={metric} remaining={remaining}/>}/>
 }

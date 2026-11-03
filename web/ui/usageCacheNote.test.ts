@@ -5,12 +5,12 @@ import { readFileSync } from 'node:fs'
 const src = (f: string): string => readFileSync(new URL(f, import.meta.url), 'utf8')
 
 test('the live modal path renders the claude cache note', () => {
-  const tabs = src('./UsageTabContent.tsx')
-  assert.match(tabs, /UsagePanelRow/)
-  assert.match(tabs, /bookmarked\.map/)
-  const row = src('./UsagePanelRow.tsx')
-  assert.match(row, /UsageCacheNote/)
-  assert.match(row, /<UsageCacheNote provider=\{provider\} \/>/)
+  const dash = src('./UsageDashboardContent.tsx')
+  assert.match(dash, /UsagePanelRow/)
+  assert.match(dash, /providers\.map/)
+  const fields = src('./UsagePanelFields.tsx')
+  assert.match(fields, /UsageCacheNote/)
+  assert.match(fields, /<UsageCacheNote provider=\{provider\} \/>/)
   const note = src('./UsageCacheNote.tsx')
   assert.match(note, /cacheNote/)
 })

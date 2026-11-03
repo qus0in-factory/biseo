@@ -6,14 +6,16 @@ import { UsageModalDisplay } from './UsageModalDisplay'
 import { UsageWindowTime } from './UsageWindowTime'
 import { percentValue } from './usageRowAssert.test-util'
 
+const at = '2026-11-03T00:17:00Z'
+
 test('modal reset prioritizes relative time while retaining absolute tooltip', () => {
-  const now = Date.now
+  const original = Date.now
   Date.now = () => Date.parse('2026-11-03T00:00:00Z')
   try {
-    const value = percentValue('2026-11-03T00:17:00Z')
+    const value = percentValue(at)
     const html = render(h(UsageModalDisplay, { value: true }, h(UsageWindowTime, { value })))
     assert.match(html, /17분 후/)
     assert.match(html, /title="2026-11-03 09:17:00"/)
     assert.doesNotMatch(html, />26-11-03 09:17:00</)
-  } finally { Date.now = now }
+  } finally { Date.now = original }
 })
