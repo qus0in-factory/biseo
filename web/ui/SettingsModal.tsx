@@ -6,6 +6,9 @@ import r from '../resources.json'
 import './settings.css'
 import './settings-panels.css'
 import './workspace-picker.css'
+import './settings-workspaces.css'
+import './workspace-tab.css'
+import './settings-tabs.css'
 export function SettingsModal({open, onClose}: {open: boolean; onClose: () => void}) {
  const [adding, setAdding] = useState(false)
  const [tab, setTab] = useState('security')

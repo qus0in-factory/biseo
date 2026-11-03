@@ -1,13 +1,12 @@
-.settings-content section > ul { margin-top: 1rem; }
+.settings-content .pane-manage-list > li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .125rem .5rem; min-width: 0; }
 .settings-content .pane-manage-list > li { padding-block: .5rem; }
-.settings-content .pane-manage-list > li { display: block; }
-.settings-content li > span:first-child { flex: 1; min-width: 0; }
-.pane-manage-head { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; min-width: 0; }
-.pane-manage-name { flex: 1 1 8rem; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
-.pane-manage-summary { display: block; margin-top: .125rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .6875rem; line-height: 1.4; color: var(--muted-foreground); }
-.pane-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: .5rem; margin-left: auto; }
+.pane-manage-head { display: contents; }
+.pane-manage-name { min-width: 0; overflow-wrap: anywhere; font-weight: 600; }
+.pane-manage-summary { display: flex; flex-wrap: wrap; gap: .25rem .5rem; grid-column: 1; grid-row: 2; font-size: .75rem; line-height: 1.4; color: var(--muted-foreground); }
+.pane-manage-usage { font-variant-numeric: tabular-nums; }
+.pane-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: .5rem; grid-column: 2; grid-row: 1 / span 2; }
 .pane-actions button { min-width: 44px; }
 .pane-actions input { width: 8rem; }
 .settings-content > *, .settings-content [role=tablist] { min-width: 0; max-width: 100%; }
-.settings-content .pane-manage-list > li { min-width: 0; }
 .settings-content section > [role=status] { margin-block: .5rem; }
+.pane-actions:has(input), .pane-actions:has(> span) { grid-column: 1 / -1; grid-row: 3; justify-content: flex-start; }

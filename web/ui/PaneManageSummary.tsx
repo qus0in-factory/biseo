@@ -11,8 +11,11 @@ export function PaneManageSummary({
   providers: UsageProvider[]
 }) {
   const status = useUsageStore(s => s.status)
-  const parts = [pane.agentKind, pane.modelId, paneUsageLabel(pane, providers, status)]
-  const text = parts.map((part) => part?.trim()).filter(Boolean).join(' · ')
-  if (!text) return null
-  return <span className="pane-manage-summary" title={text}>{text}</span>
+  const model = [pane.agentKind, pane.modelId].map(p => p?.trim()).filter(Boolean).join(' · ')
+  const usage = paneUsageLabel(pane, providers, status)
+  if (!model && !usage) return null
+  return <span className="pane-manage-summary" title={[model, usage].filter(Boolean).join(' · ')}>
+    {model && <span>{model}</span>}
+    {usage && <span className="pane-manage-usage">{usage}</span>}
+  </span>
 }
