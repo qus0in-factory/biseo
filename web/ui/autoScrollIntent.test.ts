@@ -11,7 +11,7 @@ test('a locally sent turn is marked as an own send', () => {
 
 test('the scroll hook applies the scroll plan', () => {
   const hook = src('./useAutoScroll.ts')
-  assert.match(hook, /planScroll\(prevRef\.current, items, near\)/)
+  assert.match(hook, /planScroll\(prevRef\.current, items, followRef\.current\)/)
   assert.match(hook, /act === 'bottom'/)
   assert.match(hook, /act === 'jump'/)
 })
