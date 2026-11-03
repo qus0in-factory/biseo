@@ -3,17 +3,22 @@ import test from 'node:test'
 import { evaluatePaneUsageWarning } from './pane-usage-warning.js'
 import { makeTestPane } from './pane-usage-test-helper.js'
 
-test('codex pro plan without five-hour window warns only on weekly threshold and is not unknown', () => {
+test('codex pro warns on weekly threshold and is not unknown below it', () => {
   const pane = makeTestPane('codex', 'sol')
   const healthy = [{
-    provider: 'codex',
-    state: 'available' as const,
+    provider: 'codex', state: 'available' as const,
     windows: [{ window: 'w', usedPercent: 40, resetsAt: null, checkedAt: null, limitReached: false, source: 'codex' }]
   }]
-  const res = evaluatePaneUsageWarning(pane, healthy)
-  assert.equal(res.isUnknown, false)
-  assert.equal(res.hasWarning, false)
+  const ok = evaluatePaneUsageWarning(pane, healthy)
+  assert.equal(ok.isUnknown, false)
+  assert.equal(ok.hasWarning, false)
 
-  const empty = [{ provider: 'codex', state: 'available' as const, windows: [] }]
-  assert.equal(evaluatePaneUsageWarning(pane, empty).isUnknown, true)
+  const exceeded = [{
+    provider: 'codex', state: 'available' as const,
+    windows: [{ window: 'w', usedPercent: 99, resetsAt: null, checkedAt: null, limitReached: false, source: 'codex' }]
+  }]
+  const warn = evaluatePaneUsageWarning(pane, exceeded)
+  assert.equal(warn.isUnknown, false)
+  assert.equal(warn.hasWarning, true)
+  assert.deepEqual(warn.exceededWindows, ['w'])
 })
