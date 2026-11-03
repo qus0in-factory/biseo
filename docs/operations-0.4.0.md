@@ -20,6 +20,13 @@ audience: user
 
 ## 핫픽스 및 배포 이력
 
+### 0.5.3 (2026-11-03)
+
+- **Situation / Task**: 승인된 dev `c9d894c`의 #209 사용량 카드 정리만 0.5.3으로 승격했다. Ollama 구조·금액 소수 둘째 자리·제공자 아이콘·카운트 카드 중복 아이콘 제거와 지난 리셋 카운트 제외를 포함한다. GPT 작성, Claude opus-a APPROVE(ce02d61·beed8aa). 버전 단독 커밋 `482ce77`, [PR #211](https://github.com/qus0in-factory/biseo/pull/211) main merge `3089040`, annotated `v0.5.3`·latest 릴리스 발행. 기존 테스트 1028개 실패 0·typecheck·서버/클라이언트 build 및 필수 main-source·보안 체크 통과.
+- **Action**: `biseo-release-053`은 버전 커밋 기준으로 빌드하고 release-052 운영 config 전체·공개키를 바이트 비교 복사(키 0600), preflight 통과. 미적용 D1 마이그레이션 없음. 처음에는 중계 working 턴이 있어 전환을 보류했으며, 최종 D1 queued/working 0건·최근 60초 활동 표식 0건·오류 로그 0 확인 후 biseo만 PM2 delete/start했다. 16초 뒤 PID 91576, 정확한 cwd/script·0.5.3 online·재시작 0·오류 로그 0·로컬 미인증 health 401 및 다른 앱 불변 확인 후 save했다.
+- **Result**: 직전 Worker `d2a6922d-f8f0-48fc-a492-8bf707bf3504` 100%를 배포 직전 재확인하고 `42b2e56e-8ae4-48d9-b4cc-3df808af2fdd`를 배포해 100% readback했다. 공개 `/` 200, 미인증 `/api/health`·`session`·`usage`·`workspaces` 각 401, 응답 5개 CSP 확인. #209는 PR 병합으로 CLOSED, 마일스톤 0.5.3 open=0 확인.
+- **복구 / 한계**: 서버 롤백은 보존한 release-052 `ac26a92`(0.5.2), Worker는 위 `d2a6922d`; 실제 롤백·D1 쓰기 없음. 운영 config 누락 선택값은 기존 운영값/코드 기본값을 유지했다. 인증 health·메모리 내 late capture·실제 중계 전달·브라우저/e2e는 미검증이며, timeout 턴 종료 후 무활동 구간을 확인한 것이 인증 메모리 조회를 대신하지 않는다. 독립 Herdr 작업·공유 runtime 변경·PM2 데몬 버전은 보존했다. 이 배포 기록은 dev에만 반영한다.
+
 ### 0.5.2 (2026-11-03)
 
 - **Situation / Task**: 사용자 승인 범위 dev `c39ecfc`의 #205 타임라인·#206 이름·#207 사용량/설정/전환과 0.5.x 문서를 0.5.2로 승격했다. 버전 단독 커밋 `ac26a92`, [PR #208](https://github.com/qus0in-factory/biseo/pull/208) main merge `fd6e6ad`, annotated `v0.5.2`와 latest 릴리스를 발행했다. 테스트 1028개 실패 0·typecheck·서버/클라이언트 build 통과, 필수 main-source와 보안 체크 성공 후 merge commit으로 병합했다.

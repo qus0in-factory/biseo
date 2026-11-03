@@ -1,6 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { parsePaneListExpanded, selectCollapsedPanes } from './collapsedPanes.js'
+import { parsePaneListExpanded } from './collapsedPanes.js'
+import { selectCollapsedPanes } from './collapsedPanes.js'
 
 test('folding caps at three; expanding restores all panes without mutating order', () => {
   const panes = ['a', 'b', 'c', 'd', 'e']

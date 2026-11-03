@@ -1,6 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { PaneCloseError, paneCloseMessage } from './paneCloseError'
+import { PaneCloseError } from './paneCloseError'
+import { paneCloseMessage } from './paneCloseError'
 import r from '../resources.json'
 
 test('close error codes map to resource messages, not raw codes', () => {

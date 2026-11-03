@@ -6,6 +6,14 @@ import r from '../resources.json'
 
 const res = r as Record<string, string>
 
+test('other providers never yield a note', () => {
+  const p: UsageProvider = { provider: 'grok', state: 'available', windows: [] }
+  const marked = { ...p, source: 'grok-stale' }
+  assert.equal(cacheNote(marked, res), null)
+})
+{
+const res = r as Record<string, string>
+
 type Marked = UsageProvider & { source?: string | null; checkedAt?: string | null }
 
 const mk = (m: Marked): UsageProvider => m
@@ -23,3 +31,4 @@ test('a cache mark yields a note with the base time', () => {
 test('a fresh reading yields no note', () => {
   assert.equal(cacheNote(mk({ ...base, source: 'claude' }), res), null)
 })
+}

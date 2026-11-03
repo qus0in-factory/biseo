@@ -1,6 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { parseUsageHidden, serializeUsageHidden, toggleUsageHidden } from './usageHidden.js'
+import { parseUsageHidden } from './usageHidden.js'
+import { serializeUsageHidden } from './usageHidden.js'
+import { toggleUsageHidden } from './usageHidden.js'
 
 test('usage hidden ids parse, deduplicate, serialize and toggle', () => {
   assert.deepEqual(parseUsageHidden('["a","b","a"]'), ['a', 'b'])

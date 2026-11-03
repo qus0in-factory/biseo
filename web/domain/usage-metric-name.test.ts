@@ -1,7 +1,8 @@
-import assert from'node:assert/strict'
-import test from'node:test'
-import{usageMetricName}from'./usage-metric-name.js'
-import r from'../resources.json'
+import assert from 'node:assert/strict'
+import test from 'node:test'
+import { usageMetricName } from './usage-metric-name.js'
+import r from '../resources.json'
+
 const l=r as Record<string,string>
 const eq:(a:unknown,b:unknown)=>void=assert.equal
 const u=(i:string)=>usageMetricName('claude',i,'L',l)
@@ -19,3 +20,9 @@ eq(g('G:gemini-daily'),'L')
 eq(usageMetricName('codex','5h','5h',l),'5h')
 eq(usageMetricName('codex','w','w',l),'w')
 eq(usageMetricName('codex','primary','primary',{}),'primary')})
+const res = r as Record<string, string>
+
+test('ollama balance labels come from resources', () => {
+  assert.equal(usageMetricName('ollama', 'included_balance', 'fallback', res), 'Included Balance')
+  assert.equal(usageMetricName('ollama', 'purchased_balance', 'fallback', res), 'Purchased Balance')
+})

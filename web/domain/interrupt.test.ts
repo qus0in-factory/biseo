@@ -1,7 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { canInterrupt, INTERRUPT_KEY } from './interrupt'
+import { canInterrupt } from './interrupt'
 import type { PaneSummary } from './timeline'
+import { INTERRUPT_KEY } from './interrupt'
 
 const base: PaneSummary = {
   paneId: 'p1',

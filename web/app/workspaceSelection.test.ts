@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { applySelectedWorkspace, createSelectionGate } from './workspaceSelection.js'
+import { applySelectedWorkspace } from './workspaceSelection.js'
+import { createSelectionGate } from './workspaceSelection.js'
 
 test('only the latest selection token is current', () => {
   const gate = createSelectionGate()

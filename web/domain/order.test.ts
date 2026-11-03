@@ -1,6 +1,10 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { mergeOrder, moveItem, parseOrder, sameOrder, serializeOrder } from './order.js'
+import { mergeOrder } from './order.js'
+import { moveItem } from './order.js'
+import { parseOrder } from './order.js'
+import { sameOrder } from './order.js'
+import { serializeOrder } from './order.js'
 
 test('order parse keeps unique strings and survives bad storage', () => {
   assert.deepEqual(parseOrder('["a","a",2,"b"]'), ['a', 'b'])

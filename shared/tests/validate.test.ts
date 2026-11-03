@@ -2,10 +2,17 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { issueClaims } from '../domain/issue.js'
 import { validateClaims } from '../domain/validate.js'
-import { policy } from './fixture.js'
+import { policy } from './support/fixture.js'
 
 const now = new Date('2026-01-01T00:00:00Z')
 const user = issueClaims(policy, 'user-session', 'u1', now)
+const claims = issueClaims(policy, 'service', 'worker', now)
+
+test('bounds lifetime and future issued-at', () => {
+  assert.throws(() => validateClaims(policy, 'service', { ...claims, exp: '2036-01-01T00:00:00Z' }, now))
+  assert.throws(() => validateClaims(policy, 'service', { ...claims, iat: '2026-01-01T00:00:10Z' }, now))
+  assert.doesNotThrow(() => validateClaims(policy, 'service', { ...claims, iat: '2026-01-01T00:00:04Z' }, now))
+})
 
 test('accepts matching claims', () => {
   assert.equal(validateClaims(policy, 'user-session', user, now), user)

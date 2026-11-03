@@ -1,6 +1,6 @@
 {
   "name": "biseo",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.24.0",
@@ -20,7 +20,7 @@
     "release": "pnpm build:server:clean && pnpm preflight && pnpm pm2:restart",
     "secret:verifier": "bash scripts/make-verifier.sh",
     "typecheck": "tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.worker.json && tsc --noEmit",
-    "test": "tsc -p shared/tsconfig.json --noEmit && tsx --test $(find shared worker src web -name '*.test.ts' | sort)",
+    "test": "tsc -p shared/tsconfig.json --noEmit && tsx --test $(find shared worker src web '(' -name '*.test.ts' -o -name '*.test.tsx' ')' | sort)",
     "dev": "pnpm build:client && wrangler dev",
     "deploy": "pnpm build:client && wrangler deploy"
   },
