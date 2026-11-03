@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { TimelineItem } from '../domain/timeline'
 import { scrollDown } from './scrollHelper'
 import { planScroll } from './autoScrollPlan'
@@ -9,23 +9,19 @@ export function useAutoScroll(items: TimelineItem[], onReach?: () => void) {
   const [near, setNear] = useState(true)
   const [jump, setJump] = useState(false)
   const prevRef = useRef(items)
-  const g = useBottomReached(onReach)
-
-  useLayoutEffect(() => {
-    g.init(ref.current)
-  }, [g.init])
+  const g = useBottomReached(ref, onReach)
 
   const toBottom = useCallback(() => {
-    g.begin(ref.current)
+    g.begin()
     scrollDown(ref.current)
     setJump(false)
-  }, [g.begin])
+  }, [g])
 
   const onScroll = useCallback(() => {
-    const isNear = g.check(ref.current)
+    const isNear = g.check()
     setNear(isNear)
     if (isNear) setJump(false)
-  }, [g.check])
+  }, [g])
 
   useEffect(() => {
     const act = planScroll(prevRef.current, items, near)
@@ -39,6 +35,6 @@ export function useAutoScroll(items: TimelineItem[], onReach?: () => void) {
     showJump: jump,
     scrollToBottom: toBottom,
     onScroll,
-    onUserScroll: g.resetAuto,
+    onUserScroll: g.handlers,
   }
 }

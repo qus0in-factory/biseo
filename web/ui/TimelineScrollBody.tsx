@@ -24,7 +24,7 @@ export function TimelineScrollBody({
   )
   return (
     <div className="relative flex min-h-0 flex-1 flex-col">
-      <div ref={ref} className="flex flex-1 flex-col gap-3 overflow-y-auto overscroll-contain pb-4" onScroll={onScroll} onWheel={onUserScroll} onTouchStart={onUserScroll} onPointerDown={onUserScroll} onKeyDown={onUserScroll}>
+      <div ref={ref} className="flex flex-1 flex-col gap-3 overflow-y-auto overscroll-contain pb-4" onScroll={onScroll} {...onUserScroll}>
         {items.map((i) => <TimelineItemView key={i.requestId} item={i} onCancel={onCancel} />)}
       </div>
       {showJump && <JumpToBottomButton onClick={scrollToBottom} />}
