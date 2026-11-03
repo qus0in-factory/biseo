@@ -2,7 +2,7 @@ import type { UsageMetric } from '../domain/usage'
 import { UsageMetricValue } from './UsageMetricValue'
 import { UsageMetricTime } from './UsageMetricTime'
 import { OllamaAllowance } from './OllamaAllowance'
-import { metricLimited } from '../domain/usage-limit-count'
+import { metricLimited } from '../domain/usage-limit-state'
 
 export function UsageMetricRow({
   provider,
