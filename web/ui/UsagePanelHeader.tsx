@@ -1,7 +1,6 @@
 import { AlertTriangle, CircleCheck, HelpCircle } from 'lucide-react'
 import type { UsageProvider } from '../domain/usage'
 import { usageHeaderStatus } from '../domain/usage-header-status.js'
-import { UsageHistoryButton } from './UsageHistoryButton'
 import { HintPopover } from './HintPopover'
 import { UsageProviderName } from './UsageProviderName'
 import r from '../resources.json'
@@ -18,7 +17,6 @@ export function UsagePanelHeader({ provider }: { provider: UsageProvider }) {
         <HintPopover label={title} className={cls}>
           <Icon size={14} aria-hidden="true" />
         </HintPopover>
-        <UsageHistoryButton provider={provider.provider} />
       </div>
     </div>
   )

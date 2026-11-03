@@ -14,7 +14,7 @@ test('both row types warn below 100 and keep labels and times muted', () => {
     const html = renderToStaticMarkup(node)
     assert.match(html, /text-warning/)
     assert.match(html, /title="2%"/)
-    assert.match(html, /truncate text-xs text-muted-foreground/)
+    assert.match(html, /truncate text-sm text-muted-foreground/)
     assert.doesNotMatch(html, /text-danger|text-error|border-t/)
   }
 })
