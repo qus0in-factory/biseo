@@ -20,8 +20,11 @@ export function UsageMetricTime({
     limitReached: metric.unit === 'percent' && metric.used !== null && metric.used >= 100,
     source: null,
   }
-  return <>
-    {metric.startsAt && <span className="text-xs text-muted-foreground">{r.usagePeriodStart}: {formatZoned(metric.startsAt, 'Asia/Seoul')}</span>}
-    <UsageWindowTime value={d} />
-  </>
+  const start = metric.startsAt ? formatZoned(metric.startsAt, 'Asia/Seoul') : null
+  return (
+    <span className="flex flex-col items-end gap-0.5 text-[11px] leading-4 tabular-nums text-muted-foreground">
+      {start && <span title={start}>{r.usagePeriodStart}: {start}</span>}
+      <UsageWindowTime value={d} />
+    </span>
+  )
 }

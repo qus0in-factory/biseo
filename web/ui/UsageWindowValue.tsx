@@ -3,6 +3,7 @@ import { usagePercentText, usageWindowName } from '../domain/usage-text'
 import { isResetPassed } from '../domain/usage-auth-state.js'
 import { UsageTimeLeft } from './UsageTimeLeft'
 import { UsageValueLine } from './UsageValueLine'
+import { UsageValueStatus } from './UsageValueStatus'
 import r from '../resources.json'
 
 const res = r as Record<string, string>
@@ -22,7 +23,7 @@ export function UsageWindowValue({
   return (
     <UsageValueLine
       label={name}
-      value={text}
+      value={<UsageValueStatus text={text} used={value.usedPercent} window={value.window} limited={value.limitReached} />}
       timeLeft={<UsageTimeLeft label={name} startsAt={value.startsAt} resetsAt={value.resetsAt} remaining={remaining} />}
     />
   )
