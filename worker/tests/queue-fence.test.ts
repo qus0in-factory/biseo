@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {queueFixture} from './queue-fixture.js'
+import {queueFixture} from '../test-util/queue-fixture.js'
 import {claimTurn} from '../infra/d1-queue-claim.js'
 import {renewTurn} from '../infra/d1-queue-renew.js'
 import {finishTurn} from '../infra/d1-queue-finish.js'

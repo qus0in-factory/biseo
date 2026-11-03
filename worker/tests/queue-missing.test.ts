@@ -1,6 +1,6 @@
 import{test}from'node:test'
 import{strict as a}from'node:assert'
-import{queueFixture}from'./queue-fixture.js'
+import{queueFixture}from '../test-util/queue-fixture.js'
 import{acceptReservation}from'../app/accept-reservation.js'
 test('absent target is durably accepted as unclear, never redirected on replay',async()=>{
  const{db}=await queueFixture()

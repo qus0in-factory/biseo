@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { createTimelineTestEnv } from './timeline-helpers.js'
-import { workingRow } from './queue-working-fixture.js'
-import { cronFetch } from './d1-cron-fetch.js'
+import { createTimelineTestEnv } from '../test-util/timeline-helpers.js'
+import { workingRow } from '../test-util/queue-working-fixture.js'
+import { cronFetch } from '../test-util/d1-cron-fetch.js'
 import { scheduled } from '../scheduled.js'
 
 test('cron reconciles a completed result without a browser', async () => {

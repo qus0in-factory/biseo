@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { importFromUpstream } from '../ui/timeline-import-upstream.js'
-import { queueFixture } from './queue-fixture.js'
+import { queueFixture } from '../test-util/queue-fixture.js'
 
 test('upstream fallback cannot expose an existing turn outside read scope', async () => {
   const { db, put } = await queueFixture()

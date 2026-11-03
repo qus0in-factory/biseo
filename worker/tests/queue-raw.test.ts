@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {queueFixture} from './queue-fixture.js'
+import {queueFixture} from '../test-util/queue-fixture.js'
 import {parseSubmitMessageInput} from '../domain/message-input.js'
 test('idempotency compares original prompt including whitespace',async()=>{
  const {put}=await queueFixture()

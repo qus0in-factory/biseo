@@ -1,6 +1,6 @@
 import test from'node:test'
 import assert from'node:assert/strict'
-import{createFakeD1}from'./fake-d1.js'
+import{createFakeD1}from '../test-util/fake-d1.js'
 import{importRecent}from'../app/import-recent.js'
 test('recent import deduplicates normal turns and repeated pulls within owner/workspace',async()=>{
  const db=createFakeD1()

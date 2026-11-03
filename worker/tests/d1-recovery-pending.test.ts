@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { createTimelineTestEnv } from './timeline-helpers.js'
-import { insertRow } from './d1-row.js'
-import { recoveryFetch as rf } from './d1-recovery-fetch.js'
+import { createTimelineTestEnv } from '../test-util/timeline-helpers.js'
+import { insertRow } from '../test-util/d1-row.js'
+import { recoveryFetch as rf } from '../test-util/d1-recovery-fetch.js'
 import { scheduled } from '../scheduled.js'
 
 test('timeout is terminal even when executor record is missing', async () => {

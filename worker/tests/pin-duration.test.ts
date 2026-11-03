@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { createD1PinAttempts } from '../infra/d1-pin-attempts.js'
-import { createFakeD1 } from './fake-d1.js'
+import { createFakeD1 } from '../test-util/fake-d1.js'
 
 test('PIN failure window and lock are measured in seconds', async () => {
   const store = createD1PinAttempts(createFakeD1())

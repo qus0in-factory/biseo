@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { createFakeD1 } from './fake-d1.js'
-import { insertRow } from './d1-row.js'
+import { createFakeD1 } from '../test-util/fake-d1.js'
+import { insertRow } from '../test-util/d1-row.js'
 import { pendingTurns } from '../infra/d1-timeline-pending.js'
 
 test('expired timeout is excluded from cron pending; live timeout stays', async () => {

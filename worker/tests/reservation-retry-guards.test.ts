@@ -1,6 +1,6 @@
 import{test}from'node:test'
 import{strict as a}from'node:assert'
-import{queueFixture}from'./queue-fixture.js'
+import{queueFixture}from '../test-util/queue-fixture.js'
 import{retryReservation}from'../app/retry-reservation.js'
 test('retry rejects pending, same id and cross workspace; fresh retries are idempotent',async()=>{
  const{db,put}=await queueFixture();await put('old')

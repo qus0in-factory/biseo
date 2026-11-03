@@ -3,7 +3,7 @@ import test from 'node:test'
 import { importVerificationKey } from '../../shared/infra/paserk.js'
 import { PasetoV4PublicVerifier } from '../../shared/infra/paseto-v4-public.js'
 import { createServiceToken } from '../infra/service-token.js'
-import { createTestFixture } from './helpers.js'
+import { createTestFixture } from '../test-util/helpers.js'
 
 test('mints a verifiable service token', async () => {
   const key = await createTestFixture()

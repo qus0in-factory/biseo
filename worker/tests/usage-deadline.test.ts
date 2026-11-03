@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { callUpstreamJson } from '../infra/herdr-upstream-http.js'
-import { createTimelineTestEnv } from './timeline-helpers.js'
+import { createTimelineTestEnv } from '../test-util/timeline-helpers.js'
 
 test('usage remains pending at 29999ms and expires at 30000ms', async t => {
  const { env } = await createTimelineTestEnv()

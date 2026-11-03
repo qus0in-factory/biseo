@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { cancelScope } from '../ui/cancel-scope.js'
-import { queueFixture } from './queue-fixture.js'
+import { queueFixture } from '../test-util/queue-fixture.js'
 
 test('cancel scope fails closed on configuration, invalid IDs and storage failure', async () => {
   const { db, put } = await queueFixture()

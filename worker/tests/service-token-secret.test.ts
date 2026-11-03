@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { createServiceToken } from '../infra/service-token.js'
-import { createTestFixture } from './helpers.js'
+import { createTestFixture } from '../test-util/helpers.js'
 
 test('fails closed without a usable service key', async () => {
   assert.equal(await createServiceToken({}), null)

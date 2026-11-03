@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { createTimelineTestEnv } from './timeline-helpers.js'
+import { createTimelineTestEnv } from '../test-util/timeline-helpers.js'
 import { syncUsage } from '../scheduled-usage.js'
 import { readHistory } from '../infra/d1-usage-history-read.js'
 

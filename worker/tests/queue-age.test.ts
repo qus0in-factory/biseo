@@ -1,6 +1,6 @@
 import{test}from'node:test'
 import{strict as a}from'node:assert'
-import{queueFixture}from'./queue-fixture.js'
+import{queueFixture}from '../test-util/queue-fixture.js'
 import{recoverQueue}from'../infra/d1-queue-recover.js'
 test('age limit terminates stale queued and continuously working heads',async()=>{
  const{db,put}=await queueFixture();await put('a');await put('b')

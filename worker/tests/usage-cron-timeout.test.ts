@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { syncUsage } from '../scheduled-usage.js'
-import { createTimelineTestEnv } from './timeline-helpers.js'
-import { drive } from './upstream-retry-drive.js'
+import { createTimelineTestEnv } from '../test-util/timeline-helpers.js'
+import { drive } from '../test-util/upstream-retry-drive.js'
 
 test('scheduled usage timeout skips upsert and does not retry', async t => {
  const { env } = await createTimelineTestEnv()

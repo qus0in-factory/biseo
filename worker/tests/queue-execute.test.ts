@@ -1,6 +1,6 @@
 import{test}from'node:test'
 import{strict as a}from'node:assert'
-import{queueFixture}from'./queue-fixture.js'
+import{queueFixture}from '../test-util/queue-fixture.js'
 import{dispatchQueue}from'../app/dispatch-queue.js'
 test('concurrent dispatch starts in D1 before input and never resends uncertain input',async()=>{
  const{db,put}=await queueFixture();await put('a')

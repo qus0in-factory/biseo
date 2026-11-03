@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import {queueFixture} from './queue-fixture.js'
+import {queueFixture} from '../test-util/queue-fixture.js'
 test('reservation preserves generation and rejects global requestId collisions',async()=>{
  const {db,put}=await queueFixture()
  assert.equal((await put('a')).kind,'inserted')

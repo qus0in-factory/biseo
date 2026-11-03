@@ -1,7 +1,7 @@
 import assert from'node:assert/strict'
 import test from'node:test'
-import{createTimelineTestEnv}from'./timeline-helpers.js'
-import{insertRow}from'./d1-row.js'
+import{createTimelineTestEnv}from '../test-util/timeline-helpers.js'
+import{insertRow}from '../test-util/d1-row.js'
 import{reconcileTurn}from'../app/reconcile-turn.js'
 test('repeated 404 fails the turn',async()=>{
  const{env}=await createTimelineTestEnv(),db=env.BISEO_DB!

@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { refreshFixture } from './refresh-fixture.js'
+import { refreshFixture } from '../test-util/refresh-fixture.js'
 import { startRefresh } from '../app/refresh-start.js'
 import { refreshSource } from '../infra/refresh-source.js'
 import { refreshPolicy } from '../ui/refresh-policy.js'

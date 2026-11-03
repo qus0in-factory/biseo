@@ -1,6 +1,6 @@
 import{test}from'node:test'
 import{strict as a}from'node:assert'
-import{queueFixture}from'./queue-fixture.js'
+import{queueFixture}from '../test-util/queue-fixture.js'
 import{cancelReservation}from'../app/cancel-reservation.js'
 import{dispatchQueue}from'../app/dispatch-queue.js'
 test('queued cancellation is owner scoped and advances D1 FIFO',async()=>{

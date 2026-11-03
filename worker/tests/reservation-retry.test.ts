@@ -1,6 +1,6 @@
 import{test}from'node:test'
 import{strict as a}from'node:assert'
-import{queueFixture}from'./queue-fixture.js'
+import{queueFixture}from '../test-util/queue-fixture.js'
 import{retryReservation}from'../app/retry-reservation.js'
 test('manual retry creates fresh generation and preserves old prompt and failure',async()=>{
  const{db,put}=await queueFixture();await put('old','p','o','original',' hi ')

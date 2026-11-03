@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { createFakeD1 } from './fake-d1.js'
+import { createFakeD1 } from '../test-util/fake-d1.js'
 import { parseUsage } from '../app/usage-sync.js'
 import { upsertUsage } from '../infra/d1-usage-write.js'
 import { listUsage } from '../infra/d1-usage-read.js'

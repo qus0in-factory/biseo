@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { liveQueueFixture } from './live-queue-fixture.js'
+import { liveQueueFixture } from '../test-util/live-queue-fixture.js'
 import { dispatchQueue } from '../app/dispatch-queue.js'
 import { cancelReservation } from '../app/cancel-reservation.js'
 import { runD1Queue } from '../app/run-d1-queue.js'

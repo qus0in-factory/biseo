@@ -1,7 +1,7 @@
 import test from'node:test'
 import assert from'node:assert/strict'
-import{createFakeD1}from'./fake-d1.js'
-import{insertRow}from'./d1-row.js'
+import{createFakeD1}from '../test-util/fake-d1.js'
+import{insertRow}from '../test-util/d1-row.js'
 import{panePending}from'../infra/d1-pane-pending.js'
 test('pane close protects queue lane across owners and releases terminal rows',async()=>{
  const db=createFakeD1()

@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { createTimelineTestEnv } from './timeline-helpers.js'
-import { insertRow } from './d1-row.js'
-import { cronFetch } from './d1-cron-fetch.js'
+import { createTimelineTestEnv } from '../test-util/timeline-helpers.js'
+import { insertRow } from '../test-util/d1-row.js'
+import { cronFetch } from '../test-util/d1-cron-fetch.js'
 import { scheduled } from '../scheduled.js'
 
 test('timeout terminates uncertain rather than accepting a late result', async () => {

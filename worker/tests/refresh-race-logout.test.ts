@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { refreshFixture } from './refresh-fixture.js'
+import { refreshFixture } from '../test-util/refresh-fixture.js'
 import { readRefresh, revokeRefresh } from '../infra/refresh-read.js'
 import { rotateRefresh } from '../infra/refresh-rotate.js'
 import { refreshHash } from '../infra/refresh-secret.js'
