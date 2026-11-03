@@ -151,6 +151,12 @@
   "usageHiddenStorageKey": "biseo:usage-provider-hidden",
   "usageProviderSettings": "제공자 설정",
   "usageProviderSettingsHint": "드래그로 순서를 바꾸고 눈 아이콘으로 표시 여부를 정합니다.",
+  "usagePace": "적정 위치",
+  "usagePaceSettings": "적정 위치 표시",
+  "usagePaceSettingsHint": "끄면 해당 창의 게이지 눈금과 시계 퍼센트를 숨깁니다.",
+  "usagePaceWeek": "w 창에 표시",
+  "usagePaceMonth": "m 창에 표시",
+  "usagePaceStorageKey": "biseo:usage-pace",
   "usageProviderVisible": "표시",
   "usageProviderShowAll": "모두 표시",
   "usageProviderEmpty": "표시할 제공자가 없습니다.",
@@ -247,8 +253,8 @@
   "workspaceSwitch": "워크스페이스 전환",
   "workspaceSwitchPending": "전환 중...",
   "workspaceSwitchHint": "전환할 워크스페이스를 선택합니다.",
-  "workspaceFocused": "Herdr 포커스",
-  "workspaceSelected": "biseo 선택",
+  "workspaceFocused": "현재 작업 중",
+  "workspaceSelected": "연결됨",
   "workspaceSelect": "선택",
   "workspacesEmpty": "작업 공간이 없습니다",
   "workspacesError": "작업 공간을 불러올 수 없습니다.",
@@ -261,5 +267,6 @@
   "expandDrawer": "왼쪽 패널 펼치기",
   "paneRenameFailed": "이름 변경 또는 목록 확인에 실패했습니다. 다시 시도하세요.",
   "panesChangedEvent": "biseo:panes-changed",
-  "openMenu": "메뉴 열기"
+  "openMenu": "메뉴 열기",
+  "workspaceSwitching": "워크스페이스 전환 중"
 }

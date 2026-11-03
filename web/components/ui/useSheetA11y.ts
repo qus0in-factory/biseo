@@ -4,7 +4,7 @@ import { trapTabKey } from './trapTabKey'
 const Q =
   'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
 
-export function useSheetA11y(open: boolean, onClose: () => void) {
+export function useSheetA11y(open: boolean, onClose: () => void, deferFocusRestore = false) {
   const ref = useRef<HTMLDivElement>(null)
   const prev = useRef<HTMLElement | null>(null)
   const onCloseRef = useRef(onClose)
@@ -31,9 +31,10 @@ export function useSheetA11y(open: boolean, onClose: () => void) {
     document.addEventListener('keydown', onKey)
     return () => {
       document.removeEventListener('keydown', onKey)
-      prev.current?.focus()
+      if (deferFocusRestore) setTimeout(() => prev.current?.focus(), 0)
+      else prev.current?.focus()
     }
-  }, [open])
+  }, [open, deferFocusRestore])
 
   return ref
 }

@@ -13,7 +13,7 @@ export function UsageWindowTime({ value, showChecked = true, expected = false }:
 }) {
   const reset = value.resetsAt ? formatZoned(value.resetsAt, TZ) : undefined
   return (
-    <span className="flex flex-col items-end gap-0.5 text-[11px] leading-4 tabular-nums text-muted-foreground">
+    <span className="flex flex-col items-end gap-0.5 text-xs leading-4 tabular-nums text-muted-foreground">
       <span className="inline-flex" title={reset}>
         <HintPopover label={res.usageReset!} className="gap-1">
           <Clock size={12} aria-label={res.usageReset} role="img" />

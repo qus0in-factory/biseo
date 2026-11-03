@@ -12,6 +12,6 @@ test('switching keeps the tab list mounted without the inline refresh row', () =
   current: 'w1', notice: null, busy: true, target: 'w2', onSelect() {}, onRetry() {},
  }))
  assert.ok(html.includes('learn'))
- assert.ok(html.includes(r.workspaceSwitchPending))
+ assert.ok(!html.includes(r.workspaceSwitchPending))
  assert.ok(!html.includes(r.loading))
 })

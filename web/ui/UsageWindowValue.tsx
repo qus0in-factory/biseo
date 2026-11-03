@@ -1,4 +1,5 @@
 import type { UsageWindow } from '../domain/usage'
+import { windowPace } from '../domain/usagePace'
 import { usageWindowDisplay } from './usageWindowDisplay'
 import { UsageTimeLeft } from './UsageTimeLeft'
 import { UsageValueLine } from './UsageValueLine'
@@ -19,7 +20,7 @@ export function UsageWindowValue({
   return (
     <UsageValueLine
       label={name}
-      gauge={<UsageGauge used={value.usedPercent} shown={shown} label={remaining ? r.usageRemaining : r.usageUsed} window={value.window} limited={value.limitReached} stale={stale} />}
+      gauge={<UsageGauge used={value.usedPercent} shown={shown} label={remaining ? r.usageRemaining : r.usageUsed} window={value.window} limited={value.limitReached} stale={stale} pace={windowPace(name, value, remaining)} />}
       value={<UsageValueStatus text={text} used={value.usedPercent} window={value.window} limited={value.limitReached} />}
       timeLeft={<UsageTimeLeft label={name} startsAt={value.startsAt} resetsAt={value.resetsAt} remaining={remaining} />}
     />

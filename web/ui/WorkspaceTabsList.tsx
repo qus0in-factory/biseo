@@ -20,7 +20,6 @@ export function WorkspaceTabsList({ items, current, busy, target, onSelect }: P)
     aria-current={selected ? 'true' : undefined} aria-busy={pending || undefined} disabled={busy}
     onClick={() => onSelect(id)}>
     <span className="workspace-tab-name">{workspace.label ?? id}</span>
-    {pending && <span className="workspace-tab-meta">{r.workspaceSwitchPending}</span>}
    </button>
   })}
  </div>

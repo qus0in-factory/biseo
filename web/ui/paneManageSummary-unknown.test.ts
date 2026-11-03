@@ -4,7 +4,7 @@ import{renderPaneItem}from'./paneManageItem.test-util'
 test('initial unknown model and usage show matching progress',()=>{
  const out=renderPaneItem({agentKind:'opencode',agentName:'ds-o'})
  assert.match(out,/pane-manage-summary/)
-  assert.match(out,/>opencode · 확인 중</)
+ assert.match(out,/<span>opencode<\/span><span class="pane-manage-usage">확인 중<\/span>/)
  assert.doesNotMatch(out,/deepseek|ollama/)
 })
 test('a card without metadata still shows matching progress',()=>{
