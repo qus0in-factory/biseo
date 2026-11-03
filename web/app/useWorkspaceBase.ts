@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import type { WorkspaceApiPort as Api } from '../domain/ports'
+import { useWorkspaceIdSync } from './useWorkspaceIdSync'
 import { gateTarget } from '../domain/gateTarget'
 import { useConfig } from './useConfig'
 import { useWorkspaceSelection } from './useWorkspaceSelection'
@@ -17,6 +18,7 @@ export function useWorkspaceBase(
 ) {
   useUsageBackground(usageApi, on)
   const { wsId, applyWsId } = useConfig(a, on)
+  useWorkspaceIdSync(wsId)
   const apply = useCallback((id: string) => {
     setSel(null)
     applyWsId(id)

@@ -267,5 +267,6 @@
   "expandDrawer": "왼쪽 패널 펼치기",
   "paneRenameFailed": "이름 변경 또는 목록 확인에 실패했습니다. 다시 시도하세요.",
   "panesChangedEvent": "biseo:panes-changed",
-  "openMenu": "메뉴 열기"
+  "openMenu": "메뉴 열기",
+  "workspaceSwitching": "워크스페이스 전환 중"
 }
