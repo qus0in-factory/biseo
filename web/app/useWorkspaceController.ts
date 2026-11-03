@@ -10,7 +10,7 @@ export function useWorkspaceController(a:WorkspaceApiPort,s:TimelineStreamPort,o
  const sel=useUiStore(x=>x.selectedPaneId)
  const setSel=useUiStore(x=>x.setSelectedPaneId)
  const base=useWorkspaceBase(a,on,online,sel,setSel)
- const{getItems,getUpdate}=useSyncRefs(base.items,base.update)
+ const{getItems,getUpdate}=useSyncRefs(base.items,base.update,base.wsId)
  const{reload,setSnapshot,markDisconnected}=base
  const h=useWorkspaceRecovery(a,reload,getItems,getUpdate,setSnapshot,setOnline,markDisconnected,base.reloadTimeline)
  useWorkspaceStream(s,on,base.wsId,base.update,h)
