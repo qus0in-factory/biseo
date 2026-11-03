@@ -5,6 +5,7 @@ import { ollama } from '../test-util/paneManageItem'
 import { observedPanes } from '../test-util/usage-panel-fixture'
 import { panelProviders } from '../test-util/usage-panel-rows'
 import { paneUsageLabel } from './paneUsageLabel'
+
 test('initial unknown model and usage show matching progress',()=>{
  const out=renderPaneItem({agentKind:'opencode',agentName:'ds-o'})
  assert.match(out,/pane-manage-summary/)

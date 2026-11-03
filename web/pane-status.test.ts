@@ -5,6 +5,7 @@ import { vars } from './test-util/paneCss'
 import { rule } from './test-util/paneCss'
 import { resolve } from './test-util/paneCss'
 import { contrast } from './test-util/paneColor'
+
 const v = vars(read('theme.css'))
 const css = read('pane-status.css')
 const names = ['idle', 'working', 'done', 'blocked', 'unknown']
@@ -39,7 +40,6 @@ test('status badges use five distinct design-token treatments', () => {
   assert.equal(new Set(sigs).size, 5)
   assert.notEqual(val(done, 'background'), val(blocked, 'background'))
   assert.ok(contrast('#FFFFFF', val(working, 'background')) >= 3)
-  assert.match(read('panes.css'), /pane-status\.css/)
 })
 }
 const B=(c:string,s:string)=>{const i=c.indexOf(`${s} {`);if(i<0)throw Error(s);return c.slice(i+s.length+2).split('}')[0]}

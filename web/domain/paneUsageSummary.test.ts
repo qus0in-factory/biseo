@@ -8,6 +8,7 @@ import { paneUsageSummary } from './paneUsageSummary'
 import { makeTestPane } from '../test-util/pane-usage-test-helper'
 import { prov } from '../test-util/paneUsageSummaryFixture'
 import { win } from '../test-util/paneUsageSummaryFixture'
+
 const agy:UsageProvider={provider:'agy',state:'available',windows:[],metrics:[
  percent('gemini:pool:gemini-5h',8),percent('gemini:pool:gemini-weekly',22),percent('claude-gpt:pool:claude-weekly',99),
 ]}

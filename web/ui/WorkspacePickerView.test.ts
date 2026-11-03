@@ -8,6 +8,7 @@ import r from '../resources.json'
 import { beginWorkspaceSelection } from './workspaceSelectionGuard'
 import { subscribeWorkspaceSelection } from './workspaceSelectionGuard'
 import { missingWorkspaceNotice } from './workspacePickerNotice'
+
 test('workspace empty is success-only; failure has retry, not empty', () => {
  const render = (loading: boolean, error: string | null) => renderToStaticMarkup(createElement(WorkspacePickerView, {
   state: listState([], loading, error), current: null, loading, notice: null, onSelect() {}, onRetry() {},

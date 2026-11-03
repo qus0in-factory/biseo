@@ -4,12 +4,13 @@ import { makeTestPane } from '../test-util/pane-usage-test-helper'
 import { agyWarningFixture } from '../test-util/agy-warning-fixture'
 import { describe } from 'node:test'
 import { evaluatePaneUsageWarning } from './pane-usage-warning.js'
-import { paneUsageSummary } from './paneUsageSummary'
 import { prov } from '../test-util/paneUsageSummaryFixture'
 import { win } from '../test-util/paneUsageSummaryFixture'
 import type { PaneSummary } from './timeline.js'
 import type { UsageProvider } from './usage.js'
-import { warningWindow, warningProvider } from './pane-usage-warning.test-util'
+import { warningWindow } from './pane-usage-warning.test-util'
+import { warningProvider } from './pane-usage-warning.test-util'
+
 test('Gemini ignores exhausted Claude and Argon pools; own threshold warns', () => {
  const pane = {...makeTestPane('agy', 'gf'), modelId: 'gemini-3-pro'}
  assert.equal(evaluatePaneUsageWarning(pane, [agyWarningFixture(10)]).hasWarning, false)

@@ -2,6 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { triggerInterrupt } from './interruptAction'
 import type { PaneSummary } from '../domain/timeline'
+
 const base: PaneSummary = {
   paneId: 'p1',
   name: 'P1',

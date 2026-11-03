@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { renamePaneAction } from './renamePaneAction'
 import { renameActionFixture } from '../test-util/renameActionFixture'
 import r from '../resources.json'
+
 test('rename stays busy through refreshed list, then confirms and clears editing', async () => {
  let finish!: () => void
  const {s, events} = renameActionFixture(() => new Promise(resolve => {finish = () => resolve([{paneId:'p1',name:'opus2'}])}))

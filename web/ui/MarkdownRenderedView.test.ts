@@ -1,9 +1,14 @@
+import { test } from 'node:test'
+import { createElement } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import D2Markdown from 'react-markdown'
+import { MarkdownRenderedView } from './MarkdownRenderedView'
 import { describe } from 'node:test'
 import { it } from 'node:test'
 import assert from 'node:assert/strict'
 import { paragraph } from '../test-util/markdownRenderTestSupport'
 import { renderMarkdown } from '../test-util/markdownRenderTestSupport'
-import { readFileSync } from 'node:fs'
+
 describe('CJK-friendly Markdown emphasis', () => {
   it('renders bold text before Korean when the closing marker follows punctuation', () => {
     assert.equal(
@@ -43,13 +48,14 @@ describe('CJK-friendly Markdown strikethrough and code', () => {
   })
 })
 describe('Markdown safety source', () => {
-  const src = [
-    readFileSync(new URL('./MarkdownRenderedView.tsx', import.meta.url), 'utf8'),
-    readFileSync(new URL('./markdownComponents.tsx', import.meta.url), 'utf8'),
-  ].join('\n')
-  it('uses safe links and disables raw html', () => {
-    assert.match(src, /noopener noreferrer/)
-    assert.match(src, /skipHtml/)
-    assert.match(src, /urlTransform/)
-  })
+test('rendered markdown removes raw html and unsafe links', () => {
+  const out = renderToStaticMarkup(createElement(MarkdownRenderedView, {
+    text: '<script>bad()</script>\n\n[x](javascript:alert(1)) [safe](https://example.com)',
+    Markdown: D2Markdown as unknown as import('react').ComponentType<Record<string, unknown>>, remarkPlugins: [],
+  }))
+  assert.doesNotMatch(out, /<script|javascript:/)
+  assert.match(out, /href="https:\/\/example.com"/)
+  assert.match(out, /rel="noopener noreferrer"/)
+})
+
 })

@@ -12,6 +12,7 @@ import { observedPanes } from '../test-util/usage-panel-fixture'
 import { panelProviders } from '../test-util/usage-panel-rows'
 import { paneUsageWindows } from './pane-usage-windows'
 import { paneUsageSummary } from './paneUsageSummary'
+
 describe('findMatchingUsage agentKind isolation', () => {
   test('returns null when agentKind is execution tool or unknown', () => {
     assert.equal(findMatchingUsage(p('opencode', 'opus'), provs), null)

@@ -4,6 +4,7 @@ import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { LoginForm } from './LoginForm.js'
 import r from '../resources.json'
+
 const html=(p?:boolean|null,onPinLogin?:(pin:string)=>void)=>renderToStaticMarkup(
  createElement(LoginForm,{busy:false,onLogin:()=>{},onPinLogin,pinPreferred:p}))
 

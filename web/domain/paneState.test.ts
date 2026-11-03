@@ -5,6 +5,7 @@ import { canInputTarget } from './paneState.js'
 import { isQueuedTarget } from './paneState.js'
 import { getPaneState } from './paneState.js'
 import { getPaneReason } from '../ui/paneMetaReason.js'
+
 test('resources define reservation, cancellation, and prompt reject', () => {
   const s = r as Record<string, string>
   assert.equal(s.turn_queued, '예약됨')

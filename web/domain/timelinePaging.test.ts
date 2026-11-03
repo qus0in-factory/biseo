@@ -5,6 +5,7 @@ import { startPaging } from './timelinePaging.js'
 import type { TimelineItem } from './timeline-item.js'
 import { canLoadOlder } from './timelinePaging.js'
 import { addOlder } from './timelinePaging.js'
+
 const it=(id:string,seq:number):TimelineItem=>({requestId:id,workspaceId:'w1',paneId:'w1:p1',targetName:'p1',promptText:'hi',status:'completed',createdAt:`2026-10-29T00:00:0${seq}Z`,seq})
 const ids=(p:{items:TimelineItem[]})=>p.items.map(i=>i.requestId)
 

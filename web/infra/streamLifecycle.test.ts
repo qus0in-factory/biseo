@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { bindStreamLifecycle } from './streamLifecycle.js'
 import { makeStreamEnv } from '../test-util/streamLifecycleEnv'
+
 test('bindStreamLifecycle cleanup removes listeners', () => {
   const env = makeStreamEnv()
   ;(globalThis as any).window = env.window

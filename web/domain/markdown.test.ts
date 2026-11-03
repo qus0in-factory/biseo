@@ -5,6 +5,7 @@ import { orderedRemarkPlugins } from './markdown.js'
 import { fencedLanguage } from './markdown.js'
 import { isSafeUrl } from './markdown.js'
 import { safeUrl } from './markdown.js'
+
 describe('orderedRemarkPlugins', () => {
   it('places GFM before the CJK emphasis and strikethrough plugins', () => {
     const gfm = {}

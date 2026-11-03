@@ -4,6 +4,7 @@ import { ApiError } from './auth.js'
 import type { Health } from './auth.js'
 import type { HealthPort } from './auth.js'
 import { loadHealth } from './healthRetry.js'
+
 const port = (run: () => Promise<Health>): HealthPort => ({ getHealth: run })
 
 test('an already aborted request never calls the health endpoint', async () => {

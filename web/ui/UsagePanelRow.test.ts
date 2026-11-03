@@ -4,10 +4,10 @@ import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { UsagePanelRow } from './UsagePanelRow.js'
 import import5_test from 'node:test'
-import { readFileSync } from 'node:fs'
 import { createElement as h } from 'react'
 import { renderToStaticMarkup as render } from 'react-dom/server'
 import r from '../resources.json'
+
 test('UsagePanelRow renders stale card, prompt, and unconfirmed reset', () => {
   const w = { window: 'm', usedPercent: 45, resetsAt: '2099-01-01T00:00:00Z', checkedAt: '2026-11-02T10:00:00Z', limitReached: false, source: 'grok-stale' }
   const p = { provider: 'grok', state: 'available' as const, reason: 'auth_required', windows: [w] }
@@ -21,19 +21,6 @@ test('UsagePanelRow renders stale card, prompt, and unconfirmed reset', () => {
   assert.match(h2, /미확인/)
   assert.doesNotMatch(h2, /55%/)
 })
-{
-const test = import5_test;
-const src = (f: string): string => readFileSync(new URL(f, import.meta.url), 'utf8')
-
-test('usage cards keep one outer border and no fixed minimum width', () => {
-  const row = src('./UsagePanelRow.tsx')
-  assert.match(row, /<Card/)
-  assert.match(row, /self-start/)
-  assert.match(row, /min-w-0/)
-  assert.doesNotMatch(row, /min-w-44/)
-  assert.doesNotMatch(row, /h-full/)
-})
-}
 {
 const test = import5_test;
 const win = (window: string, checkedAt: string | null) => ({

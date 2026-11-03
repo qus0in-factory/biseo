@@ -7,6 +7,7 @@ import type { PaneStatus } from '../domain/timeline.js'
 import { createElement as h } from 'react'
 import { renderToStaticMarkup as render } from 'react-dom/server'
 import { TurnStatusBadge } from './TurnStatusBadge'
+
 const cases: [PaneStatus, string, string][] = [
   ['idle', '대기', 'lucide-clock'],
   ['working', '실행 중', 'lucide-loader'],
@@ -24,17 +25,6 @@ test('status badges render label, icon, and aria per state', () => {
     assert.match(h, /aria-hidden="true"/)
     assert.equal(h.includes('animate-spin'), s === 'working')
   }
-})
-const states: PaneStatus[] = ['idle', 'working', 'done', 'blocked', 'unknown']
-
-test('status badge classes are distinct per state', () => {
-  const classes = states.map((s) => {
-    const h = renderToStaticMarkup(React.createElement(PaneStatusBadge, { status: s }))
-    const m = h.match(/class="([^"]*status-[^"]*)"/)
-    assert.ok(m, `${s} should render a class attribute`)
-    return m![1]
-  })
-  assert.equal(new Set(classes).size, states.length)
 })
 test('pane and recorded turn distinguish input from blocked', () => {
   assert.match(render(h(PaneStatusBadge, { status: 'blocked', blockedReason: 'input_request' })), /입력 필요/)

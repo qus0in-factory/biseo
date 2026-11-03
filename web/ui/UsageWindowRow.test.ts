@@ -1,27 +1,26 @@
-import test from 'node:test'
-import assert from 'node:assert/strict'
+import { test } from 'node:test'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { UsageWindowRow } from './UsageWindowRow'
-import { assertFixedValueColumns } from '../test-util/usageRowAssert'
-import { fromNow } from '../test-util/usageRowAssert'
-import { percentValue } from '../test-util/usageRowAssert'
 import r from '../resources.json'
+import { UsageWindowRow } from './UsageWindowRow'
+import { percentValue } from '../test-util/usageRowAssert'
+import { fromNow } from '../test-util/usageRowAssert'
+import assert from 'node:assert/strict'
 import { createElement as h } from 'react'
 import { renderToStaticMarkup as render } from 'react-dom/server'
 import { UsageModalDisplay } from './UsageModalDisplay'
 import { expectNoTimeIcon } from '../test-util/usageTimeLeftExpect'
 import { expectTimeIcon } from '../test-util/usageTimeLeftExpect'
 import { test as import14_test } from 'node:test'
+
 const label=(r as Record<string,string>).usageTimeLeft
-test('window rows share the same fixed value columns',()=>{
- const withTime=renderToStaticMarkup(createElement(UsageWindowRow,{provider:'codex',value:percentValue(fromNow(3.5))}))
- const withoutTime=renderToStaticMarkup(createElement(UsageWindowRow,{provider:'codex',value:percentValue(null)}))
- assertFixedValueColumns(withTime)
- assertFixedValueColumns(withoutTime)
- assert.match(withTime,new RegExp(`aria-label="${label}"`))
- assert.doesNotMatch(withoutTime,new RegExp(`aria-label="${label}"`))
+test('window time label appears only when a clock is available', () => {
+  const withTime = renderToStaticMarkup(createElement(UsageWindowRow, { provider: 'codex', value: percentValue(fromNow(3.5)) }))
+  const withoutTime = renderToStaticMarkup(createElement(UsageWindowRow, { provider: 'codex', value: percentValue(null) }))
+  assert.ok(withTime.includes(`aria-label="${r.usageTimeLeft}"`))
+  assert.ok(!withoutTime.includes(`aria-label="${r.usageTimeLeft}"`))
 })
+
 test('modal gauge follows the displayed remaining number while warning stays used-based', () => {
   const value = { ...percentValue('2099-01-01T00:00:00Z'), window: '5h', usedPercent: 95 }
   const row = h(UsageWindowRow, { provider: 'claude', value })

@@ -8,6 +8,7 @@ import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { UsagePanelBody } from './UsagePanelBody.js'
 import type { UsageProvider } from '../domain/usage.js'
+
 test('the ollama card keeps only the two balances', () => {
   const out = html('ollama', shot)
   assert.match(out, /Included Balance/)

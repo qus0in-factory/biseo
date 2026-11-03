@@ -5,6 +5,7 @@ import type { UsageMetric } from './usage.js'
 import { metricValueUnknown } from './usage-metric-format.js'
 import { describe } from 'node:test'
 import { it } from 'node:test'
+
 const inc: UsageMetric = { id: 'included_balance', label: 'Included Balance', unit: 'currency', used: 0.51225, limit: 60, remaining: 59.48775, resetsAt: null }
 const usd: UsageMetric = { id: 'usage_usd', label: 'Usage', unit: 'currency', used: 30, limit: 120, remaining: 90, resetsAt: null }
 

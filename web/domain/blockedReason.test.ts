@@ -1,6 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { getBlockedReasonText } from './blockedReason'
+
 test('blockedReason: suspected usage_limit shows unblockable wording', () => {
   const t = getBlockedReasonText('usage_limit', '2026-10-29T15:00:00.000Z', true)
   assert.match(t ?? '', /차단 해제 가능/)

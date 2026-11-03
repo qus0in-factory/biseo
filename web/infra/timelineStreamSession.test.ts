@@ -3,6 +3,7 @@ import test from 'node:test'
 import { connectTimelineStream } from './timelineStreamSession.js'
 import { makeStreamEnv } from '../test-util/streamReconnectFixture'
 import { FakeEventSource } from '../test-util/streamReconnectFixture'
+
 test('closes previous EventSource on cleanup', () => {
   const env = makeStreamEnv()
   ;(globalThis as any).window = env.window

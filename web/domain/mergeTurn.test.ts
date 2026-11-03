@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { mergeTurn } from './mergeTurn.js'
 import type { TimelineItem as T } from './timeline.js'
 import type { TimelineItem } from './timeline.js'
+
 const mk=(s:T['status'],r:string|null=null,c:string|null=null):T=>
  ({requestId:'r1',workspaceId:'w1',paneId:'p1',targetName:'t',promptText:'p',status:s,responseText:r,completedAt:c,createdAt:'2026-01-01'})
 test('mergeTurn timeout upgrades and terminal states reject regressions', ()=>{

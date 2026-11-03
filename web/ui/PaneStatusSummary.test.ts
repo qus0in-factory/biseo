@@ -6,6 +6,7 @@ import { PaneStatusSummary } from './PaneStatusSummary'
 import { createElement as h } from 'react'
 import { renderToStaticMarkup as render } from 'react-dom/server'
 import { metaPane } from '../test-util/paneMetaFixture'
+
 test('status summary does not repeat the loading text above the list skeleton', () => {
   const out = renderToStaticMarkup(createElement(PaneStatusSummary, {
     panes: [],

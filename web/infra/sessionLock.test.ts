@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { sessionLock } from './sessionLock'
 import { refreshSession } from './refreshSession'
 import { sessionTestEnv } from '../test-util/sessionTestEnv'
+
 test('logout shares the rotation lock, so late refresh cannot overwrite logout', async () => {
  const env = sessionTestEnv()
  const order: string[] = []

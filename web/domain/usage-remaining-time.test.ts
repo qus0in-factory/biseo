@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { usageRemainingTimePercent } from './usage-remaining-time.js'
 import { usageWindowKind } from './usage-remaining-time.js'
+
 const DAY = 86_400_000
 const NOW = Date.parse('2026-11-01T00:00:00.000Z')
 const at = (days: number) => new Date(NOW + days * DAY).toISOString()

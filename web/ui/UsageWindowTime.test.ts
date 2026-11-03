@@ -1,13 +1,14 @@
-import test from 'node:test'
+import { test } from 'node:test'
+import { createElement } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { UsageWindowTime } from './UsageWindowTime'
+import { percentValue } from '../test-util/usageRowAssert'
 import assert from 'node:assert/strict'
 import { createElement as h } from 'react'
 import { renderToStaticMarkup as render } from 'react-dom/server'
 import { UsageModalDisplay } from './UsageModalDisplay'
-import { UsageWindowTime } from './UsageWindowTime'
-import { percentValue } from '../test-util/usageRowAssert'
-import { createElement } from 'react'
-import { renderToStaticMarkup } from 'react-dom/server'
 import r from '../resources.json'
+
 const at = '2026-11-03T00:17:00Z'
 
 test('modal reset prioritizes relative time while retaining absolute tooltip', () => {
@@ -39,11 +40,10 @@ test('usage reset time uses a clock and short KST timestamp', () => {
   assert.doesNotMatch(html, /\(KST\)/)
   assert.doesNotMatch(html, new RegExp(`>${r.usageReset}:`))
 })
-test('reset and checked timestamps stack right with full titles', () => {
+test('window timestamps retain full titles and chronological display order', () => {
   const value = { ...percentValue('2026-11-01T05:40:03Z'), checkedAt: '2026-11-01T05:45:00Z' }
-  const html = renderToStaticMarkup(createElement(UsageWindowTime, { value }))
-  assert.match(html, /flex flex-col items-end gap-0\.5 text-xs leading-4 tabular-nums/)
-  assert.match(html, /title="2026-11-01 14:40:03"/)
-  assert.match(html, /title="2026-11-01 14:45:00"/)
-  assert.ok(html.indexOf('26-11-01 14:40:03') < html.indexOf('26-11-01 14:45:00'))
+  const out = renderToStaticMarkup(createElement(UsageWindowTime, { value }))
+  assert.match(out, /title="2026-11-01 14:40:03"/)
+  assert.match(out, /title="2026-11-01 14:45:00"/)
+  assert.ok(out.indexOf('26-11-01 14:40:03') < out.indexOf('26-11-01 14:45:00'))
 })

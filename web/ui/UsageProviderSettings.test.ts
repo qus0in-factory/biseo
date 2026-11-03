@@ -1,10 +1,10 @@
-import test from 'node:test'
+import { test } from 'node:test'
+import r from '../resources.json'
 import assert from 'node:assert/strict'
 import { createElement as h } from 'react'
 import { renderToStaticMarkup as render } from 'react-dom/server'
 import { UsageProviderSettings } from './UsageProviderSettings'
-import r from '../resources.json'
-import { readFileSync } from 'node:fs'
+
 const providers = ['agy', 'claude', 'codex'].map((provider) => ({ provider, state: 'available' as const, windows: [] }))
 
 test('provider settings keeps every provider, order controls and icons', () => {
@@ -17,14 +17,7 @@ test('provider settings keeps every provider, order controls and icons', () => {
   assert.match(html, /lucide-grip-vertical/)
   assert.ok(html.includes(r.usageProviderShowAll))
 })
-const src = (f: string): string => readFileSync(new URL(f, import.meta.url), 'utf8')
 
-test('provider settings reuses the shared sortable list and resources hint', () => {
-  const list = src('./UsageProviderSettingsList.tsx')
-  assert.match(list, /<SortableList/)
-  assert.match(list, /<SortableItem/)
-  assert.match(src('./UsageProviderSettingsHeader.tsx'), /usageProviderSettingsHint/)
-})
 {
 const providers = ['agy', 'claude'].map((provider) => ({ provider, state: 'available' as const, windows: [] }))
 

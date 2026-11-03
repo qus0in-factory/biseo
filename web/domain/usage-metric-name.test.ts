@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { usageMetricName } from './usage-metric-name.js'
 import r from '../resources.json'
+
 const l=r as Record<string,string>
 const eq:(a:unknown,b:unknown)=>void=assert.equal
 const u=(i:string)=>usageMetricName('claude',i,'L',l)

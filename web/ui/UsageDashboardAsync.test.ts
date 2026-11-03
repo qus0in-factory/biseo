@@ -1,22 +1,19 @@
+import { test } from 'node:test'
+import { createElement } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import r from '../resources.json'
+import { UsageDashboardAsync } from './UsageDashboardAsync'
 import assert from 'node:assert/strict'
-import test from 'node:test'
-import { readFileSync } from 'node:fs'
 
-const src = (f: string) => readFileSync(new URL(f, import.meta.url), 'utf8')
-
-test('usage dashboard waits for AsyncList before showing the empty text', () => {
-  const body = src('./UsageModalBody.tsx')
-  assert.match(body, /state=\{state\}/)
-  assert.match(body, /retry=\{retry\}/)
-  const asyncDash = src('./UsageDashboardAsync.tsx')
-  assert.match(asyncDash, /<AsyncList/)
-  assert.match(asyncDash, /onRetry=\{retry\}/)
-  assert.match(asyncDash, /r\.usageEmpty/)
-  assert.match(src('./UsageDashboardContent.tsx'), /UsagePanelRow/)
-})
-
-test('usage dashboard and settings use provider types instead of any', () => {
-  for (const f of ['./UsageDashboard.tsx', './UsageDashboardAsync.tsx', './UsageProviderSettings.tsx']) {
-    assert.doesNotMatch(src(f), /\bany\b/)
-  }
+test('usage dashboard shows empty text only after loading completes', () => {
+  const props = { retry() {}, remaining: true, settingsOpen: false, onSettingsOpenChange() {} }
+  const loading = renderToStaticMarkup(createElement(UsageDashboardAsync, { ...props, state: { status: 'loading' } }))
+  assert.match(loading, /aria-busy="true"/)
+  assert.ok(!loading.includes(r.usageEmpty))
+  const empty = renderToStaticMarkup(createElement(UsageDashboardAsync, { ...props, state: { status: 'empty' } }))
+  assert.ok(empty.includes(r.usageEmpty))
+  const failed = renderToStaticMarkup(createElement(UsageDashboardAsync, { ...props, state: { status: 'error', error: 'offline' } }))
+  assert.ok(failed.includes(r.usageError))
+  assert.ok(failed.includes(r.retry))
+  assert.ok(!failed.includes(r.usageEmpty))
 })

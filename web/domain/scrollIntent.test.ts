@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { scrollAction } from './scrollIntent.js'
 import { ownSendAdded } from './scrollIntent.js'
 import { scrollItem } from '../test-util/scrollItem-fixture'
+
 test('own send scrolls to bottom even while the user reads history', () => {
   assert.equal(scrollAction(true, false, true), 'bottom')
   assert.equal(scrollAction(true, false, false), 'bottom')

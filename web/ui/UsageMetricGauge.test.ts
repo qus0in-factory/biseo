@@ -5,6 +5,7 @@ import { renderToStaticMarkup as render } from 'react-dom/server'
 import { UsageMetricGauge } from './UsageMetricGauge'
 import { percentMetric } from '../test-util/usageRowAssert'
 import r from '../resources.json'
+
 test('metric gauge normalizes bounded units and does not invent an unknown limit', () => {
   const base = percentMetric('2099-01-01T00:00:00Z')
   const metric = { ...base, unit: 'currency', used: 30, limit: 100, remaining: 70 }

@@ -4,6 +4,7 @@ import assert from 'node:assert/strict'
 import { isNearBottom } from './scrollHelper.js'
 import { itemsKey } from './scrollHelper.js'
 import type { TimelineItem } from '../domain/timeline.js'
+
 describe('scrollHelper', () => {
   it('detects near bottom correctly', () => {
     const atBottom = { scrollHeight: 1000, scrollTop: 600, clientHeight: 400 } as HTMLElement

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { bindVisualViewport } from './visualViewport.js'
 import { applyVisualViewport } from './visualViewport.js'
+
 test('bindVisualViewport updates and cleans up', () => {
   const L: Record<string, Array<() => void>> = {}
   const vv: any = { height: 640, width: 360, offsetTop: 0, offsetLeft: 0,

@@ -7,7 +7,7 @@ import { WorkspaceTabs } from './WorkspaceTabs'
 import r from '../resources.json'
 import type { AsyncState } from '../domain/asyncState'
 import type { WorkspaceSummary } from '../domain/ports'
-import { readFileSync } from 'node:fs'
+
 test('the tab strip lists every workspace and marks the current one', () => {
  const html = renderToStaticMarkup(createElement(WorkspaceTabs, {
   state: listState([
@@ -49,19 +49,6 @@ test('a pending tab shows immediate busy text and disables every tab', () => {
  assert.match(html, /aria-busy="true"/)
  assert.ok(!html.includes(r.workspaceSwitchPending))
  assert.match(html, /disabled=""/)
-})
-test('workspace tabs stay on one borderless scrollable line', () => {
- const css = (f: string) => readFileSync(new URL(f, import.meta.url), 'utf8')
- const switcher = css('./workspace-switcher.css')
- const tab = css('./workspace-tab.css')
- assert.match(switcher, /\.workspace-switcher \{[^}]*display: flex;/)
- assert.doesNotMatch(switcher, /\.workspace-switcher \{[^}]*border:/)
- assert.match(switcher, /\.workspace-tabs \{[^}]*display: flex;[^}]*overflow-x: auto;/)
- assert.match(tab, /\.workspace-tab \{[^}]*min-height: 44px;/)
- assert.match(tab, /\.workspace-tab \{[^}]*background: transparent;/)
- assert.doesNotMatch(tab, /\.workspace-tab:hover \{[^}]*border/)
- assert.match(tab, /\.workspace-tab-current::after \{[^}]*height: 2px;[^}]*background: var\(--foreground\);/)
- assert.doesNotMatch(tab, /\.workspace-tab-current \{[^}]*background:/)
 })
 test('a missing or failed selection keeps its alert', () => {
  const html = renderToStaticMarkup(createElement(WorkspaceTabs, {

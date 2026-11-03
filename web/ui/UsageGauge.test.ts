@@ -4,6 +4,7 @@ import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { UsageGauge } from './UsageGauge'
 import r from '../resources.json'
+
 test('gauge exposes clamped value and semantic threshold colors on a visible track', () => {
   for (const [used, window, color, value] of [[90, '5h', 'warning', 90], [98, 'w', 'warning', 98], [130, 'm', 'danger', 100], [-3, 'w', 'muted-foreground', 0]] as const) {
     const html = renderToStaticMarkup(createElement(UsageGauge, { used, window }))

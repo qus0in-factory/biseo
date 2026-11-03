@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { cacheNote } from './usage-cache.js'
 import type { UsageProvider } from './usage.js'
 import r from '../resources.json'
+
 const res = r as Record<string, string>
 
 test('other providers never yield a note', () => {

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { bindHealthLifecycle } from './healthLifecycle.js'
 import { notifyStreamOpen } from './streamOpenEvent.js'
+
 test('backgrounding aborts the check and leaves a hidden page alone', () => {
   const win = new EventTarget()
   const doc = new EventTarget() as EventTarget & { visibilityState: string }

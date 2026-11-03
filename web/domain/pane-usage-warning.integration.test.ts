@@ -1,21 +1,11 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { evaluatePaneUsageWarning as evaluate } from './pane-usage-warning'
 import { makeTestPane } from '../test-util/pane-usage-test-helper'
-import { agyWarningFixture } from '../test-util/agy-warning-fixture'
-import { describe } from 'node:test'
-import { evaluatePaneUsageWarning as evalW } from './pane-usage-warning'
-import { makeTestPane as p } from '../test-util/pane-usage-test-helper'
 import { evaluatePaneUsageWarning } from './pane-usage-warning.js'
 import { paneUsageSummary } from './paneUsageSummary'
-import { prov } from '../test-util/paneUsageSummaryFixture'
-import { win } from '../test-util/paneUsageSummaryFixture'
-import type { PaneSummary } from './timeline.js'
-import type { UsageProvider } from './usage.js'
-import { evaluatePaneUsageWarning as evalWarning } from './pane-usage-warning'
 import { detectUsageWindow } from '../../shared/usage-window-detect.js'
 import { normalizeWarningWindow } from './usage-window-norm.js'
-import { warningWindow, warningProvider } from './pane-usage-warning.test-util'
+
 test('free models do not connect to paid Go usage or warn',()=>{
  const go={provider:'opencode-go',state:'limited' as const,windows:[{window:'primary',usedPercent:100,resetsAt:null,checkedAt:null,limitReached:true,source:null}]}
  for(const modelId of['beam','glm-5.3-flash']){

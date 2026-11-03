@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { runSelection } from '../test-util/workspacePickerTestUtil'
 import { selectWorkspaceAndRefresh } from './workspacePickerSelect'
 import { isWorkspaceSelectionPending } from './workspaceSelectionGuard'
+
 test('success applies the response and refreshes the list',async()=>{
  const log:string[]=[]
  assert.deepEqual(await runSelection(async()=>({workspaceId:'w2'}),log),{workspaceId:'w2'})

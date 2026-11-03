@@ -2,6 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { mergeServerTimeline } from './timelineHydrate.js'
 import type { TimelineItem } from './timeline-item.js'
+
 const item = (requestId: string, status: TimelineItem['status'], responseText: string | null = null): TimelineItem => ({
   requestId, workspaceId: 'w1', paneId: 'w1:p1', targetName: 'p1', promptText: 'hi',
   status, responseText, createdAt: '2026-10-29T00:00:00Z',

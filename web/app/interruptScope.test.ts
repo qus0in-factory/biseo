@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { makeScope } from './interruptScope'
 import { runScope } from './interruptScope'
 import type { PaneSummary } from '../domain/timeline'
+
 const a: PaneSummary = { paneId: 'pA', name: 'A', status: 'blocked', sendable: false, disabledReason: 'agent_blocked' }
 test('inflight duplicate blocked', async () => {
   const s = makeScope()

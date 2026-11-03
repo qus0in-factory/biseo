@@ -6,6 +6,7 @@ import { usageHeaderStatus } from './usage-header-status.js'
 import type { UsageMetric } from './usage.js'
 import { showMetricReset } from './usage-ollama.js'
 import { visibleOllamaMetric } from './usage-ollama.js'
+
 test('pro plan card contract: absent 5h window produces no dummy row', () => {
   const p = parseCodexWham({ rate_limit: { primary_window: { used_percent: 25, limit_window_seconds: 604800 } } })
   const rows = selectCardMetrics(p.provider, p.metrics as any)

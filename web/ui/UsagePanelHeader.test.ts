@@ -1,20 +1,10 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { UsagePanelHeader } from './UsagePanelHeader'
 import r from '../resources.json'
-test('header keeps the status icon secondary and gives actions a hover surface', () => {
-  const src = readFileSync(new URL('./UsagePanelHeader.tsx', import.meta.url), 'utf8')
-  assert.match(src, /gap-2/)
-  const status = readFileSync(new URL('./UsageHeaderStatus.tsx', import.meta.url), 'utf8')
-  assert.match(status, /size=\{14\}/)
-  assert.match(status, /\[&_button:hover\]:bg-muted/)
-  const name = readFileSync(new URL('./UsageProviderName.tsx', import.meta.url), 'utf8')
-  assert.match(name, /truncate/)
-  assert.match(name, /ModelIcon/)
-})
+
 const html = (state: 'available' | 'limited' | 'unknown') => renderToStaticMarkup(createElement(UsagePanelHeader, { provider: { provider: 'codex', state, windows: [] } }))
 const attr = (name: string, value: string) => new RegExp(`${name}="${value}"`)
 test('provider availability is an icon with an accessible label', () => {

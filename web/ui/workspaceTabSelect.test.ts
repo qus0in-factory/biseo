@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import { isWorkspaceSelectionPending } from './workspaceSelectionGuard'
 import { chooseWorkspaceTab } from './workspaceTabSelect'
 import r from '../resources.json'
+
 const store = () => ({ setLd() {}, setCur() {}, setNote() {}, load() {} })
 const api = {} as never
 

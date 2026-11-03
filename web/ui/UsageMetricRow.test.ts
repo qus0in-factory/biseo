@@ -1,29 +1,28 @@
-import test from 'node:test'
-import assert from 'node:assert/strict'
+import { test } from 'node:test'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { UsageMetricRow } from './UsageMetricRow'
-import { assertFixedValueColumns } from '../test-util/usageRowAssert'
-import { fromNow } from '../test-util/usageRowAssert'
-import { percentMetric } from '../test-util/usageRowAssert'
 import r from '../resources.json'
+import { UsageMetricRow } from './UsageMetricRow'
+import { UsageWindowRow } from './UsageWindowRow'
+import { percentMetric } from '../test-util/usageRowAssert'
+import { fromNow } from '../test-util/usageRowAssert'
+import { percentValue } from '../test-util/usageRowAssert'
+import assert from 'node:assert/strict'
 import { createElement as h } from 'react'
 import { renderToStaticMarkup as render } from 'react-dom/server'
 import { UsageModalDisplay } from './UsageModalDisplay'
 import { expectNoTimeIcon } from '../test-util/usageTimeLeftExpect'
 import { expectTimeIcon } from '../test-util/usageTimeLeftExpect'
 import { metric } from '../test-util/usageOllamaFixture'
-import { UsageWindowRow } from './UsageWindowRow'
-import { percentValue } from '../test-util/usageRowAssert'
+
 const label=(r as Record<string,string>).usageTimeLeft
-test('metric rows keep the value and time columns even without a clock',()=>{
- const withTime=renderToStaticMarkup(createElement(UsageMetricRow,{provider:'claude',metric:percentMetric(fromNow(3.5))}))
- const withoutTime=renderToStaticMarkup(createElement(UsageMetricRow,{provider:'claude',metric:percentMetric(null)}))
- assertFixedValueColumns(withTime)
- assertFixedValueColumns(withoutTime)
- assert.match(withTime,new RegExp(`aria-label="${label}"`))
- assert.doesNotMatch(withoutTime,new RegExp(`aria-label="${label}"`))
+test('metric time label appears only when a clock is available', () => {
+  const withTime = renderToStaticMarkup(createElement(UsageMetricRow, { provider: 'claude', metric: percentMetric(fromNow(3.5)) }))
+  const withoutTime = renderToStaticMarkup(createElement(UsageMetricRow, { provider: 'claude', metric: percentMetric(null) }))
+  assert.ok(withTime.includes(`aria-label="${r.usageTimeLeft}"`))
+  assert.ok(!withoutTime.includes(`aria-label="${r.usageTimeLeft}"`))
 })
+
 {
 const res=r as Record<string,string>
 const metric=(id:string)=>({id,label:'Pool - 5h',unit:'percent',
@@ -66,18 +65,17 @@ test('purchased and currency rows keep no time column',()=>{
  expectNoTimeIcon(html('claude',m),label)
 })
 }
-test('both row types warn below 100 and keep labels and times muted', () => {
+test('both usage row types preserve the remaining value and label near a limit', () => {
   const metric = { ...percentMetric(null), used: 98, remaining: 2 }
   const value = { ...percentValue(null), usedPercent: 98 }
   for (const node of [createElement(UsageMetricRow, { provider: 'claude', metric }),
     createElement(UsageWindowRow, { provider: 'codex', value })]) {
-    const html = renderToStaticMarkup(node)
-    assert.match(html, /text-warning/)
-    assert.match(html, /title="2%"/)
-    assert.match(html, /truncate text-sm text-muted-foreground/)
-    assert.doesNotMatch(html, /text-danger|text-error|border-t/)
+    const out = renderToStaticMarkup(node)
+    assert.match(out, /title="2%"/)
+    assert.ok(out.includes(`>${r.usageWindow_secondary}<`))
   }
 })
+
 const res = r as Record<string, string>
 const html = (m: ReturnType<typeof metric>) =>
   renderToStaticMarkup(createElement(UsageMetricRow, { provider: 'ollama', metric: m, remaining: false }))

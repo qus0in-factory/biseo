@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { readFileSync } from 'node:fs'
 
-const read = (f: string) => readFileSync(new URL(`../public/${f}`, new URL("./app/faviconAssets.test.ts", import.meta.url).href))
+const read = (f: string) => readFileSync(new URL(`./public/${f}`, import.meta.url))
 const pngColorType = (b: Buffer) => b[25]
 
 test('favicon PNG assets keep RGBA transparency', () => {

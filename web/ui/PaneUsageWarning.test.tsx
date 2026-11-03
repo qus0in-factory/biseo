@@ -1,11 +1,11 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { describe } from 'node:test'
-import React from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { PaneUsageWarning } from './PaneUsageWarning'
 import { makeTestPane as p } from '../test-util/pane-usage-test-helper'
 import { makeTestPane } from '../test-util/pane-usage-test-helper'
+
 describe('PaneUsageWarning normal', () => {
   test('does not render when below threshold', () => {
     const provs = [{
