@@ -11,7 +11,7 @@ test('formatMetricValue formats percent, credits, currency and fallback', () => 
   assert.equal(formatMetricValue(c), '150 credits')
 
   const cur: UsageMetric = { id: 'm', label: 'M', unit: 'currency', used: null, limit: null, remaining: 25, resetsAt: null }
-  assert.equal(formatMetricValue(cur), '$25')
+  assert.equal(formatMetricValue(cur), '$25.00')
 
   const unk: UsageMetric = { id: 'u', label: 'U', unit: 'percent', used: null, limit: 100, remaining: null, resetsAt: null }
   assert.equal(formatMetricValue(unk, '미확인'), '미확인')

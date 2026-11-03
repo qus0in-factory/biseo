@@ -4,7 +4,7 @@
 
 - 라이선스: MIT
 - 저장소: https://github.com/lobehub/lobe-icons
-- 사용 아이콘: `Claude`, `OpenAI`, `Gemini`, `DeepSeek`의 `Mono` 변형만 사용한다.
+- 사용 아이콘: `Claude`, `OpenAI`, `Gemini`, `DeepSeek`, `Ollama`, `OpenCode`, `Grok`, `XAI`, `Antigravity`의 `Mono` 변형만 사용한다.
 - 가져오는 경로: `@lobehub/icons/es/<Family>/components/Mono`
 - 색상: 패키지의 `fill="currentColor"`를 그대로 사용하고 브랜드 색상 값은 쓰지 않는다.
 - 배포: 패키지에 포함된 SVG를 빌드 시 번들하며 외부 CDN을 호출하지 않는다.

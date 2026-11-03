@@ -6,9 +6,9 @@ import { metric } from './usageOllamaFixture.test-util.js'
 const inc = metric('included_balance', 'currency', { used: 0.5, limit: 60, remaining: 59.5 })
 
 test('the ollama card shows the remaining percent in remaining mode', () => {
-  assert.match(html('ollama', [inc]), /\$59\.5 \(99%\)/)
+  assert.match(html('ollama', [inc]), /\$59\.50 \(99%\)/)
 })
 
 test('the ollama card shows the used percent in used mode', () => {
-  assert.match(html('ollama', [inc], false), /\$0\.5 \(1%\)/)
+  assert.match(html('ollama', [inc], false), /\$0\.50 \(1%\)/)
 })
