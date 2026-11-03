@@ -1,8 +1,8 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import {runTurn}from'./run-turn.js'
-import {item,target}from'./run-data-fixture.js'
-import {setup}from'./run-fixture.js'
+import {item,target}from'./test-util/run-data-fixture.js'
+import {setup}from'./test-util/run-fixture.js'
 import{strict as a}from'node:assert'
 
 {

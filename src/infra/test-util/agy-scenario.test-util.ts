@@ -1,7 +1,7 @@
-import { fetchAgyUsage } from './agy-usage-fetch.js'
-import { clearAgyTokenCache } from './agy-token.js'
+import { fetchAgyUsage } from '../agy-usage-fetch.js'
+import { clearAgyTokenCache } from '../agy-token.js'
 import { putAgyTokenFile, agyTestEnv, removeAgyTokenFile } from './agy-test-support.test-util.js'
-import type { ProviderUsage } from '../domain/usage-types.js'
+import type { ProviderUsage } from '../../domain/usage-types.js'
 
 export async function checkAgyScenario(name: string, exp: string, at: string, route: (u: string, init: RequestInit | undefined, grants: string[]) => unknown, check: (res: ProviderUsage, grants: string[]) => unknown) {
   const p = putAgyTokenFile(name, exp)

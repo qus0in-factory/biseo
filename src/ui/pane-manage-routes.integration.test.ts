@@ -1,10 +1,10 @@
 import test from'node:test'
 import assert from'node:assert/strict'
-import{makeDeps}from'../app/turn-fixture.js'
-import{reader}from'../app/turn-data-fixture.js'
-import{appOf}from'./route-app-fixture.js'
-import{auth}from'./app-data-fixture.js'
-import{makePane}from'./pane-manage-fixture.js'
+import{makeDeps}from'../app/test-util/turn-fixture.js'
+import{reader}from'../app/test-util/turn-data-fixture.js'
+import{appOf}from'./test-util/route-app-fixture.js'
+import{auth}from'./test-util/app-data-fixture.js'
+import{makePane}from'./test-util/pane-manage-fixture.js'
 
 {
 test('open validates the template allowlist and accepts valid names',async()=>{

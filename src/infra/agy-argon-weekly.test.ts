@@ -1,8 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { fetchAgyUsage } from './agy-usage-fetch.js'
-import { agyTestGroup } from './agy-test-support.test-util.js'
-import { setupCli, doneCli } from './agy-cli-scenario.test-util.js'
+import { agyTestGroup } from './test-util/agy-test-support.test-util.js'
+import { setupCli, doneCli } from './test-util/agy-cli-scenario.test-util.js'
 
 test('successful API adds actual CLI Argon weekly value', async () => {
   const calls: string[] = []

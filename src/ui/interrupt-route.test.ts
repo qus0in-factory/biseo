@@ -1,11 +1,11 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { makeDeps } from '../app/turn-fixture.js'
-import { pane, reader } from '../app/turn-data-fixture.js'
-import { appOf } from './route-app-fixture.js'
-import { post } from './interrupt-route-fixture.js'
-import { reader } from '../app/turn-data-fixture.js'
-import { limitedAvailability, limitedBody, post } from './interrupt-route-fixture.js'
+import { makeDeps } from '../app/test-util/turn-fixture.js'
+import { pane, reader } from '../app/test-util/turn-data-fixture.js'
+import { appOf } from './test-util/route-app-fixture.js'
+import { post } from './test-util/interrupt-route-fixture.js'
+import { reader } from '../app/test-util/turn-data-fixture.js'
+import { limitedAvailability, limitedBody, post } from './test-util/interrupt-route-fixture.js'
 
 {
 

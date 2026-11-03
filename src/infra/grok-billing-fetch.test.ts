@@ -2,10 +2,10 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import http from 'node:http'
 import { fetchGrokUsage } from './grok-billing-fetch.js'
-import { initGrokMock, cleanGrokEnv } from './grok-mock-server.test-util.js'
-import { mockGrokBilling } from './grok-mock-handler.test-util.js'
+import { initGrokMock, cleanGrokEnv } from './test-util/grok-mock-server.test-util.js'
+import { mockGrokBilling } from './test-util/grok-mock-handler.test-util.js'
 import { setLastGrokSnapshot } from './grok-snapshot-store.js'
-import { initGrokMock, cleanGrokEnv, staleGrokUsage } from './grok-mock-server.test-util.js'
+import { initGrokMock, cleanGrokEnv, staleGrokUsage } from './test-util/grok-mock-server.test-util.js'
 
 {
 

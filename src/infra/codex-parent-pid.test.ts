@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { run } from './codex-parent-pid-fixture.js'
+import { run } from './test-util/codex-parent-pid-fixture.js'
 
 {
 

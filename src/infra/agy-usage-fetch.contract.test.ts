@@ -2,10 +2,10 @@ import test from'node:test'
 import assert from'node:assert/strict'
 import{fetchAgyUsage}from'./agy-usage-fetch.js'
 import{agyCliConfig}from'./agy-cli-config.js'
-import{cliTsv,fail401,setupCli,doneCli}from'./agy-cli-scenario.test-util.js'
-import{fail401,setupCli,doneCli}from'./agy-cli-scenario.test-util.js'
-import{agyTestGroup}from'./agy-test-support.test-util.js'
-import{cliTsv,setupCli,doneCli}from'./agy-cli-scenario.test-util.js'
+import{cliTsv,fail401,setupCli,doneCli}from'./test-util/agy-cli-scenario.test-util.js'
+import{fail401,setupCli,doneCli}from'./test-util/agy-cli-scenario.test-util.js'
+import{agyTestGroup}from'./test-util/agy-test-support.test-util.js'
+import{cliTsv,setupCli,doneCli}from'./test-util/agy-cli-scenario.test-util.js'
 
 {
 test('cli fallback is on by default',async()=>{

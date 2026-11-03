@@ -1,8 +1,8 @@
 import{test}from'node:test'
 import{strict as a}from'node:assert'
 import assert from 'node:assert/strict'
-import{makeDeps}from'./turn-fixture.js'
-import{pane,input}from'./turn-data-fixture.js'
+import{makeDeps}from'./test-util/turn-fixture.js'
+import{pane,input}from'./test-util/turn-data-fixture.js'
 import{executeReservation}from'./execute-reservation.js'
 test('existing workspace reservation executes after configured workspace switches',async()=>{
  const d=makeDeps({read:async()=>'ok'})

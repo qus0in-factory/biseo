@@ -1,5 +1,5 @@
 import{mkdtempSync,rmSync,writeFileSync}from'node:fs'
-import{clearAgyTokenCache}from'./agy-token.js';import{tmpdir}from'node:os';import{dirname,join}from'node:path'
+import{clearAgyTokenCache}from'../agy-token.js';import{tmpdir}from'node:os';import{dirname,join}from'node:path'
 export const agyTestGroup={displayName:'Pool',families:['unknown'],buckets:[{bucketId:'3p-5h',window:'5h',remainingFraction:1}]}
 export function putAgyTokenFile(n:string,expiry:string):string{
  const p=join(mkdtempSync(join(tmpdir(),`biseo-agy-${n}-`)),'token.json')

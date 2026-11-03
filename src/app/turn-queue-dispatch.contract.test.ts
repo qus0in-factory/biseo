@@ -2,13 +2,13 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { createTurn } from './create-turn.js'
 import { runQueue } from './turn-queue-run.js'
-import { makeDeps } from './turn-fixture.js'
-import { agent, input, reader } from './turn-data-fixture.js'
+import { makeDeps } from './test-util/turn-fixture.js'
+import { agent, input, reader } from './test-util/turn-data-fixture.js'
 import {dispatchPane}from'./turn-queue-dispatch.js'
 import{transientLoss}from'./turn-queue-grace-transient.js'
 import{cancelDuringGrace}from'./turn-queue-grace-cancel-case.js'
 import{dropAfterGrace}from'./turn-queue-grace-drop-case.js'
-import {until,wait} from '../test-wait.test-util.js'
+import {until,wait} from '../test-util/test-wait.test-util.js'
 
 {
 test('busy park recovers without watch event',async()=>{

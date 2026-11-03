@@ -1,5 +1,5 @@
-import type { AgentSession } from '../domain/herdr.js'
-import type { Target } from '../domain/turn-policy.js'
+import type { AgentSession } from '../../domain/herdr.js'
+import type { Target } from '../../domain/turn-policy.js'
 
 export const pane = {
   pane_id: 'w:p1',

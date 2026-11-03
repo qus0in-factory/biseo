@@ -1,7 +1,7 @@
 import test from'node:test'
 import assert from'node:assert/strict'
-import {auth}from'./app-data-fixture.js'
-import {makeApp}from'./app-fixture.js'
+import {auth}from'./test-util/app-data-fixture.js'
+import {makeApp}from'./test-util/app-fixture.js'
 const app=makeApp()
 test('workspace routes require auth',async()=>{
  assert.equal((await app.request('/herdr/workspaces')).status,401)

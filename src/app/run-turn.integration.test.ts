@@ -1,9 +1,9 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import {runTurn}from'./run-turn.js'
-import {item,target}from'./run-data-fixture.js'
-import {setup}from'./run-fixture.js'
-import { pane, agent } from './turn-data-fixture.js'
+import {item,target}from'./test-util/run-data-fixture.js'
+import {setup}from'./test-util/run-fixture.js'
+import { pane, agent } from './test-util/turn-data-fixture.js'
 
 {
 test('stalled prompt fails fast and releases without resend',async()=>{

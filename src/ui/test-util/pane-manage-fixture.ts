@@ -1,5 +1,5 @@
-import type{PaneInfo}from'../domain/herdr.js'
-import type{TimelineItem}from'../domain/timeline.js'
+import type{PaneInfo}from'../../domain/herdr.js'
+import type{TimelineItem}from'../../domain/timeline.js'
 export function makePane(o:Partial<PaneInfo>={}):PaneInfo{
  return{pane_id:'w:p1',tab_id:'t',workspace_id:'w',terminal_id:'t',agent_status:'idle',agent:'claude',label:'worker',revision:1,...o}
 }

@@ -1,11 +1,11 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { beginFirstReader } from './first-session-reader.js'
-import { herdStub, noSes, noSub, pane, session } from './first-session-fixture.js'
+import { herdStub, noSes, noSub, pane, session } from './test-util/first-session-fixture.js'
 import { captureTurn } from './capture-turn.js'
 import { TurnStore } from './turn-store.js'
-import { captureHerdr, captureItem } from './first-session-capture-fixture.js'
-import { withSessionDb } from './first-session-db-fixture.js'
+import { captureHerdr, captureItem } from './test-util/first-session-capture-fixture.js'
+import { withSessionDb } from './test-util/first-session-db-fixture.js'
 
 {
 

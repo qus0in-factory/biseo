@@ -1,4 +1,4 @@
-import type { ProviderUsage } from '../domain/usage-types.js'
+import type { ProviderUsage } from '../../domain/usage-types.js'
 
 export const chk = '2026-10-30T10:00:00.000Z'
 

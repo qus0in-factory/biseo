@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-export const script = fileURLToPath(new URL('../../scripts/codex-parent-pid.sh', import.meta.url))
+export const script = fileURLToPath(new URL('../../../scripts/codex-parent-pid.sh', import.meta.url))
 
 export function fakePs(base: string, lines: string) {
  const dir = join(base, 'bin')

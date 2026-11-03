@@ -2,11 +2,11 @@ import test from'node:test'
 import assert from'node:assert/strict'
 import {createTurn}from'./create-turn.js'
 import {dispatchPane}from'./turn-queue-dispatch.js'
-import {input,reader,agent,pane}from'./turn-data-fixture.js'
-import {makeDeps}from'./turn-fixture.js'
-import {until,wait} from '../test-wait.test-util.js'
+import {input,reader,agent,pane}from'./test-util/turn-data-fixture.js'
+import {makeDeps}from'./test-util/turn-fixture.js'
+import {until,wait} from '../test-util/test-wait.test-util.js'
 import {queueEvent}from'./turn-queue-bind.js'
-import {startTimeoutTurn}from'./turn-queue-timeout-fixture.js'
+import {startTimeoutTurn}from'./test-util/turn-queue-timeout-fixture.js'
 
 {
 test('error park repolls in FIFO',async()=>{

@@ -3,11 +3,11 @@ import assert from'node:assert/strict'
 import {Hono}from'hono'
 import {runSse}from'./events-sse.js'
 import {Wake}from'./wake.js'
-import {lockDeps,readEvent,TrackedLocks}from'./events-lock-fixture.js'
-import {until}from'../test-wait.test-util.js'
+import {lockDeps,readEvent,TrackedLocks}from'./test-util/events-lock-fixture.js'
+import {until}from'../test-util/test-wait.test-util.js'
 import {PaneLocks}from'../app/pane-locks.js'
-import {lockDeps,readEvent}from'./events-lock-fixture.js'
-import {agent,pane}from'../app/turn-data-fixture.js'
+import {lockDeps,readEvent}from'./test-util/events-lock-fixture.js'
+import {agent,pane}from'../app/test-util/turn-data-fixture.js'
 
 {
 test('closing SSE removes its lock subscription',async()=>{

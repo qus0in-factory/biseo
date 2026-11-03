@@ -1,5 +1,5 @@
-import { setMemoryGrokToken } from './grok-token-refresh.js'
-import { setLastGrokSnapshot } from './grok-snapshot-store.js'
+import { setMemoryGrokToken } from '../grok-token-refresh.js'
+import { setLastGrokSnapshot } from '../grok-snapshot-store.js'
 
 export const staleGrokUsage = {
   provider: 'grok', state: 'available' as const,

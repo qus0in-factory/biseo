@@ -1,4 +1,4 @@
-import { setLastClaudeSnapshot as set } from './claude-snapshot-store.js'
+import { setLastClaudeSnapshot as set } from '../claude-snapshot-store.js'
 
 export const withCacheEnv = async (fn: () => Promise<void>): Promise<void> => {
   const u = process.env.BISEO_CLAUDE_USAGE_URL

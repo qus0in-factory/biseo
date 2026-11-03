@@ -1,8 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { beginReader } from './turn-queue-target.js'
-import { pane, session } from './first-session-fixture.js'
-import { ag, deps } from './first-session-deps-fixture.js'
+import { pane, session } from './test-util/first-session-fixture.js'
+import { ag, deps } from './test-util/first-session-deps-fixture.js'
 
 {
 

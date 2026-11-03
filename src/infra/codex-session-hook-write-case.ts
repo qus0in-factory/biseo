@@ -1,7 +1,7 @@
 import assert from'node:assert/strict'
-import{base}from'./codex-session-hook-fixture.js'
-import{run}from'./codex-session-hook-run-fixture.js'
-import{checkWrite}from'./codex-session-hook-write-check-fixture.js'
+import{base}from'./test-util/codex-session-hook-fixture.js'
+import{run}from'./test-util/codex-session-hook-run-fixture.js'
+import{checkWrite}from'./test-util/codex-session-hook-write-check-fixture.js'
 export const writeCase={
  name:'writes a private atomic record for the pane',
  run:()=>base(dir=>{

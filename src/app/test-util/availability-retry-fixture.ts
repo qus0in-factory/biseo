@@ -1,4 +1,4 @@
-import type { Availability } from '../domain/timeline.js'
+import type { Availability } from '../../domain/timeline.js'
 
 export const soon = (ms: number): Availability => ({
   state: 'limited',

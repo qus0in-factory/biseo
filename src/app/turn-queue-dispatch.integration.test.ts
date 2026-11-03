@@ -3,9 +3,9 @@ import assert from 'node:assert/strict'
 import { dispatchPane } from './turn-queue-dispatch.js'
 import { cancelTurn } from './turn-queue-cancel.js'
 import { hasRetry } from './availability-retry.js'
-import { reader } from './turn-data-fixture.js'
-import { makeDeps } from './turn-fixture.js'
-import { idle, limited, near, queue, wait } from './turn-queue-availability-fixture.js'
+import { reader } from './test-util/turn-data-fixture.js'
+import { makeDeps } from './test-util/turn-fixture.js'
+import { idle, limited, near, queue, wait } from './test-util/turn-queue-availability-fixture.js'
 
 {
 

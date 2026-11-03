@@ -1,11 +1,11 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { captureTurn } from './capture-turn.js'
-import { setup } from './run-fixture.js'
-import { item } from './run-data-fixture.js'
+import { setup } from './test-util/run-fixture.js'
+import { item } from './test-util/run-data-fixture.js'
 import type{AgentInfo as A}from'../domain/herdr.js'
-import{timeoutCase}from'./capture-turn-timeout-fixture.js'
-import {agent}from'./turn-data-fixture.js'
+import{timeoutCase}from'./test-util/capture-turn-timeout-fixture.js'
+import {agent}from'./test-util/turn-data-fixture.js'
 
 {
 test('late blocked input keeps its reason', async t => {

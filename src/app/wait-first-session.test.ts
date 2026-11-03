@@ -1,7 +1,7 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import{waitFirstSession}from'./wait-first-session.js'
-import { mk, mkSub, ses, tick } from './wait-first-session-fixture.js'
+import { mk, mkSub, ses, tick } from './test-util/wait-first-session-fixture.js'
 import type { EventSub } from './first-session-snap.js'
 
 {

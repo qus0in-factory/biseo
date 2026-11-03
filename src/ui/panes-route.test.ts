@@ -1,14 +1,14 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { makeDeps } from '../app/turn-fixture.js'
-import { reader } from '../app/turn-data-fixture.js'
-import { appOf } from './route-app-fixture.js'
-import { availability, type PanesBody } from './panes-availability-fixture.js'
+import { makeDeps } from '../app/test-util/turn-fixture.js'
+import { reader } from '../app/test-util/turn-data-fixture.js'
+import { appOf } from './test-util/route-app-fixture.js'
+import { availability, type PanesBody } from './test-util/panes-availability-fixture.js'
 import { Hono } from 'hono'
 import { runSse } from './events-sse.js'
 import { Wake } from './wake.js'
-import { readEvent } from './events-lock-fixture.js'
-import { availability } from './panes-availability-fixture.js'
+import { readEvent } from './test-util/events-lock-fixture.js'
+import { availability } from './test-util/panes-availability-fixture.js'
 
 {
 

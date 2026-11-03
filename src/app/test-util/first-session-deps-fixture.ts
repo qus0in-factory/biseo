@@ -1,4 +1,4 @@
-import type { TurnDeps } from './turn-deps.js'
+import type { TurnDeps } from '../turn-deps.js'
 
 export const ag = (a: string, s: any) => ({
   pane_id: 'w:p1',

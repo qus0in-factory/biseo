@@ -3,11 +3,11 @@ import assert from'node:assert/strict'
 import{writeFileSync}from'node:fs'
 import{fetchAgyUsage}from'./agy-usage-fetch.js'
 import{setAgyCliRun}from'./agy-cli-run.js'
-import{agyTestGroup}from'./agy-test-support.test-util.js'
-import{cliTsv,setupCli,doneCli}from'./agy-cli-scenario.test-util.js'
-import { putAgyTokenFile, agyTestEnv, agyQuotaBody, removeAgyTokenFile } from './agy-test-support.test-util.js'
-import { checkAgyScenario } from './agy-scenario.test-util.js'
-import { agyQuotaBody } from './agy-test-support.test-util.js'
+import{agyTestGroup}from'./test-util/agy-test-support.test-util.js'
+import{cliTsv,setupCli,doneCli}from'./test-util/agy-cli-scenario.test-util.js'
+import { putAgyTokenFile, agyTestEnv, agyQuotaBody, removeAgyTokenFile } from './test-util/agy-test-support.test-util.js'
+import { checkAgyScenario } from './test-util/agy-scenario.test-util.js'
+import { agyQuotaBody } from './test-util/agy-test-support.test-util.js'
 
 {
 test('cli refreshes file, token retry',async()=>{

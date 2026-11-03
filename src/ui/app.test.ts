@@ -1,10 +1,10 @@
 import test from'node:test'
 import assert from'node:assert/strict'
-import {auth}from'./app-data-fixture.js'
-import {makeApp}from'./app-fixture.js'
+import {auth}from'./test-util/app-data-fixture.js'
+import {makeApp}from'./test-util/app-fixture.js'
 import {createApp}from'./app.js'
-import {makeDeps}from'../app/turn-fixture.js'
-import {input,reader,agent}from'../app/turn-data-fixture.js'
+import {makeDeps}from'../app/test-util/turn-fixture.js'
+import {input,reader,agent}from'../app/test-util/turn-data-fixture.js'
 
 {
 const app=makeApp()

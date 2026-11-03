@@ -1,8 +1,8 @@
 import test from'node:test'
 import assert from'node:assert/strict'
 import {createTurn}from'./create-turn.js'
-import {input,reader,pane,agent}from'./turn-data-fixture.js'
-import {makeDeps}from'./turn-fixture.js'
+import {input,reader,pane,agent}from'./test-util/turn-data-fixture.js'
+import {makeDeps}from'./test-util/turn-fixture.js'
 
 test('unsupported capture is rejected without storing or locking',async()=>{
  const d=makeDeps(null)

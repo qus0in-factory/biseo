@@ -2,9 +2,9 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { availabilitySummaries } from './pane-availability.js'
 import { PaneLocks } from './pane-locks.js'
-import { agent, pane } from './turn-data-fixture.js'
+import { agent, pane } from './test-util/turn-data-fixture.js'
 import { availableClaim, fresh, old, ttl, limited } from './test-util/pane-availability-fixture.js'
-import { limited as blockedLimited, screen } from './pane-blocked-availability-fixture.js'
+import { limited as blockedLimited, screen } from './test-util/pane-blocked-availability-fixture.js'
 
 test('blocked input markers classify as input_request', async () => {
  const blocked={...agent,agent_status:'blocked' as const}

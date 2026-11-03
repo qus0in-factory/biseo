@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { codexResponse } from './codex-response.js'
-import { j, user, done } from './codex-response-fixture.js'
+import { j, user, done } from './test-util/codex-response-fixture.js'
 
 {
 

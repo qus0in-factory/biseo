@@ -1,4 +1,4 @@
-import type { TimelineItem } from '../domain/timeline.js'
+import type { TimelineItem } from '../../domain/timeline.js'
 import { herdStub, pane } from './first-session-fixture.js'
 
 export const captureItem: TimelineItem = {

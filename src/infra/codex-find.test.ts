@@ -7,7 +7,7 @@ import{findRollout}from'./codex-find.js'
 import{mkdtemp,mkdir,writeFile}from'node:fs/promises'
 import{createAvailability}from'./codex-availability.js'
 import type{AgentSession}from'../domain/herdr.js'
-import{id,linkId,dirId,setup,teardown}from'./codex-find-path-fixture.js'
+import{id,linkId,dirId,setup,teardown}from'./test-util/codex-find-path-fixture.js'
 import{mkdtemp,mkdir,symlink}from'node:fs/promises'
 
 {

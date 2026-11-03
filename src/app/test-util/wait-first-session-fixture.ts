@@ -1,4 +1,4 @@
-import type { EventSub } from './first-session-snap.js'
+import type { EventSub } from '../first-session-snap.js'
 
 export const ses = { source: 'herdr:opencode', agent: 'opencode', kind: 'id' as const, value: 'ses_7' }
 export const tick = (n = 10) => new Promise((r) => setTimeout(r, n))

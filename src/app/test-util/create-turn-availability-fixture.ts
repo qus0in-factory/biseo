@@ -1,4 +1,4 @@
-import type { Availability } from '../domain/timeline.js'
+import type { Availability } from '../../domain/timeline.js'
 
 export const resetsAt = new Date(Date.now() + 60000).toISOString()
 

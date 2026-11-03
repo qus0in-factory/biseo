@@ -1,11 +1,11 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { fetchAgyUsage } from './agy-usage-fetch.js'
-import { putAgyTokenFile, agyTestEnv, removeAgyTokenFile } from './agy-test-support.test-util.js'
-import { isolatedAgy } from './agy-isolate.test-util.js'
-import { checkAgyScenario } from './agy-scenario.test-util.js'
-import { agyTestGroup } from './agy-test-support.test-util.js'
-import { agyQuotaBody } from './agy-test-support.test-util.js'
+import { putAgyTokenFile, agyTestEnv, removeAgyTokenFile } from './test-util/agy-test-support.test-util.js'
+import { isolatedAgy } from './test-util/agy-isolate.test-util.js'
+import { checkAgyScenario } from './test-util/agy-scenario.test-util.js'
+import { agyTestGroup } from './test-util/agy-test-support.test-util.js'
+import { agyQuotaBody } from './test-util/agy-test-support.test-util.js'
 
 {
 

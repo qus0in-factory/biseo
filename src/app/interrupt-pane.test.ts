@@ -1,8 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { interruptPane } from './interrupt-pane.js'
-import { setup } from './interrupt-pane-setup-fixture.js'
-import { limited } from './interrupt-pane-fixture.js'
+import { setup } from './test-util/interrupt-pane-setup-fixture.js'
+import { limited } from './test-util/interrupt-pane-fixture.js'
 
 test('default Esc interrupt is sent once to a blocked pane and audited', async () => {
   let sent: [string, string] | null = null

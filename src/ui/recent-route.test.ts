@@ -1,6 +1,6 @@
 import test from'node:test'
 import assert from'node:assert/strict'
-import{makeApp}from'./app-fixture.js'
+import{makeApp}from'./test-util/app-fixture.js'
 test('recent pull requires service auth and configured workspace; missing session is empty',async()=>{
  const app=makeApp()
  const path='/herdr/workspaces/w/panes/p/recent'
