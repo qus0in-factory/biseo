@@ -239,7 +239,7 @@
   "workspaceCurrent": "biseo 워크스페이스: {id}",
   "workspaceCurrentUnknown": "biseo 워크스페이스 확인 중",
   "workspaceSwitch": "워크스페이스 전환",
-  "workspaceSwitchTitle": "워크스페이스 전환",
+  "workspaceSwitchPending": "전환 중...",
   "workspaceSwitchHint": "biseo가 연결할 워크스페이스를 선택합니다. Herdr 화면 포커스는 바뀌지 않습니다.",
   "workspaceFocused": "Herdr 포커스",
   "workspaceSelected": "biseo 선택",

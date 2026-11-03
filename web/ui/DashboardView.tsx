@@ -6,6 +6,7 @@ import { WorkspaceSwitcher } from './WorkspaceSwitcher'
 import { PaneDirectoryProvider } from './paneDirectory'
 import './workspace-picker.css'
 import './workspace-switcher.css'
+import './workspace-tab.css'
 
 export function DashboardView(props: DashboardProps) {
   const target = props.panes.find((p) => p.paneId === props.selectedId)
