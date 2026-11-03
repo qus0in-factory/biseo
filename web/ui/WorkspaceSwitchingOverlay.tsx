@@ -6,7 +6,7 @@ import { ModalBackdrop } from './ModalBackdrop'
 import r from '../resources.json'
 
 export function WorkspaceSwitchingOverlay() {
-  const ref = useSheetA11y(true, () => {})
+  const ref = useSheetA11y(true, () => {}, true)
   useEffect(() => {
     const root = document.getElementById('root')
     root?.setAttribute('inert', '')
