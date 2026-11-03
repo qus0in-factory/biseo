@@ -1,11 +1,9 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { createTurn } from './create-turn.js'
-import { input, reader } from './turn-data-fixture.js'
+import { agent, pane, input, reader } from './turn-data-fixture.js'
 import { makeDeps } from './turn-fixture.js'
 import { limited, resetsAt } from './create-turn-availability-fixture.js'
-import { limited } from './create-turn-availability-fixture.js'
-import { agent, pane, input, reader } from './turn-data-fixture.js'
 
 {
 

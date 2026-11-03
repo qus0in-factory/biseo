@@ -2,7 +2,6 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { clearRetry, hasRetry, retryAt } from './availability-retry.js'
 import { soon, wait } from './availability-retry-fixture.js'
-import { hasRetry, retryAt } from './availability-retry.js'
 
 {
 

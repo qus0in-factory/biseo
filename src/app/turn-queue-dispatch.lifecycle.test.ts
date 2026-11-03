@@ -6,8 +6,6 @@ import {input,reader,agent,pane}from'./turn-data-fixture.js'
 import {makeDeps}from'./turn-fixture.js'
 import {until,wait} from '../test-wait.test-util.js'
 import {queueEvent}from'./turn-queue-bind.js'
-import {input,reader,agent}from'./turn-data-fixture.js'
-import {input,agent}from'./turn-data-fixture.js'
 import {startTimeoutTurn}from'./turn-queue-timeout-fixture.js'
 
 {

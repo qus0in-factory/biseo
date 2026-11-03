@@ -3,8 +3,7 @@ import assert from'node:assert/strict'
 import {captureTurn}from'./capture-turn.js'
 import {item}from'./run-data-fixture.js'
 import {setup}from'./run-fixture.js'
-import {wait} from '../test-wait.test-util.js'
-import {deferred}from'../test-wait.test-util.js'
+import { wait, deferred } from '../test-wait.test-util.js'
 
 {
 test('a new turn on the same pane does not abort previous late capture',async()=>{

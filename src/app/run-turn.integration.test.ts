@@ -3,8 +3,6 @@ import assert from'node:assert/strict'
 import {runTurn}from'./run-turn.js'
 import {item,target}from'./run-data-fixture.js'
 import {setup}from'./run-fixture.js'
-import {agent}from'./turn-data-fixture.js'
-import { item } from './run-data-fixture.js'
 import { pane, agent } from './turn-data-fixture.js'
 
 {
