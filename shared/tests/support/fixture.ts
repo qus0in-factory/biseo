@@ -1,4 +1,4 @@
-import type { ClaimPolicy } from '../domain/claims.js'
+import type { ClaimPolicy } from '../../domain/claims.js'
 
 export const policy: ClaimPolicy = {
   issuer: 'biseo',

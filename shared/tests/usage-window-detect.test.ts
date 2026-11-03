@@ -1,6 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { detectUsageWindow } from './usage-window-detect.js'
+import { detectUsageWindow } from '../usage-window-detect.js'
+
+{
 
 test('quota duration identifies five-hour, weekly and monthly windows', () => {
   assert.equal(detectUsageWindow(18000), '5h')
@@ -15,3 +17,4 @@ test('missing, malformed and unsupported durations stay unknown', () => {
     assert.equal(detectUsageWindow(value), 'unknown')
   }
 })
+}

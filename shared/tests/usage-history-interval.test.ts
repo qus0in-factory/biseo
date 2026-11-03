@@ -1,7 +1,9 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { historyInterval } from './usage-history-interval.js'
-import { historyPoint } from './usage-history-fixture.js'
+import { historyInterval } from '../usage-history-interval.js'
+import { historyPoint } from './support/usage-history-fixture.js'
+
+{
 
 test('reset changes, decreases and crossing reset time are excluded', () => {
   const a = historyPoint(1, 50, 20), b = historyPoint(2, 60, 25)
@@ -12,3 +14,4 @@ test('reset changes, decreases and crossing reset time are excluded', () => {
   assert.equal(historyInterval(a, { ...b, observed: Date.parse(a.fiveReset) }), null)
   assert.equal(historyInterval(a, a), null)
 })
+}
