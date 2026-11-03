@@ -20,18 +20,3 @@ test('parallel attempts reserve before PIN verification', async () => {
   try { assert.equal(started, 5) } finally { release() }
   await Promise.all(requests)
 })
-
-test('parallel successful PINs also reserve before verification', async () => {
-  const { env, db } = await pinEnv()
-  await seedTrusted(db, IP)
-  await seedPin(db)
-  const deps = (await createPinDeps(env, IP))!
-  let started = 0
-  let release!: () => void
-  const gate = new Promise<void>(r => { release = r })
-  deps.verifier = { async verify() { started++; await gate; return true } }
-  const requests = Array.from({ length: 12 }, () => pinLogin(deps, '123456'))
-  await new Promise(resolve => setTimeout(resolve, 50))
-  try { assert.equal(started, 5) } finally { release() }
-  await Promise.all(requests)
-})

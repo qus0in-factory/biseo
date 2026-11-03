@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import app from '../index.js'
-import { createTimelineTestEnv } from './timeline-helpers.js'
+import { createTimelineTestEnv } from '../test-util/timeline-helpers.js'
 
 test('CSRF allows workers.dev', async () => {
   const { env, cookie } = await createTimelineTestEnv()
