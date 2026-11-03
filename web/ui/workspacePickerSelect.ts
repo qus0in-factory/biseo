@@ -1,5 +1,6 @@
 import type { AppConfig } from '../domain/ports'
 import type { WorkspaceSelector } from './workspaceSelectionLink'
+import { beginWorkspaceSelection } from './workspaceSelectionGuard'
 
 export interface WorkspaceSelectionHandlers {
  setLoading: (loading: boolean) => void
@@ -16,6 +17,8 @@ export async function selectWorkspaceAndRefresh(
  handlers: WorkspaceSelectionHandlers,
 ): Promise<AppConfig | null> {
  if (!selector) return null
+ const release = beginWorkspaceSelection()
+ if (!release) return null
  handlers.setLoading(true)
  handlers.setError(null)
  try {
@@ -30,6 +33,7 @@ export async function selectWorkspaceAndRefresh(
   handlers.setError('connection_unavailable')
   return null
  } finally {
+  release()
   handlers.setLoading(false)
  }
 }
