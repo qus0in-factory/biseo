@@ -20,6 +20,13 @@ audience: user
 
 ## 핫픽스 및 배포 이력
 
+### 0.5.2 (2026-11-03)
+
+- **Situation / Task**: 사용자 승인 범위 dev `c39ecfc`의 #205 타임라인·#206 이름·#207 사용량/설정/전환과 0.5.x 문서를 0.5.2로 승격했다. 버전 단독 커밋 `ac26a92`, [PR #208](https://github.com/qus0in-factory/biseo/pull/208) main merge `fd6e6ad`, annotated `v0.5.2`와 latest 릴리스를 발행했다. 테스트 1028개 실패 0·typecheck·서버/클라이언트 build 통과, 필수 main-source와 보안 체크 성공 후 merge commit으로 병합했다.
+- **Action**: 서버는 버전 커밋 기준 `biseo-release-052`로 전환했다. release-051 운영 config와 공개키를 바이트 비교 복사하고 preflight 통과, D1 미적용 마이그레이션 없음 확인 후 중계 queued/working 0건·최근 로그 활동 표식 0건에서 biseo만 PM2 delete/start했다. 16초 뒤 PID 15270, 0.5.2 online·재시작 0·오류 로그 0·로컬 미인증 health 401 및 다른 앱 불변을 확인하고 save했다.
+- **Result**: 직전 Worker `0b9a0c17-0e89-4b6b-a3a2-844e235044ee`를 배포 직전 재확인한 뒤 `d2a6922d-f8f0-48fc-a492-8bf707bf3504`로 배포, 100% readback 확인. curl 공개 `/` 200, 미인증 `/api/health`·`session`·`usage`·`workspaces` 각 401, 모든 응답 CSP 확인. #205·#206·#207 CLOSED, 마일스톤 0.5.2 open=0 확인 후 종료했다.
+- **복구 / 한계**: 서버 롤백은 보존한 release-051 `9575827`(0.5.1), Worker 롤백은 `0b9a0c17-0e89-4b6b-a3a2-844e235044ee`; 실제 롤백·D1 변경 없음. 첫 D1 조회는 일시적 Cloudflare 7403으로 실패했으나 읽기 재시도 성공(쓰기 0). Python HTTP 클라이언트의 루트 403은 curl에서 200/CSP로 확인했다. 인증된 health·실제 중계 전달·브라우저 e2e는 미실시. 이력 API/D1 유지 여부·잔여 UI·wiki 사실 표현 P2는 백로그다. 공유 runtime 미스테이징·해시 보존. 이 배포 기록은 dev에만 반영한다.
+
 ### v0.5.1 배포 — 2026-11-03
 
 - **Situation / Task**: 사용자 지시로 로컬 dev `0320cd5` + 버전 커밋 `9575827`만 배포했다. 모바일 입력창 폭·모델명 잘림 수정은 포함하며, 타임라인 하단 고정 `a21dc14`와 워크스페이스 이름 표시 WIP `42b3a91`은 0.5.2로 이관하고 병합·수정하지 않았다. main 병합·태그·D1 쓰기는 하지 않았다.
