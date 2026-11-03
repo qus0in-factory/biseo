@@ -3,6 +3,7 @@ import { Clock } from 'lucide-react'
 import { formatZoned, formatZonedShort } from '../domain/formatZoned'
 import r from '../resources.json'
 import { HintPopover } from './HintPopover'
+import { UsageResetLabel } from './UsageResetLabel'
 
 const res = r as Record<string, string>
 const TZ = 'Asia/Seoul'
@@ -14,9 +15,7 @@ export function UsageWindowTime({ value }: { value: UsageWindow }) {
       <span className="inline-flex" title={reset}>
         <HintPopover label={res.usageReset!} className="gap-1">
           <Clock size={12} aria-label={res.usageReset} role="img" />
-          {value.resetsAt
-            ? formatZonedShort(value.resetsAt, TZ)
-            : res.usageNoReset}
+          <UsageResetLabel at={value.resetsAt} />
         </HintPopover>
       </span>
       {value.checkedAt && (
