@@ -49,6 +49,7 @@ Visual status indicators represent engine health, while message dispatching is s
 | `done` | Done (완료) | Success green fill (`#15803D`) + Off White text (`#F4F7F5`, **4.65:1**) | Deep Slate fill + Silver Gray border (`#A7A2A9`, **6.01:1**) + Off White text (`#F4F7F5`, **13.95:1**) | Checkmark icon |
 | `working` | Working (실행 중) | Slate Gray fill (`#575A5E`) + Off White text (`#F4F7F5`, **6.43:1**) | Silver Gray text & spinner (`#A7A2A9`, **6.01:1**) | Animated CSS spinner |
 | `blocked` | Blocked (차단됨) | Danger red fill (`#B91C1C`) + Off White text (`#F4F7F5`, **6.00:1**) | Deep Slate fill + Silver Gray border (`#A7A2A9`, **6.01:1**) + Off White text (`#F4F7F5`, **13.95:1**) | Alert triangle icon |
+| `input_required` (derived from blocked + input_request; not an engine state) | Input required (입력 필요) | Existing warning fill (`bg-warning`, `#B45309`) + Off White text (`#F4F7F5`, **4.66:1**); count uses `text-warning` (**4.66:1** on Off White) | Deep Slate fill + Silver Gray border (`#A7A2A9`, **6.01:1**) + Off White text (`#F4F7F5`, **13.95:1**); warning count uses dark amber (`#D97706`, **4.723:1** on Deep Slate) per Warning rules | MessageCircleQuestion icon + label |
 | `unknown` | Unknown (알 수 없음) | Slate Gray dashed border (`#575A5E`) | Silver Gray dashed border (`#A7A2A9`, **6.01:1**) | Help question icon |
 
 #### 2. Dispatch Gating & DisabledReason Mapping (7 Reasons)

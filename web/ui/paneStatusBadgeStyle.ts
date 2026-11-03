@@ -7,7 +7,7 @@ const accent: Record<PaneStatus, string> = {
   working: 'var(--status-working)',
   done: 'var(--status-done)',
   blocked: 'var(--status-blocked)',
-  input_required: 'var(--status-working)',
+  input_required: 'var(--color-warning)',
   unknown: 'var(--status-unknown)',
 }
 
