@@ -20,6 +20,13 @@ audience: user
 
 ## 핫픽스 및 배포 이력
 
+### 0.5.4 (2026-11-03)
+
+- **Situation / Task**: 승인된 #210 무손실 테스트 정리를 dev `71d4d44`에서 0.5.4로 릴리스했다. 버전 `c086c08`, 파일 차이 없는 main 이력 동기화 `acd6946` 후 PR #212를 merge commit `600b073`으로 병합하고 v0.5.4 latest를 발행했다.
+- **Action**: 격리된 release-054 후보에서 frozen install·테스트 984/984(27 suites, 실패·취소·skip·todo 0)·typecheck·build 통과. release-053의 config 전체·공개키를 바이트 검증 복사하고 preflight 통과. D1 미적용 migration 없음·queued/working 0건·최근 60초 로그 중계 활동 0건·오류 로그 0바이트 확인 후 biseo만 PM2 delete/start했다. D1 쓰기·migration 적용 없음.
+- **Result**: release-054 `acd6946` 서버 0.5.4 PID 4099, 16초 후 정확한 cwd/script·online·재시작 0·오류 0·로컬 health 401 확인 후 PM2 save. 다른 PM2 앱 PID/상태/restart 불변. Worker `8f7ef47a-fd8e-4c44-9ebd-af4f0b247d58` 100% 배포 readback, 공개 `/` 200 및 미인증 health/session/usage/workspaces 401, 응답 5개 모두 CSP 확인.
+- **복구·한계**: 서버 롤백 release-053 `482ce77`(0.5.3), Worker `42b2e56e-8ae4-48d9-b4cc-3df808af2fdd` 보존. 실제 롤백 없음. 공유 runtime 미커밋 변경 보존·스테이징 제외. 인증 health·메모리 내 late capture·실제 중계·브라우저/e2e 및 새 독립 배포 리뷰는 미실시(배정 워커 재위임 금지). D1/로그 게이트를 메모리 전체 조회의 대체 증거로 주장하지 않는다.
+
 ### 0.5.3 (2026-11-03)
 
 - **Situation / Task**: 승인된 dev `c9d894c`의 #209 사용량 카드 정리만 0.5.3으로 승격했다. Ollama 구조·금액 소수 둘째 자리·제공자 아이콘·카운트 카드 중복 아이콘 제거와 지난 리셋 카운트 제외를 포함한다. GPT 작성, Claude opus-a APPROVE(ce02d61·beed8aa). 버전 단독 커밋 `482ce77`, [PR #211](https://github.com/qus0in-factory/biseo/pull/211) main merge `3089040`, annotated `v0.5.3`·latest 릴리스 발행. 기존 테스트 1028개 실패 0·typecheck·서버/클라이언트 build 및 필수 main-source·보안 체크 통과.
