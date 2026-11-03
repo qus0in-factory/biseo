@@ -95,6 +95,8 @@
   "usageLastSuccess": "최근 성공",
   "usageNoReset": "재개 시각 미확인",
   "usageReset": "재개",
+  "usageResetExpected": "재개 예정",
+  "usageResetPassed": "재개 시각 경과",
   "usagePeriodStart": "기간 시작",
   "usageSource": "출처",
   "usageAllowance": "배정액 (USD)",

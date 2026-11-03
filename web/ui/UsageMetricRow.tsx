@@ -22,7 +22,7 @@ export function UsageMetricRow({
     <div className="flex min-w-0 flex-col gap-1 py-1.5">
       <UsageMetricValue provider={provider} metric={metric} remaining={remaining} limited={limited} />
       <OllamaAllowance provider={provider} metric={metric} />
-      <UsageMetricTime provider={provider} metric={metric} />
+      <UsageMetricTime provider={provider} metric={metric} remaining={remaining} />
     </div>
   )
 }

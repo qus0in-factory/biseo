@@ -4,12 +4,14 @@ import { readFileSync } from 'node:fs'
 
 const src = (f: string): string => readFileSync(new URL(f, import.meta.url), 'utf8')
 
-test('usage grid is one column on mobile and at most two on desktop', () => {
+test('usage cards flow into one mobile column and two balanced desktop columns', () => {
   const grid = src('./UsageGrid.tsx')
-  assert.match(grid, /grid-cols-1/)
-  assert.match(grid, /md:grid-cols-2/)
-  assert.doesNotMatch(grid, /grid-cols-3|lg:grid-cols/)
-  assert.match(grid, /items-start/)
+  assert.match(grid, /columns-1/)
+  assert.match(grid, /md:columns-2/)
+  assert.match(grid, /\[column-fill:balance\]/)
+  assert.match(grid, /break-inside-avoid/)
+  assert.match(grid, /gap-3/)
+  assert.doesNotMatch(grid, /columns-3|lg:columns|grid-cols/)
   assert.match(grid, /min-w-0/)
 })
 
