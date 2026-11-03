@@ -1,7 +1,9 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { isLimited, normalizeAvailability, unknownAvailability } from './availability.js'
-import { future, now } from './availability-fixture.test.js'
+import { future, now } from './test-util/availability-fixture.js'
+
+{
 
 test('normalization releases an expired or resetless limited state', () => {
   const active = { ...unknownAvailability(now), state: 'limited' as const, source: 'codex', resetsAt: future }
@@ -15,3 +17,4 @@ test('normalization releases an expired or resetless limited state', () => {
   assert.equal(resetless.state, 'unknown')
   assert.equal(isLimited(resetless), false)
 })
+}

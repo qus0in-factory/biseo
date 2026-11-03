@@ -1,6 +1,6 @@
-import type { RateLimits } from './availability.js'
-import { unknownAvailability } from './availability.js'
-import { codexAvailability } from './codex-availability.js'
+import type { RateLimits } from '../availability.js'
+import { unknownAvailability } from '../availability.js'
+import { codexAvailability } from '../codex-availability.js'
 export const now = new Date('2026-10-29T10:00:00.000Z')
 export const future = '2026-10-29T11:00:00.000Z'
 export const fresh = '2026-10-29T09:58:00.000Z'
