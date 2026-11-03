@@ -1,11 +1,12 @@
 import { Download } from 'lucide-react'
-import { useRecentPull } from './useRecentPull'
+import type { useRecentPull } from './useRecentPull'
 import { LoadingState } from './LoadingState'
 import { Button } from '../components/ui/button'
 import resources from '../resources.json'
 
-export function RecentPullButton({ pane, onImported }: { pane: string; onImported?: () => void }) {
-  const pull = useRecentPull(pane, onImported)
+type Pull = ReturnType<typeof useRecentPull>
+
+export function RecentPullButton({ pull }: { pull: Pull }) {
   return (
     <div className="mb-2 flex flex-col items-start gap-4 text-sm [&>p]:mt-0">
       <Button variant="outline" disabled={pull.isPending} onClick={() => pull.mutate()}>
