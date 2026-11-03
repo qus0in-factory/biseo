@@ -149,7 +149,7 @@
   "usageOrderStorageKey": "biseo:usage-provider-order",
   "usageHiddenStorageKey": "biseo:usage-provider-hidden",
   "usageProviderSettings": "제공자 설정",
-  "usageProviderSettingsHint": "드래그로 순서를 바꾸고 체크로 표시 여부를 정합니다.",
+  "usageProviderSettingsHint": "드래그로 순서를 바꾸고 눈 아이콘으로 표시 여부를 정합니다.",
   "usageProviderVisible": "표시",
   "usageProviderShowAll": "모두 표시",
   "usageProviderEmpty": "표시할 제공자가 없습니다.",
