@@ -22,7 +22,7 @@ export function UsageTimeLeft({
       <span aria-hidden="true">·</span>
       <HintPopover label={title} className="gap-1">
         <Clock size={12} className="shrink-0" aria-label={title} role="img" />
-        <span className="text-xs leading-none">{percent}%</span>
+        <span className="text-sm leading-none">{percent}%</span>
       </HintPopover>
     </span>
   )

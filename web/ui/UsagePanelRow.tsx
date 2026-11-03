@@ -9,7 +9,7 @@ export function UsagePanelRow({ provider, remaining, groupChecked = false }: {
 }) {
   const st = isAuth(provider)
   return (
-    <Card size="sm" className={`min-w-0 self-start text-xs ${usageStaleCls(provider)}`} role={st ? 'region' : undefined} aria-label={usageRowAria(provider)}>
+    <Card size="sm" className={`min-w-0 self-start text-sm ${usageStaleCls(provider)}`} role={st ? 'region' : undefined} aria-label={usageRowAria(provider)}>
       <CardHeader>
         <UsagePanelHeader provider={provider} />
       </CardHeader>

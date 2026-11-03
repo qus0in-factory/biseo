@@ -17,7 +17,7 @@ test('metric rows retain order and label only exhausted rows', () => {
   assert.equal((html.match(/sr-only/g) ?? []).length, 1)
   assert.equal((html.match(/text-danger/g) ?? []).length, 1)
   assert.doesNotMatch(html, /text-error/)
-  assert.equal((html.match(/truncate text-xs text-muted-foreground/g) ?? []).length, 3)
+  assert.equal((html.match(/truncate text-sm text-muted-foreground/g) ?? []).length, 3)
   assert.doesNotMatch(html, /border-t|border-border/)
   assert.match(html, /한도 도달/)
 })

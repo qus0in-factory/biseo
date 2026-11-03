@@ -6,8 +6,8 @@ export const percentValue=(resetsAt:string|null)=>({window:'secondary',usedPerce
 export const assertFixedValueColumns=(out:string)=>{
  assert.match(out,/grid-cols-\[minmax\(0,1fr\)_4\.25rem_4\.75rem\]/)
  assert.match(out,/items-center gap-x-3/)
- assert.match(out,/text-right text-sm font-medium tabular-nums/)
- assert.match(out,/justify-end text-right text-xs tabular-nums/)
+ assert.match(out,/text-right text-base font-medium tabular-nums/)
+ assert.match(out,/justify-end text-right text-sm tabular-nums/)
  assert.equal((out.match(/text-right/g)??[]).length,2)
  assert.doesNotMatch(out,/font-mono|min-w-16|w-16 shrink-0|items-baseline/)
  assert.match(out,/py-1\.5/)

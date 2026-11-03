@@ -27,7 +27,7 @@ export function UsageMetricTime({
   const expected = isResetPassed(m.resetsAt) || metricValueUnknown(m, remaining)
   const start = m.startsAt ? formatZoned(m.startsAt, 'Asia/Seoul') : null
   return (
-    <span className="flex flex-col items-end gap-0.5 text-[11px] leading-4 tabular-nums text-muted-foreground">
+    <span className="flex flex-col items-end gap-0.5 text-xs leading-4 tabular-nums text-muted-foreground">
       {start && <span title={start}>{r.usagePeriodStart}: {start}</span>}
       <UsageWindowTime value={d} expected={expected} />
     </span>

@@ -5,5 +5,5 @@ import r from '../resources.json'
 export function UsageCacheNote({ provider }: { provider: UsageProvider }) {
   const n = cacheNote(provider, r as Record<string, string>)
   if (!n) return null
-  return <span className="text-xs text-muted-foreground">{n}</span>
+  return <span className="text-sm text-muted-foreground">{n}</span>
 }
