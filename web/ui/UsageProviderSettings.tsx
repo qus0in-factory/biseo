@@ -1,6 +1,7 @@
 import type { UsageProvider } from '../domain/usage'
 import { UsageProviderSettingsHeader } from './UsageProviderSettingsHeader'
 import { UsageProviderSettingsList } from './UsageProviderSettingsList'
+import { UsagePaceSettings } from './UsagePaceSettings'
 import { UsageProviderShowAll } from './UsageProviderShowAll'
 import r from '../resources.json'
 
@@ -17,6 +18,7 @@ export function UsageProviderSettings({ providers, hidden, onMove, onToggle, onS
   return (
     <section id="usage-provider-settings" aria-label={r.usageProviderSettings} className="mb-3 rounded-md border border-border bg-card p-3">
       <UsageProviderSettingsHeader onClose={onClose} />
+      <UsagePaceSettings />
       <UsageProviderSettingsList providers={providers} hidden={hidden} onMove={onMove} onToggle={onToggle} />
       <UsageProviderShowAll hidden={hidden} onShowAll={onShowAll} />
     </section>
