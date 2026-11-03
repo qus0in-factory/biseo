@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react'
-import type { PaneStatus } from '../domain/timeline'
+import type { DisplayStatus } from '../domain/inputStatus'
 import { Badge } from '../components/ui/badge'
 import { statusStyle } from './paneStatusBadgeStyle'
 
@@ -12,7 +12,7 @@ export function StatusBadge({
   spin = false,
   className = '',
 }: {
-  status: PaneStatus
+  status: DisplayStatus
   label: string
   icon: Icon
   spin?: boolean

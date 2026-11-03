@@ -8,7 +8,11 @@ export async function pollLateStep(o:LateOpts,budget:number):Promise<boolean>{
  if(r.text){o.onDone('completed',null,r.text);return false}
  if(o.chk){
   const sig=mapAgentSignal(await o.chk().catch(()=>undefined))
-  if(sig&&isCurrentTurn(o.pane,o.gen)&&o.isLive()){o.onDone(sig.status,sig.err);return false}
+  if(sig&&isCurrentTurn(o.pane,o.gen)&&o.isLive()){
+   const err=sig.status==='blocked'&&o.blockedError?await o.blockedError():sig.err
+   if(isCurrentTurn(o.pane,o.gen)&&o.isLive())o.onDone(sig.status,err)
+   return false
+  }
  }
  if(r.error){o.onDone('capture_unavailable','response_capture_unavailable');return false}
  return true

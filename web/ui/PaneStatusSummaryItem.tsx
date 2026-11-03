@@ -1,4 +1,4 @@
-import type { PaneStatus } from '../domain/timeline'
+import type { DisplayStatus as PaneStatus } from '../domain/inputStatus'
 import r from '../resources.json'
 import { statusAccentColor } from './paneStatusBadgeStyle'
 

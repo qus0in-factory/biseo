@@ -52,6 +52,7 @@
   "status_idle": "대기",
   "status_working": "실행 중",
   "status_blocked": "차단됨",
+  "status_input_required": "입력 필요",
   "status_done": "완료",
   "status_unknown": "알 수 없음",
   "turn_queued": "예약됨",

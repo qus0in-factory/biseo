@@ -1,4 +1,4 @@
-import type { PaneStatus } from '../domain/timeline'
+import type { DisplayStatus as PaneStatus } from '../domain/inputStatus'
 
 type S = { background: string; color: string; border: string }
 
@@ -7,6 +7,7 @@ const accent: Record<PaneStatus, string> = {
   working: 'var(--status-working)',
   done: 'var(--status-done)',
   blocked: 'var(--status-blocked)',
+  input_required: 'var(--status-working)',
   unknown: 'var(--status-unknown)',
 }
 
@@ -21,6 +22,7 @@ const styles: Record<PaneStatus, S> = {
   working: filled('working'),
   done: filled('done'),
   blocked: filled('blocked'),
+  input_required: filled('input_required'),
   unknown: { background: 'var(--color-surface)', color: 'var(--status-unknown-fg)', border: `1px dashed ${accent.unknown}` },
 }
 
