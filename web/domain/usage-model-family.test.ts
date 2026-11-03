@@ -1,7 +1,9 @@
-import assert from'node:assert/strict'
-import test from'node:test'
-import{usageModelFamilyKey,usageModelFamilyName}from'./usage-model-family.js'
-import r from'../resources.json'
+import assert from 'node:assert/strict'
+import test from 'node:test'
+import { usageModelFamilyKey } from './usage-model-family.js'
+import { usageModelFamilyName } from './usage-model-family.js'
+import r from '../resources.json'
+
 const res=r as Record<string,string>
 const eq:(a:unknown,b:unknown)=>void=assert.equal
 const G='gemini:Gemini Models:gemini-5h'

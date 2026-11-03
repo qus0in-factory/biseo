@@ -1,0 +1,23 @@
+import test from 'node:test'
+import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
+
+const src=(f:string)=>readFileSync(new URL(f,new URL("../sortableShared.test.ts", import.meta.url).href),'utf8')
+
+test('panel list and usage tabs share the long-press sortable module',()=>{
+ const sensors=src('./sortable/sortableSensors.ts')
+ assert.match(sensors,/MouseSensor/)
+ assert.match(sensors,/TouchSensor/)
+ assert.match(sensors,/distance: 8/)
+ assert.match(sensors,/delay: 250/)
+ assert.match(sensors,/tolerance: 10/)
+ assert.match(sensors,/KeyboardSensor/)
+ assert.match(sensors,/sortableKeyboardCoordinates/)
+ for(const f of['./PaneSortableList.tsx','./UsageProviderSettingsList.tsx']){
+  const s=src(f)
+  assert.match(s,/SortableList/)
+  assert.match(s,/SortableItem/)
+ }
+ assert.match(src('./sortable/SortableList.tsx'),/accessibility=\{sortableA11y\}/)
+ assert.match(src('./sortable/sortableA11y.ts'),/sortableInstructions/)
+})

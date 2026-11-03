@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { planScroll } from './autoScrollPlan.js'
-import { scrollItem } from '../domain/scrollItem-fixture.js'
+import { scrollItem } from '../test-util/scrollItem-fixture'
 
 test('an own send scrolls to bottom even while the user reads history', () => {
   const prev = [scrollItem('r1')]

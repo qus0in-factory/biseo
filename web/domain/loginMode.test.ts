@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { isLoginPending, resolveLoginMode } from './loginMode.js'
+import { isLoginPending } from './loginMode.js'
+import { resolveLoginMode } from './loginMode.js'
 
 test('an available PIN starts first and the forgot link switches this screen', () => {
   assert.equal(resolveLoginMode(true, false), 'pin')

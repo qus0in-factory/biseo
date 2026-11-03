@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { dataOf, emptyState, errorState, loadingState, readyState } from './asyncState.js'
+import { dataOf } from './asyncState.js'
+import { emptyState } from './asyncState.js'
+import { errorState } from './asyncState.js'
+import { loadingState } from './asyncState.js'
+import { readyState } from './asyncState.js'
 import { listState } from './asyncListState.js'
 
 test('initial loading has no data and a refresh keeps data', () => {

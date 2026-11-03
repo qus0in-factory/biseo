@@ -3,7 +3,8 @@ import assert from 'node:assert/strict'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { CollapsedPaneButton } from './CollapsedPaneButton'
-import { makeTestPane } from '../domain/pane-usage-test-helper'
+import { makeTestPane } from '../test-util/pane-usage-test-helper'
+
 test('compact panel uses initial, full accessible name, and selected styling, never ID', () => {
  const html = renderToStaticMarkup(createElement(CollapsedPaneButton, {
   pane: {...makeTestPane('agy','Gemini worker'),paneId:'w1X:p3'}, selected:true, onSelect() {},

@@ -1,6 +1,6 @@
-import assert from'node:assert/strict'
-import test from'node:test'
-import{keepScrollTop}from'./scrollPreserve.js'
+import assert from 'node:assert/strict'
+import test from 'node:test'
+import { keepScrollTop } from './scrollPreserve.js'
 
 test('keepScrollTop compensates for items prepended above the viewport',()=>{
  assert.equal(keepScrollTop(1000,0,1200),200)

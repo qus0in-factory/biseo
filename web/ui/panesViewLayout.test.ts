@@ -1,9 +1,10 @@
-import test from'node:test'
-import assert from'node:assert/strict'
-import{readFileSync}from'node:fs'
-import{createElement}from'react'
-import{renderToStaticMarkup}from'react-dom/server'
-import{PanesViewLayout}from'./PanesViewLayout'
+import test from 'node:test'
+import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
+import { createElement } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { PanesViewLayout } from './PanesViewLayout'
+
 const src=(f:string)=>readFileSync(new URL(f,import.meta.url),'utf8')
 const panes=Array.from({length:8},(_,i)=>({paneId:`p${i}`,name:`pane ${i}`,status:'idle'as const,sendable:true,disabledReason:null}))
 test('expanded list fills the drawer and scrolls inside',()=>{

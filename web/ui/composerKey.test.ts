@@ -1,4 +1,5 @@
-import { describe, it } from 'node:test'
+import { describe } from 'node:test'
+import { it } from 'node:test'
 import assert from 'node:assert/strict'
 import { shouldSendOnEnter } from './composerKey.js'
 import type { KeyboardEvent } from 'react'

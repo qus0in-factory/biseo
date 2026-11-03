@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { UsageMetricTime } from './UsageMetricTime'
-import { percentMetric } from './usageRowAssert.test-util'
+import { percentMetric } from '../test-util/usageRowAssert'
 import r from '../resources.json'
 
 test('metric period start and reset align right with full titles', () => {
