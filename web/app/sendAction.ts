@@ -14,6 +14,7 @@ export async function executeSend(
   text: string,
   set: SetItems,
   setBusy: (b: boolean) => void,
+  current: () => boolean = () => true,
 ) {
   const s = text.trim()
   if (!w || !t || !canInputTarget(t) || !s) return
@@ -23,12 +24,13 @@ export async function executeSend(
   try {
     await submitTurn(p, input)
   } catch {
+    if (!current()) return
     set((m) => markFailed(m, input.requestId))
     try {
-      const current = await p.getTurn(input.requestId)
-      set((m) => mergeTurn(m, current))
+      const turn = await p.getTurn(input.requestId)
+      if (current()) set((m) => mergeTurn(m, turn))
     } catch {}
   } finally {
-    setBusy(false)
+    if (current()) setBusy(false)
   }
 }

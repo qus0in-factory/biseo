@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { WorkspaceApiPort as P } from '../domain/ports'
 import type { Paging } from '../domain/timelinePagingTypes'
 import { loadOlderPage } from './timelineOlderLoad'
@@ -11,6 +11,12 @@ export function useTimelineOlder(
   const [olderLoaded, setOlderLoaded] = useState(0)
   const loading = useRef(false)
   const requested = useRef<number | null>(null)
+
+  useEffect(() => {
+    loading.current = false
+    requested.current = null
+    setOlderLoaded(0)
+  }, [w, paneId])
 
   const loadOlder = useCallback(async () => {
     const page = await loadOlderPage({ p, w, paneId, ref, setPaging, gen, loading, requested })
