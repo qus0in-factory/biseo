@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import type { PaneSummary as P, TimelineItem as T } from '../domain/timeline'
 import type { AsyncState } from '../domain/asyncState'
 import type { ConnectionStatus } from '../domain/connectionStatus'
+import type { WorkspaceSelector } from './workspaceSelectionLink'
 
 export interface DashboardProps {
   panes: P[]
@@ -20,6 +21,9 @@ export interface DashboardProps {
   onLoadOlder?: () => void
   olderLoaded?: number
   headerActions?: ReactNode
+  workspaceId?: string | null
+  onSelectWorkspace?: WorkspaceSelector
+  switching?: boolean
 }
 
 export interface TimelineSectionProps {

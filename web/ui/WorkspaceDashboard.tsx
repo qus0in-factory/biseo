@@ -6,5 +6,6 @@ export function WorkspaceDashboard({c,headerActions}:{c:Controller;headerActions
  return <DashboardView panes={c.panes} panesState={c.panesState} panesRetry={c.panesRetry}
   selectedId={c.sel} onSelect={c.setSel} timeline={c.items} timelineState={c.timelineState}
   retryTimeline={c.retryTimeline} sending={c.sending} onSend={c.send} online={c.online} connection={c.connection}
-  onLoadOlder={c.loadOlder} olderLoaded={c.olderLoaded} headerActions={headerActions}/>
+  onLoadOlder={c.loadOlder} olderLoaded={c.olderLoaded} headerActions={headerActions}
+  workspaceId={c.wsId} onSelectWorkspace={c.selectWorkspace} switching={c.switching}/>
 }
