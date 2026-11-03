@@ -12,7 +12,7 @@ export interface WorkspacePickerViewProps {
  onRetry: () => void
 }
 export function WorkspacePickerView(p: WorkspacePickerViewProps) {
- return <section aria-label={r.workspacesTitle}>
+ return <section className="workspace-picker" aria-label={r.workspacesTitle}>
   <h2>{r.workspacesTitle}</h2>
   {p.notice && <p role="alert">{p.notice}</p>}
   <AsyncList state={p.state} empty={<p>{r.workspacesEmpty}</p>} errorText={r.workspacesError} onRetry={p.onRetry}>
