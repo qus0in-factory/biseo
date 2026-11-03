@@ -5,6 +5,7 @@ import { parseCodexWham } from './codex-wham-parse.js'
 test('empty windows are unknown without errors', () => {
   const result = parseCodexWham({ rate_limit: {} })
   assert.equal(result.state, 'unknown')
+  assert.equal(result.windows.length, 0)
   assert.ok(result.windows.every(w => w.window === 'unknown' && w.usedPercent === null))
 })
 

@@ -11,4 +11,6 @@ test('primary-only weekly plan is weekly, not five-hour', () => {
   assert.equal(result.windows[0].resetsAt, '2026-11-01T00:02:00.000Z')
   assert.equal(result.metrics[0].id, 'w')
   assert.equal(result.windows.some(w => w.window === '5h'), false)
+  assert.equal(result.windows.length, 1)
+  assert.equal(result.metrics.length, 1)
 })
