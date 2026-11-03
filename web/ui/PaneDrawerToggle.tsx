@@ -5,7 +5,7 @@ import r from '../resources.json'
 export function PaneDrawerToggle({ open, onToggle }: { open: boolean; onToggle: () => void }) {
   const label = open ? r.collapseDrawer : r.expandDrawer
   return (
-    <Button variant="outline" size="icon"
+    <Button variant="ghost" size="icon"
       type="button"
       aria-label={label}
       aria-expanded={open}

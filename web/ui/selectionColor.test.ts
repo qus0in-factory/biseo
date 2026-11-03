@@ -12,7 +12,7 @@ test('selection changes fill, not ring or border; workspace aria is kept', () =>
  assert.match(html, /bg-muted/)
  assert.match(html, /aria-current="true"/)
  assert.ok(!html.includes('ring-'))
- assert.match(paneSelectClass(true), /bg-primary\/15/)
+ assert.match(paneSelectClass(true), /bg-muted/)
  const borders = (active: boolean) => paneSelectClass(active).split(' ').filter(c => c.startsWith('border'))
  assert.deepEqual(borders(true), borders(false))
  assert.match(paneSelectTarget, /focus-visible:outline-2/)

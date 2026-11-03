@@ -13,7 +13,7 @@ export interface AppHeaderProps{
 export function AppHeader(p:AppHeaderProps){
  const c=useUiStore(s=>s.connection)
  const a=p.actions??(p.onCheck?<HealthView loading={!!p.loading} error={p.error} onCheck={p.onCheck}/>:null)
- return<header className="mb-4 flex min-w-0 flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
+ return<header className="flex min-w-0 flex-wrap items-center justify-between gap-x-3 gap-y-1 border-b border-border pb-2">
   <div className="flex min-w-0 items-center gap-2">{p.authed&&<HeaderMenuButton/>}<HeaderBrand/></div>
   {p.authed&&<SessionActions {...p} connection={p.connection??c} actions={a}/>}
  </header>

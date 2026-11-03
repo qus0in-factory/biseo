@@ -10,8 +10,8 @@ export function UsageButton({ enabled = true }: { enabled?: boolean }) {
     <>
       <Button
         type="button"
-        variant="outline"
-        className="min-w-11 shrink-0 px-0 text-xs sm:px-3 sm:text-sm"
+        variant="ghost"
+        className="min-w-11 shrink-0 px-0 text-xs hover:bg-muted sm:px-3 sm:text-sm"
         aria-label={r.usageTab}
         title={r.usageTab}
         onClick={() => setOpen(true)}

@@ -6,8 +6,8 @@ const src=(f:string)=>readFileSync(new URL(f,import.meta.url),'utf8')
 describe('HeaderTabs spacing',()=>{
  it('wraps within the header and keeps 44px touch targets',()=>{
   const t=src('./HeaderTabs.tsx')
-  assert.match(t,/TabsList className="max-w-full gap-2"/)
-  assert.match(t,/TabsTrigger value="usage" className="shrink-0 gap-2"/)
+  assert.match(t,/TabsList className="max-w-full gap-1 bg-transparent p-0"/)
+  assert.match(t,/TabsTrigger value="usage" className="shrink-0 gap-2 rounded-md hover:bg-muted"/)
   assert.doesNotMatch(t,/value="notify"|mr-auto/)
   assert.match(src('./UsageButton.tsx'),/UsageModal open=\{open\}/)
   assert.match(src('./SessionActions.tsx'),/<ConnectionStatusBadge[\s\S]*<UsageButton[\s\S]*<SettingsButton/)

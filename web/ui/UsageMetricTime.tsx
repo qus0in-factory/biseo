@@ -2,26 +2,34 @@ import type { UsageMetric } from '../domain/usage'
 import { showMetricReset } from '../domain/usage-ollama'
 import { UsageWindowTime } from './UsageWindowTime'
 import { formatZoned } from '../domain/formatZoned'
+import { metricValueUnknown } from '../domain/usage-metric-format'
+import { isResetPassed } from '../domain/usage-auth-state'
 import r from '../resources.json'
 
 export function UsageMetricTime({
   provider,
-  metric,
+  metric: m,
+  remaining = true,
 }: {
   provider: string
   metric: UsageMetric
+  remaining?: boolean
 }) {
-  if (!showMetricReset(provider, metric)) return null
+  if (!showMetricReset(provider, m)) return null
   const d = {
-    window: metric.id,
-    usedPercent: metric.used,
-    resetsAt: metric.resetsAt,
+    window: m.id,
+    usedPercent: m.used,
+    resetsAt: m.resetsAt,
     checkedAt: null,
-    limitReached: metric.unit === 'percent' && metric.used !== null && metric.used >= 100,
+    limitReached: m.unit === 'percent' && m.used !== null && m.used >= 100,
     source: null,
   }
-  return <>
-    {metric.startsAt && <span className="text-xs text-muted-foreground">{r.usagePeriodStart}: {formatZoned(metric.startsAt, 'Asia/Seoul')}</span>}
-    <UsageWindowTime value={d} />
-  </>
+  const expected = isResetPassed(m.resetsAt) || metricValueUnknown(m, remaining)
+  const start = m.startsAt ? formatZoned(m.startsAt, 'Asia/Seoul') : null
+  return (
+    <span className="flex flex-col items-end gap-0.5 text-[11px] leading-4 tabular-nums text-muted-foreground">
+      {start && <span title={start}>{r.usagePeriodStart}: {start}</span>}
+      <UsageWindowTime value={d} expected={expected} />
+    </span>
+  )
 }

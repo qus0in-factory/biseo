@@ -1,20 +1,22 @@
+import { useState } from 'react'
 import type { WorkspaceApiPort } from '../domain/ports'
 import { useWorkspacePicker } from './useWorkspacePicker'
+import { missingWorkspaceNotice } from './workspacePickerNotice'
+import { pickWorkspace } from './workspacePickerAction'
 import { WorkspacePickerView } from './WorkspacePickerView'
+import type { WorkspaceSelector } from './workspaceSelectionLink'
 
-export interface WorkspacePickerProps { api: WorkspaceApiPort; onSelected?: (workspaceId: string) => void }
-
-export function WorkspacePicker({ api, onSelected }: WorkspacePickerProps) {
-  const s = useWorkspacePicker(api)
-  const select = async (id: string) => {
-    if (!api.selectWorkspace) return
-    s.setLd(true); s.setErr(null)
-    try {
-      const cfg = await api.selectWorkspace(id)
-      s.setCur(cfg.workspaceId); s.setNote(null); onSelected?.(cfg.workspaceId); await s.load()
-    } catch { s.setErr('connection_unavailable') }
-    finally { s.setLd(false) }
-  }
-  return <WorkspacePickerView state={s.state} current={s.cur} loading={s.ld} notice={s.note} onSelect={select} onRetry={s.load} />
+export function WorkspacePicker({ api, current, selector, onSelected }: {
+ api: WorkspaceApiPort
+ current?: string | null
+ selector?: WorkspaceSelector | null
+ onSelected?: (workspaceId: string) => void
+}) {
+ const s = useWorkspacePicker(api)
+ const [actionError, setActionError] = useState<string | null>(null)
+ const shown = current === undefined ? s.cur : current
+ const missing = current === undefined ? s.note : missingWorkspaceNotice(shown, s.ws, s.ld, s.err)
+ return <WorkspacePickerView state={s.state} current={shown} loading={s.ld}
+  notice={actionError ?? missing} onRetry={s.load}
+  onSelect={(id) => void pickWorkspace(api, selector, id, s, onSelected, setActionError)}/>
 }
-export default WorkspacePicker

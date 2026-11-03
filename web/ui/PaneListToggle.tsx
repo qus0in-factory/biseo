@@ -5,7 +5,7 @@ import r from '../resources.json'
 export function PaneListToggle() {
   const { expanded, toggle } = usePaneListStore()
   const label = expanded ? r.collapsePaneList : r.expandPaneList
-  return <Button variant="outline" size="icon" onClick={toggle}
+  return <Button variant="ghost" size="icon" onClick={toggle}
     aria-label={label} title={label} aria-expanded={expanded}>
     {expanded ? '−' : '+'}
   </Button>

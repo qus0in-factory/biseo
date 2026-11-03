@@ -1,3 +1,15 @@
+export function orderedRemarkPlugins({
+  gfm,
+  cjkFriendly,
+  gfmStrikethrough,
+}: {
+  gfm: unknown
+  cjkFriendly: unknown
+  gfmStrikethrough: unknown
+}): unknown[] {
+  return [gfm, cjkFriendly, gfmStrikethrough]
+}
+
 export function isMermaidLanguage(className?: string): boolean {
   return /language-mermaid\b/.test(className ?? '')
 }

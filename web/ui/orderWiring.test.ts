@@ -6,7 +6,7 @@ test('panels and usage tabs read and persist the shared order stores',()=>{
  assert.match(src('./usePanesView.ts'),/usePaneOrder/)
  assert.match(src('../app/usePaneOrder.ts'),/useOrderedIds/)
  assert.match(src('../app/useUsageOrder.ts'),/useOrderedIds/)
- assert.match(src('./UsageOrderedTabs.tsx'),/useUsageOrder/)
+ assert.match(src('./UsageDashboard.tsx'),/useUsageOrder/)
  assert.match(src('../app/orderStore.ts'),/localStorage\.setItem/)
  assert.match(src('../app/useOrderedIds.ts'),/mergeOrder/)
  assert.match(src('../app/useOrderedIds.ts'),/current\.length/)

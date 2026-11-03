@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { formatMetricValue } from './usage-metric-format.js'
+import { formatMetricValue, metricValueUnknown } from './usage-metric-format.js'
 import type { UsageMetric } from './usage.js'
 
 test('formatMetricValue formats percent, credits, currency and fallback', () => {
@@ -15,4 +15,6 @@ test('formatMetricValue formats percent, credits, currency and fallback', () => 
 
   const unk: UsageMetric = { id: 'u', label: 'U', unit: 'percent', used: null, limit: 100, remaining: null, resetsAt: null }
   assert.equal(formatMetricValue(unk, '미확인'), '미확인')
+  assert.equal(metricValueUnknown(unk), true)
+  assert.equal(metricValueUnknown(p), false)
 })

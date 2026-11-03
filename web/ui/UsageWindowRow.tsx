@@ -1,15 +1,17 @@
 import type { UsageWindow } from '../domain/usage'
 import { UsageWindowTime } from './UsageWindowTime'
 import { UsageWindowValue } from './UsageWindowValue'
-import r from '../resources.json'
+import { usageWindowDisplay } from './usageWindowDisplay'
 
-export function UsageWindowRow({ provider, value, remaining = true }: { provider: string; value: UsageWindow; remaining?: boolean }) {
-  const limited = value.limitReached || (value.usedPercent !== null && value.usedPercent >= 100)
+export function UsageWindowRow({ provider, value, remaining = true, showChecked = true }: {
+  provider: string; value: UsageWindow; remaining?: boolean; showChecked?: boolean
+}) {
+  const display = usageWindowDisplay(provider, value, remaining)
+  const expected = display.shown === null || display.stale
   return (
-    <div className={`flex flex-col gap-0.5 border-t border-border/60 pt-1 ${limited ? 'text-error [&_.text-muted-foreground]:text-error' : ''}`}>
-      {limited && <span className="sr-only">{r.usage_limited}</span>}
+    <div className="flex min-w-0 flex-col gap-1 py-1.5">
       <UsageWindowValue provider={provider} value={value} remaining={remaining} />
-      <UsageWindowTime value={value} />
+      <UsageWindowTime value={value} showChecked={showChecked} expected={expected} />
     </div>
   )
 }

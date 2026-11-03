@@ -6,9 +6,11 @@ import { selectCardMetrics } from '../domain/usage-ollama'
 export function UsagePanelBody({
   provider,
   remaining = true,
+  showChecked = true,
 }: {
   provider: UsageProvider
   remaining?: boolean
+  showChecked?: boolean
 }) {
   const m = Array.isArray(provider.metrics) && provider.metrics.length > 0
   if (m) {
@@ -35,6 +37,7 @@ export function UsagePanelBody({
           provider={provider.provider}
           value={w}
           remaining={remaining}
+          showChecked={showChecked}
         />
       ))}
     </>

@@ -8,6 +8,7 @@
   --status-working: var(--muted);
   --status-done: #15803D;
   --status-blocked: #B91C1C;
+  --status-warning: #B45309;
   --status-unknown: var(--muted);
   --r-sm: 4px;
   --r-md: 6px;

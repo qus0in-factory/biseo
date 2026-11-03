@@ -3,6 +3,7 @@
   --status-working: var(--status-idle);
   --status-done: var(--color-success);
   --status-blocked: var(--color-danger);
+  --status-warning: var(--color-warning);
   --status-unknown: var(--status-idle);
   --status-unknown-fg: var(--color-primary);
 }

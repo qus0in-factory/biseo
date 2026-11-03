@@ -13,7 +13,7 @@ export function InterruptButton({ target, online = true, conf }: P) {
     <div className="interrupt-wrap">
       <button
         type="button"
-        className="btn-interrupt"
+        className="btn-interrupt min-h-11 min-w-11"
         disabled={!can}
         onClick={run}
         title={tip}

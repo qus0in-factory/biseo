@@ -2,6 +2,11 @@ import type { WindowUsage } from '../domain/usage-types.js'
 import { detectUsageWindow } from '../../shared/usage-window-detect.js'
 import { whamReset } from './codex-wham-reset.js'
 
+export function isWhamWindowPresent(win: unknown): boolean {
+  return win !== undefined && win !== null
+}
+export const hasWhamWindow = isWhamWindowPresent
+
 export function makeWhamWindow(win: any, chk: string): WindowUsage {
   const w = detectUsageWindow(win?.limit_window_seconds)
   const r = whamReset(win, chk)

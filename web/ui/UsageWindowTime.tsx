@@ -1,26 +1,30 @@
 import type { UsageWindow } from '../domain/usage'
 import { Clock } from 'lucide-react'
-import { formatZonedShort } from '../domain/formatZoned'
+import { formatZoned, formatZonedShort } from '../domain/formatZoned'
 import r from '../resources.json'
 import { HintPopover } from './HintPopover'
+import { UsageResetLabel } from './UsageResetLabel'
 
 const res = r as Record<string, string>
 const TZ = 'Asia/Seoul'
 
-export function UsageWindowTime({ value }: { value: UsageWindow }) {
+export function UsageWindowTime({ value, showChecked = true, expected = false }: {
+  value: UsageWindow; showChecked?: boolean; expected?: boolean
+}) {
+  const reset = value.resetsAt ? formatZoned(value.resetsAt, TZ) : undefined
   return (
-    <>
-      <HintPopover label={res.usageReset!} className="gap-1 text-xs text-muted-foreground">
-        <Clock size={12} aria-label={res.usageReset} role="img" />
-        {value.resetsAt
-          ? formatZonedShort(value.resetsAt, TZ)
-          : res.usageNoReset}
-      </HintPopover>
-      {value.checkedAt && (
-        <span className="text-xs text-muted-foreground">
+    <span className="flex flex-col items-end gap-0.5 text-[11px] leading-4 tabular-nums text-muted-foreground">
+      <span className="inline-flex" title={reset}>
+        <HintPopover label={res.usageReset!} className="gap-1">
+          <Clock size={12} aria-label={res.usageReset} role="img" />
+          <UsageResetLabel at={value.resetsAt} expected={expected} />
+        </HintPopover>
+      </span>
+      {showChecked && value.checkedAt && (
+        <span title={formatZoned(value.checkedAt, TZ)}>
           {res.usageChecked}: {formatZonedShort(value.checkedAt, TZ)}
         </span>
       )}
-    </>
+    </span>
   )
 }

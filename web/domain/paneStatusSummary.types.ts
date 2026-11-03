@@ -3,6 +3,7 @@ export interface PaneStatusSummary {
   working: number
   done: number
   blocked: number
+  input_required: number
   unknown: number
   total: number
 }

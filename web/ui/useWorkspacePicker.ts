@@ -1,7 +1,7 @@
 import{useEffect,useState}from'react'
 import type{WorkspaceApiPort,WorkspaceSummary}from'../domain/ports'
 import { listState } from '../domain/asyncListState'
-import r from '../resources.json'
+import { missingWorkspaceNotice } from './workspacePickerNotice'
 export function useWorkspacePicker(api:WorkspaceApiPort){
  const [ws,setWs]=useState<WorkspaceSummary[]>([])
  const [cur,setCur]=useState<string|null>(null)
@@ -16,7 +16,7 @@ export function useWorkspacePicker(api:WorkspaceApiPort){
    setWs(list)
    const cfg=await api.getConfig()
    setCur(cfg.workspaceId)
-   setNote(cfg.workspaceId&&!list.some(w=>(w.workspaceId??w.id)===cfg.workspaceId)?r.workspaceUnavailable:null)
+   setNote(missingWorkspaceNotice(cfg.workspaceId,list,false,null))
   }catch{setErr('connection_unavailable')}
   finally{setLd(false)}
  }

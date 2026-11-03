@@ -5,16 +5,16 @@ import { markdownComponents } from './markdownComponents.js'
 export function MarkdownRenderedView({
   text,
   Markdown,
-  remarkGfm,
+  remarkPlugins,
 }: {
   text: string
   Markdown: React.ComponentType<Record<string, unknown>>
-  remarkGfm: unknown
+  remarkPlugins: unknown[]
 }) {
   return (
     <div className="markdown-body break-words">
       <Markdown
-        remarkPlugins={remarkGfm ? [remarkGfm] : []}
+        remarkPlugins={remarkPlugins}
         skipHtml
         urlTransform={safeUrl}
         components={markdownComponents}

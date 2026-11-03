@@ -12,7 +12,7 @@ test('panel list and usage tabs share the long-press sortable module',()=>{
  assert.match(sensors,/tolerance: 10/)
  assert.match(sensors,/KeyboardSensor/)
  assert.match(sensors,/sortableKeyboardCoordinates/)
- for(const f of['./PaneSortableList.tsx','./UsageTabList.tsx']){
+ for(const f of['./PaneSortableList.tsx','./UsageProviderSettingsList.tsx']){
   const s=src(f)
   assert.match(s,/SortableList/)
   assert.match(s,/SortableItem/)

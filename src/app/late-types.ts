@@ -8,6 +8,7 @@ export type LateOpts={
  rdr:CaptureReader
  ms?:number
  chk?:()=>Promise<AgentInfo|undefined>
+ blockedError?:()=>Promise<string>
  isLive:()=>boolean
  onDone:LateDone
 }
