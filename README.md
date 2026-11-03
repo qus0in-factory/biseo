@@ -2,7 +2,23 @@
 
 > 나의 소프트웨어 공장 비서 — Herdr 위에서 도는 여러 AI 에이전트 패널을 브라우저에서 보고, 지시하고, 결과를 받는다.
 
-운영: https://biseo.qus0in.dev (v0.3.2). 개발 브랜치 `dev`는 0.3.3 작업 중.
+운영: https://biseo.qus0in.dev (v0.5.4, 2026-11-03 릴리스). 배포·복구 기록은 [운영 문서](docs/operations-0.4.0.md)를 참고한다.
+
+## 실행·검증
+
+Node.js 24 이상과 pnpm 11.24.0을 사용한다. `pnpm install --frozen-lockfile` 후 실행한다.
+
+- `pnpm test`: shared 타입 검사 후 shared·worker·src·web의 `.test.ts`·`.test.tsx` 실행.
+- `pnpm typecheck`, `pnpm build`: 전체 타입 검사와 서버·클라이언트 빌드.
+- `pnpm start`: 빌드된 백엔드 실행. `pnpm dev`: 클라이언트 빌드 후 로컬 Worker 실행.
+- 실행에는 환경에 맞는 config·키·Worker 바인딩이 필요하다. 운영 설정은 커밋하지 않는다.
+
+## 테스트 구조 (#210)
+
+- 모듈당 `<module>.test.ts`를 기본으로 하고, 검증 경계가 다를 때만 `<module>.<concern>.test.ts`로 나눈다(React 테스트는 `.test.tsx`).
+- fixture·공통 테스트 도구는 `<layer>/test-util/`에 두며 테스트 탐색 이름(`*.test.*`)을 붙이지 않는다.
+- 테스트 파일은 128줄 이하로 유지한다. 정리할 때 기존 케이스·assertion을 보존한다.
+- v0.5.4 릴리스 검증은 984개 테스트·27 suites 통과, 실패·취소·skip·todo 0이다. 상세 규칙은 [개발 문서](docs/development.md)를 참고한다.
 
 ## 전체 흐름
 
