@@ -29,7 +29,7 @@ test('the timeline has no bottom callback', () => {
 
 test('auto scroll and jump stay', () => {
   const a = s('./useAutoScroll.ts')
-  assert.match(a, /planScroll\(prevRef\.current, items, near\)/)
+  assert.match(a, /planScroll\(prevRef\.current, items, followRef\.current\)/)
   assert.match(a, /scrollDown\(ref\.current\)/)
   assert.match(s('./TimelineScrollBody.tsx'), /showJump && <JumpToBottomButton/)
 })

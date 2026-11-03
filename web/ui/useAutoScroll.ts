@@ -1,31 +1,33 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import type { TimelineItem } from '../domain/timeline'
-import { isNearBottom, scrollDown } from './scrollHelper'
+import { scrollDown } from './scrollHelper'
 import { planScroll } from './autoScrollPlan'
+import { useFollowScroll } from './useFollowScroll'
+import { useFollowResize } from './useFollowResize'
 
 export function useAutoScroll(items: TimelineItem[]) {
   const ref = useRef<HTMLDivElement>(null)
-  const [near, setNear] = useState(true)
-  const [jump, setJump] = useState(false)
+  const { followRef, jump, follow, release, onScroll: handleScroll, showJump: markJump } = useFollowScroll()
   const prevRef = useRef(items)
 
   const toBottom = useCallback(() => {
+    follow()
     scrollDown(ref.current)
-    setJump(false)
-  }, [])
-
-  const onScroll = useCallback(() => {
-    const isNear = isNearBottom(ref.current)
-    setNear(isNear)
-    if (isNear) setJump(false)
-  }, [])
+  }, [follow])
 
   useEffect(() => {
-    const act = planScroll(prevRef.current, items, near)
+    const act = planScroll(prevRef.current, items, followRef.current)
     prevRef.current = items
-    if (act === 'bottom') { toBottom(); setNear(true) }
-    else if (act === 'jump') setJump(true)
-  }, [items, near, toBottom])
+    if (act === 'bottom') toBottom()
+    else if (act === 'jump') markJump()
+  }, [items, toBottom, markJump, followRef])
 
-  return { ref, showJump: jump, scrollToBottom: toBottom, onScroll }
+  const onScroll = useCallback(() => {
+    const el = ref.current
+    if (el) handleScroll(el)
+  }, [handleScroll])
+
+  useFollowResize(ref, followRef, items)
+
+  return { ref, showJump: jump, scrollToBottom: toBottom, onScroll, releaseFollow: release }
 }
