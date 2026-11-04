@@ -12,15 +12,14 @@ type P = {
   onSend: (s: string) => void
   online?: boolean
   placeholder: string
-  hold?: boolean
   pull?: RecentPull
 }
 
-export function ComposerBody({ target, busy, onSend, online, placeholder, hold = false, pull }: P) {
-  const { t, setT, ref, canSend, submit, onKey } = useComposer(target, busy, onSend, hold)
+export function ComposerBody({ target, busy, onSend, online, placeholder, pull }: P) {
+  const { t, setT, ref, canSend, submit, onKey } = useComposer(target, busy, onSend)
 
   return (
-    <ComposerShell onSubmit={(e) => { e.preventDefault(); submit() }}>
+    <ComposerShell onSubmit={submit}>
       <ComposerCapsule>
         <ComposerField inputRef={ref} value={t} onChange={setT} onKey={onKey} placeholder={placeholder} />
         <ComposerControls target={target} busy={busy} can={canSend} online={online} pull={pull} />

@@ -12,7 +12,7 @@ export function TimelineSection({ target, timeline, state, onRetry, sending, onS
       <div className="flex min-h-0 flex-1 flex-col border-b border-border">
         <TimelineContents target={target} timeline={timeline} state={state} onRetry={onRetry} onCancel={onCancel} onLoadOlder={onLoadOlder} olderLoaded={olderLoaded}/>
       </div>
-      <MessageComposer target={target} busy={sending} onSend={onSend} online={online} timeline={timeline} pull={pull} />
+      <MessageComposer target={target} busy={sending} onSend={onSend} online={online} pull={pull} />
     </section>
   )
 }
