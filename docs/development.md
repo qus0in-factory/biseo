@@ -27,4 +27,12 @@ audience: user
 
 현재 협업자는 1명이므로 GitHub 승인 수는 0으로 두고, dev 소스 필수 검사와 PR·모델 리뷰를 유지한다.
 
-현재 0.1.0의 기능 목표는 Hono + pnpm + PM2, 로컬 6543 → Funnel HTTPS 443의 무인증 /health HTTP 200이다. 인증과 추가 API는 다음 단계다.
+현재 릴리스는 v0.5.4(2026-11-03, PR #212)다. 공개 `/`는 200, 미인증 `/api/health`는 401로 검증했다. 배포·복구 기록은 [운영 문서](operations-0.4.0.md)를 참고한다.
+
+## 테스트 규칙 (#210)
+
+- 모듈당 `<module>.test.ts`를 기본으로 한다. 검증 경계가 다를 때만 `<module>.<concern>.test.ts`로 분리한다(React 테스트는 `.test.tsx`).
+- fixture·공통 테스트 도구는 `<layer>/test-util/`에 두고 `*.test.*` 이름을 사용하지 않는다.
+- 테스트 파일은 128줄 이하로 유지하며, 구조 정리 시 기존 케이스·assertion을 보존한다.
+- `pnpm test`는 shared 타입 검사 후 shared·worker·src·web의 `.test.ts`·`.test.tsx`를 실행한다. `pnpm typecheck`와 `pnpm build`로 전체 타입·빌드를 검증한다.
+- v0.5.4 릴리스 결과는 984/984 테스트·27 suites, 실패·취소·skip·todo 0이다. 실행 테스트 수 감소 중 6건은 케이스 삭제가 아니라 테스트 탐색에서 제외한 빈 fixture 파일이다.

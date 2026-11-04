@@ -6,7 +6,7 @@ export async function observePaneModel(
 ):Promise<PaneModel|null>{
  if((kind!=='opencode'&&kind!=='agy')||!h.readRecent)return null
  try{
-  const lines=await h.readRecent(paneId,8,'recent-unwrapped')
+  const lines=await h.readRecent(paneId,8,kind==='agy'?'visible':'recent-unwrapped')
   const display=modelDisplay(lines,kind)
   return display?parseModelDisplay(display,kind):null
  }catch{

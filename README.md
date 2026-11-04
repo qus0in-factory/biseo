@@ -1,84 +1,64 @@
 # Biseo
 
-> 나의 소프트웨어 공장 비서 — Herdr 위에서 도는 여러 AI 에이전트 패널을 브라우저에서 보고, 지시하고, 결과를 받는다.
+Herdr의 여러 AI 에이전트 패널을 브라우저에서 보고, 지시하고, 결과를 받는 소프트웨어 공장 비서다.
 
-운영: https://biseo.qus0in.dev (v0.3.2). 개발 브랜치 `dev`는 0.3.3 작업 중.
+- 운영: https://biseo.qus0in.dev
+- 정식 릴리스: [v0.5.4](https://github.com/qus0in-factory/biseo/releases/tag/v0.5.4). 이후 main 수정과 운영 배포는 새 태그·릴리스 발행과 구분한다.
+- [Wiki](https://github.com/qus0in-factory/biseo/wiki) · [현행 운영](docs/ops/current-operations.md) · [개발·승격](docs/development.md)
 
-## 전체 흐름
+## 할 수 있는 일
+
+- 워크스페이스와 패널을 선택하고, 패널 생성·이름 변경·종료 및 목록 순서를 관리한다.
+- 메시지를 보내고, 예약 취소·허용된 인터럽트·타임라인·SSE와 최근 결과 조회로 작업 상태를 확인한다.
+- 응답을 마크다운 또는 원본으로 읽고 Mermaid 다이어그램을 표시한다.
+- 제공자별 사용량·한도·리셋 시각을 확인한다. 모델 관측과 사용량 수집은 별도 경로다.
+- 비밀번호 또는 허용된 신뢰 IP의 6자리 PIN으로 로그인한다. 로그인 폼은 헤더 아래 남은 화면 영역에 배치한다.
+
+화면 상태줄 기반 모델 관측은 OpenCode(`recent-unwrapped`)와 AGY(`visible`)를 지원한다. 패널 별칭으로 모델을 추측하지 않는다. effort 감지·표시는 [#214 제안](https://github.com/qus0in-factory/biseo/issues/214)이며 아직 구현하지 않았다.
+
+## 구조
 
 ```mermaid
 flowchart LR
-  B["브라우저<br/>React 19 SPA"] -->|"/api · HttpOnly 쿠키"| W["Cloudflare Worker<br/>biseo.qus0in.dev"]
-  W -->|"서비스 PASETO · HTTPS"| F["Tailscale Funnel"]
-  F --> S["백엔드<br/>Node 24 · Hono · PM2 :6543"]
-  S -->|"CLI · 이벤트 소켓"| H["Herdr<br/>에이전트 패널"]
-  W <-->|"cron 1분"| D[("D1 biseo-db")]
-  S -.->|"응답 수집"| T["transcript · rollout · SQLite"]
+  Browser["브라우저 · React SPA"] -->|"/api · 세션 쿠키"| Worker["Cloudflare Worker · 정적 자산"]
+  Worker <-->|"턴·큐·사용량·인증 데이터"| D1[(Cloudflare D1)]
+  Worker -->|"서비스 PASETO · HTTPS"| Funnel[Tailscale Funnel]
+  Funnel --> Backend["Node.js · Hono · PM2"]
+  Backend -->|"CLI · 이벤트"| Herdr[Herdr 패널]
+  Backend -->|"응답 수집"| Records["transcript · rollout · OpenCode SQLite"]
 ```
 
-## 1. 브라우저 (`web/`)
+| 경로 | 책임 |
+| --- | --- |
+| `web/` | React 화면, 워크스페이스·패널 선택, 로그인, 메시지·타임라인 |
+| `worker/` | 공개 API, 인증·Origin 검사, 백엔드 중계, D1 큐·cron |
+| `src/` | Herdr 제어, 모델 관측, 사용량·응답 수집, 로컬 API |
+| `shared/` | Worker·백엔드 공통 계약과 토큰 처리 |
+| `config/` | 공유 기본 설정과 환경별 설정 경계 |
+| `worker/migrations/` | D1 스키마 변경 이력 |
 
-- 채팅이 항상 메인 화면. `/chat/:paneId`로 들어와도 같은 화면에서 해당 pane이 선택된다.
-- 좌측 pane drawer에 pane 목록. 별로 최대 2개까지 고정(pinned), 고정 목록과 사용량 표시 여부는 localStorage에 저장.
-- 상단 헤더에 **사용량 탭**과 **알림 탭**. 사용량은 모달로 전체 provider 사용량·한도·reset 표시. 알림은 북마크한 pane의 턴 완료·차단 등 주요 결과를 SSE로 수신해 목록으로 표시(읽음 표시).
-- 응답은 sanitize한 마크다운으로 보여 주고, 원본과 전환 가능. Mermaid 렌더링 지원.
-- 타임라인은 pane·seq 커서로 페이지네이션.
-- 라이트 테마만 사용 (`theme-color #F4F7F5`).
+레이어는 `ui → app → domain ← infra`다. 모델 관측은 `src/app/pane-model-observe.ts`, 캐시는 `pane-model-cache.ts`에서 처리한다. API 경로는 `worker/ui/routes-registry.ts`와 `src/ui/app-routes.ts`를 기준으로 확인한다.
 
-레이어: `ui → app → domain`, infra는 포트 구현. `uiStore`(zustand)로 선택 pane·pinned 유지.
+## 실행과 검증
 
-## 2. Cloudflare Worker (`worker/`)
+Node.js 24 이상과 pnpm 11.24.0이 필요하다. Herdr 연결, 서비스 검증키, Worker 바인딩·시크릿 등 환경 준비는 [현행 운영 문서](docs/ops/current-operations.md)를 따른다. 설치·빌드만으로 운영 환경이 구성되는 것은 아니다.
 
-| 경로 | 역할 |
-|---|---|
-| `POST /api/login`, `/api/logout`, `GET /api/session` | 비밀번호 로그인, PASETO v4.public HttpOnly 쿠키, KV `LOGIN_ATTEMPTS`로 시도 제한 |
-| `GET /api/config`, `/api/workspaces/:wsId/panes` | workspace 설정과 pane 목록 중계 |
-| `POST /api/timeline/messages`, `DELETE /api/turns/:requestId` | 턴 전송과 예약 취소 중계, D1 기록 |
-| `GET /api/timeline/messages(/:requestId)`, `/api/timeline/stream` | D1에 저장된 최근 결과 조회, SSE 스트림 |
-| `POST /api/panes/:paneId/interrupt` | Esc 등 허용된 키로 차단 해제 |
-| `GET /api/usage` | provider 사용량(D1 캐시) |
-| `GET /api/health` | 백엔드 health 중계 |
+```sh
+pnpm install --frozen-lockfile
+pnpm test
+pnpm typecheck
+pnpm build
+```
 
-- 상태를 바꾸는 요청은 Origin/CSRF 검사와 workspace allowlist를 통과해야 한다.
-- 백엔드를 호출할 때는 짧게 유효한 서비스 PASETO를 붙인다.
-- **scheduled (cron `* * * * *`)**: 늦게 끝난 턴 회수(`scheduled-turns`), 사용량 snapshot(`scheduled-usage`), workspace 동기화(`scheduled-workspace`). 실패하면 backoff.
+- `pnpm start`: 빌드한 로컬 백엔드 실행.
+- `pnpm dev`: 클라이언트 빌드 후 로컬 Worker 실행.
+- 기존 전체 검사는 984개다. 검증 결과와 테스트 탐색 규칙은 [개발 문서](docs/development.md)를 참고한다.
 
-## 3. D1 `biseo-db` (`worker/migrations/`)
+## 변경·운영 원칙
 
-| 마이그레이션 | 테이블 | 용도 |
-|---|---|---|
-| `0001_timeline.sql` | `timeline_turns` | requestId·소유자·workspace·pane·prompt·응답·상태 |
-| `0002_usage.sql` | `usage_snapshots` | provider별 사용량·한도·reset 시각 |
-| `0003_sync.sql` | `sync_state` | cron 동기화 커서·lease |
+- 작업 브랜치를 dev에 통합하고 검증한 뒤 dev→main PR로 승격한다. main 직접 push·보호 우회는 하지 않는다.
+- 백엔드와 Worker는 별도로 배포·검증한다. 재시작 전 현재 실행 경로와 진행 중 작업을 확인한다.
+- 공유 가능한 기본 설정은 Git으로 관리하고, 비밀키·토큰·운영 오버라이드는 보호된 저장소와 환경에서 관리한다. 로그나 문서에 값을 남기지 않는다.
+- 운영 설정·사용자 미커밋 변경을 배포 편의상 덮어쓰지 않는다. 태그·정식 릴리스 발행은 별도 승인 사항이다.
 
-- 모든 조회에 소유자·workspace 범위를 적용하고, D1이 실패하면 fail-closed로 처리한다.
-- 비밀키·토큰·쿠키·터미널 전체 내용은 저장하지 않는다.
-
-## 4. 백엔드 (`src/`, PM2 `biseo`)
-
-라우트 (`src/ui/app-routes.ts`):
-
-| 라우트 | 역할 |
-|---|---|
-| `POST /herdr/turns`, `GET`/`DELETE /herdr/turns/:requestId` | 턴 생성·조회·예약 취소 |
-| `GET /herdr/events` | 패널·턴 상태 SSE (`Last-Event-ID`로 이어 받기) |
-| `GET /herdr/workspaces/:wsId/panes`, `/herdr/config` | pane 목록, 동적 workspace 설정 |
-| `POST /herdr/panes/:paneId/interrupt` | 허용된 키만 전송 (OpenCode `ctrl+c`는 거부) |
-| `GET /herdr/usage` | 로컬 사용량 수집 결과 |
-
-- 턴 큐: pane별 FIFO, 수락 게이트, 타임아웃·늦은 응답 수집.
-- 사용량: `usage-collector`가 codex rollout에서 rate limit을 읽어 primary/secondary window로 노출. 실패 시 `unknown`/`windows: []`.
-- 응답 수집: claude/agy/codex/opencode별 transcript 파서.
-
-## 5. Herdr와 응답 수집
-
-| 에이전트 | 응답 출처 |
-|---|---|
-| claude | Claude transcript JSONL |
-| agy (Antigravity) | Antigravity transcript JSONL |
-| codex | Codex rollout JSONL, SessionStart hook이 남긴 pane→session 상태 파일 |
-| opencode | OpenCode SQLite |
-
-## 레이어 규칙
-
-의존 방향은 `ui → app → domain ← infra`이고, 조립은 진입점(`worker/index.ts`, `src/index.ts`)에서만 한다. `shared/`는 claims·timeline 포트와 PASETO 구현을 Worker와 백엔드에 함께 제공한다. 모듈은 128줄·1024자 이하로 유지한다.
+관련 기록: [AGY 모델 관측 부검](docs/ops/postmortem-213-agy-model.md) · [이슈](https://github.com/qus0in-factory/biseo/issues).
