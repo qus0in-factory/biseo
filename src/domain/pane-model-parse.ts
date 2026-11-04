@@ -10,6 +10,7 @@ const providers:[RegExp,string][]=[
  [/opencode go$/i,'opencode-go'],
  [/(?:default\s*\/\s*)?(?:opencode|zen)$/i,'opencode'],
  [/grok$/i,'grok'],
+ [/x-?ai$/i,'grok'],
 ]
 const id=(s:string)=>s.toLowerCase().replace(/[^a-z0-9.]+/g,'-').replace(/^-+|-+$/g,'')
 export function parseModelDisplay(display:string,kind:string|null):PaneModel|null{
