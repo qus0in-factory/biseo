@@ -27,11 +27,21 @@ pnpm build
 - 워크스페이스 선택 상태와 보호된 키·시크릿은 코드 배포와 구분한다. 개인키·토큰·비밀번호·PIN을 출력·복사·커밋하지 않는다.
 - PM2 상태 조회는 이름·PID·cwd·스크립트·상태 등 필요한 필드만 기록한다. 전체 환경변수 출력을 로그로 남기지 않는다.
 
+## 워크스페이스 선택
+
+백엔드는 실행 cwd의 `config/workspace-selection.json`에 유효한 선택이 있으면 `runtime.json`의 `allowedWorkspaceId`보다 우선해 사용한다. 선택 파일은 gitignore 대상이며 배포 기본값으로 덮어쓰거나 커밋하지 않는다. `runtime.json`만 바꿔서는 기존 선택이 바뀌지 않는다.
+
+워크스페이스를 바꿀 때는 인증된 화면의 워크스페이스 탭이나 설정의 선택 목록을 사용한다. 백엔드의 `POST /herdr/workspaces/select`가 감지된 ID를 확인한 뒤 선택 파일에 `{"workspaceId":"<선택한 ID>"}`를 저장한다. API를 직접 사용할 때도 기존 인증 경로를 사용하고 토큰을 로그에 남기지 않는다.
+
+장애로 화면을 사용할 수 없으면 실제 PM2 cwd를 먼저 확인하고, 그 cwd의 선택 파일만 같은 JSON 형식으로 갱신한다. 기존 설정·권한을 보존하고 Herdr에 존재하는 ID인지 확인한다. 선택은 요청 시 다시 읽으므로 이 변경만으로 PM2를 재시작하지 않는다. 이후 인증된 `/herdr/config` 응답과 해당 workspace 접근을 확인한다. 단순 오류 로그 소멸만으로 전체 정상화를 단정하지 않는다.
+
 ## dev와 main
 
 작업 브랜치에서 기존 검사·타입 검사·빌드·타계열 리뷰를 확인하고 로컬 dev에 통합한다. dev push의 CI 성공 후 dev→main PR을 만들고 보호 규칙을 통과해 병합한다. 별도 승인 없이 버전 번호·태그·릴리스를 만들지 않는다.
 
 ## 백엔드 배포
+
+PM2 `biseo`는 `/Users/young-mini/Factory/biseo` 체크아웃에서만 실행한다. 개발·검증용 worktree를 서비스 cwd로 사용하지 않는다. worktree 정리 전에는 실행 중 프로세스의 cwd도 확인한다. [#222 부검](https://github.com/qus0in-factory/biseo/issues/222)과 로컬 `Factory/docs/harness/postmortem-worktree-prune-biseo.md`가 근거다.
 
 1. 현재 PM2 앱의 cwd·스크립트·PID와 진행 중 턴·큐를 확인한다. 사용자 설정이나 미커밋 변경은 보존한다.
 2. 검증된 커밋의 깨끗한 소스로 빌드하고 설정·검증키를 준비한다. `pnpm preflight`로 부팅 설정을 검사한다.

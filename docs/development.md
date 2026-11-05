@@ -33,6 +33,7 @@ audience: user
 
 - 모듈당 `<module>.test.ts`를 기본으로 한다. 검증 경계가 다를 때만 `<module>.<concern>.test.ts`로 분리한다(React 테스트는 `.test.tsx`).
 - fixture·공통 테스트 도구는 `<layer>/test-util/`에 두고 `*.test.*` 이름을 사용하지 않는다.
+- 테스트는 `process.cwd()`가 가리키는 실제 운영 설정 경로에 쓰지 않는다. `config/workspace-selection.json`처럼 import 시 기본 경로가 정해지는 모듈은 앱을 동적으로 import하기 전에 임시 cwd/config를 준비한다. 임시 파일에 기록됐는지와 실제 선택 파일의 실행 전후 바이트가 같은지 확인한다. 예시는 `src/ui/test-util/workspace-sandbox.ts`와 [#222](https://github.com/qus0in-factory/biseo/issues/222)다.
 - 테스트 파일은 128줄 이하로 유지하며, 구조 정리 시 기존 케이스·assertion을 보존한다.
 - `pnpm test`는 shared 타입 검사 후 shared·worker·src·web의 `.test.ts`·`.test.tsx`를 실행한다. `pnpm typecheck`와 `pnpm build`로 전체 타입·빌드를 검증한다.
 - v0.5.4 릴리스 결과는 984/984 테스트·27 suites, 실패·취소·skip·todo 0이다. 실행 테스트 수 감소 중 6건은 케이스 삭제가 아니라 테스트 탐색에서 제외한 빈 fixture 파일이다.
