@@ -11,8 +11,6 @@ test('effective config passes preflight',()=>{
 })
 test('missing keys fail with names',()=>{
  const bad:Record<string,unknown>={
-  serviceIssuer:'',
-  serviceAudience:'',
   servicePublicKeyPath:'',
   turnTimeoutMs:0,
   availabilityTtlMs:0,
