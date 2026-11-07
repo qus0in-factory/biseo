@@ -1,21 +1,22 @@
 // Release gate: prod app version mark must match package.json.
 import { readFile } from 'node:fs/promises'
-import { hasVersionMark, makeGet } from './release-version-mark.mjs'
+import { bundleHasMark, makeGet } from './release-version-mark.mjs'
+import { loadVerifyUrl, missingUrlHint } from './release-verify-url.mjs'
 
-const load = async (p) => JSON.parse(await readFile(new URL(p, import.meta.url), 'utf8'))
+const at = (p) => new URL(p, import.meta.url)
+const load = async (p) => JSON.parse(await readFile(at(p), 'utf8'))
 const { version } = await load('../package.json')
-const { url, timeoutMs, versionMarkPrefix } = await load('../config/release-verify.json')
-const get = makeGet(url, timeoutMs)
+const { url: fileUrl, timeoutMs, versionMarkPrefix } = await load('../config/release-verify.json')
+const url = await loadVerifyUrl(fileUrl, at('../wrangler.jsonc'))
+if (!url) {
+  console.error(missingUrlHint)
+  process.exit(1)
+}
 
 try {
-  const html = await get('/')
-  const assets = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.js)"/g)].map((m) => m[1])
-  if (!assets.length) throw new Error('no script bundle found in /')
-  for (const a of assets) {
-    if (hasVersionMark(await get(a), versionMarkPrefix, version)) {
-      console.log(`release-verify: ${url} bundle ${version} == package.json`)
-      process.exit(0)
-    }
+  if (await bundleHasMark(makeGet(url, timeoutMs), versionMarkPrefix, version)) {
+    console.log(`release-verify: ${url} bundle ${version} == package.json`)
+    process.exit(0)
   }
   console.error(`release-verify: ${url} lacks mark ${version}; run pnpm deploy`)
 } catch (e) {
