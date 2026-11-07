@@ -1,11 +1,9 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
+import app from '../index.js'
 import { syncUsage } from '../scheduled-usage.js'
 import { createTimelineTestEnv } from '../test-util/timeline-helpers.js'
 import { drive } from '../test-util/upstream-retry-drive.js'
-import { writeHistory } from '../infra/d1-usage-history-write.js'
-import { readHistory } from '../infra/d1-usage-history-read.js'
-import { historyPoint } from '../../shared/tests/support/usage-history-fixture.js'
 
 test('scheduled usage timeout skips upsert and does not retry', async t => {
  const { env } = await createTimelineTestEnv()
@@ -22,24 +20,18 @@ test('scheduled usage timeout skips upsert and does not retry', async t => {
  } finally { t.mock.timers.reset() }
 })
 
-test('failed upstream collection still cleans expired history', async t => {
-  const { env } = await createTimelineTestEnv()
-  await writeHistory(env.BISEO_DB, [historyPoint(1, 1, 1)], 0)
-  t.mock.method(globalThis, 'fetch', async () => new Response('unavailable', { status: 503 }))
-  assert.equal(await syncUsage(env.BISEO_DB, env), false)
-  assert.equal((await readHistory(env.BISEO_DB, 'codex', 0)).length, 0)
-})
-
-test('Cron persists paired history beside the replaceable latest snapshot', async t => {
-  const { env } = await createTimelineTestEnv()
-  const metrics = ['primary', 'secondary'].map(id => ({
-    id, unit: 'percent', used: 10, resetsAt: '2030-01-01T00:00:00Z',
-  }))
+test('Cron keeps only the latest snapshot and no usage_history table or route remains', async t => {
+  const { env, cookie } = await createTimelineTestEnv()
+  const metrics = [{ id: 'primary', unit: 'percent', used: 10, resetsAt: '2030-01-01T00:00:00Z' }]
   t.mock.method(globalThis, 'fetch', async () => Response.json({ providers: [
     { provider: 'codex', state: 'available', metrics },
   ] }))
   assert.equal(await syncUsage(env.BISEO_DB, env), true)
-  const points = await readHistory(env.BISEO_DB, 'codex', 0)
-  assert.equal(points.length, 1)
-  assert.equal(points[0].five, 10)
+  const tables = await env.BISEO_DB.prepare(
+    "SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'usage_history'").all()
+  assert.equal(tables.results.length, 0)
+  const response = await app.fetch(new Request('http://localhost/api/usage/history/codex', {
+    headers: { Cookie: cookie },
+  }), env)
+  assert.equal(response.status, 404)
 })

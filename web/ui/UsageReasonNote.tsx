@@ -1,8 +1,7 @@
-import r from '../resources.json'
+import { usageReasonText } from '../domain/usage-note'
 
 export function UsageReasonNote({ reason }: { reason?: string | null }) {
-  if (!reason) return null
-  if (reason === 'rate_limited') return <p className="text-sm text-muted-foreground">{r.usageReasonRateLimited}</p>
-  const t = (r as Record<string, string>)[reason] ?? r.usageReasonUnknown
+  const t = usageReasonText(reason)
+  if (!t) return null
   return <p className="text-sm text-muted-foreground">{t}</p>
 }

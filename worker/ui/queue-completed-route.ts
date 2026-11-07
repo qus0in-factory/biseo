@@ -4,8 +4,9 @@ import{isSafeId}from'../domain/message-input.js'
 import{completeReservation}from'../app/complete-reservation.js'
 import{createHerdrUpstream}from'../infra/herdr-upstream.js'
 import{queueUpstream}from'../infra/queue-upstream.js'
+import{queueCompletedPath}from'../../shared/domain/queue-callback.js'
 export function registerQueueCompleted(app:App){
- app.post('/api/queue/completed',async c=>{
+ app.post(queueCompletedPath,async c=>{
   const d=requireDb(c);if(!d.ok)return d.res
   const b=await c.req.json().catch(()=>null)
   if(!b||!isSafeId(b.requestId)||!isSafeId(b.token))return jsonNoStore(c,{error:'bad_request'},400)

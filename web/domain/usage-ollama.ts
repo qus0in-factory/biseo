@@ -1,11 +1,17 @@
 import type { UsageMetric } from './usage'
+import { BALANCE_METRIC_IDS, isBalanceMetric } from './usage-balance.js'
 
-const BALANCES = ['included_balance', 'purchased_balance']
+const ALLOW: Record<string, readonly string[]> = {
+  ollama: BALANCE_METRIC_IDS,
+  'opencode-go': ['primary', 'secondary', 'monthly'],
+}
 
-export const visibleOllamaMetric = (m: UsageMetric): boolean => BALANCES.includes(m.id)
+export const visibleOllamaMetric = isBalanceMetric
 
-export const selectCardMetrics = (provider: string, metrics: UsageMetric[]): UsageMetric[] =>
-  provider === 'ollama' ? metrics.filter(visibleOllamaMetric) : metrics
+export const selectCardMetrics = (provider: string, metrics: UsageMetric[]): UsageMetric[] => {
+  const allow = ALLOW[provider]
+  return allow ? metrics.filter((m) => allow.includes(m.id)) : metrics
+}
 
 export const showMetricReset = (provider: string, m: UsageMetric): boolean =>
   !(provider === 'ollama' && m.id === 'purchased_balance')

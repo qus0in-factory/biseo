@@ -6,6 +6,7 @@ import{createApp}from'../../src/ui/app.js'
 import{importVerificationKey}from'../../shared/infra/paserk.js'
 import{PasetoV4PublicVerifier}from'../../shared/infra/paseto-v4-public.js'
 import{createZeroShotPorts}from'./zero-shot-ports-fixture.js'
+process.env.QUEUE_CALLBACK_URL=''
 export async function createZeroShotBackend(pubKey:string){
  const key=await importVerificationKey(pubKey as `k4.public.${string}`)
  const verify=createVerifyService(new PasetoV4PublicVerifier(key,5),{issuer:'biseo',audience:'biseo-service'})

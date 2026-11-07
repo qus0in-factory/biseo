@@ -6,7 +6,7 @@ import { resetClaudeBackoff } from './claude-oauth-backoff.js'
 
 test('retry-after is combined with backoff and capped at maxMs', () => {
   const now = new Date('2026-11-07T00:00:00Z')
-  for (const [header, seconds] of [[null, 60], ['0', 60], ['bad', 60],
+  for (const [header, seconds] of [[null, 600], ['0', 600], ['bad', 600],
     ['30', 60], ['120', 120], ['3600', 900],
     ['Sat, 07 Nov 2026 00:03:00 GMT', 180]] as const) {
     resetClaudeBackoff()

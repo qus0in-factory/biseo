@@ -7,7 +7,6 @@ import { registerInterruptRoute } from './interrupt-route.js'
 import { registerTimelineRoutes } from './timeline-routes.js'
 import { registerStreamRoute } from './timeline-stream.js'
 import { registerUsageRoute } from './usage-route.js'
-import { registerUsageHistoryRoute } from './usage-history-route.js'
 import { registerWorkspaceRoutes } from './workspace-routes.js'
 
 import { registerPaneManageRoutes } from './pane-manage-routes.js'
@@ -23,5 +22,4 @@ export function registerRoutes(app: App) {
   registerInterruptRoute(app)
   registerStreamRoute(app)
   registerUsageRoute(app)
-  registerUsageHistoryRoute(app)
 }
