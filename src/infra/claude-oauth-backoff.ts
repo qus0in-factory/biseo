@@ -19,7 +19,10 @@ export function claudeBackoffAt(): string {
 
 export function noteClaudeFail(now: number, cfg: ClaudeBackoffCfg = claudeBackoffCfg(), retryMs = 0): number {
   now = dateMs(now)
-  if (now < until) return until
+  if (now < until) {
+    if (retryMs > 0) until = Math.max(until, dateMs(now + Math.min(cfg.maxMs, retryMs)))
+    return until
+  }
   const ms = Math.min(cfg.maxMs, Math.max(retryMs, cfg.initialMs * cfg.factor ** fails))
   fails += 1
   until = dateMs(now + ms)
