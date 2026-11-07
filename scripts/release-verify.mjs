@@ -1,4 +1,4 @@
-// Release gate: prod bundle app version mark must match package.json (GET only).
+// Release gate: prod app version mark must match package.json.
 import { readFile } from 'node:fs/promises'
 import { hasVersionMark, makeGet } from './release-version-mark.mjs'
 
