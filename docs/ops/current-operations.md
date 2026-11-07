@@ -54,7 +54,7 @@ PM2 `biseo`는 `/Users/young-mini/Factory/biseo` 체크아웃에서만 실행한
 
 백엔드 재시작만으로 브라우저 화면은 갱신되지 않는다. 클라이언트 빌드와 Worker 배포를 별도로 수행한다. 기존 Worker 시크릿·바인딩·운영 클라이언트 설정을 보존하고, `/` 200·미인증 `/api/health` 401 및 변경 화면을 실제 도메인에서 확인한다. PIN·비밀번호를 검증용 로그에 남기지 않는다.
 
-릴리스는 `pnpm release`(서버 빌드·PM2 재시작)와 `pnpm deploy`(vite build·wrangler deploy)를 둘 다 실행하고, 화면 푸터 버전으로 확인한다. 화면 버전은 `vite.config.ts`에서 빌드 시 번들에 들어가므로 `pnpm release`만으로는 바뀌지 않는다. 2026-11-07 v0.6.0에서 `pnpm deploy`를 빠뜨려 운영 화면이 0.5.4로 남았다.
+릴리스는 `pnpm release:all`로 `pnpm release`(서버 빌드·PM2 재시작), `pnpm deploy`(vite build·wrangler deploy), `pnpm release:verify`(운영 번들 버전과 package.json 비교, URL은 `config/release-verify.json`)를 순서대로 실행한다. 화면 푸터 버전도 눈으로 확인한다. 화면 버전은 `vite.config.ts`에서 빌드 시 번들에 들어가므로 `pnpm release`만으로는 바뀌지 않는다. 2026-11-07 v0.6.0에서 `pnpm deploy`를 빠뜨려 운영 화면이 0.5.4로 남았다.
 
 ## 사용량 수집과 복구
 
@@ -106,5 +106,13 @@ rename 실패는 단계별 id·command와 `auto_label.rename_failed`로 기록�
 - 읽기 전용 effort 표시는 [#214 제안](https://github.com/qus0in-factory/biseo/issues/214)이며 미구현이다.
 - API 정의: [Worker 라우트 등록](../../worker/ui/routes-registry.ts), [백엔드 라우트 등록](../../src/ui/app-routes.ts). 경로·메서드를 이름으로 추정하지 않는다.
 - D1 스키마는 [마이그레이션](../../worker/migrations/)을 기준으로 한다. 작업 데이터의 소유자·workspace 범위와 인증·사용량·동기화 데이터의 범위는 서로 다르다.
+
+## Wiki 작업
+
+Wiki 저장소는 세션마다 새 경로에 clone한다. 이전 세션의 작업 디렉터리를 재사용하지 않는다. 편집 전 `git rev-parse --git-dir`로 Wiki 저장소인지 확인하고 코드 저장소의 `.git`이면 중단한다.
+
+## 릴리스 노트
+
+노트는 기억이 아니라 `git log --merges <이전 태그>..main` 병합 커밋 목록에서 유도한다. 줄마다 PR 번호를 적고 목록과 대조한다.
 
 관련: [README](../../README.md) · [개발·승격](../development.md) · [Wiki](https://github.com/qus0in-factory/biseo/wiki).

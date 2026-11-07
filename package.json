@@ -16,6 +16,8 @@
     "build:server:clean": "rm -rf dist/server && pnpm build:server",
     "build:client": "vite build",
     "build": "pnpm build:server && pnpm build:client",
+    "release:verify": "node scripts/release-verify.mjs",
+    "release:all": "pnpm release && pnpm deploy && pnpm release:verify",
     "preflight": "node scripts/deploy-preflight.mjs",
     "release": "pnpm build:server:clean && pnpm preflight && pnpm pm2:restart",
     "secret:verifier": "bash scripts/make-verifier.sh",
