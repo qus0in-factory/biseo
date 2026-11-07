@@ -1,4 +1,5 @@
 {
   "url": "https://biseo.qus0in.dev",
-  "timeoutMs": 10000
+  "timeoutMs": 10000,
+  "versionMarkPrefix": "app-version:"
 }
