@@ -5,9 +5,10 @@ import{validateBootConfig}from'./config-boot.js'
 import{missingConfigKeys}from'./config-missing.js'
 
 {
-test('effective config passes preflight',()=>{
- validateBootConfig(config)
- assert.deepEqual(missingConfigKeys(config),[])
+test('env identity passes boot',()=>{
+ const c={...config,serviceIssuer:'test-issuer',serviceAudience:'test-audience'}
+ validateBootConfig(c)
+ assert.deepEqual(missingConfigKeys(c),[])
 })
 test('missing keys fail with names',()=>{
  const bad:Record<string,unknown>={

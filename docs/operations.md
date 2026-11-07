@@ -14,7 +14,7 @@ audience: user
 - 로컬: `http://127.0.0.1:6543/health`
 - 공개: `https://<device>.<tailnet>.ts.net/health`
 - 응답: 인증 없이 HTTP 200, `{"status":"ok"}`
-- 변경 가능한 기본값: `config/runtime.json`, 환경변수 `HOST`, `PORT`, `HEALTH_STATUS`, `PROCESS_NAME`
+- `config/runtime.json`에는 제품 기본값만 둔다. 환경값은 env와 자동 결정으로 처리한다. [배포 전환](ops/runtime-config.md)을 따른다.
 
 ## How
 
