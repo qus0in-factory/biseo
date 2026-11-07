@@ -5,8 +5,8 @@ loopback.addSubnet('127.0.0.0', 8, 'ipv4');
 loopback.addAddress('::1', 'ipv6');
 
 export function checkHost(host = 'localhost') {
-  const name = String(host).toLowerCase().replace(/^\[|\]$/g, '');
-  if (name === 'localhost') return;
+  const name = String(host ?? '').toLowerCase().replace(/^\[|\]$/g, '').replace(/\.$/, '');
+  if (name === '' || name === 'localhost') return;
   if (loopback.check(name, isIP(name) === 6 ? 'ipv6' : 'ipv4')) return;
   process.exitCode = 1;
   console.error(`test-net-guard: ${name}`);

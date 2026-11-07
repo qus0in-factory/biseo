@@ -1,5 +1,6 @@
 import './test-net-socket.mjs';
 import './test-net-datagram.mjs';
+import './test-net-dns.mjs';
 import { checkHost } from './test-net-policy.mjs';
 
 const fetch = globalThis.fetch;
