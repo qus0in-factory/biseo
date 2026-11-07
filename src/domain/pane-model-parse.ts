@@ -1,27 +1,17 @@
-import{agyModel}from'./pane-model-agy.js'
-export type PaneModel={modelId:string;provider:string}
-const providers:[RegExp,string][]=[
- [/ollama(?: cloud)?$/i,'ollama'],
- [/openai$|codex$/i,'codex'],
- [/claude agent$/i,'claude'],
- [/anthropic$/i,'claude'],
- [/claude$/i,'claude'],
- [/free\s+(?:default\s*\/\s*)?(?:opencode(?:\s+go)?|zen)$/i,'opencode'],
- [/opencode go$/i,'opencode-go'],
- [/(?:default\s*\/\s*)?(?:opencode|zen)$/i,'opencode'],
- [/grok$/i,'grok'],
- [/x-?ai$/i,'grok'],
-]
-const id=(s:string)=>s.toLowerCase().replace(/[^a-z0-9.]+/g,'-').replace(/^-+|-+$/g,'')
-export function parseModelDisplay(display:string,kind:string|null):PaneModel|null{
- const text=display.trim()
- if(!text)return null
- if(kind==='agy'){const model=agyModel(text);return model?build(model,'agy'):null}
- const hit=providers.find(([re])=>re.test(text))
- if(!hit)return null
- return build(text.replace(hit[0],''),hit[1])
+import { agyModel } from './pane-model-agy.js'
+import { modelSuffixes } from './pane-model-rules.js'
+export type PaneModel = { modelId: string; provider: string }
+const id = (s: string) => s.toLowerCase().replace(/[^a-z0-9.]+/g, '-').replace(/^-+|-+$/g, '')
+export function parseModelDisplay(display: string, kind: string | null): PaneModel | null {
+  const text = display.trim()
+  if (!text) return null
+  if (kind === 'agy') { const model = agyModel(text); return model ? build(model, 'agy') : null }
+  if (kind === 'claude') return build(text, 'claude')
+  const hit = modelSuffixes.find(([re]) => re.test(text))
+  if (!hit) return null
+  return build(text.replace(hit[0], ''), hit[1])
 }
-function build(name:string,provider:string):PaneModel|null{
- const modelId=id(name)
- return modelId?{modelId,provider}:null
+function build(name: string, provider: string): PaneModel | null {
+  const modelId = id(name)
+  return modelId ? { modelId, provider } : null
 }

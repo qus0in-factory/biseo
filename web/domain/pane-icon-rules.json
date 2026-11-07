@@ -1,0 +1,6 @@
+[
+  {"match": "xai", "icon": "xai"},
+  {"match": "grok", "icon": "xai"},
+  {"match": "muse", "icon": "meta"},
+  {"match": "llama", "icon": "meta"}
+]

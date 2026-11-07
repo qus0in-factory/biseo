@@ -37,12 +37,12 @@ test('failed identification is cached and never warns',async()=>{
  await o(h,[{paneId:'p1',agentKind:'opencode'}])
  assert.equal(calls,1)
 })
-test('unsupported agent kinds are not read',async()=>{
+test('claude kind is read and stays empty without a model line',async()=>{
  let calls=0
  const h={readRecent:async()=>{calls++;return[]}} as unknown as HerdrPort
  const o=createPaneModelCache(1000,()=>0)
  assert.deepEqual(await o(h,[{paneId:'p1',agentKind:'claude'}]),{})
- assert.equal(calls,0)
+ assert.equal(calls,1)
 })
 test('concurrent initial snapshots wait for the same model observation', async () => {
   let finish!: (lines: string[]) => void

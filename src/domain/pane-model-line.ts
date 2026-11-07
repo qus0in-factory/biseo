@@ -1,4 +1,5 @@
 import{agyModel}from'./pane-model-agy.js'
+import{claudeModelName}from'./claude-model-names.js'
 const SEP=' · ',TAIL=6,OPENCODE=/^[┃│|]?\s*build\b/i
 const middle=(s:string)=>{
  const p=s.split(SEP)
@@ -11,6 +12,7 @@ export function modelDisplay(lines:string[],kind:string|null):string|null{
    if(OPENCODE.test(tail[i])&&tail[i].includes(SEP))return middle(tail[i])
   return null
  }
+ if(kind==='claude')return claudeModelName(tail)
  if(kind==='agy'){
   const last=tail[tail.length-1]
   if(!last)return null
