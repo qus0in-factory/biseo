@@ -16,8 +16,6 @@
     ]
   },
   "vars": {
-    "USAGE_HISTORY_RETENTION_DAYS": "30",
-    "USAGE_HISTORY_MIN_SAMPLES": "2",
     "HEALTH_TIMEOUT_MS": "5000",
     "COOKIE_NAME": "biseo_session",
     "COOKIE_SAME_SITE": "Lax",
