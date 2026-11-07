@@ -10,3 +10,4 @@ config/*.key
 config/workspace-selection.json
 !.dev.vars.example
 tmp/
+data/
