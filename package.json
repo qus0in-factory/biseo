@@ -22,7 +22,7 @@
     "release": "pnpm build:server:clean && pnpm preflight && pnpm pm2:restart",
     "secret:verifier": "bash scripts/make-verifier.sh",
     "typecheck": "tsc -p tsconfig.server.json --noEmit && tsc -p tsconfig.worker.json && tsc --noEmit",
-    "test": "tsc -p shared/tsconfig.json --noEmit && tsx --test $(find shared worker src web '(' -name '*.test.ts' -o -name '*.test.tsx' ')' | sort)",
+    "test": "tsc -p shared/tsconfig.json --noEmit && NODE_OPTIONS=\"${NODE_OPTIONS:-} --import=./scripts/test-net-guard.mjs\" tsx --test $(find shared worker src web '(' -name '*.test.ts' -o -name '*.test.tsx' ')' | sort)",
     "dev": "pnpm build:client && wrangler dev",
     "deploy": "pnpm build:client && wrangler deploy"
   },
