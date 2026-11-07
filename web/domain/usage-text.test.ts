@@ -14,7 +14,7 @@ test('periods',()=>{
 const t:[string,string,string][]=[['codex','primary','5h'],['codex','secondary','w'],
 ['claude','primary','5h'],['claude','secondary','w'],['agy','primary','5h'],['agy','secondary','w'],
 ['opencode-go','primary','5h'],['opencode-go','secondary','w'],['opencode-go','monthly','m'],
-['grok','primary','m'],['ollama','primary','m']]
+['grok','w','w'],['grok','m','m'],['ollama','primary','m']]
 for(const[p,w,v]of t)eq(usageWindowName(p,w,l),v)})
 test('fallback',()=>{
 eq(usageWindowName('codex','primary',{}),'primary')
