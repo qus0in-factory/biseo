@@ -3,7 +3,7 @@
 Herdr의 여러 AI 에이전트 패널을 브라우저에서 보고, 지시하고, 결과를 받는 소프트웨어 공장 비서다.
 
 - 운영: https://biseo.qus0in.dev
-- 정식 릴리스: [v0.6.0](https://github.com/qus0in-factory/biseo/releases/tag/v0.6.0). 이후 main 수정과 운영 배포는 새 태그·릴리스 발행과 구분한다.
+- 정식 릴리스: [v0.6.1](https://github.com/qus0in-factory/biseo/releases/tag/v0.6.1). 이후 main 수정과 운영 배포는 새 태그·릴리스 발행과 구분한다.
 - [Wiki](https://github.com/qus0in-factory/biseo/wiki) · [현행 운영](docs/ops/current-operations.md) · [개발·승격](docs/development.md)
 
 ## 할 수 있는 일

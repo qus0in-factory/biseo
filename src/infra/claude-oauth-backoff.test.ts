@@ -15,3 +15,11 @@ test('claude backoff starts at 1m, doubles, and caps at 15m', () => {
   }
   resetClaudeBackoff()
 })
+
+test('claude backoff ignores a second failure while the window is already open', () => {
+  resetClaudeBackoff()
+  const first = noteClaudeFail(0, cfg)
+  assert.equal(noteClaudeFail(10, cfg), first)
+  assert.equal(noteClaudeFail(first, cfg) - first, 120_000)
+  resetClaudeBackoff()
+})

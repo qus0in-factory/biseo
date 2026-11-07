@@ -4,7 +4,7 @@ audience: user
 
 # 현행 실행·검증·배포
 
-이 문서는 현재 코드의 운영 기준이다. [이전 운영 기록](../operations-0.4.0.md)은 당시 이력으로 보존하며, 그 명령을 현재 환경에 그대로 적용하지 않는다. 정식 릴리스 v0.6.0과 이후 main 수정·운영 배포는 구분한다.
+이 문서는 현재 코드의 운영 기준이다. [이전 운영 기록](../operations-0.4.0.md)은 당시 이력으로 보존하며, 그 명령을 현재 환경에 그대로 적용하지 않는다. 정식 릴리스 v0.6.1과 이후 main 수정·운영 배포는 구분한다.
 
 ## 실행과 검사
 
@@ -54,7 +54,7 @@ PM2 `biseo`는 `/Users/young-mini/Factory/biseo` 체크아웃에서만 실행한
 
 백엔드 재시작만으로 브라우저 화면은 갱신되지 않는다. 클라이언트 빌드와 Worker 배포를 별도로 수행한다. 기존 Worker 시크릿·바인딩·운영 클라이언트 설정을 보존하고, `/` 200·미인증 `/api/health` 401 및 변경 화면을 실제 도메인에서 확인한다. PIN·비밀번호를 검증용 로그에 남기지 않는다.
 
-릴리스는 `pnpm release`(서버 빌드·PM2 재시작)와 `pnpm deploy`(vite build·wrangler deploy)를 둘 다 실행하고, 화면 푸터 버전으로 확인한다. 화면 버전은 `vite.config.ts`에서 빌드 시 번들에 들어가므로 `pnpm release`만으로는 바뀌지 않는다. 2026-11-07 v0.6.0에서 `pnpm deploy`를 빠뜨려 운영 화면이 0.5.4로 남았다.
+릴리스는 `pnpm release:all`로 `pnpm release`(서버 빌드·PM2 재시작), `pnpm deploy`(vite build·wrangler deploy), `pnpm release:verify`(운영 번들 버전과 package.json 비교, URL은 `config/release-verify.json`)를 순서대로 실행한다. 화면 푸터 버전도 눈으로 확인한다. 화면 버전은 `vite.config.ts`에서 빌드 시 번들에 들어가므로 `pnpm release`만으로는 바뀌지 않는다. 2026-11-07 v0.6.0에서 `pnpm deploy`를 빠뜨려 운영 화면이 0.5.4로 남았다.
 
 ## 사용량 수집과 복구
 
@@ -87,6 +87,13 @@ PM2 `biseo`는 `/Users/young-mini/Factory/biseo` 체크아웃에서만 실행한
 
 리뷰 P2(병합 우선순위, CLI 폴백 `/quota` 파싱, 풀 매핑 등)는 [#232](https://github.com/qus0in-factory/biseo/issues/232) 백로그로 둔다. 운영 화면 실측은 배포 뒤 확인한다. `agy -p /usage`는 모델 턴이므로 읽기 전용 quota 조회로 취급하지 않는다.
 
+### AGY 폴백 설정
+
+- 모델 턴 CLI 폴백은 기본 꺼짐이다. 백엔드 프로세스 환경에 `BISEO_AGY_CLI_ENABLED=1`을 명시한 경우에만 켜진다. `0`·미설정·그 밖의 값은 모두 꺼짐이며, 켜면 모델 사용량·비용이 발생할 수 있다.
+- `config/runtime.json`의 `agyCliEnabled`는 무시되는 레거시 필드다. `true`로 남아 있어도 폴백을 켜지 않으며, 이 값을 바꾸는 것으로 활성화하거나 비활성화할 수 없다.
+- 확인한 daily API 응답에는 Argon 주간 할당량이 없었다. API에 해당 값이 없고 CLI 폴백도 꺼져 있으면 화면에 `unknown`(알 수 없음)과 재개 시각 미확인을 표시한다. 이는 한도 소진이나 인증 만료를 뜻하지 않는다. 다른 모델의 값으로 추정하거나 주간 한도를 만들어내지 않는다. 폴백을 켜도 응답에 값이 없으면 알 수 없음으로 남는다.
+- 배포 전 PM2 `biseo`의 실제 프로세스 환경에서 `BISEO_AGY_CLI_ENABLED`가 없는지 확인한다. 명시적으로 폴백을 승인한 경우에만 값이 `1`인지 확인한다. 전체 환경변수나 자격증명은 출력하지 않는다. 이 확인을 위해 `runtime.json`을 수정하거나 서비스를 재시작하지 않는다.
+
 ## 자동 라벨 이름 보호
 
 [#229](https://github.com/qus0in-factory/biseo/issues/229)은 pane 조회 중 자동 라벨러가 기존 agent·tab 이름을 덮어쓰던 경로를 보호한다. 자동 라벨러의 소유 기록이 없는 pane에 기존 agent name 또는 tab label이 있으면 pane·agent·tab rename을 모두 생략한다. 수동 pane label도 보호한다. 이름 없는 대상에는 모델 별칭 자동 라벨이 계속 적용된다.
@@ -99,5 +106,13 @@ rename 실패는 단계별 id·command와 `auto_label.rename_failed`로 기록�
 - 읽기 전용 effort 표시는 [#214 제안](https://github.com/qus0in-factory/biseo/issues/214)이며 미구현이다.
 - API 정의: [Worker 라우트 등록](../../worker/ui/routes-registry.ts), [백엔드 라우트 등록](../../src/ui/app-routes.ts). 경로·메서드를 이름으로 추정하지 않는다.
 - D1 스키마는 [마이그레이션](../../worker/migrations/)을 기준으로 한다. 작업 데이터의 소유자·workspace 범위와 인증·사용량·동기화 데이터의 범위는 서로 다르다.
+
+## Wiki 작업
+
+Wiki 저장소는 세션마다 새 경로에 clone한다. 이전 세션의 작업 디렉터리를 재사용하지 않는다. 편집 전 `git rev-parse --git-dir`로 Wiki 저장소인지 확인하고 코드 저장소의 `.git`이면 중단한다.
+
+## 릴리스 노트
+
+노트는 기억이 아니라 `git log --merges <이전 태그>..main` 병합 커밋 목록에서 유도한다. 줄마다 PR 번호를 적고 목록과 대조한다.
 
 관련: [README](../../README.md) · [개발·승격](../development.md) · [Wiki](https://github.com/qus0in-factory/biseo/wiki).
