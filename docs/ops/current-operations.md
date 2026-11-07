@@ -54,6 +54,8 @@ PM2 `biseo`는 `/Users/young-mini/Factory/biseo` 체크아웃에서만 실행한
 
 백엔드 재시작만으로 브라우저 화면은 갱신되지 않는다. 클라이언트 빌드와 Worker 배포를 별도로 수행한다. 기존 Worker 시크릿·바인딩·운영 클라이언트 설정을 보존하고, `/` 200·미인증 `/api/health` 401 및 변경 화면을 실제 도메인에서 확인한다. PIN·비밀번호를 검증용 로그에 남기지 않는다.
 
+릴리스는 `pnpm release`(서버 빌드·PM2 재시작)와 `pnpm deploy`(vite build·wrangler deploy)를 둘 다 실행하고, 화면 푸터 버전으로 확인한다. 화면 버전은 `vite.config.ts`에서 빌드 시 번들에 들어가므로 `pnpm release`만으로는 바뀌지 않는다. 2026-11-07 v0.6.0에서 `pnpm deploy`를 빠뜨려 운영 화면이 0.5.4로 남았다.
+
 ## 사용량 수집과 복구
 
 2026-11-07 [PR #230](https://github.com/qus0in-factory/biseo/pull/230)이 main `5cdb862`에 병합됐다. 아래는 #227·#228·#229의 코드 동작이며, 병합 사실만으로 운영 배포나 인증된 사용량 회복을 보증하지 않는다.
