@@ -31,7 +31,6 @@
   },
   "availabilityTtlMs": 900000,
   "ollamaIncludedUsd": 60,
-  "agyCliEnabled": true,
   "agyCliTimeoutMs": 15000,
   "logLevel": "info",
   "inputMarkers": [
