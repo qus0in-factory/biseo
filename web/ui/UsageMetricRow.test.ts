@@ -80,11 +80,13 @@ const res = r as Record<string, string>
 const html = (m: ReturnType<typeof metric>) =>
   renderToStaticMarkup(createElement(UsageMetricRow, { provider: 'ollama', metric: m, remaining: false }))
 
-test('the used view shows monthly elapsed time for the included balance only', () => {
+test('the used view shows the balance and remaining time for the included balance', () => {
   const m = metric('included_balance', 'currency', { used: 0.5, limit: 60, remaining: 59.5, startsAt: fromNow(-18), resetsAt: fromNow(12) })
-  expectTimeIcon(html(m), res.usageTimeElapsed, 60)
+  const out = html(m)
+  assert.match(out, new RegExp(`${res.usageBalance} \\$59\\.50 \\(99%\\)`))
+  expectTimeIcon(out, res.usageTimeLeft, 40)
   const p = metric('purchased_balance', 'currency', { used: null, remaining: 7 })
-  expectNoTimeIcon(html(p), res.usageTimeElapsed)
+  expectNoTimeIcon(html(p), res.usageTimeLeft)
 })
 {
 const DAY = 86_400_000

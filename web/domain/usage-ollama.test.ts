@@ -71,4 +71,9 @@ test('other providers keep every metric', () => {
   const ids = ['five_hour', 'session']
   assert.deepEqual(selectCardMetrics('claude', ids.map(m)).map((x) => x.id), ids)
 })
+
+test('opencode-go keeps only its three usage windows', () => {
+  const ids = ['primary', 'secondary', 'monthly', 'unknown']
+  assert.deepEqual(selectCardMetrics('opencode-go', ids.map(m)).map((x) => x.id), ['primary', 'secondary', 'monthly'])
+})
 }
