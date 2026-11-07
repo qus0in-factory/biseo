@@ -2,24 +2,28 @@ import dns from 'node:dns';
 import { syncBuiltinESMExports } from 'node:module';
 import { checkHost } from './test-net-policy.mjs';
 
-const QUERIES = ['lookup', 'resolve', 'resolve4', 'resolve6', 'resolveAny', 'resolveCaa',
-  'resolveCname', 'resolveMx', 'resolveNaptr', 'resolveNs', 'resolvePtr', 'resolveSoa',
-  'resolveSrv', 'resolveTxt'];
+const blocked = name => /^(resolve|lookup|reverse)/.test(name);
 
 function guard(fn, isAsync) {
-  if (!isAsync) return function (hostname, ...args) {
+  const wrapped = isAsync ? async function (hostname, ...args) {
+    checkHost(hostname);
+    return fn.call(this, hostname, ...args);
+  } : function (hostname, ...args) {
     checkHost(hostname);
     return fn.call(this, hostname, ...args);
   };
-  return async function (hostname, ...args) {
-    checkHost(hostname);
-    return fn.call(this, hostname, ...args);
-  };
+  wrapped.__guarded = true;
+  return wrapped;
 }
 
-for (const name of QUERIES) {
-  if (typeof dns[name] === 'function') dns[name] = guard(dns[name], false);
-  if (typeof dns.promises[name] === 'function') dns.promises[name] = guard(dns.promises[name], true);
+function patch(target, isAsync) {
+  for (const name of Object.getOwnPropertyNames(target))
+    if (blocked(name) && typeof target[name] === 'function')
+      target[name] = guard(target[name], isAsync);
 }
 
+patch(dns, false);
+patch(dns.promises, true);
+patch(dns.Resolver.prototype, false);
+patch(dns.promises.Resolver.prototype, true);
 syncBuiltinESMExports();
