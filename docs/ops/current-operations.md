@@ -17,7 +17,7 @@ pnpm typecheck
 pnpm build
 ```
 
-기존 검사는 984개다. `pnpm start`는 빌드된 백엔드를 실행하고, `pnpm dev`는 클라이언트 빌드 후 로컬 Worker를 실행한다. 새 테스트·CI·의존성 추가는 별도 요청 범위다.
+검사 수는 대상 커밋의 실행 결과를 기준으로 한다. `pnpm start`는 빌드된 백엔드를 실행하고, `pnpm dev`는 클라이언트 빌드 후 로컬 Worker를 실행한다. 새 테스트·CI·의존성 추가는 별도 요청 범위다.
 
 ## 설정을 보존하는 경계
 
@@ -53,6 +53,43 @@ PM2 `biseo`는 `/Users/young-mini/Factory/biseo` 체크아웃에서만 실행한
 ## Worker와 화면 배포
 
 백엔드 재시작만으로 브라우저 화면은 갱신되지 않는다. 클라이언트 빌드와 Worker 배포를 별도로 수행한다. 기존 Worker 시크릿·바인딩·운영 클라이언트 설정을 보존하고, `/` 200·미인증 `/api/health` 401 및 변경 화면을 실제 도메인에서 확인한다. PIN·비밀번호를 검증용 로그에 남기지 않는다.
+
+## 사용량 수집과 복구
+
+2026-11-07 [PR #230](https://github.com/qus0in-factory/biseo/pull/230)이 main `5cdb862`에 병합됐다. 아래는 #227·#228·#229의 코드 동작이며, 병합 사실만으로 운영 배포나 인증된 사용량 회복을 보증하지 않는다.
+
+### Grok
+
+- 매 조회마다 OpenCode DB의 `xai` access 자격증명만 읽는다. 메모리 토큰 우선 경로와 refresh 요청·DB 쓰기를 없앴다. DB가 갱신되면 다음 조회에서 읽으며, access가 없으면 billing HTTP 요청을 보내지 않는다.
+- 자격증명 없음·HTTP 401/403은 `auth_required`, 네트워크·timeout·429·그 밖의 비정상 HTTP는 `temporarily_unavailable`, JSON·필드 형식 오류는 `schema_error`로 나눈다. 일시 장애나 형식 오류를 재인증 필요로 안내하지 않는다.
+- 실패 때 직전 수치와 성공 `checkedAt`을 보존하더라도 현재 상태는 `unknown`이다. 과거 값은 새 조회 성공이나 사용 가능의 근거가 아니다. 로그에는 provider·stage·status·reason만 남기고 토큰·헤더·응답 원문은 남기지 않는다.
+- upstream `currentPeriod.type`의 WEEKLY는 `w`, MONTHLY는 `m`, 누락·알 수 없는 값은 `primary`다. `primary`를 월간으로 강제 표시하지 않는다. 유효한 `billingPeriodStart`는 `startsAt`으로 전달하며 없는 5h·주간 창을 추정하지 않는다.
+
+### Claude
+
+- 429는 `rate_limited` 안내와 `retryAt`을 보낸다. `config/claude-oauth.json` 기본 백오프는 1분 시작·2배 증가·최대 15분이다. 숫자 초·HTTP-date `retry-after`와 지수 백오프 중 큰 값을 쓰되 최대값으로 제한한다. 게이트가 열려 있으면 upstream 호출을 생략하고 성공하면 백오프를 초기화한다.
+- 성공한 사용량만 `snapshotPath` 기본값 `data/claude-usage.json`에 원자적 rename으로 저장한다. `BISEO_CLAUDE_SNAPSHOT_PATH`로 위치를 바꿀 수 있다. 기본 경로는 실행 cwd 기준이며 디렉터리 0700·파일 0600이다. 토큰·응답 원문은 저장하지 않으며 디스크 실패가 정상 API 응답을 실패로 바꾸지 않는다.
+- 재시작 뒤에도 유효한 직전값을 읽는다. 429·백오프·기타 조회 실패 때는 `claude-stale`, `state: unknown`으로 표시하고 실패 reason·retryAt은 현재 결과, `checkedAt`은 원래 성공 시각을 유지한다. D1 복원에도 같은 만료 기준을 적용한다.
+- 직전값의 수명은 고정 TTL이 아니라 창별 `resetsAt`까지다. reset이 만료·누락·잘못된 창은 복원하지 않는다. 백오프 카운터 자체는 메모리라 재시작 시 초기화된다. 유료 `claude -p` 폴백은 구현하지 않았다.
+- 배포 시 스냅샷 경로·권한·보존 여부를 확인한다. 외부 경로를 지정했다면 Git 제외·백업도 운영자가 확인한다. 토큰이나 실제 사용량 파일을 문서·저장소에 복사하지 않는다.
+
+### 새로고침과 확인
+
+사용량 모달의 제공자 설정 옆 새로고침은 기존 조회 경로를 다시 실행한다. 로딩·요청 중에는 비활성화하고 스피너를 표시하며, 요청 종료 뒤 `web/usage-config.json`의 `refreshCooldownMs`(기본 10000ms) 동안 연타를 막는다. 이 버튼은 Claude 백오프를 우회하거나 인증을 갱신하지 않는다. 비-auth 실패에는 일시 장애·응답 형식 오류와 확인 가능한 최근 성공 시각을 표시한다.
+
+운영 확인은 인증된 사용량 응답의 reason·성공 시각·창 만료를 대조한다. PM2 online이나 재시작 성공만으로 회복을 선언하지 않는다. 테스트는 임시 스냅샷·합성 응답을 사용하며 실제 계정 자격증명에 기대는 네트워크 호출을 검증 근거로 삼지 않는다.
+
+### AGY 조사와 한계
+
+[#231](https://github.com/qus0in-factory/biseo/issues/231) 해결: 기본 호스트를 `daily-cloudcode-pa.googleapis.com`으로 바꿨고 `BISEO_AGY_HOST`로 설정한다. 같은 시각 호스트 대조에서 `cloudcode-pa`는 Gemini 5h·w가 모두 1이었고 `daily-cloudcode-pa`는 5h 90.03%·w 96.91%로 CLI `/quota`와 일치했다. `BISEO_AGY_USAGE_URL`·`BISEO_AGY_QUOTA_URL`을 지정하면 호스트 설정보다 우선한다. `pace` 눈금은 시간 비율이지 두 번째 할당량이 아니다.
+
+리뷰 P2(병합 우선순위, CLI 폴백 `/quota` 파싱, 풀 매핑 등)는 [#232](https://github.com/qus0in-factory/biseo/issues/232) 백로그로 둔다. 운영 화면 실측은 배포 뒤 확인한다. `agy -p /usage`는 모델 턴이므로 읽기 전용 quota 조회로 취급하지 않는다.
+
+## 자동 라벨 이름 보호
+
+[#229](https://github.com/qus0in-factory/biseo/issues/229)은 pane 조회 중 자동 라벨러가 기존 agent·tab 이름을 덮어쓰던 경로를 보호한다. 자동 라벨러의 소유 기록이 없는 pane에 기존 agent name 또는 tab label이 있으면 pane·agent·tab rename을 모두 생략한다. 수동 pane label도 보호한다. 이름 없는 대상에는 모델 별칭 자동 라벨이 계속 적용된다.
+
+rename 실패는 단계별 id·command와 `auto_label.rename_failed`로 기록한다. 세 rename은 원자적 트랜잭션이 아니므로 화면 이름만 보지 말고 실제 pane·agent·tab을 재조회한다. 이 보호는 다른 도구의 명시적 rename을 금지하거나 과거 이름을 자동 복구하는 기능이 아니다.
 
 ## 관측과 데이터
 
