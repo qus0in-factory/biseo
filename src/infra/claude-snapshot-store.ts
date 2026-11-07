@@ -8,6 +8,11 @@ export const setLastClaudeSnapshot = (u: ProviderUsage | null, _at = Date.now())
   last = u
 }
 
+export function cachedClaude(): ProviderUsage | null {
+  if (last === undefined) last = readClaudeSnapshot()
+  return last
+}
+
 export function resolveClaude(now: Date, fresh: ProviderUsage): ProviderUsage {
   if (fresh.state !== 'unknown') {
     last = fresh
