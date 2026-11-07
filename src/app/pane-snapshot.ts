@@ -8,7 +8,7 @@ export async function paneSnapshot(h:HerdrPort,l:PaneLocks,ws:string,av?:Availab
  const [panes,agents]=await Promise.all([h.listPanes(ws),h.listAgents()])
  const s=await availabilitySummaries(panes,agents,l,av,new Date(),limits,inputs)
  const m=await paneModelCache(h,s)
- await autoLabel(h,panes,m)
+ await autoLabel(h,panes,m,agents)
  return {workspaceId:ws,panes:s.map(x=>{
   const v=m[x.paneId]
   return v?{...x,modelId:v.modelId,modelProvider:v.provider}:x
