@@ -1,29 +1,19 @@
 import type { ProviderUsage } from '../domain/usage-types.js'
-import { getClaudeCacheTtlMs } from '../domain/usage-cache-ttl.js'
+import { readClaudeSnapshot, writeClaudeSnapshot } from './claude-snapshot-disk.js'
+import { staleClaude } from './claude-snapshot-stale.js'
 
-type Snap = { at: number; usage: ProviderUsage }
+let last: ProviderUsage | null | undefined
 
-let last: Snap | null = null
-
-export const setLastClaudeSnapshot = (u: ProviderUsage | null, at = Date.now()): void => {
-  last = u ? { at, usage: u } : null
+export const setLastClaudeSnapshot = (u: ProviderUsage | null, _at = Date.now()): void => {
+  last = u
 }
 
 export function resolveClaude(now: Date, fresh: ProviderUsage): ProviderUsage {
   if (fresh.state !== 'unknown') {
-    last = { at: now.getTime(), usage: fresh }
+    last = fresh
+    writeClaudeSnapshot(fresh)
     return fresh
   }
-  const s = last
-  const ttl = getClaudeCacheTtlMs()
-  if (s && Number.isFinite(ttl) && ttl > 0 && now.getTime() - s.at <= ttl) {
-    const u = s.usage
-    return {
-      ...u,
-      source: 'claude-cache',
-      metrics: (u.metrics ?? []).map((m) => ({ ...m })),
-      windows: (u.windows ?? []).map((w) => ({ ...w, source: 'claude-cache' })),
-    }
-  }
-  return fresh
+  if (last === undefined) last = readClaudeSnapshot()
+  return last ? staleClaude(last, fresh, now) : fresh
 }

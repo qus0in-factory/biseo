@@ -1,18 +1,20 @@
-import { getUsageEndpoints as ep, getUsageTimeoutMs as to } from '../domain/usage-endpoints.js'
 import { parseGrokBilling } from './grok-billing-parse.js'
+import { requestGrokBilling } from './grok-billing-request.js'
+import { billingFailure as fail, type GrokResult } from './grok-billing-result.js'
 
-export async function queryGrokBilling(token: string, now: Date) {
+export async function queryGrokBilling(token: string, now: Date): Promise<GrokResult> {
+  let res: Response
   try {
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      'X-XAI-Token-Auth': 'xai-grok-cli',
-      'x-grok-client-version': '1.0.0',
-      Accept: 'application/json'
-    }
-    const res = await fetch(ep().grok, { headers, signal: AbortSignal.timeout(to()) })
-    if (!res.ok) return null
-    return parseGrokBilling(await res.json(), now)
+    res = await requestGrokBilling(token)
   } catch {
-    return null
+    return fail('temporarily_unavailable', 'request')
+  }
+  if (!res.ok) return fail(res.status === 401 || res.status === 403
+    ? 'auth_required' : 'temporarily_unavailable', 'http', res.status)
+  try {
+    const usage = parseGrokBilling(await res.json(), now)
+    return usage.state === 'unknown' ? fail('schema_error', 'parse', res.status) : { usage }
+  } catch (error) {
+    return fail(error instanceof SyntaxError ? 'schema_error' : 'temporarily_unavailable', 'json', res.status)
   }
 }

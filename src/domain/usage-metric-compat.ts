@@ -8,6 +8,7 @@ export function windowsToMetrics(windows: WindowUsage[]): UsageMetric[] {
     used: w.usedPercent,
     limit: 100,
     remaining: w.usedPercent !== null ? Math.max(0, 100 - w.usedPercent) : null,
-    resetsAt: w.resetsAt
+    resetsAt: w.resetsAt,
+    startsAt: w.startsAt
   }))
 }

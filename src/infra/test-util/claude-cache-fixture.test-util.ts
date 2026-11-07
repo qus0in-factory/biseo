@@ -13,14 +13,14 @@ export const good: ProviderUsage = {
       used: 12,
       limit: 100,
       remaining: 88,
-      resetsAt: null,
+      resetsAt: '2026-10-30T11:00:00.000Z',
     },
   ],
   windows: [
     {
       window: 'primary',
       usedPercent: 12,
-      resetsAt: null,
+      resetsAt: '2026-10-30T11:00:00.000Z',
       checkedAt: chk,
       limitReached: false,
       source: 'claude',

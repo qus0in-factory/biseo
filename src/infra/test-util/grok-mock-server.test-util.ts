@@ -1,20 +1,25 @@
-import { setMemoryGrokToken } from '../grok-token-refresh.js'
 import { setLastGrokSnapshot } from '../grok-snapshot-store.js'
+import http from 'node:http'
 
-export const staleGrokUsage = {
-  provider: 'grok', state: 'available' as const,
-  metrics: [{ id: 'p', label: 'p', unit: 'percent', used: 45, limit: 100, remaining: 55, resetsAt: null }],
-  windows: [{ window: 'p', usedPercent: 45, resetsAt: null, checkedAt: null, limitReached: false, source: 'grok' }]
-}
+export { staleGrokUsage } from './grok-stale-fixture.test-util.js'
 
-export function initGrokMock(p: number, tok = 'exp') {
-  setMemoryGrokToken(tok)
+function initGrokMock(p: number) {
   setLastGrokSnapshot(null)
   process.env.BISEO_GROK_BILLING_URL = `http://127.0.0.1:${p}/billing`
-  process.env.BISEO_GROK_REFRESH_URL = `http://127.0.0.1:${p}/token`
 }
 
-export function cleanGrokEnv() {
+function cleanGrokEnv() {
   delete process.env.BISEO_GROK_BILLING_URL
-  delete process.env.BISEO_GROK_REFRESH_URL
+}
+
+export async function withGrokMock(handler: http.RequestListener, run: () => Promise<void>) {
+  const server = http.createServer(handler)
+  await new Promise<void>(done => server.listen(0, '127.0.0.1', done))
+  initGrokMock((server.address() as { port: number }).port)
+  try { await run() } finally {
+    server.closeAllConnections()
+    await new Promise<void>(done => server.close(() => done()))
+    cleanGrokEnv()
+    setLastGrokSnapshot(null)
+  }
 }

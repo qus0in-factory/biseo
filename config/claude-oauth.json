@@ -1,0 +1,6 @@
+{
+  "initialMs": 60000,
+  "maxMs": 900000,
+  "factor": 2,
+  "snapshotPath": "data/claude-usage.json"
+}
