@@ -85,6 +85,8 @@ PM2 `biseo`는 `/Users/young-mini/Factory/biseo` 체크아웃에서만 실행한
 
 [#231](https://github.com/qus0in-factory/biseo/issues/231) 해결: 기본 호스트를 `daily-cloudcode-pa.googleapis.com`으로 바꿨고 `BISEO_AGY_HOST`로 설정한다. 같은 시각 호스트 대조에서 `cloudcode-pa`는 Gemini 5h·w가 모두 1이었고 `daily-cloudcode-pa`는 5h 90.03%·w 96.91%로 CLI `/quota`와 일치했다. `BISEO_AGY_USAGE_URL`·`BISEO_AGY_QUOTA_URL`을 지정하면 호스트 설정보다 우선한다. `pace` 눈금은 시간 비율이지 두 번째 할당량이 아니다.
 
+quota API의 모델 버킷(`gemini-2.5-pro` 등)은 식별자에 `week`가 없으면 5h 창으로 라벨한다. 근거는 위 #231 실측이다. 같은 시각 `daily-cloudcode-pa`의 모델 버킷 잔여율은 CLI `/quota`의 Gemini 5h 값과 일치했고, 모델 버킷의 reset 시각은 조회 시점 기준 당일 안이었으며 주간 할당은 `gemini-argon-wtu-weekly` 버킷으로 따로 왔다. 이 가정은 `src/infra/agy-quota-group.ts`에 있으며, 같은 풀에 주간·5h 버킷이 함께 오면 창별로 따로 요약하고 최솟값을 섞지 않는다. API가 창 종류를 바꾸면 이 문단과 코드를 함께 고친다.
+
 리뷰 P2(병합 우선순위, CLI 폴백 `/quota` 파싱, 풀 매핑 등)는 [#232](https://github.com/qus0in-factory/biseo/issues/232)에서 추적한다. 운영 화면 실측은 배포 뒤 확인한다. 2026-11-07 agy 1.5.2에서 `agy -p /quota`와 `agy -p /usage`를 각각 1회 실행했다. 두 실행 모두 print-mode 슬래시 명령 로그가 있었고, `generateContent`·`streamGenerateContent`는 각각 0회였다. `/quota`는 5.365초, `/usage`는 5.237초에 종료 코드 0을 반환했다. 두 출력은 Argon 주간 행을 포함한 5행·4열 TSV였으며, 기존 파서와 주간 보충 함수로 처리됐다. 사용량 수치·토큰·출력 원문은 기록하지 않았다. `/usage`를 모델 턴으로 단정했던 이전 설명을 정정한다. 이 결과는 해당 버전·계정의 두 실행에 한정한다.
 
 ### AGY 폴백 설정
