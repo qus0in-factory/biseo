@@ -1,19 +1,20 @@
 import type { ProviderUsage } from '../domain/usage-types.js'
-import { unknownUsage } from '../domain/usage-unknown.js'
-import { getUsageEndpoints, getUsageTimeoutMs } from '../domain/usage-endpoints.js'
-import { claudeHttpUsage } from './claude-oauth-http.js'
 import { readClaudeToken } from './claude-oauth-token.js'
-import { resolveClaude } from './claude-snapshot-store.js'
+import { requestClaudeUsage } from './claude-oauth-request.js'
+import { claudeAfter429, claudeBackoffHit } from './claude-oauth-gate.js'
+import { claudeMiss } from './claude-oauth-miss.js'
+import { applyClaudeHttp } from './claude-oauth-apply.js'
 
 export async function fetchClaudeUsage(now = new Date()): Promise<ProviderUsage> {
+  const hit = claudeBackoffHit(now)
+  if (hit) return hit
   try {
     const t = await readClaudeToken()
-    if (!t) return resolveClaude(now, unknownUsage('claude', 'auth_required'))
-    const h = { Authorization: `Bearer ${t}`, 'anthropic-beta': 'oauth-2025-04-20', Accept: 'application/json' }
-    const res = await fetch(getUsageEndpoints().claude, { headers: h, signal: AbortSignal.timeout(getUsageTimeoutMs()) })
-    const d = await res.json().catch(() => null)
-    return resolveClaude(now, claudeHttpUsage(res.status, res.headers, d, now))
+    if (!t) return claudeMiss(now, 'auth_required')
+    const r = await requestClaudeUsage(t)
+    if (r.status === 429) return claudeAfter429(now, r.status, r.retryAfter)
+    return applyClaudeHttp(now, r.status, r.data)
   } catch {
-    return resolveClaude(now, unknownUsage('claude'))
+    return claudeMiss(now)
   }
 }
