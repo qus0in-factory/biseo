@@ -1,4 +1,4 @@
-// Derives the Worker's public base url (https://<custom domain>) from wrangler.jsonc routes.
+import { URL as NodeURL } from 'node:url'
 import { readFile } from 'node:fs/promises'
 import { parseJsonc } from './jsonc.js'
 
@@ -13,6 +13,7 @@ export const customDomainUrl = (wrangler: unknown): string | undefined => {
 export const publicBaseUrl = (wranglerText: string): string | undefined => customDomainUrl(parseJsonc(wranglerText))
 
 export const loadPublicBaseUrl = async (wranglerPath: URL | string): Promise<string | undefined> => {
-  const text = await readFile(wranglerPath, 'utf8').catch(() => undefined)
+  const path = typeof wranglerPath === 'string' ? wranglerPath : new NodeURL(wranglerPath.href)
+  const text = await readFile(path, 'utf8').catch(() => undefined)
   return text === undefined ? undefined : publicBaseUrl(text)
 }

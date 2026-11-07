@@ -1,9 +1,11 @@
 const { name } = require('./package.json')
+const env = require('./scripts/protected-env.cjs')()
 
 module.exports = {
   apps: [
     {
-      name: process.env.PROCESS_NAME ?? name,
+      name: env.PROCESS_NAME ?? process.env.PROCESS_NAME ?? name,
+      env,
       script: 'dist/server/src/index.js',
       cwd: __dirname,
     },

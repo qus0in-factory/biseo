@@ -3,11 +3,11 @@ import{createVerifyService}from'./app/verify-service.js'
 import{startQueueWatch}from'./infra/herdr-watch-boot.js'
 import{runtimeDeps}from'./infra/runtime-deps.js'
 import{config as c}from'./config.js'
-import{validateBootConfig}from'./config-boot.js'
+import{validateBootOrExit}from'./config-boot-or-exit.js'
 import{logger}from'./infra/logger.js'
 import{loadServiceVerifier as f}from'./infra/service-verifier.js'
 import{createApp}from'./ui/app.js'
-validateBootConfig(c)
+validateBootOrExit(c)
 logger.info({turnTimeoutMs:c.turnTimeoutMs,lateCaptureMs:c.lateCaptureMs,promptAcceptanceMs:c.promptAcceptanceMs},'config.effective')
 const v=createVerifyService(await f(c.servicePublicKeyPath),{issuer:c.serviceIssuer,audience:c.serviceAudience}),d=await runtimeDeps(v)
 startQueueWatch(d)
