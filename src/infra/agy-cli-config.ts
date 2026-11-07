@@ -6,7 +6,10 @@ export interface AgyCliConfig {
   args: string[]
   timeoutMs: number
   cacheMs: number
+  minIntervalMs: number
 }
+
+const hourMs = 3600000
 
 const ms = (v: string | undefined, d: number): number => {
   const n = Number(v ?? NaN)
@@ -22,6 +25,7 @@ export function agyCliConfig(): AgyCliConfig {
     path: e.BISEO_AGY_CLI_PATH ?? 'agy',
     args: (e.BISEO_AGY_CLI_ARGS ?? '-p /usage').split(/\s+/).filter(Boolean),
     timeoutMs: ms(e.BISEO_AGY_CLI_TIMEOUT_MS, base.agyCliTimeoutMs ?? 15000),
-    cacheMs: ms(e.BISEO_AGY_CLI_CACHE_MS, 300000)
+    cacheMs: ms(e.BISEO_AGY_CLI_CACHE_MS, 300000),
+    minIntervalMs: Math.max(ms(e.BISEO_AGY_CLI_MIN_INTERVAL_MS, hourMs), hourMs)
   }
 }
