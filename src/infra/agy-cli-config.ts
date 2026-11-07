@@ -9,7 +9,7 @@ export interface AgyCliConfig {
   minIntervalMs: number
 }
 
-const hourMs = 3600000
+const tenMinutesMs = 600000
 
 const ms = (v: string | undefined, d: number): number => {
   const n = Number(v ?? NaN)
@@ -18,14 +18,13 @@ const ms = (v: string | undefined, d: number): number => {
 
 export function agyCliConfig(): AgyCliConfig {
   const e = process.env
-  const flag = e.BISEO_AGY_CLI_ENABLED
-  // A legacy runtime flag must not silently opt into a paid model turn.
+  // Only an explicit '0' disables the verified quota lookup.
   return {
-    enabled: flag === '1',
+    enabled: e.BISEO_AGY_CLI_ENABLED !== '0',
     path: e.BISEO_AGY_CLI_PATH ?? 'agy',
-    args: (e.BISEO_AGY_CLI_ARGS ?? '-p /usage').split(/\s+/).filter(Boolean),
+    args: (e.BISEO_AGY_CLI_ARGS ?? '-p /quota').split(/\s+/).filter(Boolean),
     timeoutMs: ms(e.BISEO_AGY_CLI_TIMEOUT_MS, base.agyCliTimeoutMs ?? 15000),
     cacheMs: ms(e.BISEO_AGY_CLI_CACHE_MS, 300000),
-    minIntervalMs: Math.max(ms(e.BISEO_AGY_CLI_MIN_INTERVAL_MS, hourMs), hourMs)
+    minIntervalMs: Math.max(ms(e.BISEO_AGY_CLI_MIN_INTERVAL_MS, tenMinutesMs), tenMinutesMs)
   }
 }
