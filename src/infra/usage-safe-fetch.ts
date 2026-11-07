@@ -5,6 +5,7 @@ import { getProviderSnapshot, setProviderSnapshot, makeStaleUsage } from './prov
 export async function safeFetch(name: string, fn: (now: Date) => Promise<ProviderUsage>, now: Date): Promise<ProviderUsage> {
   try {
     const res = await fn(now)
+    if (res.windows.some(w => w.source?.endsWith('-stale'))) return res
     if (res.state !== 'unknown' && res.reason !== 'auth_required') {
       setProviderSnapshot(name, res)
       return res

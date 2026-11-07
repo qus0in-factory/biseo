@@ -5,5 +5,5 @@ export const getLastGrokSnapshot = () => getProviderSnapshot('grok')
 export const setLastGrokSnapshot = (s: ProviderUsage | null) => { setProviderSnapshot('grok', s) }
 
 export function makeStaleGrokUsage(last: ProviderUsage | null, reason = 'auth_required'): ProviderUsage {
-  return makeStaleUsage('grok', last, reason)
+  return { ...makeStaleUsage('grok', last, reason), state: 'unknown' }
 }
