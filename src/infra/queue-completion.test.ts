@@ -10,7 +10,8 @@ test('terminal transition sends one capability notification, not working or late
   const s=new TurnStore();queueCompletion(s,'a','token')
   s.add({requestId:'a',status:'working'} as any)
   a.equal(seen.length,0)
-  s.update('a',{status:'timeout'});s.update('a',{status:'completed'})
+   s.update('a',{status:'timeout'});s.update('a',{status:'completed'})
+   await new Promise(resolve=>setImmediate(resolve))
   a.deepEqual(seen,[['https://queue.example/queue/completed',{requestId:'a',token:'token'}]])
  }finally{globalThis.fetch=fetch;if(old===undefined)delete process.env.QUEUE_CALLBACK_URL;else process.env.QUEUE_CALLBACK_URL=old}
 })
