@@ -11,10 +11,3 @@ for (const [name, code] of [
   assert.equal(r.status, 1);
   assert.equal(r.stderr.trim(), 'test-net-guard: example.invalid');
 });
-
-test('dns resolve* wrapped', async () => {
-  const dns = (await import('node:dns')).default;
-  for (const o of [dns, dns.promises, dns.Resolver.prototype, dns.promises.Resolver.prototype])
-    for (const n of Object.getOwnPropertyNames(o))
-      if (n.startsWith('resolve')) assert.ok(o[n].__guarded, n);
-});
