@@ -81,9 +81,9 @@ PM2 `biseo`는 `/Users/young-mini/Factory/biseo` 체크아웃에서만 실행한
 
 ### AGY 조사와 한계
 
-[#231](https://github.com/qus0in-factory/biseo/issues/231)은 조사·수정 제안 단계다. 같은 시각 CLI `/quota`와 biseo의 reset 경계는 맞지만 Gemini 남은 비율은 달랐다. biseo는 `cloudcode-pa.googleapis.com` summary의 `remainingFraction`을 모델 quota보다 우선했고, CLI 로그는 `daily-cloudcode-pa.googleapis.com`을 사용했다. 오래된 캐시나 파싱 실패로 단정하지 않는다. `pace` 눈금은 시간 비율이지 두 번째 할당량이 아니다.
+[#231](https://github.com/qus0in-factory/biseo/issues/231) 해결: 기본 호스트를 `daily-cloudcode-pa.googleapis.com`으로 바꿨고 `BISEO_AGY_HOST`로 설정한다. 같은 시각 호스트 대조에서 `cloudcode-pa`는 Gemini 5h·w가 모두 1이었고 `daily-cloudcode-pa`는 5h 90.03%·w 96.91%로 CLI `/quota`와 일치했다. `BISEO_AGY_USAGE_URL`·`BISEO_AGY_QUOTA_URL`을 지정하면 호스트 설정보다 우선한다. `pace` 눈금은 시간 비율이지 두 번째 할당량이 아니다.
 
-CLI와 같은 정보원·그룹 우선순위·남은 비율 해석을 맞추는 수정과 동일 시각 1%p 이내 대조가 남아 있다. `agy -p /usage`는 모델 턴이므로 읽기 전용 quota 조회로 취급하지 않는다. PR #230에 이 수정이 포함됐다고 보고하지 않는다.
+리뷰 P2(병합 우선순위, CLI 폴백 `/quota` 파싱, 풀 매핑 등)는 [#232](https://github.com/qus0in-factory/biseo/issues/232) 백로그로 둔다. 운영 화면 실측은 배포 뒤 확인한다. `agy -p /usage`는 모델 턴이므로 읽기 전용 quota 조회로 취급하지 않는다.
 
 ## 자동 라벨 이름 보호
 
