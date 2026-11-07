@@ -3,7 +3,7 @@ import assert from'node:assert/strict'
 import{fetchAgyUsage}from'./agy-usage-fetch.js'
 import{cliTsv,fail401,setupCli,doneCli}from'./test-util/agy-cli-scenario.test-util.js'
 
-for(const enabled of ['1','0'])test(`cli explicit flag ${enabled}`,async()=>{
+for(const enabled of ['1','0'])test(`cli enabled switch ${enabled}`,async()=>{
  const calls:string[]=[]
  const{p,o}=setupCli('agy-opt-in','2020-01-01',enabled,cliTsv,calls,fail401)
  try{

@@ -4,14 +4,14 @@ import{fetchAgyUsage}from'./agy-usage-fetch.js'
 import{agyCliConfig}from'./agy-cli-config.js'
 import{cliTsv,fail401,setupCli,doneCli}from'./test-util/agy-cli-scenario.test-util.js'
 
-test('legacy runtime opt-in cannot enable model fallback by default',async()=>{
+test('cli fallback runs by default unless disabled',async()=>{
  const calls:string[]=[]
- const{p,o}=setupCli('agy-default-off','2020-01-01','1',cliTsv,calls,fail401)
+ const{p,o}=setupCli('agy-default-on','2020-01-01','1',cliTsv,calls,fail401)
  delete process.env.BISEO_AGY_CLI_ENABLED
  try{
-  assert.equal(agyCliConfig().enabled,false)
+  assert.equal(agyCliConfig().enabled,true)
   const r=await fetchAgyUsage(new Date('2026-10-30T12:00:00Z'))
-  assert.equal(r.reason,'agy_auth_expired')
-  assert.equal(calls.length,0)
+  assert.equal(r.state,'available')
+  assert.equal(calls.length,1)
  }finally{doneCli(p,o)}
 })
