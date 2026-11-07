@@ -8,6 +8,7 @@ import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { UsagePanelBody } from './UsagePanelBody.js'
 import type { UsageProvider } from '../domain/usage.js'
+import r from '../resources.json'
 
 test('the ollama card keeps only the two balances', () => {
   const out = html('ollama', shot)
@@ -27,8 +28,11 @@ test('the ollama card shows the remaining percent in remaining mode', () => {
   assert.match(html('ollama', [inc]), /\$59\.50 \(99%\)/)
 })
 
-test('the ollama card shows the used percent in used mode', () => {
-  assert.match(html('ollama', [inc], false), /\$0\.50 \(1%\)/)
+test('the ollama card shows balances in used mode', () => {
+  const pur = metric('purchased_balance', 'currency', { used: null, remaining: 7.01 })
+  const out = html('ollama', [inc, pur], false)
+  assert.match(out, new RegExp(`${r.usageBalance} \\$59\\.50 \\(99%\\)`))
+  assert.match(out, new RegExp(`${r.usageBalance} \\$7\\.01`))
 })
 {
 const inc = metric('included_balance', 'currency', { used: 60, limit: 60, remaining: 0, resetsAt: '2026-11-01T05:40:03.000Z' })
