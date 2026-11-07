@@ -10,11 +10,11 @@ for (const code of [
   "(await import('node:dgram')).createSocket('udp4').connect(53,'example.invalid')",
   "(await import('node:dgram')).createSocket('udp4').send('x',53,'example.invalid')",
 ]) {
-  test(`network guard rejects ${code.split('(')[0]}`, () => {
+  test(`network guard rejects ${code}`, () => {
     const result = spawnSync(process.execPath, [
       '--import=./scripts/test-net-guard.mjs', '--input-type=module',
       '-e', `try { await ${code} } catch {}`,
-    ], { encoding: 'utf8' });
+    ], { encoding: 'utf8', timeout: 5000 });
     assert.equal(result.status, 1);
     assert.equal(result.stderr.trim(), 'test-net-guard: example.invalid');
   });
