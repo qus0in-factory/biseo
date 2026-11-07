@@ -7,6 +7,8 @@ import assert from 'node:assert/strict'
 
 test('mode row renders each mode label only once', () => {
   const out = renderToStaticMarkup(createElement(UsageModeRow, { remaining: true, onToggle() {} }))
+  assert.match(out, /flex-col items-end/)
+  assert.match(out, /sm:flex-row sm:items-center/)
   for (const label of [r.usageRemaining, r.usageUsed]) {
     assert.equal((out.match(new RegExp(`>${label}<`, 'g')) ?? []).length, 1)
   }
