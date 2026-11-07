@@ -5,9 +5,10 @@ import providerIcons from './provider-icons.json'
 import rules from './pane-icon-rules.json'
 export type PaneIcon = ModelFamily | ProviderIconFamily
 export function paneIconFamily(id?: string | null, provider?: string | null): PaneIcon {
-  const text = `${id ?? ''} ${provider ?? ''}`.toLowerCase()
+  const known = modelFamily(id, provider)
+  if (known !== 'other') return known
+  const text = (id ?? '').toLowerCase()
   const hit = rules.find((r) => text.includes(r.match))
   if (hit) return hit.icon as PaneIcon
-  const icon = (providerIcons as Record<string, PaneIcon>)[provider ?? '']
-  return icon ?? modelFamily(id, provider)
+  return (providerIcons as Record<string, PaneIcon>)[provider ?? ''] ?? known
 }
