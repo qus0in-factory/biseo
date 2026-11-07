@@ -1,17 +1,14 @@
-// Release gate: prod app version mark must match package.json.
+// Release gate: prod bundle version mark == package.json. Needs dist/server.
 import { readFile } from 'node:fs/promises'
 import { bundleHasMark, makeGet } from './release-version-mark.mjs'
-import { loadVerifyUrl, missingUrlHint } from './release-verify-url.mjs'
+const verify = await import('../dist/server/src/infra/release-verify-url.js')
 
 const at = (p) => new URL(p, import.meta.url)
 const load = async (p) => JSON.parse(await readFile(at(p), 'utf8'))
 const { version } = await load('../package.json')
 const { url: fileUrl, timeoutMs, versionMarkPrefix } = await load('../config/release-verify.json')
-const url = await loadVerifyUrl(fileUrl, at('../wrangler.jsonc'))
-if (!url) {
-  console.error(missingUrlHint)
-  process.exit(1)
-}
+const url = await verify.loadVerifyUrl(fileUrl, at('../wrangler.jsonc'))
+if (!url) { console.error(verify.missingUrlHint); process.exit(1) }
 
 try {
   if (await bundleHasMark(makeGet(url, timeoutMs), versionMarkPrefix, version)) {

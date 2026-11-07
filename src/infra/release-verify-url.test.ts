@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { ENV_KEY, resolveVerifyUrl } from '../scripts/release-verify-url.mjs'
+import { ENV_KEY, resolveVerifyUrl } from './release-verify-url.js'
 
 const wranglerText = '{ // c\n "routes": [{ "pattern": "app.example.test", "custom_domain": true },], }'
 const fileUrl = 'https://file.example.test'
