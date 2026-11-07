@@ -87,6 +87,13 @@ PM2 `biseo`는 `/Users/young-mini/Factory/biseo` 체크아웃에서만 실행한
 
 리뷰 P2(병합 우선순위, CLI 폴백 `/quota` 파싱, 풀 매핑 등)는 [#232](https://github.com/qus0in-factory/biseo/issues/232) 백로그로 둔다. 운영 화면 실측은 배포 뒤 확인한다. `agy -p /usage`는 모델 턴이므로 읽기 전용 quota 조회로 취급하지 않는다.
 
+### AGY 폴백 설정
+
+- 모델 턴 CLI 폴백은 기본 꺼짐이다. 백엔드 프로세스 환경에 `BISEO_AGY_CLI_ENABLED=1`을 명시한 경우에만 켜진다. `0`·미설정·그 밖의 값은 모두 꺼짐이며, 켜면 모델 사용량·비용이 발생할 수 있다.
+- `config/runtime.json`의 `agyCliEnabled`는 무시되는 레거시 필드다. `true`로 남아 있어도 폴백을 켜지 않으며, 이 값을 바꾸는 것으로 활성화하거나 비활성화할 수 없다.
+- 확인한 daily API 응답에는 Argon 주간 할당량이 없었다. API에 해당 값이 없고 CLI 폴백도 꺼져 있으면 화면에 `unknown`(알 수 없음)과 재개 시각 미확인을 표시한다. 이는 한도 소진이나 인증 만료를 뜻하지 않는다. 다른 모델의 값으로 추정하거나 주간 한도를 만들어내지 않는다. 폴백을 켜도 응답에 값이 없으면 알 수 없음으로 남는다.
+- 배포 전 PM2 `biseo`의 실제 프로세스 환경에서 `BISEO_AGY_CLI_ENABLED`가 없는지 확인한다. 명시적으로 폴백을 승인한 경우에만 값이 `1`인지 확인한다. 전체 환경변수나 자격증명은 출력하지 않는다. 이 확인을 위해 `runtime.json`을 수정하거나 서비스를 재시작하지 않는다.
+
 ## 자동 라벨 이름 보호
 
 [#229](https://github.com/qus0in-factory/biseo/issues/229)은 pane 조회 중 자동 라벨러가 기존 agent·tab 이름을 덮어쓰던 경로를 보호한다. 자동 라벨러의 소유 기록이 없는 pane에 기존 agent name 또는 tab label이 있으면 pane·agent·tab rename을 모두 생략한다. 수동 pane label도 보호한다. 이름 없는 대상에는 모델 별칭 자동 라벨이 계속 적용된다.
