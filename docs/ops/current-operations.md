@@ -85,11 +85,11 @@ PM2 `biseo`는 `/Users/young-mini/Factory/biseo` 체크아웃에서만 실행한
 
 [#231](https://github.com/qus0in-factory/biseo/issues/231) 해결: 기본 호스트를 `daily-cloudcode-pa.googleapis.com`으로 바꿨고 `BISEO_AGY_HOST`로 설정한다. 같은 시각 호스트 대조에서 `cloudcode-pa`는 Gemini 5h·w가 모두 1이었고 `daily-cloudcode-pa`는 5h 90.03%·w 96.91%로 CLI `/quota`와 일치했다. `BISEO_AGY_USAGE_URL`·`BISEO_AGY_QUOTA_URL`을 지정하면 호스트 설정보다 우선한다. `pace` 눈금은 시간 비율이지 두 번째 할당량이 아니다.
 
-리뷰 P2(병합 우선순위, CLI 폴백 `/quota` 파싱, 풀 매핑 등)는 [#232](https://github.com/qus0in-factory/biseo/issues/232) 백로그로 둔다. 운영 화면 실측은 배포 뒤 확인한다. `agy -p /usage`는 모델 턴이므로 읽기 전용 quota 조회로 취급하지 않는다.
+리뷰 P2(병합 우선순위, CLI 폴백 `/quota` 파싱, 풀 매핑 등)는 [#232](https://github.com/qus0in-factory/biseo/issues/232)에서 추적한다. 운영 화면 실측은 배포 뒤 확인한다. 2026-11-07 agy 1.5.2에서 `agy -p /quota`와 `agy -p /usage`를 각각 1회 실행했다. 두 실행 모두 print-mode 슬래시 명령 로그가 있었고, `generateContent`·`streamGenerateContent`는 각각 0회였다. `/quota`는 5.365초, `/usage`는 5.237초에 종료 코드 0을 반환했다. 두 출력은 Argon 주간 행을 포함한 5행·4열 TSV였으며, 기존 파서와 주간 보충 함수로 처리됐다. 사용량 수치·토큰·출력 원문은 기록하지 않았다. `/usage`를 모델 턴으로 단정했던 이전 설명을 정정한다. 이 결과는 해당 버전·계정의 두 실행에 한정한다.
 
 ### AGY 폴백 설정
 
-- 모델 턴 CLI 폴백은 기본 꺼짐이다. 백엔드 프로세스 환경에 `BISEO_AGY_CLI_ENABLED=1`을 명시한 경우에만 켜진다. `0`·미설정·그 밖의 값은 모두 꺼짐이며, 켜면 모델 사용량·비용이 발생할 수 있다.
+- CLI 폴백은 기본 꺼짐이다. 백엔드 프로세스 환경에 `BISEO_AGY_CLI_ENABLED=1`을 명시한 경우에만 켜진다. `0`·미설정·그 밖의 값은 모두 꺼짐이다. 기본 인수는 `-p /quota`이며 `BISEO_AGY_CLI_ARGS`로 바꿀 수 있다. 실측한 기본 명령은 모델 생성 없이 할당량을 조회했다. 사용자 지정 인수나 다른 CLI 버전까지 같은 동작을 보장하지는 않는다.
 - 배포된 구버전 `runtime.json`에 `agyCliEnabled`가 남아 있어도 무시된다. `true`여도 폴백을 켜지 않으며, 이 값을 바꾸는 것으로 활성화하거나 비활성화할 수 없다.
 - 확인한 daily API 응답에는 Argon 주간 할당량이 없었다. API에 해당 값이 없고 CLI 폴백도 꺼져 있으면 화면에 `unknown`(알 수 없음)과 재개 시각 미확인을 표시한다. 이는 한도 소진이나 인증 만료를 뜻하지 않는다. 다른 모델의 값으로 추정하거나 주간 한도를 만들어내지 않는다. 폴백을 켜도 응답에 값이 없으면 알 수 없음으로 남는다.
 - 배포 전 PM2 `biseo`의 실제 프로세스 환경에서 `BISEO_AGY_CLI_ENABLED`가 없는지 확인한다. 명시적으로 폴백을 승인한 경우에만 값이 `1`인지 확인한다. 전체 환경변수나 자격증명은 출력하지 않는다. 이 확인을 위해 `runtime.json`을 수정하거나 서비스를 재시작하지 않는다.

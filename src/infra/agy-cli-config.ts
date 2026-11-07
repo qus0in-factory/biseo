@@ -16,11 +16,11 @@ const ms = (v: string | undefined, d: number): number => {
 export function agyCliConfig(): AgyCliConfig {
   const e = process.env
   const flag = e.BISEO_AGY_CLI_ENABLED
-  // A legacy runtime flag must not silently opt into a paid model turn.
+  // A legacy runtime flag must not silently enable CLI execution.
   return {
     enabled: flag === '1',
     path: e.BISEO_AGY_CLI_PATH ?? 'agy',
-    args: (e.BISEO_AGY_CLI_ARGS ?? '-p /usage').split(/\s+/).filter(Boolean),
+    args: (e.BISEO_AGY_CLI_ARGS ?? '-p /quota').split(/\s+/).filter(Boolean),
     timeoutMs: ms(e.BISEO_AGY_CLI_TIMEOUT_MS, base.agyCliTimeoutMs ?? 15000),
     cacheMs: ms(e.BISEO_AGY_CLI_CACHE_MS, 300000)
   }
