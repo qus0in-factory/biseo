@@ -1,9 +1,9 @@
 import{workspaceSources}from'./workspace-sources.js'
-import{writeSelectedWorkspace}from'./workspace-selection.js'
+import{seedSelectedWorkspace}from'./workspace-seed.js'
 import{logger}from'./logger.js'
 import{workspaceState}from'./workspace-state.js'
 export{readWorkspace}from'./workspace-config.js'
-export async function resolveWorkspace(sources=workspaceSources(),save=writeSelectedWorkspace,log=logger){
+export async function resolveWorkspace(sources=workspaceSources(),save=seedSelectedWorkspace,log=logger){
  const tried:string[]=[]
  for(const [name,read]of sources){
   tried.push(name)

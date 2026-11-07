@@ -12,6 +12,6 @@ test('all sources fail: undefined and source names only in warning',async()=>{
  assert.equal(readWorkspace(),undefined)
  const row=JSON.parse(output)
  assert.equal(row.msg,'workspace.unresolved')
- assert.deepEqual(row.sources,['ALLOWED_WORKSPACE_ID','runtime.json','workspace-selection.json','HERDR_WORKSPACE_ID','herdr workspace list'])
+ assert.deepEqual(row.sources,['ALLOWED_WORKSPACE_ID','workspace-selection.json','runtime.json','HERDR_WORKSPACE_ID','herdr workspace list'])
  assert.equal('id'in row,false)
 })

@@ -8,11 +8,11 @@ test('sources resolve in order and persist; focus is fixed after boot',async()=>
  process.env.HERDR_WORKSPACE_ID='pane'
  put('config/runtime.json',{allowedWorkspaceId:'legacy'})
  put('config/workspace-selection.json',{workspaceId:'selected'})
- for(const id of ['env','legacy','selected','pane','focused']){
+ for(const id of ['env','selected','legacy','pane','focused']){
   assert.equal(await resolveWorkspace(),id)
   if(id==='env')delete process.env.ALLOWED_WORKSPACE_ID
   if(id==='legacy')put('config/runtime.json',{})
-  put('config/workspace-selection.json',id==='env'||id==='legacy'?{workspaceId:'selected'}:{})
+  if(id==='selected')put('config/workspace-selection.json',{})
   if(id==='pane')delete process.env.HERDR_WORKSPACE_ID
  }
  process.env.HERDR_BIN_PATH='/missing'
