@@ -1,12 +1,13 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
+import { DATE_LIMIT_MS } from './claude-date-range.js'
 
 export type ClaudeBackoffCfg = { initialMs: number; maxMs: number; factor: number }
 
 export const CLAUDE_BACKOFF_DEFAULT: ClaudeBackoffCfg = { initialMs: 60_000, maxMs: 900_000, factor: 2 }
 
 const pos = (v: unknown, min: number, d: number): number =>
-  typeof v === 'number' && Number.isFinite(v) && v >= min ? v : d
+  typeof v === 'number' && Number.isFinite(v) && v >= min && v <= DATE_LIMIT_MS ? v : d
 
 export function claudeBackoffCfg(path = resolve(process.cwd(), 'config/claude-oauth.json')): ClaudeBackoffCfg {
   const d = CLAUDE_BACKOFF_DEFAULT
@@ -15,7 +16,7 @@ export function claudeBackoffCfg(path = resolve(process.cwd(), 'config/claude-oa
     const raw: unknown = JSON.parse(readFileSync(path, 'utf8'))
     if (raw && typeof raw === 'object') j = raw
   } catch {
-    return d
+    return { ...d }
   }
   const initialMs = pos(j.initialMs, 1, d.initialMs)
   return { initialMs, maxMs: Math.max(initialMs, pos(j.maxMs, 1, d.maxMs)), factor: pos(j.factor, 1, d.factor) }
