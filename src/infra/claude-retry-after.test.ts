@@ -1,3 +1,4 @@
+import './test-util/claude-snapshot-env.test-util.js'
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { claudeAfter429 } from './claude-oauth-gate.js'

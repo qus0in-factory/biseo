@@ -1,10 +1,11 @@
+import './test-util/claude-snapshot-env.test-util.js'
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { claudeAfter429, claudeBackoffHit } from './claude-oauth-gate.js'
 import { resetClaudeBackoff } from './claude-oauth-backoff.js'
 import { setClaude429Log } from './claude-oauth-log.js'
 
-test('429 log stores status and retry-after, then skips until the wait ends', () => {
+test('429 logs status/retry-after and gates retries', () => {
   resetClaudeBackoff()
   const seen: Array<{ status: number; retryAfter: string | null }> = []
   setClaude429Log((row) => { seen.push(row) })
