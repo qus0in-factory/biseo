@@ -6,12 +6,10 @@ export { staleGrokUsage } from './grok-stale-fixture.test-util.js'
 function initGrokMock(p: number) {
   setLastGrokSnapshot(null)
   process.env.BISEO_GROK_BILLING_URL = `http://127.0.0.1:${p}/billing`
-  process.env.BISEO_GROK_REFRESH_URL = `http://127.0.0.1:${p}/token`
 }
 
 function cleanGrokEnv() {
   delete process.env.BISEO_GROK_BILLING_URL
-  delete process.env.BISEO_GROK_REFRESH_URL
 }
 
 export async function withGrokMock(handler: http.RequestListener, run: () => Promise<void>) {

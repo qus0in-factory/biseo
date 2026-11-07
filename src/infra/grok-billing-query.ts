@@ -15,7 +15,6 @@ export async function queryGrokBilling(token: string, now: Date): Promise<GrokRe
     const usage = parseGrokBilling(await res.json(), now)
     return usage.state === 'unknown' ? fail('schema_error', 'parse', res.status) : { usage }
   } catch (error) {
-    const timeout = error instanceof Error && /^(Abort|Timeout)Error$/.test(error.name)
-    return fail(timeout ? 'temporarily_unavailable' : 'schema_error', 'json', res.status)
+    return fail(error instanceof SyntaxError ? 'schema_error' : 'temporarily_unavailable', 'json', res.status)
   }
 }
