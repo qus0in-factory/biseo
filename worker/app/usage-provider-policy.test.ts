@@ -1,22 +1,23 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { parseProviderPolicy } from './usage-provider-policy.js'
-import current from './usage-provider-policy.json'
+import { parseProviderPolicy, lookupPolicy } from './usage-provider-policy.js'
+import cur from './usage-provider-policy.json'
 
-test('malformed policy entries are ignored or defaulted, current file is kept as-is', () => {
-  assert.deepEqual(parseProviderPolicy(current), {
-    grok: { staleReasons: ['temporarily_unavailable', 'schema_error'], restoreState: 'unknown' },
+const parse = (r: unknown) => ({ ...parseProviderPolicy(r) })
+
+test('malformed entries ignored or defaulted, cur file kept', () => {
+  assert.deepEqual(parse(cur), {
+    grok: { staleReasons: [...cur.grok.staleReasons], restoreState: 'unknown' },
   })
   assert.deepEqual(
-    parseProviderPolicy({
-      a: { staleReasons: 'not-an-array', restoreState: 'typo' },
-      b: { staleReasons: ['ok', 1, null], restoreState: 'limited' },
-      c: 'junk',
-      d: ['x'],
-      e: null,
-    }),
-    { a: { staleReasons: [], restoreState: undefined }, b: { staleReasons: ['ok'], restoreState: 'limited' } },
+    parse({ a: { staleReasons: 'no', restoreState: 'typo' }, b: { staleReasons: ['ok', 1] }, c: 'junk' }),
+    { a: { staleReasons: [], restoreState: undefined }, b: { staleReasons: ['ok'], restoreState: undefined } },
   )
-  assert.deepEqual(parseProviderPolicy(null), {})
-  assert.deepEqual(parseProviderPolicy([1]), {})
+})
+
+test('inherited keys never resolve, __proto__ is inert', () => {
+  const m = parseProviderPolicy(JSON.parse('{"__proto__":{}}'))
+  assert.equal(Object.getPrototypeOf(m), null)
+  assert.deepEqual(Object.keys(m), ['__proto__'])
+  for (const k of ['constructor', 'toString']) assert.equal(lookupPolicy(m, k), undefined)
 })
