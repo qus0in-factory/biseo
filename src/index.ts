@@ -6,9 +6,11 @@ import{config as c}from'./config.js'
 import{validateBootOrExit}from'./config-boot-or-exit.js'
 import{logger}from'./infra/logger.js'
 import{loadServiceVerifier as f}from'./infra/service-verifier.js'
+import{startClaudeUsagePoll}from'./infra/claude-usage-poll.js'
 import{createApp}from'./ui/app.js'
 validateBootOrExit(c)
 logger.info({turnTimeoutMs:c.turnTimeoutMs,lateCaptureMs:c.lateCaptureMs,promptAcceptanceMs:c.promptAcceptanceMs},'config.effective')
 const v=createVerifyService(await f(c.servicePublicKeyPath),{issuer:c.serviceIssuer,audience:c.serviceAudience}),d=await runtimeDeps(v)
 startQueueWatch(d)
+startClaudeUsagePoll()
 serve({fetch:createApp(d).fetch,hostname:c.host,port:c.port},i=>logger.info({port:i.port},'listening'))

@@ -1,0 +1,12 @@
+[
+  {"re": "ollama(?: cloud)?$", "provider": "ollama"},
+  {"re": "openai$|codex$", "provider": "codex"},
+  {"re": "claude agent$", "provider": "claude"},
+  {"re": "anthropic$", "provider": "claude"},
+  {"re": "claude$", "provider": "claude"},
+  {"re": "free\\s+(?:default\\s*/\\s*)?(?:opencode(?:\\s+go)?|zen)$", "provider": "opencode"},
+  {"re": "opencode go$", "provider": "opencode-go"},
+  {"re": "(?:default\\s*/\\s*)?(?:opencode|zen)$", "provider": "opencode"},
+  {"re": "x-?ai$", "provider": "grok"},
+  {"re": "grok$", "provider": "grok"}
+]

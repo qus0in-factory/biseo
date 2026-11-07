@@ -1,5 +1,6 @@
 import{availabilitySummaries}from'./pane-availability.js'
 import{paneModelCache}from'./pane-model-cache.js'
+import{fillClaudeModels}from'./pane-claude-model.js'
 import{autoLabel}from'./auto-label-rules.js'
 import type{AvailabilityPort,HerdrPort}from'./ports.js'
 import type{LimitScreen}from'./limit-screen.js'
@@ -8,6 +9,7 @@ export async function paneSnapshot(h:HerdrPort,l:PaneLocks,ws:string,av?:Availab
  const [panes,agents]=await Promise.all([h.listPanes(ws),h.listAgents()])
  const s=await availabilitySummaries(panes,agents,l,av,new Date(),limits,inputs)
  const m=await paneModelCache(h,s)
+ fillClaudeModels(m,panes,agents)
  await autoLabel(h,panes,m,agents)
  return {workspaceId:ws,panes:s.map(x=>{
   const v=m[x.paneId]
