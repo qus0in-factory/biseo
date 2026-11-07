@@ -17,7 +17,6 @@ test('missing keys fail with names',()=>{
   turnTimeoutMs:0,
   availabilityTtlMs:0,
   ollamaIncludedUsd:0,
-  agyCliEnabled:'x',
  }
  for(const[k,v]of Object.entries(bad)){
   const c:any={...config,[k]:v}
