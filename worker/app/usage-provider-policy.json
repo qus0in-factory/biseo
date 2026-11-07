@@ -1,0 +1,6 @@
+{
+  "grok": {
+    "staleReasons": ["temporarily_unavailable", "schema_error"],
+    "restoreState": "unknown"
+  }
+}
